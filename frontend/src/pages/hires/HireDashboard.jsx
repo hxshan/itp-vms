@@ -1,15 +1,14 @@
-import EmployeeTable from "../../components/admin/EmployeeTable"
+import HireTable from "@/components/hires/HireTable"
 
-const AdminDashboard = () => {
-
+const HireDashboard = () => {
     const columns =["Name","Email","IDK foreal","something","Actions"]
     const data =[{id:"1s56d1saads",name:"heshan",email:"idk",some:"dadfsa",some2:"sdad"},{}]
 
   return (
     <div className="container mx-auto py-10">
-        <EmployeeTable columns={columns} data={data}/>
+        <HireTable columns={columns} data={data}/>
      </div>
   )
 }
 
-export default AdminDashboard
+export default HireDashboard
