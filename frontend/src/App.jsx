@@ -13,9 +13,7 @@ function App() {
           <Route path="/admin" element={<AdminDashboard/>}/>
           <Route path="/hires" element={<HireDashboard/>}/>
         </Routes>
-        
       </main>
-      
     </QueryClientProvider>
   </BrowserRouter>
   )
