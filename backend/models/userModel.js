@@ -8,16 +8,13 @@ const userShema = new Schema({
         type:String,
         required: true
     },
-    middleNames:{
-        type:String,
-    },
     lastName:{
         type:String,
         required: true
     },
     dob:{
         type:Date,
-        required:true
+        //required:true
     },
     email:{
         type:String,
@@ -29,12 +26,16 @@ const userShema = new Schema({
     },
     phoneNumber:{
         type:String,
+        //required:true
+    },
+    status:{
+        type:String,
         required:true
     },
-    roles:[{
+    role:{
         type:mongoose.Schema.Types.ObjectId,
         ref:'Role'
-    }],
+    },
 })
 
 module.exports = mongoose.model('User',userShema)

@@ -1,14 +1,28 @@
-import EmployeeTable from "../../components/admin/EmployeeTable"
+import useAxiosGet from "@/hooks/useAxiosGet"
+import {EmployeeTable,CreateUserForm} from "../../components/admin/"
+import { useEffect, useState } from "react"
+import { Navbar } from "../shared"
 
 const AdminDashboard = () => {
 
     const columns =["Name ","Email","IDK foreal","something","Actions"]
-    const data =[{id:"1s56d1saads",name:"heshan",email:"idk",some:"dadfsa",some2:"sdad"},{}]
+    const [users,setUsers]=useState([])
+    const {data:userData,error:userErr,isLoading:userIsLoading,refetch:userRefetch} = useAxiosGet('/user/getall')
 
+    useEffect(()=>{
+      if(userData !=null)
+        setUsers(userData)
+    },[userData])
+
+//<EmployeeTable columns={columns} data={data}/>
+    console.log(userData)
   return (
+  
     <div className="container mx-auto py-10">
-        <EmployeeTable columns={columns} data={data}/>
+        <CreateUserForm />
+        <EmployeeTable columns={columns} data={users} isLoading={userIsLoading}/>
      </div>
+
   )
 }
 

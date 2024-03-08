@@ -7,12 +7,12 @@ const useAxiosPost = () => {
     const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [status,setStatus] = useState(null)
-    const {token} = useAuthContext()
+    //const {token} = useAuthContext() {headers:{Authorization:'Bearer '+ token}}
 
     const postData = async(url,data) => {
         setIsLoading(true);
         try{
-            const response= await axios.post(url,data,{headers:{Authorization:'Bearer '+ token}})
+            const response= await axios.post(url,data)
             setStatus(response.data)
         }catch(error){
             setError(error.message)

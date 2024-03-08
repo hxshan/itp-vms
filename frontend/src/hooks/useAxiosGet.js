@@ -7,20 +7,21 @@ const useAxiosGet = (apiUrl) => {
     const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [data,setData] = useState(null)
-    const {token} = useAuthContext()
+    // const {token} = useAuthContext() {headers:{Authorization:'Bearer '+ token}}
 
     const fetchData = useCallback(async(url) => {
         setIsLoading(true);
         try{
-            const response= await axios.get(url,{headers:{Authorization:'Bearer '+ token}})
-            setData(response.data)
+            const response= await axios.get(url)
+            if(response.data != null)
+                setData(response.data)
         }catch(error){
             setError(error.message)
-            setData([])
+            setData(error.message)
         }finally{
             setIsLoading(false)
         }
-    },[token])
+    },[])
 
     const refetch = useCallback(()=>{
         fetchData(apiUrl)

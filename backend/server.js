@@ -9,6 +9,9 @@ app.use(express.json());
 app.use(cors(corsOptions));
 const PORT = process.env.PORT || 3000;
 
+const userRoutes = require('./routes/userRoutes')
+
+app.use('/api/user',userRoutes)
 
 mongoose.connect(process.env.MONGO_URI).then(() => {
   app.listen(PORT, () => {
