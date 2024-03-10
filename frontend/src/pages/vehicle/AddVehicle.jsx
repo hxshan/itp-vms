@@ -45,10 +45,11 @@ const AddVehicle = () => {
         };
     
         return (
-            <div>
-                <form>
+            <div class="place-content-center m-8 bg-cover bg-center bg-white" >
+                <form class="space-y-12 m-3 p-3  bg-slate-200 rounded-md pad">
+                    <h1 class="">Select your vehicle category</h1>
                     <label htmlFor="category">Select Category:</label>
-                    <select id="category" name="category" value={category} onChange={handleCategoryChange}>
+                    <select class="" id="category" name="category" value={category} onChange={handleCategoryChange}>
                         <option value="">Select</option>
                         <option value="car">Car</option>
                         <option value="van">Van</option>
@@ -57,32 +58,36 @@ const AddVehicle = () => {
                     </select>
                 </form>
                 {category && (
-                    <form>
+                    <form class="space-y-12 m-3 p-3  bg-slate-200 rounded-md pad">
                         {category === 'car' && (
                             <div>
+                                <h1 class="mb-3">Fill follow vehicle details</h1>
                                 <label htmlFor="carModel">Car Model:</label>
                                 <input type="text" id="carModel" name="carModel" value={carModel} onChange={(e) => setCarModel(e.target.value)} />
                             </div>
                         )}
                         {category === 'van' && (
                             <div>
+                                <h1 class="mb-3">Fill follow vehicle details</h1>
                                 <label htmlFor="vanModel">Van Model:</label>
                                 <input type="text" id="vanModel" name="vanModel" value={vanModel} onChange={(e) => setVanModel(e.target.value)} />
                             </div>
                         )}
                         {category === 'bus' && (
                             <div>
+                                <h1 class="mb-3">Fill follow vehicle details</h1>
                                 <label htmlFor="busCapacity">Bus Capacity:</label>
                                 <input type="number" id="busCapacity" name="busCapacity" value={busCapacity} onChange={(e) => setBusCapacity(e.target.value)} />
                             </div>
                         )}
                         {category === 'lorry' && (
                             <div>
+                                <h1 class="mb-3">Fill follow vehicle details</h1>
                                 <label htmlFor="lorryWeight">Lorry Weight:</label>
                                 <input type="number" id="lorryWeight" name="lorryWeight" value={lorryWeight} onChange={(e) => setLorryWeight(e.target.value)} />
                             </div>
                         )}
-                        <button type="button" onClick={handleSubmit}>Submit</button>
+                        <button className='p-1 bg-black text-center text-white text-sm rounded-md' type="button" onClick={handleSubmit}>Add vehicle</button>
                     </form>
                 )}
             </div>
