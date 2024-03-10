@@ -2,6 +2,6 @@ import React from 'react'
 
 const AddVehicle = () => {
   return (
-    <div>AddVehicleForm</div>
+    <h1>AddVehicleForm</h1>
   )
 }
