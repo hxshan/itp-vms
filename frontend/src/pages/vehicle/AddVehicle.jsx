@@ -98,9 +98,9 @@ const AddVehicle = () => {
     };
     
     return (
-            <div class="place-content-center m-8 bg-cover bg-center bg-white" >
-                <form class="space-y-12 m-3 p-3  bg-slate-200 rounded-md pad">
-                    <h1 class="">Select your vehicle category</h1>
+            <div className="place-content-center m-8 bg-cover bg-center bg-white" >
+                <form className="space-y-12 m-3 p-3  bg-slate-200 rounded-md pad">
+                    <h1 className="">Select your vehicle category</h1>
                     <label htmlFor="category">Select Category:</label>
                          <select id="category" name="category" value={category} onChange={handleCategoryChange}>
                             <option value="">Select</option>
@@ -111,7 +111,7 @@ const AddVehicle = () => {
                          </select>
                 </form>
                 {category && (
-                <form>
+                <form className="space-y-12 m-3 p-3  bg-slate-200 rounded-md pad">
                     {category === 'car' && (
                         <div>
                             <label htmlFor="carModel">Car Model:</label>
@@ -126,13 +126,13 @@ const AddVehicle = () => {
                     )}
                     {category === 'van' && (
                         <div>
-                            <label htmlFor="vanModel">Car Model:</label>
+                            <label htmlFor="vanModel">Van Model:</label>
                             <input type="text" id="vanModel" name="vanModel" value={vanModel} onChange={(e) => setVanModel(e.target.value)} />
-                            <label htmlFor="vanMake">Car Make:</label>
+                            <label htmlFor="vanMake">Van Make:</label>
                             <input type="text" id="vanMake" name="vanMake" value={vanMake} onChange={(e) => setVanMake(e.target.value)} />
-                            <label htmlFor="vanYear">Car Year:</label>
+                            <label htmlFor="vanYear">Van Year:</label>
                             <input type="text" id="vanYear" name="vanYear" value={vanYear} onChange={(e) => setVanYear(e.target.value)} />
-                            <label htmlFor="vanDocImage">Car Image:</label>
+                            <label htmlFor="vanDocImage">Van Documents Image:</label>
                             <input type="file" id="vanDocImage" name="vanDocImage" accept="image/*" onChange={handleVarDocImageChange} />
                         </div>
                     )}
@@ -161,7 +161,8 @@ const AddVehicle = () => {
                         </div>
                     )}
                     
-                    <button type="button" onClick={handleSubmit}>Submit</button>
+                    <button className= "m-1 p-2 bg-black text-zinc-50 rounded-md" type="reset">Reset</button>
+                    <button className= "m-1 p-2 bg-black text-zinc-50 rounded-md" type="button" onClick={handleSubmit}>Add vehicle</button>
                     </form>
                 )}
             </div>
