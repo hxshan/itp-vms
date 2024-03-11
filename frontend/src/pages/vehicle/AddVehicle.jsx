@@ -189,7 +189,7 @@ const AddVehicle = () => {
                     <h3 className="m-0 p-0 text-sm text-red-600 font-medium">- Please select correct vehicle category before adding vehicle details.</h3>
                     <h3 className="m-0 p-0 text-sm text-red-600 font-medium">- After selecting a vehicle category type, the system will automatically display the vehicle details according to the respective category.</h3>
                     <h3 className="m-0 p-0 text-sm text-red-600 font-medium">- Please provide correct details to the system when you enter the details.</h3>
-                    <label className='m-2 font-semibold text-base' htmlFor="category">Select Category:</label>
+                    <label className='m-2 font-semibold text-base' htmlFor="category">Select Vehicle Category:</label>
                          <select id="category" name="category" value={category} onChange={handleCategoryChange}>
                             <option value="">Select</option>
                             <option value="car">Car</option>
