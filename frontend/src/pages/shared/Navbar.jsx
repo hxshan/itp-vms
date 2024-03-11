@@ -52,11 +52,10 @@ const Navbar = () => {
                   </button>
                   {isOpen.vehicle && (
                       <div className="ml-0">
-                          <button className="w-full pl-2 px-4 hover:bg-gray-700 focus:outline-none focus:bg-gray-700 items-start" onClick={() => handleItemClick('Vehicle Management', 'Add Vehicle')}>Add Vehicle</button>
-                          <button className="w-full py-2 px-4 hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => handleItemClick('Vehicle Management', 'Edit Vehicle')}>View Vehicle</button>
-                          <button className="w-full py-2 px-4 hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => handleItemClick('Vehicle Management', 'Delete Vehicle')}>Vehicle Reports</button>
-                          <button className="w-full py-2 px-4 hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => handleItemClick('Vehicle Management', 'View Vehicles')}>Alers</button>
-      
+                          <button className="w-full py-2 px-4 hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => handleItemClick('Vehicle Management', 'Add Vehicle')}>Add Vehicle</button>
+                          <button className="w-full py-2 px-4 hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => handleItemClick('Vehicle Management', 'view vehicles')}>View vehicles</button>
+                          <button className="w-full py-2 px-4 hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => handleItemClick('Vehicle Management', 'Vehicle Reports')}>Vehicle Reports</button>
+                          <button className="w-full py-2 px-4 hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => handleItemClick('Vehicle Management', 'View Vehicles')}>Alers</button>  
                       </div>
                   )}
               </div>
