@@ -3,13 +3,14 @@ import React, { useState } from 'react';
 const AddVehicle = () => {
     const [category, setCategory] = useState('');
 
-    const [carType, setCarType] = useState('');
-    const [carRegister, setCarRegister] = useState('');
-    const [carModel, setCarModel] = useState('');
-    const [carManuYear, setCarManuYear] = useState('');
+    const [vehicleType, setVehicleType] = useState('');
+    const [vehicleRegister, setVehicleRegister] = useState('');
+    const [vehicleModel, setVehicleModel] = useState('');
+    const [vehicleManuYear, setVehicleManuYear] = useState('');
     const [engineCap, setEngineCap] = useState('');
-    const [carColour, setCarColour] = useState('');
-    const [carGearSys, setCarGearSys] = useState('');
+    const [lastMileage, setLastMileage] = useState('');
+    const [vehicleColour, setVehicleColour] = useState('');
+    const [vehicleGearSys, setVehicleGearSys] = useState('');
     const [airCon, setAirCon] = useState('');
     const [numOfSeats, setNumOfSeats] = useState('');
     const [lugSpace, setLugSpace] = useState('');
@@ -17,68 +18,42 @@ const AddVehicle = () => {
     const [licEndDate, setLicEndDate] = useState('');
     const [insEndDate, setInsEndDate] = useState('');
    
-    
-    const [vanModel, setVanModel] = useState('');
-    const [vanMake, setVanMake] = useState('');
-    const [vanYear, setVanYear] = useState('');
 
 
-    const [busCapacity, setBusCapacity] = useState('');
-    const [busMake, setBusMake] = useState('');
-    const [busYear, setBusYear] = useState('');
+    const [fridge, setFridge] = useState('');
+    const [tv, setTv] = useState('');
 
-    const [lorryWeight, setLorryWeight] = useState('');
-    const [lorryMake, setLorryMake] = useState('');
-    const [lorryYear, setLorryYear] = useState('');
+    const [vehicleWeight, setVehicleWeight] = useState('');
+    const [cargoCapacity, setCargoCapacity] = useState('');
+    const [cargoArea, setCargoArea] = useState('');
 
-    const [carBookImage, setCarBookImage] = useState(null);
-    const [carLicenceImage, setCarLicenceImage] = useState(null);
-    const [carInsuImage, setCarInsuImage] = useState(null);
+    const [trailerLength, setTrailerLength] = useState('');
+    const [passengerCabin, setPassengerCabin] = useState('');
 
-    const [vanDocImage, setvanDocImage] = useState(null);
-    const [busImage, setBusImage] = useState(null);
-    const [lorryImage, setLorryImage] = useState(null);
+
+    const [vehicleBookImage, setVehicleBookImage] = useState(null);
+    const [vehicleLicenceImage, setVehicleLicenceImage] = useState(null);
+    const [vehicleInsuImage, setVehicleInsuImage] = useState(null);
+
+
 
     const handleCategoryChange = (event) => {
         setCategory(event.target.value);
     };
+
     
-    const handleCarBookImageChange = (event) => {
+    const handleVehicleBookImageChange = (event) => {
         const file = event.target.files[0];
-        setCarBookImage(file);
+        setVehicleBookImage(file);
     };
-    const handleCarLicenceImageImageChange = (event) => {
+    const handleVehicleLicenceImageImageChange = (event) => {
         const file = event.target.files[0];
-        setCarLicenceImage(file);
+        setVehicleLicenceImage(file);
     };
-    const handleCarInsuImageChange = (event) => {
+    const handleVehicleInsuImageChange = (event) => {
         const file = event.target.files[0];
-        setCarInsuImage(file);
+        setVehicleInsuImage(file);
     };
-
-
-
-    const handleVarDocImageChange = (event) => {
-        const file = event.target.files[0];
-        setvanDocImage(file);
-    };
-
-
-
-
-    const handleBusImageChange = (event) => {
-        const file = event.target.files[0];
-        setBusImage(file);
-    };
-
-
-
-
-    const handleLorryImageChange = (event) => {
-        const file = event.target.files[0];
-        setLorryImage(file);
-    };
-
 
 
     const handleSubmit = () => {
@@ -87,41 +62,106 @@ const AddVehicle = () => {
 
         switch (category) {
             case 'car':
-                formData.append('carType', carType);
-                formData.append('carRegister', carRegister);
-                formData.append('carModel', carModel);
-                formData.append('carManuYear', carManuYear);
+                formData.append('vehicleType', vehicleType);
+                formData.append('vehicleRegister', vehicleRegister);
+                formData.append('vehicleModel', vehicleModel);
+                formData.append('vehicleManuYear', vehicleManuYear);
                 formData.append('engineCap', engineCap);
-                formData.append('carColour', carColour);
-                formData.append('carGearSys', carGearSys);
+                formData.append('lastMileage', lastMileage);
+                formData.append('vehicleColour', vehicleColour);
+                formData.append('vehicleGearSys', vehicleGearSys);
                 formData.append('airCon', airCon);
                 formData.append('numOfSeats', numOfSeats);
                 formData.append('lugSpace', lugSpace);
                 formData.append('gps', gps);
                 formData.append('licEndDate', licEndDate);
                 formData.append('insEndDate', insEndDate);
-                formData.append('carBookImage', carBookImage);
-                formData.append('carLicenceImage', carLicenceImage);
-                formData.append('carInsuImage', carInsuImage);
+                formData.append('vehicleBookImage', vehicleBookImage);
+                formData.append('vehicleLicenceImage', vehicleLicenceImage);
+                formData.append('vehicleInsuImage', vehicleInsuImage);
                 break;
             case 'van':
-                formData.append('vanModel', vanModel);
-                formData.append('vanMake', vanMake);
-                formData.append('vanYear', vanYear);
-                formData.append('vanDocImage', vanDocImage);
+                formData.append('vehicleType', vehicleType);
+                formData.append('vehicleRegister', vehicleRegister);
+                formData.append('vehicleModel', vehicleModel);
+                formData.append('vehicleManuYear', vehicleManuYear);
+                formData.append('engineCap', engineCap);
+                formData.append('lastMileage', lastMileage);
+                formData.append('vehicleColour', vehicleColour);
+                formData.append('vehicleGearSys', vehicleGearSys);
+                formData.append('airCon', airCon);
+                formData.append('numOfSeats', numOfSeats);
+                formData.append('lugSpace', lugSpace);
+                formData.append('gps', gps);
+                formData.append('licEndDate', licEndDate);
+                formData.append('insEndDate', insEndDate);
+                formData.append('vehicleBookImage', vehicleBookImage);
+                formData.append('vehicleLicenceImage', vehicleLicenceImage);
+                formData.append('vehicleInsuImage', vehicleInsuImage);
                 break;    
             case 'bus':
-                formData.append('busCapacity', busCapacity);
-                formData.append('busMake', busMake);
-                formData.append('busYear', busYear);
-                formData.append('busImage', busImage);
+                formData.append('vehicleRegister', vehicleRegister);
+                formData.append('vehicleModel', vehicleModel);
+                formData.append('vehicleManuYear', vehicleManuYear);
+                formData.append('engineCap', engineCap);
+                formData.append('lastMileage', lastMileage);
+                formData.append('vehicleColour', vehicleColour);
+                formData.append('vehicleGearSys', vehicleGearSys);
+                formData.append('airCon', airCon);
+                formData.append('numOfSeats', numOfSeats);
+                formData.append('lugSpace', lugSpace);
+                formData.append('gps', gps);
+                formData.append('fridge', fridge);
+                formData.append('tv', tv);
+                formData.append('licEndDate', licEndDate);
+                formData.append('insEndDate', insEndDate);
+                formData.append('vehicleBookImage', vehicleBookImage);
+                formData.append('vehicleLicenceImage', vehicleLicenceImage);
+                formData.append('vehicleInsuImage', vehicleInsuImage);
                 break;
             case 'lorry':
-                formData.append('lorryWeight', lorryWeight);
-                formData.append('lorryMake', lorryMake);
-                formData.append('lorryYear', lorryYear);
-                formData.append('lorryImage', lorryImage);
+                formData.append('vehicleType', vehicleType);
+                formData.append('vehicleRegister', vehicleRegister);
+                formData.append('vehicleModel', vehicleModel);
+                formData.append('vehicleManuYear', vehicleManuYear);
+                formData.append('engineCap', engineCap);
+                formData.append('lastMileage', lastMileage);
+                formData.append('vehicleWeight', vehicleWeight);
+                formData.append('cargoCapacity', cargoCapacity);
+                formData.append('cargoArea', cargoArea);
+                formData.append('vehicleGearSys', vehicleGearSys);
+                formData.append('airCon', airCon);
+                formData.append('numOfSeats', numOfSeats);
+                formData.append('gps', gps);
+                formData.append('licEndDate', licEndDate);
+                formData.append('insEndDate', insEndDate);
+                formData.append('vehicleBookImage', vehicleBookImage);
+                formData.append('vehicleLicenceImage', vehicleLicenceImage);
+                formData.append('vehicleInsuImage', vehicleInsuImage);
                 break;
+            case 'truck':
+                formData.append('vehicleType', vehicleType);
+                formData.append('vehicleRegister', vehicleRegister);
+                formData.append('vehicleModel', vehicleModel);
+                formData.append('vehicleManuYear', vehicleManuYear);
+                formData.append('engineCap', engineCap);
+                formData.append('lastMileage', lastMileage);
+                formData.append('vehicleWeight', vehicleWeight);
+                formData.append('trailerLength', trailerLength);
+                formData.append('cargoCapacity', cargoCapacity);             
+                formData.append('vehicleGearSys', vehicleGearSys);
+                formData.append('airCon', airCon);
+                formData.append('numOfSeats', numOfSeats);
+                formData.append('gps', gps);
+                formData.append('passengerCabin', passengerCabin);
+                formData.append('fridge', fridge);
+                formData.append('tv', tv);
+                formData.append('licEndDate', licEndDate);
+                formData.append('insEndDate', insEndDate);
+                formData.append('vehicleBookImage', vehicleBookImage);
+                formData.append('vehicleLicenceImage', vehicleLicenceImage);
+                formData.append('vehicleInsuImage', vehicleInsuImage);
+                    break;    
             default:
                 break;
         }
@@ -156,6 +196,7 @@ const AddVehicle = () => {
                             <option value="van">Van</option>
                             <option value="bus">Bus</option>
                             <option value="lorry">Lorry</option>
+                            <option value="truck">Truck</option>
                          </select>
                 </form>
                 {category && (
@@ -163,35 +204,40 @@ const AddVehicle = () => {
                     {category === 'car' && (
                         <div className='space-y-10'>
                             <h1 className="text-lg font-bold">Add Car Details</h1>
-                            <label className='m-2 font-semibold text-base' htmlFor="carType">Vehicle Transmisstion:</label>
-                                     <select className='mr-15  pl-2 pr-2' id="carType" name="carType" value={carType} onChange={(e) => setCarType(e.target.value)} >
+                            <label className='m-2 font-semibold text-base' htmlFor="vehicleType">Car Type:</label>
+                                     <select className='mr-15  pl-2 pr-2' id="carType" name="vehicleType" value={vehicleType} onChange={(e) => setVehicleType(e.target.value)} >
                                         <option value="car">Select</option>
                                         <option value="sadan">Sadan</option> 
                                         <option value="hashback">Hashback</option> 
                                         <option value="wagon">Wagon</option>    
                                       </select>
                             <div className='flex flex-row'>
-                            <label className='ml-2 mr-1 font-semibold text-base' htmlFor="carRegister">Register Number:</label>
-                            <input className='mr-8 pl-2 pr-2 ' type="text" id="carRegister" name="carRegister" value={carRegister} onChange={(e) => setCarRegister(e.target.value)} />
+                            <label className='ml-2 mr-1 font-semibold text-base' htmlFor="vehicleRegister">Register Number:</label>
+                            <input className='mr-8 pl-2 pr-2 ' type="text" id="vehicleRegister" name="vehicleRegister" value={vehicleRegister} onChange={(e) => setVehicleRegister(e.target.value)} />
 
-                            <label className='ml-2 mr-1 font-semibold text-base' htmlFor="carModel">Model Number:</label>
-                            <input className='mr-8 pl-2 pr-2 ' type="text" id="carModel" name="carModel" value={carModel} onChange={(e) => setCarModel(e.target.value)} />
+                            <label className='ml-2 mr-1 font-semibold text-base' htmlFor="vehicleModel">Model Number:</label>
+                            <input className='mr-8 pl-2 pr-2 ' type="text" id="vehicleModel" name="vehicleModel" value={vehicleModel} onChange={(e) => setVehicleModel(e.target.value)} />
 
-                            <label className='ml-2 mr-1 font-semibold text-base' htmlFor="carManuYear">Year of Manufactured:</label>
-                            <input className='mr-8 pl-2 pr-2' type="text" id="carManuYear" name="carManuYear" value={carManuYear} onChange={(e) => setCarManuYear(e.target.value)} />
+                            <label className='ml-2 mr-1 font-semibold text-base' htmlFor="vehicleManuYear">Year of Manufactured:</label>
+                            <input className='mr-8 pl-2 pr-2' type="text" id="vehicleManuYear" name="vehicleManuYear" value={vehicleManuYear} onChange={(e) => setVehicleManuYear(e.target.value)} />
                             </div>  
 
                             <div>
                             <label className='ml-2 mr-2 font-semibold text-base' htmlFor="engineCap">Engine Capacity:</label>
-                            <input className='mr-12 pl-2 pr-2' type="number" id="engineCap" name="engineCap" value={engineCap} onChange={(e) => setEngineCap(e.target.value)} defaultValue={1000} placeholder='   0cc'/>
+                            <input className='mr-12 pl-2 pr-2' type="number" id="engineCap" name="engineCap" value={engineCap} onChange={(e) => setEngineCap(e.target.value)} defaultValue={1000} placeholder='0cc'/>
 
-                            <label className='ml-2 mr-2 font-semibold text-base' htmlFor="carColour">Colour of Vehicle:</label>
-                            <input className='mr-12 pl-2 pr-2' type="tecarColourxt" id="carColour" name="carColour" value={carColour} onChange={(e) => setCarColour(e.target.value)} />
+                            <label className='ml-2 mr-2 font-semibold text-base' htmlFor="lastMileage">Last Mileage:</label>
+                            <input className='mr-12 pl-2 pr-2' type="number" id="lastMileage" name="lastMileage" value={lastMileage} onChange={(e) => setLastMileage(e.target.value)} />
                             </div>
 
                             <div>
-                            <label className='ml-2 mr-2 font-semibold text-base' htmlFor="carGearSys">Vehicle Transmisstion:</label>
-                            <select className='mr-12 pl-2 pr-2' id="carGearSys" name="carGearSys" value={carGearSys} onChange={(e) => setCarGearSys(e.target.value)}>
+                            <label className='ml-2 mr-2 font-semibold text-base' htmlFor="vehicleColour">Colour of Vehicle:</label>
+                            <input className='mr-12 pl-2 pr-2' type="text" id="vehicleColour" name="vehicleColour" value={vehicleColour} onChange={(e) => setVehicleColour(e.target.value)} />
+                            </div>
+
+                            <div>
+                            <label className='ml-2 mr-2 font-semibold text-base' htmlFor="vehicleGearSys">Vehicle Transmisstion:</label>
+                            <select className='mr-12 pl-2 pr-2' id="vehicleGearSys" name="vehicleGearSys" value={vehicleGearSys} onChange={(e) => setVehicleGearSys(e.target.value)}>
                                         <option value="">Select</option>
                                         <option value="auto">Auto</option> 
                                         <option value="manual">Manual</option>                
@@ -229,57 +275,418 @@ const AddVehicle = () => {
                             </div>
                              
                             <div> 
-                            <label className='ml-2 mr-2 font-semibold text-base' htmlFor="carBookImage">Vehicle Book Image:</label>
-                            <input className='mr-12' type="file" id="carBookImage" name="carBookImage" accept="image/*" onChange={handleCarBookImageChange} />
+                            <label className='ml-2 mr-2 font-semibold text-base' htmlFor="vehicleBookImage">Vehicle Book Image:</label>
+                            <input className='mr-12' type="file" id="vehicleBookImage" name="vehicleBookImage" accept="image/*" onChange={handleVehicleBookImageChange} />
                             </div>
 
                             <div>
-                            <label className='ml-2 mr-2 font-semibold text-base' htmlFor="carLicenceImage">Updated Licence Image:</label>
-                            <input className='mr-12' type="file" id="carLicenceImage" name="carLicenceImage" accept="image/*" onChange={handleCarLicenceImageImageChange} />
+                            <label className='ml-2 mr-2 font-semibold text-base' htmlFor="vehicleLicenceImage">Updated Licence Image:</label>
+                            <input className='mr-12' type="file" id="vehicleLicenceImage" name="vehicleLicenceImage" accept="image/*" onChange={handleVehicleLicenceImageImageChange} />
                             </div>
 
                             <div>
-                            <label className='ml-2 mr-2 font-semibold text-base' htmlFor="carInsuImage">Updated Insurance Image:</label>
-                            <input className='mr-12' type="file" id="carInsuImage" name="carInsuImage" accept="image/*" onChange={handleCarInsuImageChange} />
+                            <label className='ml-2 mr-2 font-semibold text-base' htmlFor="vehicleInsuImage">Updated Insurance Image:</label>
+                            <input className='mr-12' type="file" id="vehicleInsuImage" name="vehicleInsuImage" accept="image/*" onChange={handleVehicleInsuImageChange} />
                             </div>
 
                         </div>
                     )}
                     {category === 'van' && (
+                    <div className='space-y-10'>
+                        <h1 className="text-lg font-bold">Add Van Details</h1>
+                        <label className='m-2 font-semibold text-base' htmlFor="vehicleType">Van type:</label>
+                                 <select className='mr-15  pl-2 pr-2' id="carType" name="vehicleType" value={vehicleType} onChange={(e) => setVehicleType(e.target.value)} >
+                                    <option value="van">Select</option>
+                                    <option value="miniBusVan">Mini Bus Van</option> 
+                                    <option value="miniVan">Mini Van</option> 
+                                    <option value="mpv">MPV</option>    
+                                  </select>
+                        <div className='flex flex-row'>
+                        <label className='ml-2 mr-1 font-semibold text-base' htmlFor="vehicleRegister">Register Number:</label>
+                        <input className='mr-8 pl-2 pr-2 ' type="text" id="vehicleRegister" name="vehicleRegister" value={vehicleRegister} onChange={(e) => setVehicleRegister(e.target.value)} />
+
+                        <label className='ml-2 mr-1 font-semibold text-base' htmlFor="vehicleModel">Model Number:</label>
+                        <input className='mr-8 pl-2 pr-2 ' type="text" id="vehicleModel" name="vehicleModel" value={vehicleModel} onChange={(e) => setVehicleModel(e.target.value)} />
+
+                        <label className='ml-2 mr-1 font-semibold text-base' htmlFor="vehicleManuYear">Year of Manufactured:</label>
+                        <input className='mr-8 pl-2 pr-2' type="text" id="vehicleManuYear" name="vehicleManuYear" value={vehicleManuYear} onChange={(e) => setVehicleManuYear(e.target.value)} />
+                        </div>  
+
                         <div>
-                            <label htmlFor="vanModel">Van Model:</label>
-                            <input type="text" id="vanModel" name="vanModel" value={vanModel} onChange={(e) => setVanModel(e.target.value)} />
-                            <label htmlFor="vanMake">Van Make:</label>
-                            <input type="text" id="vanMake" name="vanMake" value={vanMake} onChange={(e) => setVanMake(e.target.value)} />
-                            <label htmlFor="vanYear">Van Year:</label>
-                            <input type="text" id="vanYear" name="vanYear" value={vanYear} onChange={(e) => setVanYear(e.target.value)} />
-                            <label htmlFor="vanDocImage">Van Documents Image:</label>
-                            <input type="file" id="vanDocImage" name="vanDocImage" accept="image/*" onChange={handleVarDocImageChange} />
+                        <label className='ml-2 mr-2 font-semibold text-base' htmlFor="engineCap">Engine Capacity:</label>
+                        <input className='mr-12 pl-2 pr-2' type="number" id="engineCap" name="engineCap" value={engineCap} onChange={(e) => setEngineCap(e.target.value)} defaultValue={1000} placeholder='0cc'/>
+
+                        <label className='ml-2 mr-2 font-semibold text-base' htmlFor="lastMileage">Last Mileage:</label>
+                        <input className='mr-12 pl-2 pr-2' type="number" id="lastMileage" name="lastMileage" value={lastMileage} onChange={(e) => setLastMileage(e.target.value)} />
                         </div>
+
+                        <div>
+                        <label className='ml-2 mr-2 font-semibold text-base' htmlFor="vehicleColour">Colour of Vehicle:</label>
+                        <input className='mr-12 pl-2 pr-2' type="text" id="vehicleColour" name="vehicleColour" value={vehicleColour} onChange={(e) => setVehicleColour(e.target.value)} />
+                        </div>
+
+                        <div>
+                        <label className='ml-2 mr-2 font-semibold text-base' htmlFor="vehicleGearSys">Vehicle Transmisstion:</label>
+                        <select className='mr-12 pl-2 pr-2' id="vehicleGearSys" name="vehicleGearSys" value={vehicleGearSys} onChange={(e) => setVehicleGearSys(e.target.value)}>
+                                    <option value="">Select</option>
+                                    <option value="auto">Auto</option> 
+                                    <option value="manual">Manual</option>                
+                        </select>
+
+                        <label className='ml-2 mr-2 font-semibold text-base' htmlFor="airCon">Air Condition:</label>
+                        <select className='mr-12 pl-2 pr-2' id="airCon" name="airCon" value={airCon} onChange={(e) => setAirCon(e.target.value)}>
+                                    <option value="">Select</option>
+                                    <option value="yes">Yes</option> 
+                                    <option value="no">No</option>                
+                        </select>
+                        </div>
+
+                        <div>
+                        <label className='ml-2 mr-2 font-semibold text-base' htmlFor="numOfSeats">Number of Seats without Driver:</label>
+                        <input className='mr-12 pl-2 pr-2' type="number" id="numOfSeats" name="numOfSeats" value={numOfSeats} onChange={(e) => setNumOfSeats(e.target.value)} defaultValue={4}/>
+
+                        <label className='ml-2 mr-2 font-semibold text-base' htmlFor="lugSpace">Vehicle Luggage Space:</label>
+                        <input className='mr-12 pl-2 pr-2' type="number" id="lugSpace" name="lugSpace" value={lugSpace} onChange={(e) => setLugSpace(e.target.value)} defaultValue={20}/>
+                        </div>
+
+                        <div>
+                        <label className='ml-2 mr-2 font-semibold text-base' htmlFor="gps">GPS :</label>
+                        <select className='mr-12 pl-2 pr-2' id="gps" name="gps" value={gps} onChange={(e) => setGps(e.target.value)}>
+                                    <option value="">Select</option>
+                                    <option value="available">Available</option> 
+                                    <option value="no">No</option>                
+                        </select>
+                        
+                        <label className='ml-2 mr-2 font-semibold text-base' htmlFor="licEndDate">Vehicle Licence End Date:</label>
+                        <input className='mr-12 pl-2 pr-2' type="date" id="licEndDate" name="licEndDate" value={licEndDate} onChange={(e) => setLicEndDate(e.target.value)} />
+
+                        <label className='ml-2 mr-2 font-semibold text-base' htmlFor="insEndDate">Vehicle Insurance End Date:</label>
+                        <input className='mr-12 pl-2 pr-2' type="date" id="insEndDate" name="insEndDate" value={insEndDate} onChange={(e) => setInsEndDate(e.target.value)} />
+                        </div>
+                         
+                        <div> 
+                        <label className='ml-2 mr-2 font-semibold text-base' htmlFor="vehicleBookImage">Vehicle Book Image:</label>
+                        <input className='mr-12' type="file" id="vehicleBookImage" name="vehicleBookImage" accept="image/*" onChange={handleVehicleBookImageChange} />
+                        </div>
+
+                        <div>
+                        <label className='ml-2 mr-2 font-semibold text-base' htmlFor="vehicleLicenceImage">Updated Licence Image:</label>
+                        <input className='mr-12' type="file" id="vehicleLicenceImage" name="vehicleLicenceImage" accept="image/*" onChange={handleVehicleLicenceImageImageChange} />
+                        </div>
+
+                        <div>
+                        <label className='ml-2 mr-2 font-semibold text-base' htmlFor="vehicleInsuImage">Updated Insurance Image:</label>
+                        <input className='mr-12' type="file" id="vehicleInsuImage" name="vehicleInsuImage" accept="image/*" onChange={handleVehicleInsuImageChange} />
+                        </div>
+
+                    </div>
                     )}
                     {category === 'bus' && (
+                        <div className='space-y-10'>
+                        <h1 className="text-lg font-bold">Add Bus Details</h1>
+                    
+                        <div className='flex flex-row'>
+                        <label className='ml-2 mr-1 font-semibold text-base' htmlFor="vehicleRegister">Register Number:</label>
+                        <input className='mr-8 pl-2 pr-2 ' type="text" id="vehicleRegister" name="vehicleRegister" value={vehicleRegister} onChange={(e) => setVehicleRegister(e.target.value)} />
+
+                        <label className='ml-2 mr-1 font-semibold text-base' htmlFor="vehicleModel">Model Number:</label>
+                        <input className='mr-8 pl-2 pr-2 ' type="text" id="vehicleModel" name="vehicleModel" value={vehicleModel} onChange={(e) => setVehicleModel(e.target.value)} />
+
+                        <label className='ml-2 mr-1 font-semibold text-base' htmlFor="vehicleManuYear">Year of Manufactured:</label>
+                        <input className='mr-8 pl-2 pr-2' type="text" id="vehicleManuYear" name="vehicleManuYear" value={vehicleManuYear} onChange={(e) => setVehicleManuYear(e.target.value)} />
+                        </div>  
+
                         <div>
-                            <label htmlFor="busCapacity">Bus Capacity:</label>
-                            <input type="number" id="busCapacity" name="busCapacity" value={busCapacity} onChange={(e) => setBusCapacity(e.target.value)} />
-                            <label htmlFor="busMake">Bus Make:</label>
-                            <input type="text" id="busMake" name="busMake" value={busMake} onChange={(e) => setBusMake(e.target.value)} />
-                            <label htmlFor="busYear">Bus Year:</label>
-                            <input type="text" id="busYear" name="busYear" value={busYear} onChange={(e) => setBusYear(e.target.value)} />
-                            <label htmlFor="busImage">Bus Image:</label>
-                            <input type="file" id="busImage" name="busImage" accept="image/*" onChange={handleBusImageChange} />
+                        <label className='ml-2 mr-2 font-semibold text-base' htmlFor="engineCap">Engine Capacity:</label>
+                        <input className='mr-12 pl-2 pr-2' type="number" id="engineCap" name="engineCap" value={engineCap} onChange={(e) => setEngineCap(e.target.value)} defaultValue={1000} placeholder='0cc'/>
+
+                        <label className='ml-2 mr-2 font-semibold text-base' htmlFor="lastMileage">Last Mileage:</label>
+                        <input className='mr-12 pl-2 pr-2' type="number" id="lastMileage" name="lastMileage" value={lastMileage} onChange={(e) => setLastMileage(e.target.value)} />
                         </div>
+
+                        <div>
+                        <label className='ml-2 mr-2 font-semibold text-base' htmlFor="vehicleColour">Colour of Vehicle:</label>
+                        <input className='mr-12 pl-2 pr-2' type="text" id="vehicleColour" name="vehicleColour" value={vehicleColour} onChange={(e) => setVehicleColour(e.target.value)} />
+                        </div>
+
+                        <div>
+                        <label className='ml-2 mr-2 font-semibold text-base' htmlFor="vehicleGearSys">Vehicle Transmisstion:</label>
+                        <select className='mr-12 pl-2 pr-2' id="vehicleGearSys" name="vehicleGearSys" value={vehicleGearSys} onChange={(e) => setVehicleGearSys(e.target.value)}>
+                                    <option value="">Select</option>
+                                    <option value="auto">Auto</option> 
+                                    <option value="manual">Manual</option>                
+                        </select>
+
+                        <label className='ml-2 mr-2 font-semibold text-base' htmlFor="airCon">Air Condition:</label>
+                        <select className='mr-12 pl-2 pr-2' id="airCon" name="airCon" value={airCon} onChange={(e) => setAirCon(e.target.value)}>
+                                    <option value="">Select</option>
+                                    <option value="yes">Yes</option> 
+                                    <option value="no">No</option>                
+                        </select>
+                        </div>
+
+                        <div>
+                        <label className='ml-2 mr-2 font-semibold text-base' htmlFor="numOfSeats">Number of Seats without Driver:</label>
+                        <input className='mr-12 pl-2 pr-2' type="number" id="numOfSeats" name="numOfSeats" value={numOfSeats} onChange={(e) => setNumOfSeats(e.target.value)} defaultValue={4}/>
+
+                        <label className='ml-2 mr-2 font-semibold text-base' htmlFor="lugSpace">Vehicle Luggage Space:</label>
+                        <input className='mr-12 pl-2 pr-2' type="number" id="lugSpace" name="lugSpace" value={lugSpace} onChange={(e) => setLugSpace(e.target.value)} defaultValue={20}/>
+                        </div>
+
+                        <div>
+                        <label className='ml-2 mr-2 font-semibold text-base' htmlFor="gps">GPS :</label>
+                        <select className='mr-12 pl-2 pr-2' id="gps" name="gps" value={gps} onChange={(e) => setGps(e.target.value)}>
+                                    <option value="">Select</option>
+                                    <option value="available">Available</option> 
+                                    <option value="no">No</option>                
+                        </select>
+                        <label className='ml-2 mr-2 font-semibold text-base' htmlFor="fridge">Mini fridge :</label>
+                        <select className='mr-12 pl-2 pr-2' id="fridge" name="fridge" value={fridge} onChange={(e) => setFridge(e.target.value)}>
+                                    <option value="">Select</option>
+                                    <option value="available">Available</option> 
+                                    <option value="no">No</option>                
+                        </select>
+                        <label className='ml-2 mr-2 font-semibold text-base' htmlFor="tv">TV :</label>
+                        <select className='mr-12 pl-2 pr-2' id="tv" name="tv" value={tv} onChange={(e) => setTv(e.target.value)}>
+                                    <option value="">Select</option>
+                                    <option value="available">Available</option> 
+                                    <option value="no">No</option>                
+                        </select>
+                        </div>
+                        <div>
+                        <label className='ml-2 mr-2 font-semibold text-base' htmlFor="licEndDate">Vehicle Licence End Date:</label>
+                        <input className='mr-12 pl-2 pr-2' type="date" id="licEndDate" name="licEndDate" value={licEndDate} onChange={(e) => setLicEndDate(e.target.value)} />
+
+                        <label className='ml-2 mr-2 font-semibold text-base' htmlFor="insEndDate">Vehicle Insurance End Date:</label>
+                        <input className='mr-12 pl-2 pr-2' type="date" id="insEndDate" name="insEndDate" value={insEndDate} onChange={(e) => setInsEndDate(e.target.value)} />
+                        </div>
+                         
+                        <div> 
+                        <label className='ml-2 mr-2 font-semibold text-base' htmlFor="vehicleBookImage">Vehicle Book Image:</label>
+                        <input className='mr-12' type="file" id="vehicleBookImage" name="vehicleBookImage" accept="image/*" onChange={handleVehicleBookImageChange} />
+                        </div>
+
+                        <div>
+                        <label className='ml-2 mr-2 font-semibold text-base' htmlFor="vehicleLicenceImage">Updated Licence Image:</label>
+                        <input className='mr-12' type="file" id="vehicleLicenceImage" name="vehicleLicenceImage" accept="image/*" onChange={handleVehicleLicenceImageImageChange} />
+                        </div>
+
+                        <div>
+                        <label className='ml-2 mr-2 font-semibold text-base' htmlFor="vehicleInsuImage">Updated Insurance Image:</label>
+                        <input className='mr-12' type="file" id="vehicleInsuImage" name="vehicleInsuImage" accept="image/*" onChange={handleVehicleInsuImageChange} />
+                        </div>
+
+                    </div>
                     )}
                     {category === 'lorry' && (
+                        <div className='space-y-10'>
+                        <h1 className="text-lg font-bold">Add Lorry Details</h1>
+                        <label className='m-2 font-semibold text-base' htmlFor="vehicleType">Car Type:</label>
+                                 <select className='mr-15  pl-2 pr-2' id="carType" name="vehicleType" value={vehicleType} onChange={(e) => setVehicleType(e.target.value)} >
+                                    <option value="lorry">Select</option>
+                                    <option value="6wheels">6 Wheels</option> 
+                                    <option value="10wheels">10 Wheels</option>     
+                                  </select>
+                        <div className='flex flex-row'>
+                        <label className='ml-2 mr-1 font-semibold text-base' htmlFor="vehicleRegister">Register Number:</label>
+                        <input className='mr-8 pl-2 pr-2 ' type="text" id="vehicleRegister" name="vehicleRegister" value={vehicleRegister} onChange={(e) => setVehicleRegister(e.target.value)} />
+
+                        <label className='ml-2 mr-1 font-semibold text-base' htmlFor="vehicleModel">Model Number:</label>
+                        <input className='mr-8 pl-2 pr-2 ' type="text" id="vehicleModel" name="vehicleModel" value={vehicleModel} onChange={(e) => setVehicleModel(e.target.value)} />
+
+                        <label className='ml-2 mr-1 font-semibold text-base' htmlFor="vehicleManuYear">Year of Manufactured:</label>
+                        <input className='mr-8 pl-2 pr-2' type="text" id="vehicleManuYear" name="vehicleManuYear" value={vehicleManuYear} onChange={(e) => setVehicleManuYear(e.target.value)} />
+                        </div>  
+
                         <div>
-                            <label htmlFor="lorryWeight">Lorry Weight:</label>
-                            <input type="number" id="lorryWeight" name="lorryWeight" value={lorryWeight} onChange={(e) => setLorryWeight(e.target.value)} />
-                            <label htmlFor="lorryMake">Lorry Make:</label>
-                            <input type="text" id="lorryMake" name="lorryMake" value={lorryMake} onChange={(e) => setLorryMake(e.target.value)} />
-                            <label htmlFor="lorryYear">Lorry Year:</label>
-                            <input type="text" id="lorryYear" name="lorryYear" value={lorryYear} onChange={(e) => setLorryYear(e.target.value)} />
-                            <label htmlFor="lorryImage">Lorry Image:</label>
-                            <input type="file" id="lorryImage" name="lorryImage" accept="image/*" onChange={handleLorryImageChange} />
+                        <label className='ml-2 mr-2 font-semibold text-base' htmlFor="engineCap">Engine Capacity:</label>
+                        <input className='mr-12 pl-2 pr-2' type="number" id="engineCap" name="engineCap" value={engineCap} onChange={(e) => setEngineCap(e.target.value)} defaultValue={1000} placeholder='0cc'/>
+
+                        <label className='ml-2 mr-2 font-semibold text-base' htmlFor="lastMileage">Last Mileage:</label>
+                        <input className='mr-12 pl-2 pr-2' type="number" id="lastMileage" name="lastMileage" value={lastMileage} onChange={(e) => setLastMileage(e.target.value)} />
                         </div>
+
+                        <div>
+                        <label className='ml-2 mr-2 font-semibold text-base' htmlFor="vehicleWeight">Vehicle Weight:</label>
+                        <input className='mr-12 pl-2 pr-2' type="number" id="vehicleWeight" name="vehicleWeight" value={vehicleWeight} onChange={(e) => setVehicleWeight(e.target.value)} />
+
+                        <label className='ml-2 mr-2 font-semibold text-base' htmlFor="cargoCapacity">Cargo Capacity:</label>
+                        <input className='mr-12 pl-2 pr-2' type="number" id="cargoCapacity" name="cargoCapacity" value={cargoCapacity} onChange={(e) => setCargoCapacity(e.target.value)} />
+
+                        <label className='ml-2 mr-2 font-semibold text-base' htmlFor="cargoArea">Cargo Area:</label>
+                        <select className='mr-12 pl-2 pr-2' id="cargoArea" name="cargoArea" value={cargoArea} onChange={(e) => setCargoArea(e.target.value)}>
+                                    <option value="">Select</option>
+                                    <option value="covered">Covered</option> 
+                                    <option value="uncovered">Uncovered</option>                
+                        </select>
+                        </div>
+
+                        <div>
+                        <label className='ml-2 mr-2 font-semibold text-base' htmlFor="vehicleGearSys">Vehicle Transmisstion:</label>
+                        <select className='mr-12 pl-2 pr-2' id="vehicleGearSys" name="vehicleGearSys" value={vehicleGearSys} onChange={(e) => setVehicleGearSys(e.target.value)}>
+                                    <option value="">Select</option>
+                                    <option value="auto">Auto</option> 
+                                    <option value="manual">Manual</option>                
+                        </select>
+
+                        <label className='ml-2 mr-2 font-semibold text-base' htmlFor="airCon">Air Condition:</label>
+                        <select className='mr-12 pl-2 pr-2' id="airCon" name="airCon" value={airCon} onChange={(e) => setAirCon(e.target.value)}>
+                                    <option value="">Select</option>
+                                    <option value="yes">Yes</option> 
+                                    <option value="no">No</option>                
+                        </select>
+                        
+                        <label className='ml-2 mr-2 font-semibold text-base' htmlFor="numOfSeats">Number of Seats without Driver:</label>
+                        <input className='mr-12 pl-2 pr-2' type="number" id="numOfSeats" name="numOfSeats" value={numOfSeats} onChange={(e) => setNumOfSeats(e.target.value)} defaultValue={4}/>
+                        </div>
+
+                        <div>
+                        <label className='ml-2 mr-2 font-semibold text-base' htmlFor="gps">GPS :</label>
+                        <select className='mr-12 pl-2 pr-2' id="gps" name="gps" value={gps} onChange={(e) => setGps(e.target.value)}>
+                                    <option value="">Select</option>
+                                    <option value="available">Available</option> 
+                                    <option value="no">No</option>                
+                        </select>
+                        
+                        <label className='ml-2 mr-2 font-semibold text-base' htmlFor="licEndDate">Vehicle Licence End Date:</label>
+                        <input className='mr-12 pl-2 pr-2' type="date" id="licEndDate" name="licEndDate" value={licEndDate} onChange={(e) => setLicEndDate(e.target.value)} />
+
+                        <label className='ml-2 mr-2 font-semibold text-base' htmlFor="insEndDate">Vehicle Insurance End Date:</label>
+                        <input className='mr-12 pl-2 pr-2' type="date" id="insEndDate" name="insEndDate" value={insEndDate} onChange={(e) => setInsEndDate(e.target.value)} />
+                        </div>
+                         
+                        <div> 
+                        <label className='ml-2 mr-2 font-semibold text-base' htmlFor="vehicleBookImage">Vehicle Book Image:</label>
+                        <input className='mr-12' type="file" id="vehicleBookImage" name="vehicleBookImage" accept="image/*" onChange={handleVehicleBookImageChange} />
+                        </div>
+
+                        <div>
+                        <label className='ml-2 mr-2 font-semibold text-base' htmlFor="vehicleLicenceImage">Updated Licence Image:</label>
+                        <input className='mr-12' type="file" id="vehicleLicenceImage" name="vehicleLicenceImage" accept="image/*" onChange={handleVehicleLicenceImageImageChange} />
+                        </div>
+
+                        <div>
+                        <label className='ml-2 mr-2 font-semibold text-base' htmlFor="vehicleInsuImage">Updated Insurance Image:</label>
+                        <input className='mr-12' type="file" id="vehicleInsuImage" name="vehicleInsuImage" accept="image/*" onChange={handleVehicleInsuImageChange} />
+                        </div>
+                    </div>
+                    )}
+                    {category === 'truck' && (
+                        <div className='space-y-10'>
+                        <h1 className="text-lg font-bold">Add Truck Details</h1>
+                        <label className='m-2 font-semibold text-base' htmlFor="vehicleType">Car Type:</label>
+                                 <select className='mr-15  pl-2 pr-2' id="carType" name="vehicleType" value={vehicleType} onChange={(e) => setVehicleType(e.target.value)} >
+                                    <option value="truck">Select</option>
+                                    <option value="6wheels">6 Wheels</option> 
+                                    <option value="10wheels">10 Wheels</option> 
+                                    <option value="14wheels">14 Wheels</option>     
+                                  </select>
+                        <div className='flex flex-row'>
+                        <label className='ml-2 mr-1 font-semibold text-base' htmlFor="vehicleRegister">Register Number:</label>
+                        <input className='mr-8 pl-2 pr-2 ' type="text" id="vehicleRegister" name="vehicleRegister" value={vehicleRegister} onChange={(e) => setVehicleRegister(e.target.value)} />
+
+                        <label className='ml-2 mr-1 font-semibold text-base' htmlFor="vehicleModel">Model Number:</label>
+                        <input className='mr-8 pl-2 pr-2 ' type="text" id="vehicleModel" name="vehicleModel" value={vehicleModel} onChange={(e) => setVehicleModel(e.target.value)} />
+
+                        <label className='ml-2 mr-1 font-semibold text-base' htmlFor="vehicleManuYear">Year of Manufactured:</label>
+                        <input className='mr-8 pl-2 pr-2' type="text" id="vehicleManuYear" name="vehicleManuYear" value={vehicleManuYear} onChange={(e) => setVehicleManuYear(e.target.value)} />
+                        </div>  
+
+                        <div>
+                        <label className='ml-2 mr-2 font-semibold text-base' htmlFor="engineCap">Engine Capacity:</label>
+                        <input className='mr-12 pl-2 pr-2' type="number" id="engineCap" name="engineCap" value={engineCap} onChange={(e) => setEngineCap(e.target.value)} defaultValue={1000} placeholder='0cc'/>
+
+                        <label className='ml-2 mr-2 font-semibold text-base' htmlFor="vehicleGearSys">Vehicle Transmisstion:</label>
+                        <select className='mr-12 pl-2 pr-2' id="vehicleGearSys" name="vehicleGearSys" value={vehicleGearSys} onChange={(e) => setVehicleGearSys(e.target.value)}>
+                                    <option value="">Select</option>
+                                    <option value="auto">Auto</option> 
+                                    <option value="manual">Manual</option>                
+                        </select>
+
+                        <label className='ml-2 mr-2 font-semibold text-base' htmlFor="lastMileage">Last Mileage:</label>
+                        <input className='mr-12 pl-2 pr-2' type="number" id="lastMileage" name="lastMileage" value={lastMileage} onChange={(e) => setLastMileage(e.target.value)} />
+                        </div>
+
+                        <div>
+                        <label className='ml-2 mr-2 font-semibold text-base' htmlFor="vehicleWeight">Vehicle Weight:</label>
+                        <input className='mr-12 pl-2 pr-2' type="number" id="vehicleWeight" name="vehicleWeight" value={vehicleWeight} onChange={(e) => setVehicleWeight(e.target.value)} />
+
+                        <label className='ml-2 mr-2 font-semibold text-base' htmlFor="trailerLength">Max trailer length:</label>
+                        <input className='mr-12 pl-2 pr-2' type="number" id="trailerLength" name="trailerLength" value={trailerLength} onChange={(e) => setTrailerLength(e.target.value)} />
+
+                        <label className='ml-2 mr-2 font-semibold text-base' htmlFor="cargoCapacity">Cargo Capacity:</label>
+                        <input className='mr-12 pl-2 pr-2' type="number" id="cargoCapacity" name="cargoCapacity" value={cargoCapacity} onChange={(e) => setCargoCapacity(e.target.value)} />
+                        </div>    
+
+                        <div>                 
+                        <label className='ml-2 mr-2 font-semibold text-base' htmlFor="airCon">Air Condition:</label>
+                        <select className='mr-12 pl-2 pr-2' id="airCon" name="airCon" value={airCon} onChange={(e) => setAirCon(e.target.value)}>
+                                    <option value="">Select</option>
+                                    <option value="yes">Yes</option> 
+                                    <option value="no">No</option>                
+                        </select>
+                        
+                        <label className='ml-2 mr-2 font-semibold text-base' htmlFor="numOfSeats">Number of Seats without Driver:</label>
+                        <input className='mr-12 pl-2 pr-2' type="number" id="numOfSeats" name="numOfSeats" value={numOfSeats} onChange={(e) => setNumOfSeats(e.target.value)} defaultValue={4}/>
+                        </div>
+
+                        <div>
+                        <label className='ml-2 mr-2 font-semibold text-base' htmlFor="gps">GPS :</label>
+                        <select className='mr-12 pl-2 pr-2' id="gps" name="gps" value={gps} onChange={(e) => setGps(e.target.value)}>
+                                    <option value="">Select</option>
+                                    <option value="no">No</option> 
+                                    <option value="available">Available</option> 
+                        </select>
+                        </div>
+
+                        <div>   
+                        <label className='ml-2 mr-2 font-semibold text-base' htmlFor="passengerCabin">Passenger Cabin:</label>
+                        <select className='mr-12 pl-2 pr-2' id="passengerCabin" name="passengerCabin" value={passengerCabin} onChange={(e) => setPassengerCabin(e.target.value)}>
+                                    <option value="">Select</option>
+                                    <option value="no">No</option> 
+                                    <option value="available">Available</option>                
+                        </select>
+
+                        <label className='ml-2 mr-2 font-semibold text-base' htmlFor="fridge">Mini fridge :</label>
+                        <select className='mr-12 pl-2 pr-2' id="fridge" name="fridge" value={fridge} onChange={(e) => setFridge(e.target.value)}>
+                                    <option value="">Select</option>
+                                    <option value="no">No</option> 
+                                    <option value="available">Available</option>                                                  
+                        </select>
+
+                        <label className='ml-2 mr-2 font-semibold text-base' htmlFor="tv">TV :</label>
+                        <select className='mr-12 pl-2 pr-2' id="tv" name="tv" value={tv} onChange={(e) => setTv(e.target.value)}>
+                                    <option value="">Select</option>
+                                    <option value="no">No</option> 
+                                    <option value="available">Available</option>  
+                        </select>
+                        </div>
+                        
+                        <div>
+                        <label className='ml-2 mr-2 font-semibold text-base' htmlFor="licEndDate">Vehicle Licence End Date:</label>
+                        <input className='mr-12 pl-2 pr-2' type="date" id="licEndDate" name="licEndDate" value={licEndDate} onChange={(e) => setLicEndDate(e.target.value)} />
+
+                        <label className='ml-2 mr-2 font-semibold text-base' htmlFor="insEndDate">Vehicle Insurance End Date:</label>
+                        <input className='mr-12 pl-2 pr-2' type="date" id="insEndDate" name="insEndDate" value={insEndDate} onChange={(e) => setInsEndDate(e.target.value)} />
+                        </div>
+                         
+                        <div> 
+                        <label className='ml-2 mr-2 font-semibold text-base' htmlFor="vehicleBookImage">Vehicle Book Image:</label>
+                        <input className='mr-12' type="file" id="vehicleBookImage" name="vehicleBookImage" accept="image/*" onChange={handleVehicleBookImageChange} />
+                        </div>
+
+                        <div>
+                        <label className='ml-2 mr-2 font-semibold text-base' htmlFor="vehicleLicenceImage">Updated Licence Image:</label>
+                        <input className='mr-12' type="file" id="vehicleLicenceImage" name="vehicleLicenceImage" accept="image/*" onChange={handleVehicleLicenceImageImageChange} />
+                        </div>
+
+                        <div>
+                        <label className='ml-2 mr-2 font-semibold text-base' htmlFor="vehicleInsuImage">Updated Insurance Image:</label>
+                        <input className='mr-12' type="file" id="vehicleInsuImage" name="vehicleInsuImage" accept="image/*" onChange={handleVehicleInsuImageChange} />
+                        </div>
+
+                    </div>
+                        
                     )}
                     
                     <div className='mt-10 flex flex-row justify-between'>
