@@ -64,6 +64,9 @@ const AddVehicle = () => {
                                 <h1 class="mb-3">Fill follow vehicle details</h1>
                                 <label htmlFor="carModel">Car Model:</label>
                                 <input type="text" id="carModel" name="carModel" value={carModel} onChange={(e) => setCarModel(e.target.value)} />
+                                
+                                <label htmlFor="image">Upload Image:</label>
+                                <input type="file" id="image" name="image" accept="image/*" onChange={handleImageChange} />
                             </div>
                         )}
                         {category === 'van' && (
@@ -71,13 +74,19 @@ const AddVehicle = () => {
                                 <h1 class="mb-3">Fill follow vehicle details</h1>
                                 <label htmlFor="vanModel">Van Model:</label>
                                 <input type="text" id="vanModel" name="vanModel" value={vanModel} onChange={(e) => setVanModel(e.target.value)} />
-                            </div>
+                        
+                                <label htmlFor="image">Upload Image:</label>
+                                <input type="file" id="image" name="image" accept="image/*" onChange={handleImageChange} />
+                             </div>
                         )}
                         {category === 'bus' && (
                             <div>
                                 <h1 class="mb-3">Fill follow vehicle details</h1>
                                 <label htmlFor="busCapacity">Bus Capacity:</label>
                                 <input type="number" id="busCapacity" name="busCapacity" value={busCapacity} onChange={(e) => setBusCapacity(e.target.value)} />
+                            
+                                <label htmlFor="image">Upload Image:</label>
+                                <input type="file" id="image" name="image" accept="image/*" onChange={handleImageChange} />
                             </div>
                         )}
                         {category === 'lorry' && (
@@ -85,6 +94,9 @@ const AddVehicle = () => {
                                 <h1 class="mb-3">Fill follow vehicle details</h1>
                                 <label htmlFor="lorryWeight">Lorry Weight:</label>
                                 <input type="number" id="lorryWeight" name="lorryWeight" value={lorryWeight} onChange={(e) => setLorryWeight(e.target.value)} />
+                            
+                                <label htmlFor="image">Upload Image:</label>
+                                <input type="file" id="image" name="image" accept="image/*" onChange={handleImageChange} />
                             </div>
                         )}
                         <button className='p-1 bg-black text-center text-white text-sm rounded-md' type="button" onClick={handleSubmit}>Add vehicle</button>
