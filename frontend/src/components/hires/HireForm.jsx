@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-const Form = () => {
+const Form = (showForm,setShowForm) => {
   const [step, setStep] = useState(1);
 
   const handleNextStep = () => {
@@ -12,7 +12,7 @@ const Form = () => {
   };
 
   return (
-    <div className="w-full h-full flex bg-gray-200 px-[50px] py-[20px] justify-center items-center">
+    <div className={"w-full h-full flex bg-gray-200 px-[50px] py-[20px] justify-center items-center"}>
       <div className="w-full h-[80vh] bg-white">
         <div className="text-center pt-[10px] pb-[6px] border-b-2">
           <h1 className="text-2xl font-semibold">Add Hire</h1>
