@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { IoIosArrowDropdown } from "react-icons/io";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState({
@@ -32,7 +31,7 @@ const Navbar = () => {
           <div className="relative">
                   <button className="w-full flex flex-row py-4 px-2 hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => toggleMenu('user')}>
                       User Management
-                      <span className={`place-items-center mt-1 ml-6 ${isOpen.user ? 'transform rotate-180' : ''}`}><IoIosArrowDropdown /></span>
+                      
                   </button>
                   {isOpen.user && (
                       <div className="ml-6">
@@ -48,7 +47,7 @@ const Navbar = () => {
               <div className="relative">
                   <button className="w-full flex flex-row py-4 px-2 hover:bg-gray-700 focus:outline-none focus:bg-gray-700 " onClick={() => toggleMenu('vehicle')}>
                       Vehicle Management
-                      <span className={`place-items-center mt-1 ml-6 ${isOpen.user ? 'transform rotate-180' : ''}`}><IoIosArrowDropdown /></span>
+                      
                   </button>
                   {isOpen.vehicle && (
                       <div className="ml-0">
@@ -63,7 +62,7 @@ const Navbar = () => {
               <div className="relative">
                   <button className="w-full flex flex-row py-4 px-2 hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => toggleMenu('maintenance')}>
                       Maintenance Management
-                      <span className={`place-items-center mt-1 ml-6 ${isOpen.user ? 'transform rotate-180' : ''}`}><IoIosArrowDropdown /></span>
+                      
                   </button>
                   {isOpen.maintenance && (
                       <div className="ml-6">
@@ -77,7 +76,7 @@ const Navbar = () => {
               <div className="relative">
                   <button className="w-full flex flex-row py-4 px-2 hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => toggleMenu('hire')}>
                       Hire Management
-                      <span className={`place-items-center mt-1 ml-6 ${isOpen.user ? 'transform rotate-180' : ''}`}><IoIosArrowDropdown /></span>
+                      
                   </button>
                   {isOpen.hire && (
                       <div className="ml-6">
@@ -91,7 +90,7 @@ const Navbar = () => {
               <div className="relative">
                   <button className="w-full flex flex-row py-4 px-2 hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => toggleMenu('contract')}>
                      Emergency Management
-                     <span className={`place-items-center mt-1 ml-6 ${isOpen.user ? 'transform rotate-180' : ''}`}><IoIosArrowDropdown /></span>
+                     
                   </button>
                   {isOpen.contract && (
                       <div className="ml-6">
@@ -105,7 +104,7 @@ const Navbar = () => {
               <div className="relative">
                   <button className="w-full flex flex-row py-4 px-2 hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => toggleMenu('emergency')}>
                     Contract Management
-                    <span className={`place-items-center mt-1 ml-6 ${isOpen.user ? 'transform rotate-180' : ''}`}><IoIosArrowDropdown /></span>
+                    
                   </button>
                   {isOpen.emergency && (
                       <div className="ml-6">
@@ -119,7 +118,7 @@ const Navbar = () => {
               <div className="relative">
                   <button className="w-full flex flex-row py-4 px-2 hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => toggleMenu('finance')}>
                     Finance Management
-                    <span className={`place-items-center mt-1 ml-6 ${isOpen.user ? 'transform rotate-180' : ''}`}><IoIosArrowDropdown /></span>
+                    
                   </button>
                   {isOpen.finance && (
                       <div className="ml-6">
