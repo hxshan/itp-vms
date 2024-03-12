@@ -11,7 +11,7 @@ const EmployeeTable = ({ columns, data,isLoading }) => {
         <thead>
           <tr>
             {columns.map((col,index) => {
-              return <th key={index}>{col}</th>;
+              return <th key={index}>{col}</th>
             })}
           </tr>
         </thead>

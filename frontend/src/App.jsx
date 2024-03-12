@@ -11,11 +11,13 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <main className="flex">
       <Navbar/>
+      <div className="ml-80 w-full mr-14">
         <Routes>        
           <Route path="/login" element={<Login/>}/>
           <Route path="/admin" element={<AdminDashboard/>}/>
           <Route path="/hires" element={<HireDashboard/>}/>
         </Routes>
+        </div>
       </main>
     </QueryClientProvider>
   </BrowserRouter>

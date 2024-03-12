@@ -15,7 +15,6 @@ const AdminDashboard = () => {
     },[userData])
 
 //<EmployeeTable columns={columns} data={data}/>
-    console.log(userData)
   return (
   
     <div className="container mx-auto py-10">

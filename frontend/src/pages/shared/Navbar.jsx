@@ -2,7 +2,7 @@ import React from 'react'
 
 const Navbar = () => {
   return (
-    <div className="flex h-full">
+    <div className=" fixed top-0 left-0 flex h-full w-80">
       <div className="h-screen bg-gray-800 text-white w-64 flex flex-col items-start ">
         <button className="w-full py-4 px-2 hover:bg-gray-700 focus:outline-none focus:bg-gray-700">
           User Managment
