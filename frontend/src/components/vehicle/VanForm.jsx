@@ -1,15 +1,15 @@
 import React from 'react'
 
-const CarForm = ({vehicleType,vehicleRegister,vehicleModel,vehicleManuYear,engineCap,lastMileage,vehicleColour,vehicleGearSys,airCon,numOfSeats,lugSpace,gps,licEndDate,insEndDate,handleVehicleBookImageChange,handleVehicleLicenceImageImageChange,handleVehicleInsuImageChange}) => {
+const VanForm = ({vehicleType,vehicleRegister,vehicleModel,vehicleManuYear,engineCap,lastMileage,vehicleColour,vehicleGearSys,airCon,numOfSeats,lugSpace,gps,licEndDate,insEndDate,handleVehicleBookImageChange,handleVehicleLicenceImageImageChange,handleVehicleInsuImageChange}) => {
   return (
     <div className='space-y-10'>
-    <h1 className="text-lg font-bold">Add Car Details</h1>
-    <label className='m-2 font-semibold text-base' htmlFor="vehicleType">Car Type:</label>
+    <h1 className="text-lg font-bold">Add Van Details</h1>
+    <label className='m-2 font-semibold text-base' htmlFor="vehicleType">Van type:</label>
              <select className='mr-15  pl-2 pr-2' id="carType" name="vehicleType" value={vehicleType} onChange={(e) => setVehicleType(e.target.value)} >
-                <option value="car">Select</option>
-                <option value="sadan">Sadan</option> 
-                <option value="hashback">Hashback</option> 
-                <option value="wagon">Wagon</option>    
+                <option value="van">Select</option>
+                <option value="miniBusVan">Mini Bus Van</option> 
+                <option value="miniVan">Mini Van</option> 
+                <option value="mpv">MPV</option>    
               </select>
     <div className='flex flex-row'>
     <label className='ml-2 mr-1 font-semibold text-base' htmlFor="vehicleRegister">Register Number:</label>
@@ -93,4 +93,4 @@ const CarForm = ({vehicleType,vehicleRegister,vehicleModel,vehicleManuYear,engin
   )
 }
 
-export default CarForm
+export default VanForm
