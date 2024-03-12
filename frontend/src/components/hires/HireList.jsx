@@ -1,12 +1,13 @@
-import { useState } from "react"
 import HireTable from "./HireTable"
+import PropTypes from 'prop-types';
+
 
 const HireList = ({showForm ,setShowForm}) => {
 
-
-const changeFormVisiblity=()=>{
-    
-}
+    HireList.propTypes = {
+        showForm: PropTypes.bool.isRequired,
+        setShowForm: PropTypes.func.isRequired,
+    };
 
   return (
     <div className="w-full h-full flex bg-gray-200 px-[50px] py-[20px] justify-center items-center">

@@ -1,7 +1,17 @@
 import { useState } from 'react';
+import PropTypes from 'prop-types';
 
-const Form = (showForm,setShowForm) => {
+const Form = ({ showForm, setShowForm }) => { 
   const [step, setStep] = useState(1);
+
+  Form.propTypes = {
+    showForm: PropTypes.bool.isRequired,
+    setShowForm: PropTypes.func.isRequired,
+  };
+
+  const submit = () => {
+    setShowForm(false)
+  }
 
   const handleNextStep = () => {
     setStep(step + 1);
@@ -12,7 +22,7 @@ const Form = (showForm,setShowForm) => {
   };
 
   return (
-    <div className={"w-full h-full flex bg-gray-200 px-[50px] py-[20px] justify-center items-center"}>
+    <div className="w-full h-full flex bg-gray-200 px-[50px] py-[20px] justify-center items-center">
       <div className="w-full h-[80vh] bg-white">
         <div className="text-center pt-[10px] pb-[6px] border-b-2">
           <h1 className="text-2xl font-semibold">Add Hire</h1>
@@ -50,7 +60,7 @@ const Form = (showForm,setShowForm) => {
               Next
             </button>
           ) : (
-            <button className="px-4 py-2 text-white bg-green-500 rounded-md hover:bg-green-600 focus:outline-none">
+            <button className="px-4 py-2 text-white bg-green-500 rounded-md hover:bg-green-600 focus:outline-none" onClick={submit}>
               Submit
             </button>
           )}
