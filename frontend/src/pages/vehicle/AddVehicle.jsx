@@ -692,7 +692,7 @@ const AddVehicle = () => {
                     <div className='mt-10 flex flex-row justify-between'>
                     <div>
                     <input className='ml-2' type="checkbox" required/>
-                    <label className= 'ml-3 text-sm text-red-600 font-medium' for="vehicle1">I checked the above details before adding a vehicle to the system.</label>
+                    <label className= 'ml-3 text-sm text-red-600 font-medium' htmlFor="vehicle1">I checked the above details before adding a vehicle to the system.</label>
                     </div>
                     
                     <div>
