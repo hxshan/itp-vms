@@ -10,7 +10,7 @@ const HireDashboard = () => {
     const [showForm , setShowForm] = useState(false)
 
     return (
-        <div className="container mx-auto">
+        <div className="container">
             {showForm ? (
             <HireForm showForm={showForm} setShowForm={setShowForm} />) : (
             <HireList showForm={showForm} setShowForm={setShowForm} />)}

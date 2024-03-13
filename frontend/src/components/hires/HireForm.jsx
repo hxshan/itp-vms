@@ -27,64 +27,156 @@ const Form = ({setShowForm }) => {
   const [vehicleSubcategory, setVehicleSubcategory] = useState('');
   const [passengerCount, setPassengerCount] = useState(1);
   const [airCondition, setAirCondition] = useState(false);
+  const [vehicle, setVehicle] = useState('')
+  const [driver, setDriver] = useState('')
 
 
 
   return (
-    <div className="w-full h-full flex bg-gray-200 px-[50px] py-[20px] justify-center items-center">
-      <div className="w-full h-[80vh] bg-white">
-        <div className="text-center pt-[10px] pb-[6px] border-b-2">
+    <div className="w-full h-full flex bg-gray-200 px-[20px] py-[20px] justify-center items-center">
+
+      <div className="w-full h-full bg-white px-3">
+        {/*Titile*/}
+        <div className="text-center pt-[10px] pb-8 border-b-2 border-[#37A000] ">
           <h1 className="text-2xl font-semibold">Add Hire</h1>
         </div>
 
+        {/* Form */}
         {step === 1 && (
-          <div className="mt-8 px-4">
-            <h2 className="text-lg font-semibold mb-4">Step 1: Personal Information</h2>
-            
-                <div className="mb-4">
-                    <label htmlFor="startDate" className="block text-sm font-medium text-gray-700">Start Date</label>
-                    <input type="date" id="startDate" name="startDate" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
+          <div className="mt-10  w-full border-2 border-black pt-5 px-4">
+
+            {/* Date Section */}
+            <div className='flex flex-col justify-between align-baseline mt-3'> 
+
+              <div className="mb-8 flex justify-between items-baseline">
+                    <label htmlFor="startDate" 
+                    className="block font-medium text-black mr-[10px] text-base">
+                      Start Date
+                    </label>
+
+                    <input type="date" id="startDate" 
+                      name="startDate" value={startDate} 
+                      onChange={(e) => setStartDate(e.target.value)} 
+                      className='border-2 rounded border-black px-5'
+                    />
                 </div>
 
-                <div className="mb-4">
-                    <label htmlFor="endDate" className="block text-sm font-medium text-gray-700">End Date</label>
-                    <input type="date" id="endDate" name="endDate" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
+                <div className="mb-8 flex justify-between items-baseline">
+
+                    <label htmlFor="endDate" 
+                    className="block font-medium text-black mr-[10px] text-base">
+                      End Date
+                    </label>
+
+                    <input type="date" id="endDate" 
+                      name="endDate" value={endDate} 
+                      onChange={(e) => setEndDate(e.target.value)} 
+                      className='border-2 rounded border-black px-5'
+                      />
                 </div>
 
-                <div className="mb-4">
-                    <label htmlFor="vehicleType" className="block text-sm font-medium text-gray-700">Vehicle Type</label>
-                    <select id="vehicleType" name="vehicleType" value={vehicleType} onChange={(e) => setVehicleType(e.target.value)} >
-                        <option value={"Car"}>Car</option>
-                        <option value={"van"}>Van</option>
-                        <option value={"Bus"}>Bus</option>
-                        <option value={"Lorry"}>Lorry</option>
-                    </select>
-                </div>
+            </div>
 
-                <div className="mb-4">
-                    <label htmlFor="vehicleSubcategory" className="block text-sm font-medium text-gray-700">Vehicle Subcategory</label>
-                    <select id="vehicleSubcategory" name="vehicleSubcategory" value={vehicleSubcategory} onChange={(e) => setVehicleSubcategory(e.target.value)} >
+            {/* Vehicle Section */}
+            <div> 
+
+              <div className="mb-8 flex justify-between items-baseline ">
+
+                <label htmlFor="vehicleType" 
+                className="block font-medium text-black mr-[10px] text-base">
+                  Vehicle Type
+                </label>
+
+                <select id="vehicleType" name="vehicleType" 
+                value={vehicleType} onChange={(e) => setVehicleType(e.target.value)} 
+                className='border-2 rounded border-black px-5 '
+                >
+                    <option value={"Car"}>Car</option>
+                    <option value={"van"}>Van</option>
+                    <option value={"Bus"}>Bus</option>
+                    <option value={"Lorry"}>Lorry</option>
+                </select>
+
+              </div>
+
+              <div className="mb-8 flex justify-between items-baseline">
+                <label htmlFor="vehicleSubcategory" 
+                className="block font-medium text-black mr-[10px] text-base">
+                  Vehicle Subcategory
+                </label>
+                
+                <select id="vehicleSubcategory" name="vehicleSubcategory" 
+                value={vehicleSubcategory} onChange={(e) => setVehicleSubcategory(e.target.value)} 
+                className='border-2 rounded border-black px-5'>
                     {/* Options for vehicle subcategories */}
-                    </select>
+                </select>
+              </div>
+
+              <div className="mb-8 flex justify-start items-baseline">
+
+                    <label htmlFor="airCondition" 
+                    className="block font-medium text-black mr-[10px] text-base mr-8">
+                      Air Condition
+                    </label>
+
+                    <input type="checkbox" id="airCondition" name="airCondition" 
+                    checked={airCondition} onChange={(e) => setAirCondition(e.target.checked)} 
+                    className=''/>
+
                 </div>
 
-                <div className="mb-4">
-                    <label htmlFor="passengerCount" className="block text-sm font-medium text-gray-700">Number of Passengers</label>
-                    <input type="number" id="passengerCount" name="passengerCount" value={passengerCount} onChange={(e) => setPassengerCount(e.target.value)} />
-                </div>
+            </div>
 
-                <div className="mb-4">
-                    <input type="checkbox" id="airCondition" name="airCondition" checked={airCondition} onChange={(e) => setAirCondition(e.target.checked)} />
-                    <label htmlFor="airCondition" className="ml-2 block text-sm font-medium text-gray-700">Air Condition</label>
-                </div>
+
+            {/* Passenger Count */}
+            <div>
+
+              <div className="mb-8 flex justify-between items-baseline ">
+
+                <label htmlFor="passengerCount" 
+                className="block font-medium text-black mr-[5px] text-base">
+                  No of Passengers
+                </label>
+
+                <input type="number" id="passengerCount" name="passengerCount" 
+                value={passengerCount}
+                onChange={(e) => setPassengerCount(e.target.value)} 
+                className='border-2 rounded border-black'
+                />
+
+              </div> 
+
+            </div>
+
+                
+
+                
 
           </div>
         )}
 
         {step === 2 && (
           <div className="mt-8 px-4">
-            <h2 className="text-lg font-semibold mb-4">Step 2: Education</h2>
-            {/* Form fields for step 2 */}
+            <div>
+              <label htmlFor='Select Vehicle' className="ml-2 block text-sm font-medium text-gray-700">Select Vehical</label>
+              <select id="avalableVehicle" name="avalableVehicle" value={vehicle} onChange={(e) => setVehicle(e.target.value)} >
+                        <option value={"Car"}>Car</option>
+                        <option value={"van"}>Van</option>
+                        <option value={"Bus"}>Bus</option>
+                        <option value={"Lorry"}>Lorry</option>
+                    </select>
+            </div>
+
+            <div>
+              <label htmlFor='Select Driver' className="ml-2 block text-sm font-medium text-gray-700">Select Driver</label>
+              <select id="driver" name="driver" value={vehicle} onChange={(e) => setDriver(e.target.value)} >
+                        <option value={"Car"}>Car</option>
+                        <option value={"van"}>Van</option>
+                        <option value={"Bus"}>Bus</option>
+                        <option value={"Lorry"}>Lorry</option>
+              </select>
+            </div>
+
           </div>
         )}
 
@@ -95,9 +187,9 @@ const Form = ({setShowForm }) => {
           </div>
         )}
 
-        <div className="flex justify-between mt-8 px-4">
+        <div className={`flex ali mt-8 px-4 ${step === 1 ? 'justify-end' : 'justify-between'}`}>
           {step !== 1 && (
-            <button className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md mr-4" onClick={handlePrevStep}>
+            <button className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md mr-4 place-" onClick={handlePrevStep}>
               Previous
             </button>
           )}
