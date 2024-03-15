@@ -5,8 +5,8 @@ const {addVehicle,editVehicle,deleteVehicle,getVehicle} = require('../controller
 const router = express.Router()
 
 router.post('/addVehicle', addVehicle)
-router.get('/getVehicle', getVehicle)
-router.patch('/editVehicle', editVehicle)
-router.delete('/deleteVehicle', deleteVehicle)
+router.get('/:id', getVehicle)
+router.patch('/:id', editVehicle)
+router.delete('/:id', deleteVehicle)
 
 module.exports = router

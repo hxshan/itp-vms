@@ -60,6 +60,7 @@ const AddVehicle = () => {
             </form>
             {formState.category && (
                 <form className="m-3 p-3  bg-slate-200 rounded-md pad">
+                    <p className='mb-3 p-3 font-medium text-sm text-black bg-red-400 rounded-md pad'>This is an error.</p>
                     {/* Render appropriate form based on selected category */}
                     {formState.category === 'car' && <CarForm formState={formState} setFormState={setFormState} />}
                     {formState.category === 'van' && <VanForm formState={formState} setFormState={setFormState} />}
