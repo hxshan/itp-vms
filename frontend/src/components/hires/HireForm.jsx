@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 
+import {validateFormFirstPage, validateFormSecondPage} from './Validation';
+
 const Form = ({setShowForm }) => { 
   const [step, setStep] = useState(1);
 
@@ -9,17 +11,6 @@ const Form = ({setShowForm }) => {
     setShowForm: PropTypes.func.isRequired,
   };
 
-  const submit = () => {
-    setShowForm(false)
-  }
-
-  const handleNextStep = () => {
-    setStep(step + 1);
-  };
-
-  const handlePrevStep = () => {
-    setStep(step - 1);
-  };
 
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
@@ -37,6 +28,57 @@ const Form = ({setShowForm }) => {
   const [cusEmail, setCusEmail] = useState('')
   const [cusMobile, setCusMobile] = useState('')
   const [cusNic, setCusNic] = useState('')
+
+
+  const formData = {
+    startDate,
+    endDate,
+    vehicleType,
+    vehicleSubcategory,
+    airCondition,
+    passengerCount,
+    vehicle,
+    driver,
+    startPoint,
+    endPoint,
+    tripType,
+    distence,
+    cusName, cusEmail, cusMobile, cusNic
+  }
+
+  //Handle Submit
+  const submit = () => {
+  
+    const confirm = window.confirm("Are you sure")
+    if(confirm){
+      setShowForm(false)
+    }
+    
+  }
+  
+  const handleNextStep = () => {
+    
+    let errors = {};
+    if(step == 1) {
+      errors = validateFormFirstPage(formData)
+      if(Object.keys(errors).length === 0) {
+        setStep(step + 1);
+      }
+    }
+
+    if(step == 2) {
+      errors = validateFormSecondPage(formData)
+      if(Object.keys(errors).length === 0) {
+        setStep(step + 1);
+      }
+    }
+  };
+
+  const handlePrevStep = () => {
+    setStep(step - 1);
+  };
+
+
 
 
 
@@ -100,6 +142,7 @@ const Form = ({setShowForm }) => {
                     value={vehicleType} onChange={(e) => setVehicleType(e.target.value)} 
                     className='border-2 rounded border-black px-14'
                     >
+                        <option value="">Select......</option>
                         <option value={"Car"}>Car</option>
                         <option value={"van"}>Van</option>
                         <option value={"Bus"}>Bus</option>
@@ -117,7 +160,11 @@ const Form = ({setShowForm }) => {
                     <select id="vehicleSubcategory" name="vehicleSubcategory" 
                     value={vehicleSubcategory} onChange={(e) => setVehicleSubcategory(e.target.value)} 
                     className='border-2 rounded border-black px-14'>
-                        {/* Options for vehicle subcategories */}
+                        <option value="">Select......</option>
+                        <option value={"Car"}>Car</option>
+                        <option value={"van"}>Van</option>
+                        <option value={"Bus"}>Bus</option>
+                        <option value={"Lorry"}>Lorry</option>
                     </select>
                     </div>
 
@@ -180,6 +227,7 @@ const Form = ({setShowForm }) => {
                     value={vehicle} onChange={(e) => setVehicle(e.target.value)} 
                     className='border-2 rounded border-black px-14'
                     >
+                      <option value="">Select Vehicle</option>
                       <option value={"CHJ-2233"}>CHJ-2233</option>
                       <option value={"CHJ-2233"}>CHJ-2233</option>
 
@@ -196,6 +244,7 @@ const Form = ({setShowForm }) => {
                   <select id="driverList" name="driverList" 
                     value={driver} onChange={(e) => setDriver(e.target.value)} 
                     className='border-2 rounded border-black px-14'>
+                      <option value="">Select Driver</option>
                       <option value={"Chamara"}>Chamara</option>
                       <option value={"Chanchala"}>Chanchala</option>
                       <option value={"Danny"}>Danny</option>
@@ -265,7 +314,7 @@ const Form = ({setShowForm }) => {
                     Distence
                   </label>
 
-                  <input type="text" id="distence" name="distence" 
+                  <input type="number" id="distence" name="distence" 
                   value={distence}
                   onChange={(e) => setSetDistence(e.target.value)} 
                   placeholder='Estimate Distence'
@@ -307,7 +356,7 @@ const Form = ({setShowForm }) => {
                     Email
                   </label>
 
-                  <input type="text" id="cusEmail" name="cusEmail" 
+                  <input type="email" id="cusEmail" name="cusEmail" 
                   value={cusEmail}
                   onChange={(e) => setCusEmail(e.target.value)} 
                   placeholder='Customer Email'
@@ -327,7 +376,7 @@ const Form = ({setShowForm }) => {
                     Mobile
                   </label>
 
-                  <input type="text" id="cusMobile" name="cusMobile" 
+                  <input type="tel" id="cusMobile" name="cusMobile" 
                   value={cusMobile}
                   onChange={(e) => setCusMobile(e.target.value)} 
                   placeholder='Customer Mobile No'
@@ -363,9 +412,29 @@ const Form = ({setShowForm }) => {
 
           {/* Confirmation */}
         {step === 3 && (
-          <div className="mt-3 px-4">
-            <h2 className="text-2xl font-semibold text-center mb-4 underline ">Confirmation</h2>
-            {/* Form fields for step 3 */}
+          <div>
+            <div className="mt-3 px-4">
+              <h2 className="text-2xl font-semibold text-center mb-4 underline ">Confirmation</h2>
+            </div>
+
+            <div>
+              <p>Start Date: {startDate}</p>
+              <p>End Date: {endDate}</p>
+              <p>Vehicle Type: {vehicleType}</p>
+              <p>Vehicle Sub-Catagory: {vehicleSubcategory}</p>
+              <p>Air Condition: {airCondition ? 'With Air Condition' : 'Without Air Condition'}</p>
+              <p>No of Passengers: {passengerCount}</p>
+              <p>Assigned Vehicle: {vehicle}</p>
+              <p>Assigned Driver: {driver}</p>
+              <p>Start Point: {startPoint}</p>
+              <p>End Point: {endPoint}</p>
+              <p>Round Trip: {tripType ? 'Yes' : 'No'}</p>
+              <p>Distence: {distence}</p>
+              <p>Customer Name: {cusName}</p>
+              <p>Customer Email: {cusEmail}</p>
+              <p>Customer Mobile: {cusMobile}</p>
+              <p>Customer NIC: {cusNic}</p>
+              </div>
           </div>
         )}
 
