@@ -46,8 +46,21 @@ const AddVehicle = () => {
     return (
         <div className="place-content-center m-8 bg-cover bg-center bg-white">
             <h1 className="text-lg font-bold">Add Vehicle Details</h1>
+            
+
             <form className="space-y-2 m-3 p-3  bg-slate-200 rounded-md pad">
-                {/* Category selection */}
+            <p class="text-sm text-red-600 leading-relaxed">
+            - Before adding a vehicle, please ensure you have all the necessary information at hand. This includes vehicle details such as registration number, model, manufacturing year, and more.
+            </p>
+            <p class="text-sm text-red-600 leading-relaxed">
+            - To add a vehicle, select the appropriate category from the dropdown menu. Once selected, the system will display the corresponding form where you can enter the vehicle details. 
+           </p>
+           <p class="text-sm text-red-600 leading-relaxed">
+            - Ensure all fields are filled accurately before submitting.
+           </p>
+           <p class="text-sm text-red-600 leading-relaxed">
+            - If you have any questions or require assistance while adding a vehicle, feel free to reach out to our support team. We're here to help you every step of the way.
+           </p>
                 <label className='m-2 font-semibold text-base' htmlFor="category">Select Vehicle Category:</label>
                 <select id="category" name="category" value={formState.category} onChange={handleCategoryChange}>
                     <option value="">Select</option>

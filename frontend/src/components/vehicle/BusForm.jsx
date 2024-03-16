@@ -13,9 +13,14 @@ const BusForm = ({ formState, setFormState }) => {
     };
 
     return (
-      <div className='space-y-10'>
+      <div className='space-y-8'>
                         <h1 className="text-lg font-bold">Add Bus Details</h1>
-                    
+                        
+                        <div className='flex flex-row'>
+                        <h3 className='text-s font-bold'>Performance</h3>
+                        <div class="border-b-2 ml-2 border-black w-full"></div>
+                        </div>
+
                         <div className='flex flex-row'>
                         <label className='ml-2 mr-1 font-semibold text-base' htmlFor="vehicleRegister">Register Number:</label>
                         <input className='mr-8 pl-2 pr-2 ' type="text" id="vehicleRegister" name="vehicleRegister" value={formState.vehicleRegister} onChange={handleChange} />
@@ -41,7 +46,12 @@ const BusForm = ({ formState, setFormState }) => {
                                     <option value="manual">Manual</option>                
                         </select>
                         </div>
-
+                        
+                        <div className='flex flex-row'>
+                        <h3 className='text-s font-bold'>Features</h3>
+                        <div class="border-b-2 ml-2 border-black w-full"></div>
+                        </div>
+    
                         <div>
                         <label className='ml-2 mr-2 font-semibold text-base' htmlFor="vehicleColour">Colour of Vehicle:</label>
                         <input className='mr-12 pl-2 pr-2' type="text" id="vehicleColour" name="vehicleColour" value={formState.vehicleColour} onChange={handleChange} />
@@ -82,6 +92,12 @@ const BusForm = ({ formState, setFormState }) => {
                                     <option value="no">No</option>                
                         </select>
                         </div>
+
+                        <div className='flex flex-row'>
+                        <h3 className='text-s font-bold'>Documentary</h3>
+                        <div class="border-b-2 ml-2 border-black w-full"></div>
+                        </div>
+    
                         <div>
                         <label className='ml-2 mr-2 font-semibold text-base' htmlFor="licEndDate">Vehicle Licence End Date:</label>
                         <input className='mr-12 pl-2 pr-2' type="date" id="licEndDate" name="licEndDate" value={formState.licEndDate} onChange={handleChange} />
