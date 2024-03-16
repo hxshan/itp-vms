@@ -1,5 +1,6 @@
-const EmployeeTable = ({ columns, data,isLoading }) => {
 
+const EmployeeTable = ({data,isLoading }) => {
+const columns=["Name","Email","Role","Status","Action"]
   if(isLoading){
     return(
       <p>Loading...</p>
@@ -16,7 +17,7 @@ const EmployeeTable = ({ columns, data,isLoading }) => {
           </tr>
         </thead>
         <tbody>
-          {data.map((row) => {
+          {data!=null && data.length>0  ?(data.map((row) => {
             return (
                 <tr key={row._id}>
                   <td>{row.firstName}</td>
@@ -30,7 +31,11 @@ const EmployeeTable = ({ columns, data,isLoading }) => {
                   </td>
               </tr>
             );
-          })}
+          })):(
+            <tr>
+              <td colSpan={columns.length}>No data available</td>
+            </tr>
+          )}
         </tbody>
       </table>
     </div>
