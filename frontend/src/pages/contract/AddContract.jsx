@@ -5,8 +5,8 @@ const AddContract = () => {
 
 const [clientdet,setClientdet]  = useState({  
     id:"loading",
-    first_name:"",
-    last_name:"",
+    first_name:"Shaheed ",
+    last_name:"Wajee",
     number:"loading",
     email:"loading",
     client_NIC:"loading"
@@ -19,10 +19,31 @@ const [vehicalDet,setVehicalDet] = useState({
     model:"loading"
 })
 
+
+const [startDate, setStartDate] = useState('');
+const [endDate, setEndDate] = useState('');
+const [estimatedDuration,setestimatedDuration] = useState('pending');
+
 const [ContractData,setContractData] = useState({
     Vehical_Type:"",
-    Vehical_Inst:""
+    Vehical_Inst:"",
+    Start_Date:startDate,
+    End_Date:endDate,
+    Estimated_duration:estimatedDuration
 })
+
+const CalculateTime = () =>{
+    const startDatevalue = new Date(startDate);
+    const endDatevalue = new Date(endDate);
+
+    if (!isNaN(startDatevalue) && !isNaN(endDatevalue)) {
+        const timeDiff = endDatevalue - startDatevalue;
+        const yearsDiff = timeDiff / (1000 * 60 * 60 * 24 * 365.25);
+        const estimatedYears = Math.round(yearsDiff);
+
+        setestimatedDuration(estimatedYears > 0 ? `${estimatedYears} year(s)` : 'Pending');
+    }
+}
 
 
 const vehicals = [
@@ -119,49 +140,76 @@ const HandleInput = (e)=>{
     })
 }
 
+//const HandleDateInput = (e)=>{
+  //  const {name,value} = e.target;
+
+   // if(name === "startdate"){
+ //       setStartDate(value)
+ //   }else if(name === "enddate"){
+  //      setEndDate(value);
+ //       if(startDate != ''){
+  //          CalculateTime(); 
+   //     }
+ //   }
+
+//}
+
 
 
   return (
-    <div>
+    <div className='w-full flex flex-col justify-center items-center py-5' >
 
 
-        <div>
-            <p className=' text-[30px] font-bold'>Contract Info</p>
+        <div className='flex items-center justify-center mb-4'>
+            <p className=' text-[50px] font-bold '>ADD CONTRACT</p>
         </div>
+        <div className='bg-[#D9D9D9] w-[90%] h-fit rounded-lg py-8 flex justify-evenly'>
+        
         <div>
+        <div className=' w-fit h-fit  pb-8 rounded-xl'>
         <div>
-            <p className=' text-[20px] font-bold'>Client details</p>
+            <p className=' text-[25px] font-bold'>Client details</p>
         </div>
 
+        <div className='flex mt-3'>
         <div>
             <p>Client name</p>
-            <p>{clientdet.first_name == ""? "loading":clientdet.first_name +" " +clientdet.last_name}</p>
+            <p className=' text-[#000ac2] font-semibold'>{clientdet.first_name == ""? "loading":clientdet.first_name +" " +clientdet.last_name}</p>
         </div>
 
-        <div>
-            <p>Phone number</p>
-            <p>{clientdet.number}</p>
+        
         </div>
 
+
+        <div className='flex flex-col gap-3'>
+        <div className='flex gap-28 mt-3'>
         <div>
             <p>Client email</p>
-            <p>{clientdet.email}</p>
+            <p className=' text-[#000ac2] font-semibold'>{clientdet.email}</p>
         </div>
 
         <div>
             <p>Client National ID</p>
-            <p>{clientdet.client_NIC}</p>
+            <p className=' text-[#000ac2] font-semibold'>{clientdet.client_NIC}</p>
+        </div>
+        </div>
+        <div>
+            <p>Phone number</p>
+            <p className=' text-[#000ac2] font-semibold'>{clientdet.number}</p>
         </div>
         </div>
 
-        <div>
+        
+        </div>
+
+        <div className='  w-fit h-fit  pb-8 rounded-xl '>
             <div>
-                <p className='text-[20px] font-bold'>Rental Info</p>
+                <p className='text-[25px] font-bold'>Rental Info</p>
             </div>
 
-            <div>
+            <div className='flex flex-col mt-3 gap-1'>
                 <label>Vehical Type</label>
-                <select name='Vehical_Type' onChange={HandleInput}>
+                <select name='Vehical_Type' onChange={HandleInput} className='w-[150px]  rounded-lg  bg-white border-none p-2'>
                     <option className='hidden'>Please select</option>
                     {vehicals.map((item,index)=>(
                         <option key={index} value={item._id} >{item.name}</option>
@@ -170,55 +218,96 @@ const HandleInput = (e)=>{
             </div>
 
             <div>
-            <div>
+            <div className='flex mt-3 gap-12'>
+            <div className='flex flex-col gap-1'>
                 <label>Start date</label>
-                <input type='date'/>
+                <input type='date' className='w-[150px] h-10 rounded-lg  bg-white border-none px-2' name='startdate' onChange={(e) => {
+                            setStartDate(e.target.value);
+                            CalculateTime();}}/>
             </div>
 
-            <div>
+            <div className='flex flex-col gap-1'>
                 <label>End date</label>
-                <input type='date'/>
+                <input type='date' className='w-[150px] h-10 rounded-lg  bg-white border-none px-2 ' name='enddate' onChange={(e) => {
+                            setEndDate(e.target.value);
+                            CalculateTime();}}/>
             </div>
-
+            </div>
+            
+            <div className='flex flex-col mt-3'>
             <p>Estimated duration</p>
-            <p>loading..</p>
+            <p>{ContractData.Estimated_duration}</p>
             </div>
-
-            <div>
-
             </div>
-
 
         </div>
 
-        <div>
+        <div className='  w-fit h-fit  rounded-xl '>
             <div>
-            <p className='text-[20px] font-bold'>Insurance Info</p>
+                <p className='text-[25px] font-bold'>Vehical Info</p>
+            </div>
+
+            <div className='flex flex-col gap-1 mt-3'>
+                <p>Vehical Instance</p>
+                <select name='Vehical_Inst' onChange={HandleInput} className='w-[150px]  rounded-lg  bg-white border-none p-2'>
+                    <option className='hidden' >please select</option>
+                    {vehicalInstance.map((item,index)=>(
+                        <option value={item._id} className={`${item.vehicalID === ContractData.Vehical_Type?'':'hidden' }`}>{item.name}</option>
+                    ))}
+                </select>
+            </div>
+            
+            <div className='flex gap-12 my-3'>
+            <div>
+                <p>Vehical identification number</p>
+                <p className=' text-[#000ac2] font-semibold'>{vehicalDet.year}</p>
             </div>
 
             <div>
+                <p>Year manufactured</p>
+                <p className=' text-[#000ac2] font-semibold'>{vehicalDet.year}</p>
+            </div>
+            </div>
+            
+           <div>
+            <p>Model</p>
+            <p className=' text-[#000ac2] font-semibold'>{vehicalDet.model}</p>
+           </div>
+           
+        </div>
+        </div>
+
+        <div className='flex flex-col'>
+        <div className='  w-fit h-fit  pb-8 rounded-xl '>
+            <div>
+            <p className='text-[25px] font-bold'>Insurance Info</p>
+            </div>
+
+            <div className='flex flex-col gap-1 mt-3'>
                 <label>Insurance source</label>
-                <select>
+                <select className='w-[150px]  rounded-lg  bg-white border-none p-2'>
                     <option className='hidden'>please select</option>
                     <option>Client</option>
                     <option>Company</option>
                 </select>
             </div>
-
-            <div>
+            
+            <div className='flex gap-4 mt-3'>
+            <div className='flex flex-col gap-1'>
                <label>Name of Insurance provider</label>
-               <input type='text'/> 
+               <input type='text' className='w-[220px]  rounded-lg  bg-white border-none p-2'/> 
             </div>
 
-            <div>
+            <div className='flex flex-col gap-1'>
                <label>Policy number</label>
-               <input type='text'/> 
+               <input type='text' className='w-[220px]  rounded-lg  bg-white border-none p-2'/> 
+            </div>
             </div>
 
-            <div>
+            <div className='flex flex-col mt-3 gap-1'>
                <label>Coverage Type</label>
 
-               <select>
+               <select className='w-[150px]  rounded-lg  bg-white border-none p-2'>
                 <option className='hidden'>please select</option>
                 <option>Liability</option>
                 <option>comprehensive</option>
@@ -226,64 +315,76 @@ const HandleInput = (e)=>{
                </select>
             </div>
 
-            <div>
+            <div className='flex gap-4 mt-3'>
+            <div className='flex flex-col gap-1'>
                 <label>Coverage amount</label>
-                <input type='number'/>
+                <input type='text' className='w-[220px]  rounded-lg  bg-white border-none p-2'/>
             </div>
 
-            <div>
+            <div className='flex flex-col gap-1'>
                 <label>Deductible</label>
-                <input type='number'/>
+                <input type='text' className='w-[220px]  rounded-lg  bg-white border-none p-2'/>
+            </div>
             </div>
 
-            <div>
-            <div>
+            <div className='flex gap-4 mt-3'>
+            <div className='flex flex-col gap-1'>
                 <label>Start date</label>
-                <input type='date'/>
+                <input type='date' className='w-[150px] h-10 rounded-lg  bg-white border-none px-2 '/>
             </div>
 
-            <div>
+            <div className='flex flex-col gap-1'>
                 <label>End date</label>
-                <input type='date'/>
+                <input type='date' className='w-[150px] h-10 rounded-lg  bg-white border-none px-2 '/>
             </div>
             </div>
 
-            <div className='flex flex-col'>
+            <div className='flex flex-col mt-3'>
                 <label>Additianol notes</label>
-                <textarea className='h-[200px] w-[300px]  border-2 border-black'></textarea>
+                <textarea className='h-[200px] w-[456px]  border-none rounded-lg mt-1'></textarea>
             </div>
         </div>
-
-        <div>
+        <div className='  w-fit h-fit rounded-xl '>
             <div>
-                <p className='text-[20px] font-bold'>Vehical Info</p>
+                <p className='text-[25px] font-bold'>Payment Info</p>
             </div>
 
-            <div>
-                <p>Vehical Instance</p>
-                <select name='Vehical_Inst' onChange={HandleInput}>
-                    <option className='hidden' >please select</option>
-                    {vehicalInstance.map((item,index)=>(
-                        <option value={item._id} className={`${item.vehicalID === ContractData.Vehical_Type?'':'hidden' }`}>{item.name}</option>
-                    ))}
+            <div className='flex flex-col mt-3 gap-1'>
+                <label>Amount</label>
+                <input type='text' className='w-[220px]  rounded-lg  bg-white border-none p-2'/>
+            </div>
+            
+            <div className='flex gap-12 mt-3'>
+            <div className='flex flex-col gap-1'>
+                <label>Payment plan</label>
+                <select className='w-[150px]  rounded-lg  bg-white border-none p-2'>
+                    <option className='hidden'>Please select</option>
+                    <option>upFront</option>
+                    <option>Monthly</option>
                 </select>
             </div>
 
-            <div>
-                <p>Vehical identification number</p>
-                <p>{vehicalDet.year}</p>
+            <div className='flex flex-col gap-1'>
+                <label>Payment date</label>
+                <input type='date' className='w-[150px]  rounded-lg  bg-white border-none p-2'/>
+            </div>
             </div>
 
-            <div>
-                <p>Year manufactured</p>
-                <p>{vehicalDet.year}</p>
+            <div className='flex flex-col mt-3 gap-1'>
+                <label>Amount payed</label>
+                <input type='text' className='w-[220px]  rounded-lg  bg-white border-none p-2'/>
             </div>
-            
-           <div>
-            <p>Model</p>
-            <p>{vehicalDet.model}</p>
-           </div>
-           
+
+            <div className='flex flex-col mt-3 gap-1'>
+                <p>Amount Due</p>
+                <p>Loading</p>
+            </div>
+        </div>
+        </div>
+      
+
+
+        
         </div>
     </div>
   )

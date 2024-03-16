@@ -11,7 +11,7 @@ function App() {
   return (
     <BrowserRouter>
     <QueryClientProvider client={queryClient}>
-      <main className="flex">
+      <main className="flex w-full">
       <Navbar/>
         <Routes>        
           <Route path="/login" element={<Login/>}/>
