@@ -421,7 +421,7 @@ const Form = ({setShowForm }) => {
               <h2 className="text-2xl font-semibold text-center mb-4 underline ">Confirmation</h2>
             </div>
 
-            <div className='flex justify-between'>
+            <div className=' xl:flex justify-between'>
               <div className='mr-[20px]'>
 
                 <p className=' text-lg font-semibold leading-8'>Start Date : &nbsp;&nbsp; {startDate}</p>
