@@ -25,7 +25,7 @@ const Navbar = () => {
   };
 
   return (
-      <div className="flex h-full">
+      <div className="fixed top-0 left-0 flex h-full w-80">
           <div className="h-screen bg-gray-800 text-white w-64 flex flex-col items-start ">
 
           <div className="relative">
