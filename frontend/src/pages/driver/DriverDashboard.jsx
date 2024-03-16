@@ -1,23 +1,19 @@
-import React from 'react';
-import TripCard from '../../components/driver/UpcomingTrip'; // Import the TripCard component
+// DriverDashboard.js
+import React, { useState } from 'react';
+import { DriverNavbar, Dashboard} from '@/components/driver';
+import PastTripsTable from '@/components/driver/PastTripsTable';
 
 const DriverDashboard = () => {
-  
-  const upcomingTrip = {
-    customerName: 'Ramla',
-    contact: '1234579',
-    vehicleName: 'Toyota Prius',
-    vehicleNumber: 'ABC 123',
-    pickupLocation: 'No 55 park road',
-    destination: 'Airport',
-    startTime: 'Wednesday, March 13th, 2024 10:50 PM',
-    minutesUntilStart: 30,
-  };
+  const [activeComponent, setActiveComponent] = useState('dashboard');
 
   return (
     <div>
-      
-      <TripCard {...upcomingTrip} />
+      <DriverNavbar setActiveComponent={setActiveComponent} />
+      <div className="container mx-auto p-4">
+        {activeComponent === 'dashboard' && <Dashboard />}
+        {activeComponent === 'pastTrips'  && <PastTripsTable />}
+        {activeComponent === 'maintenance' }
+      </div>
     </div>
   );
 };

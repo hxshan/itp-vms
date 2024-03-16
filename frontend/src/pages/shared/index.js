@@ -1,7 +1,7 @@
 import Login from "./Login";
-import DriverNavbar from "./DriverNavbar";
+import Navbar from "./Navbar";
 
 export {
-    DriverNavbar,
+    Navbar,
     Login
 }
