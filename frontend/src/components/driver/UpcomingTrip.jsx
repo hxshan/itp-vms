@@ -51,7 +51,8 @@ const TripCard = ({
 
   return (
     <div className="trip-card-container">
-      <div className="bg-white shadow-md rounded-md p-10">
+
+      {!showStartTripForm && <div className="bg-white shadow-md rounded-md p-10">
         <div className="flex justify-between items-center">
           <p className="text-gray-500 mb-4">Trip Starts in {calculateTimeUntilStart(startDate,startTime)}</p>
           {!showStartTripForm && (
@@ -72,7 +73,7 @@ const TripCard = ({
         <p className="text-gray-500 mb-2">Pickup: {pickupLocation}</p>
         <p className="text-gray-500 mb-2">Destination: {destination}</p>
         <p className="text-gray-500 mb-2">Start Time: {startTime}</p>
-      </div>
+      </div>}
       {showStartTripForm && <StartTripForm trip={{
  
   vehicleName,
