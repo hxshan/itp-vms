@@ -4,6 +4,7 @@ import AdminDashboard from "./pages/admin/AdminDashboard";
 import HireDashboard from "./pages/hires/HireDashboard";
 import {Login,Navbar} from "./pages/shared"
 import AddVehicle from "./pages/vehicle/AddVehicle"
+import AddContract from "./pages/contract/AddContract";
 
 function App() {
   const queryClient = new QueryClient();
@@ -11,14 +12,15 @@ function App() {
   return (
     <BrowserRouter>
     <QueryClientProvider client={queryClient}>
-      <main className="flex">
-      <Navbar/>
-        <Routes>        
-          <Route path="/login" element={<Login/>}/>
-          <Route path="/admin" element={<AdminDashboard/>}/>
-          <Route path="/hires" element={<HireDashboard/>}/>
-          <Route path="/add_vehicle" element={<AddVehicle/>}/>
-        </Routes>
+      <main className="flex w-full">
+          <Navbar/>
+          <Routes>        
+            <Route path="/login" element={<Login/>}/>
+            <Route path="/admin" element={<AdminDashboard/>}/>
+            <Route path="/hires" element={<HireDashboard/>}/>
+            <Route path="/add_vehicle" element={<AddVehicle/>}/>
+            <Route path="/Contract/:id" element={<AddContract/>}/>
+          </Routes>
       </main>
     </QueryClientProvider>
   </BrowserRouter>
