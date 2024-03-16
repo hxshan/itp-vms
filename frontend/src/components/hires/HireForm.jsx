@@ -421,23 +421,33 @@ const Form = ({setShowForm }) => {
               <h2 className="text-2xl font-semibold text-center mb-4 underline ">Confirmation</h2>
             </div>
 
-            <div>
-              <p>Start Date: {startDate}</p>
-              <p>End Date: {endDate}</p>
-              <p>Vehicle Type: {vehicleType}</p>
-              <p>Vehicle Sub-Catagory: {vehicleSubcategory}</p>
-              <p>Air Condition: {airCondition ? 'With Air Condition' : 'Without Air Condition'}</p>
-              <p>No of Passengers: {passengerCount}</p>
-              <p>Assigned Vehicle: {vehicle}</p>
-              <p>Assigned Driver: {driver}</p>
-              <p>Start Point: {startPoint}</p>
-              <p>End Point: {endPoint}</p>
-              <p>Round Trip: {tripType ? 'Yes' : 'No'}</p>
-              <p>Distence: {distence}</p>
-              <p>Customer Name: {cusName}</p>
-              <p>Customer Email: {cusEmail}</p>
-              <p>Customer Mobile: {cusMobile}</p>
-              <p>Customer NIC: {cusNic}</p>
+            <div className='flex justify-between'>
+              <div className='mr-[20px]'>
+
+                <p className=' text-lg font-semibold leading-8'>Start Date : &nbsp;&nbsp; {startDate}</p>
+                <p className=' text-lg font-semibold leading-8'>End Date : &nbsp;&nbsp; {endDate}</p>
+                <p className=' text-lg font-semibold leading-8'>Vehicle Type : &nbsp;&nbsp; {vehicleType}</p>
+                <p className=' text-lg font-semibold leading-8'>Vehicle Sub-Catagory : &nbsp;&nbsp; {vehicleSubcategory}</p>
+                <p className=' text-lg font-semibold leading-8'>Air Condition : &nbsp;&nbsp; {airCondition ? 'With Air Condition' : 'Without Air Condition'}</p>
+                <p className=' text-lg font-semibold leading-8'>No of Passengers : &nbsp;&nbsp; {passengerCount}</p>
+                <p className=' text-lg font-semibold leading-8'>Assigned Vehicle : &nbsp;&nbsp; {vehicle}</p>
+                <p className=' text-lg font-semibold leading-8'>Assigned Driver : &nbsp;&nbsp; {driver}</p>
+
+              </div>
+
+              <div className='mr-[20px]'>
+
+                <p className='text-lg font-semibold leading-8'>Start Point :&nbsp;&nbsp;{startPoint}</p>
+                <p className=' text-lg font-semibold leading-8'>End Point : &nbsp;&nbsp; {endPoint}</p>
+                <p className=' text-lg font-semibold leading-8'>Round Trip : &nbsp;&nbsp; {tripType ? 'Yes' : 'No'}</p>
+                <p className=' text-lg font-semibold leading-8'>Distence : &nbsp;&nbsp; {distence}</p>
+                <p className=' text-lg font-semibold leading-8'>Customer Name : &nbsp;&nbsp; {cusName}</p>
+                <p className=' text-lg font-semibold leading-8'>Customer Email : &nbsp;&nbsp; {cusEmail}</p>
+                <p className=' text-lg font-semibold leading-8'>Customer Mobile : &nbsp;&nbsp; {cusMobile}</p>
+                <p className=' text-lg font-semibold leading-8'>Customer NIC : &nbsp;&nbsp; {cusNic}</p>
+
+              </div>
+              
               </div>
           </div>
         )}
