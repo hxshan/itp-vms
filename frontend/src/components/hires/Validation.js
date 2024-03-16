@@ -5,11 +5,29 @@ const validateFormFirstPage = (FormData) => {
         error.startDate = 'Please Enter Start Date'
         alert('Please Enter Start Date')
         return error
+    
+    }
+
+    const today = new Date()
+    const startDate = new Date(FormData.startDate)
+
+    if (startDate < today) {
+        error.startDate = 'Please Enter Valid Start Date'
+        alert('Please Enter Valid Start Date')
+        return error
     }
 
     if (FormData.endDate === '') {
         error.endDate = 'Please Enter StartDate'
         alert('Please Enter End Date')
+        return error
+    }
+
+    const endDate = new Date(FormData.endDate)
+
+    if (endDate < startDate ) {
+        error.endDate = 'Please Enter valid StartDate'
+        alert('Please Enter valid End Date')
         return error
     }
 

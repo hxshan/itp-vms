@@ -55,6 +55,10 @@ const Form = ({setShowForm }) => {
     }
     
   }
+
+  const cancel = () => {
+    setShowForm(false)
+  }
   
   const handleNextStep = () => {
     
@@ -438,7 +442,12 @@ const Form = ({setShowForm }) => {
           </div>
         )}
 
-        <div className={`flex ali mt-8 px-4 ${step === 1 ? 'justify-end' : 'justify-between'}`}>
+        <div className={`flex ali mt-8 px-4 justify-between`}>
+          {step === 1 && (
+            <button className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md mr-4 place-" onClick={cancel}>
+            Cancel
+          </button>
+          )} 
           {step !== 1 && (
             <button className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md mr-4 place-" onClick={handlePrevStep}>
               Previous
@@ -453,6 +462,7 @@ const Form = ({setShowForm }) => {
               Submit
             </button>
           )}
+          
         </div>
       </div>
     </div>
