@@ -6,16 +6,16 @@ const User = require("../models/userModel");
 const login = async (req,res)=>{
     const {email,password}=req.body
 
-    if(!email||!password) res.status(400).json({message:'All felds must be filled'})
+    if(!email||!password) return res.status(400).json({message:'All felds must be filled'})
 
     const user =await User.findOne({email}).exec()
 
-    if(!user || user.status=='inactive') res.status(401).json({message:'Unauthorized'})
+    if(!user || user.status=='inactive') return res.status(401).json({message:'Unauthorized'})
 
 
     const match = await bcrypt.compare(password,user.password)
 
-    if(!match) res.status(401).json({message:'Unauthorized'})
+    if(!match) return res.status(401).json({message:'Unauthorized'})
 
 
     const accessToken = jwt.sign(
@@ -43,7 +43,7 @@ const login = async (req,res)=>{
         maxAge:7*24*60*60*1000 //7days
     })
 
-    res.json({accessToken})
+    return res.json({accessToken})
 }
 
 const refresh = (req,res) =>{
