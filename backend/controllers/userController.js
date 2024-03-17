@@ -2,9 +2,8 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require("../models/userModel");
 const Role = require("../models/roleModel")
-const loginUser = async (req, res) => {
-  res.json({ mssg: "login rwand" });
-};
+
+
 
 const createUser = async (req, res) => {
   try {
@@ -75,4 +74,4 @@ const getAllRoles = async(req,res)=>{
 }
 
 
-module.exports = { loginUser, createUser,getAllUsers,getAllRoles };
+module.exports = {createUser,getAllUsers,getAllRoles };
