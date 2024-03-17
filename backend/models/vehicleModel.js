@@ -1,11 +1,26 @@
-const {Schema,model} = require('mongoose')
+const mongoose = require('mongoose')
 
-const testVehicle = new Schema({
-    category : {type:String,required:true},
-    vehicleType : {type:String},
-    vehicleRegister : {type:String,required:true},
-    vehicleManuYear : {type:Number,required:true},
-})
+const carSchema = new mongoose.Schema({
+    category: { type: String, required: true },
+    vehicleType: { type: String, required: true },
+    vehicleRegister: { type: String, required: true },
+    vehicleManuYear: { type: Number, required: true },
+    
+});
+
+const vanSchema = new mongoose.Schema({
+    category: { type: String, required: true },
+    vehicleType: { type: String, required: true },
+    vehicleGearSys: { type: String, required: true },
+    vehicleWeight: { type: Number, required: true },
+});
+
+const lorrySchema = new mongoose.Schema({
+    category: { type: String, required: true },
+    vehicleType: { type: String, required: true },
+    trailerLength: { type: Number, required: true },
+    fridge: { type: String, required: true },
+});
 
 // const tourVehicleSchema = new Schema({
 //     category : {type:String,required:true},
@@ -84,4 +99,8 @@ const testVehicle = new Schema({
 // module.exports = model("TourVehicle",tourVehicleSchema)
 // module.exports = model("Lorry",lorrySchema)
 // module.exports = model("Truck",truckSchema)
-module.exports = model("Vehicle",testVehicle)
+const Car = mongoose.model('Car',carSchema)
+const Van = mongoose.model('Van',vanSchema)
+const Lorry = mongoose.model('Lorry',lorrySchema)
+
+module.exports = {Car,Van,Lorry}
