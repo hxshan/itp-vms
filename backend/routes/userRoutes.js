@@ -11,6 +11,7 @@ router.post('/createuser',createUser)
 router.post('/login',loginUser) 
 
 router.get('/getall',getAllUsers)
+
 router.get('/getallroles',getAllRoles)
 
 module.exports = router;

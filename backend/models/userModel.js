@@ -1,6 +1,5 @@
 const mongoose = require('mongoose')
 
-
 const Schema = mongoose.Schema
 
 const userShema = new Schema({
@@ -8,14 +7,34 @@ const userShema = new Schema({
         type:String,
         required: true
     },
+    middleName:{
+        type:String,
+    },
+   
     lastName:{
+        type:String,
+        required: true
+    },
+    gender:{
         type:String,
         required: true
     },
     dob:{
         type:Date,
-        //required:true
+        required:true
     },
+    phoneNumber:{
+        type:String,
+        required:true
+    },
+    nicNumber:{
+        type:String,
+        required:true
+    },
+    emergencyContacts: [{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'EmergencyContact'
+    }],
     email:{
         type:String,
         required: true,
@@ -24,18 +43,27 @@ const userShema = new Schema({
         type:String,
         required:true
     },
-    phoneNumber:{
-        type:String,
-        //required:true
-    },
     status:{
         type:String,
         required:true
-    },
+    },  
     role:{
         type:mongoose.Schema.Types.ObjectId,
         ref:'Role'
     },
+    department:{
+        type:String,
+    },
+    employmentDate:{
+        type:Date,
+    },
+    baseSalary:{
+        type:Number,
+        require:true
+    },
+    licenceNumber:{
+        type:String
+    }
 })
 
 module.exports = mongoose.model('User',userShema)
