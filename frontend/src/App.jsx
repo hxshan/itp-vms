@@ -12,8 +12,8 @@ import AddContract from "./pages/contract/AddContract";
 
 function App() {
   const queryClient = new QueryClient();
-  const {token} = useAuthContext()
-  console.log(token)
+  //const {token} = useAuthContext()
+  //console.log(token)
   return (
     <BrowserRouter>
     <QueryClientProvider client={queryClient}>   
