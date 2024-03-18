@@ -10,7 +10,7 @@ const HireList = ({showForm ,setShowForm}) => {
     };
 
   return (
-    <div className="w-full h-full flex bg-gray-200 px-[50px] py-[20px] justify-center items-center">
+    <div className="w-full h-full flex bg-gray-200 px-[20px] py-[20px] justify-center items-center">
             <div className="w-full h-full bg-white">
                 <div className="text-center pt-[10px] pb-[6px] border-b-2">
                     <h1 className="text-2xl font-semibold">Hire List</h1>
@@ -21,6 +21,7 @@ const HireList = ({showForm ,setShowForm}) => {
                         Add
                     </button>
                 </div>
+
 
                 <HireTable  />
             </div>
