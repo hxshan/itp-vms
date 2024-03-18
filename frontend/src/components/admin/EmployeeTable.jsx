@@ -15,7 +15,7 @@ const columns=["Name","Email","Role","Status"]
               return <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" key={index}>{col}</th>
             })}
             <th className="relative px-6 py-3">
-             <span className="sr-only">Action</span>
+              <span className="text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Action</span>
             </th>
           </tr>
         </thead>
@@ -31,10 +31,10 @@ const columns=["Name","Email","Role","Status"]
                       {row.status?'Inactive':row.status}
                     </span>
                   </td>
-                  <td>
-                    <button className="bg-blue-600 text-white">View</button>
-                    <button className="bg-yellow-300 text-white">Edit</button>
-                    <button className="bg-red-700 text-white">Delete</button>
+                  <td className="px-6 py-4 whitespace-nowrap justify-between flex">
+                    <button className="bg-blue-600 text-white py-1 px-4 rounded-md">View</button>
+                    <button className="bg-yellow-300 text-white py-1 px-4 rounded-md">Edit</button>
+                    <button className="bg-red-700 text-white py-1 px-4 rounded-md">Delete</button>
                   </td>
               </tr>
             );

@@ -1,13 +1,14 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require("../models/userModel");
+const EmergencyContact = require("../models/emergencyContactModel");
 const Role = require("../models/roleModel")
 
 
 
 const createUser = async (req, res) => {
   try {
-    const { firstName, lastName, email, password, role } = req.body;
+    const { firstName,middleName,lastName, email, password, role,gender,phoneNumber,emergencyContacts,nicNumber,status,department,employmentDate,baseSalary,licenceNumber} = req.body;
 
     if (!firstName || !lastName || !email || !password)
       return res.status(400).json({ msg: "Not all fields have been entered." });
@@ -24,7 +25,16 @@ const createUser = async (req, res) => {
 
     const user = new User({
       firstName,
+      middleName,
       lastName,
+      gender,
+      phoneNumber,
+      nicNumber,
+      status,
+      department,
+      employmentDate,
+      baseSalary,
+      licenceNumber,
       email,
       password: passwordHash,
       status: "active",
@@ -32,6 +42,14 @@ const createUser = async (req, res) => {
     });
 
     await user.save();
+   /* emergencyContacts.forEach(contact => {
+      const EmContact= new emergencyContacts({
+        name:contact.name,
+        number:contact.number
+      })
+       await EmContact.save()
+    });*/
+      
 
     res.status(200).json({ msg: "User created succesfully" });
   } catch (err) {
