@@ -4,4 +4,6 @@ const { createmaintain } = require('../controllers/vehicemaintainController')
 
 const router = express.Router()
 
-router.post('/createMform', createmaintain)
+router.post('/createmainform', createmaintain)
+
+module.exports=router
