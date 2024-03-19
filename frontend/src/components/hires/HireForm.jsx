@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import {validateFormFirstPage, validateFormSecondPage} from './Validation';
+import axios from '@/api/axios';
 
 const Form = ({setShowForm }) => { 
   const [step, setStep] = useState(1);
@@ -83,7 +84,33 @@ const Form = ({setShowForm }) => {
   };
 
 
+//Retreve data
+useEffect(() => {
 
+  fetchVehicleData();
+}, [])
+
+const [vehcleTypes, setVehcleTypes] = useState(["Car", "Van", "Lorry" , "Bus"])
+const [vehcleSubTypes, setVehcleSubTypes] = useState(["Maruti" , "C200"])
+
+const fetchVehicleData = async () => {
+  try {
+    const response = await axios.get()
+    setVehcleTypes(response.data);
+    setVehcleSubTypes(response.data);
+  }
+  catch(error) {
+    console.error("Error Fetching Data from database: " , error)
+  }
+}
+
+/*
+{vehcleTypes.map(type) => (
+  <option key={type.id} value={type.name}>{type.name}</option>
+)}
+*/
+
+//Add data to database
 
 
   return (
@@ -147,10 +174,9 @@ const Form = ({setShowForm }) => {
                     className='border-2 rounded border-black px-14'
                     >
                         <option value="">Select......</option>
-                        <option value={"Car"}>Car</option>
-                        <option value={"van"}>Van</option>
-                        <option value={"Bus"}>Bus</option>
-                        <option value={"Lorry"}>Lorry</option>
+                        {vehcleTypes.map((type) => (
+                          <option key={type.id} value={type}>{type}</option>
+                        ))}
                     </select>
 
                     </div>
@@ -165,10 +191,9 @@ const Form = ({setShowForm }) => {
                     value={vehicleSubcategory} onChange={(e) => setVehicleSubcategory(e.target.value)} 
                     className='border-2 rounded border-black px-14'>
                         <option value="">Select......</option>
-                        <option value={"Car"}>Car</option>
-                        <option value={"van"}>Van</option>
-                        <option value={"Bus"}>Bus</option>
-                        <option value={"Lorry"}>Lorry</option>
+                        {vehcleSubTypes.map((type) => (
+                          <option key={type.id} value={type}>{type}</option>
+                        ))}
                     </select>
                     </div>
 

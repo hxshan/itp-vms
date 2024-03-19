@@ -10,8 +10,8 @@ const HireTable = () => {
     }
 
   return (
-    <div className="w-full h-full flex px-2 py-[20px] justify-center align-center xl:px-[60px] xl:py-[50px]">
-           <table className="w-full ">
+    <div className="w-full h-full flex px-2 py-[20px] justify-center align-center xl:px-[60px] xl:py-[50px] ">
+           <table className="w-full text-center ">
                     <thead className="border-b-2 border-black">
                         <tr>
                             <th className="px-4 py-2">Hire ID</th>
@@ -24,8 +24,8 @@ const HireTable = () => {
                     <tbody>
                         <tr className="border-b-2 border-black">
                             <td className="px-4 py-2">1</td>
-                            <td className="px-4 py-2">15/02/24</td>
-                            <td className="px-4 py-2">17/02/24</td>
+                            <td className="px-4 py-2">15/02/2024</td>
+                            <td className="px-4 py-2">17/02/2024</td>
                             <td className="px-4 py-2">Active</td>
                             <td className="px-4 py-4 flex justify-between items-baseline">
                                 <button 
