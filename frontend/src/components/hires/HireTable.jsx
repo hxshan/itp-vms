@@ -66,7 +66,7 @@ const HireTable = ({vehicleNo , setResults, results}) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {(vehicleNo ? results : hireData).map((hire) => 
+                    {(vehicleNo ? results : hireData).map((hire) => 
                             <tr key={hire.id} className="border-b-2 border-black">
                                 <td className="px-4 py-2">{hire.id}</td>
                                 <td className="px-4 py-2">{hire.vehicle}</td>
@@ -84,7 +84,6 @@ const HireTable = ({vehicleNo , setResults, results}) => {
                                 </td>
                             </tr>
                         )}
-
                     </tbody>
                 </table>
 
