@@ -32,4 +32,5 @@ const maintainSchema = mongoose.Schema(
     }
 ) 
 
-export const vehicleMaintain = mongoose.model('vehicleMaintain', maintainSchema)
+const vehicleMaintain = mongoose.model('vehicleMaintain', maintainSchema);
+module.exports = vehicleMaintain;
