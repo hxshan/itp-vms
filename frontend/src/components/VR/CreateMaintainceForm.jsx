@@ -4,7 +4,8 @@ import { useState } from 'react'
 export const CreateMaintainceForm = () => {
     const [files, setFiles] = useState([]);
     const [formdata, setFormdata] = useState({
-        type: 'vrcar',
+        //type change into vrtype
+        vrtype: 'vrcar',
         vrid: '',
         vrissue: '',
         vrcost: '',
@@ -15,7 +16,7 @@ export const CreateMaintainceForm = () => {
         if (e.target.id === 'vrcar' || e.target.id === 'vrvan' || e.target.id === 'vrbus' || e.target.id === 'vrmover') {
             setFormdata({
                 ...formdata,
-                type: e.target.id
+                vrtype: e.target.id
             })
         }
         if (e.target.id === 'vrid' || e.target.id === 'vrissue' || e.target.id === 'vrcost' ||  e.target.id === 'vraddit') {
