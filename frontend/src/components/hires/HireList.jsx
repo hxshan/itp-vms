@@ -1,5 +1,7 @@
 import HireTable from "./HireTable"
 import PropTypes from 'prop-types';
+import SearchHire from "./SearchHire";
+import { useState } from "react";
 
 
 const HireList = ({showForm ,setShowForm}) => {
@@ -9,6 +11,16 @@ const HireList = ({showForm ,setShowForm}) => {
         setShowForm: PropTypes.func.isRequired,
     };
 
+
+    //Handle Search function
+
+    const [vehicleNo , setVehicleNo] = useState('')
+    const [results, setResults] = useState([])
+
+    const handleSearch = (vehicle) => {
+        setVehicleNo(vehicle)
+    }
+
   return (
     <div className="w-full h-full flex bg-gray-200 px-[20px] py-[20px] justify-center items-center">
             <div className="w-full h-full bg-white">
@@ -16,14 +28,19 @@ const HireList = ({showForm ,setShowForm}) => {
                     <h1 className="text-2xl font-semibold">Hire List</h1>
                 </div>
 
-                <div className="pt-[10px]">
-                    <button className="px-4 py-2 text-white bg-black rounded-md hover:bg-gray-800 focus:outline-none" onClick={()=>{setShowForm(!showForm)}}>
-                        Add
+                <div className="flex justify-between items-baseline px-5 pt-5 xl:px-14">
+                    <SearchHire onSearch={handleSearch}/>
+
+                    <div className="pt-[10px]">
+                        <button className="px-4 py-2 text-white bg-black rounded-md hover:bg-gray-800 focus:outline-none" onClick={()=>{setShowForm(!showForm)}}>
+                            Add
                     </button>
                 </div>
 
+                </div>
 
-                <HireTable  />
+ 
+                <HireTable  vehicleNo = {vehicleNo} setResults = {setResults} results ={results}/>
             </div>
         </div>
     
