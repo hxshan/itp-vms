@@ -3,36 +3,64 @@ import useAxiosGet from "@/hooks/useAxiosGet";
 import { useEffect, useState } from "react";
 
 const CreateUserForm = () => {
+  //Api Hooks
+  const {
+    data: rolesData,
+    refetch: roleRefetch,
+  } = useAxiosGet("/user/getallroles");
+  const { status, error, isLoading, postData } = useAxiosPost();
+  //constants
   const emptyContact = {
     emergencyName: "",
     emergencyContact: "",
   };
 
-  const { status, error, isLoading, postData } = useAxiosPost();
-  const {
-    data: rolesData,
-    error: rolesError,
-    isLoading: rolesIsLoading,
-    refetch: roleRefetch,
-  } = useAxiosGet("/user/getallroles");
 
+  //states
   const [roles, setRoles] = useState([]);
-
-  useEffect(() => {
-    if (rolesData != null) setRoles(rolesData);
-  }, [rolesData]);
 
   const [personalInfo, setPersonalInfo] = useState({
     firstName: "",
     middleName: "",
     lastName: "",
     gender: "",
-    nicDocument: null,
+    dob:"",
+    phoneNumber:"",
     nicNumber: "",
-    phoneNumber: "",
+    role: "",
+    department: "",
+    empDate: "",
+    baseSal: "",
+    licenceNum: "",
+    status: "",
+    email: "",
+    password: "",
   });
+
+const[nicDocument,setNicDocument]=useState(null);
+const[licenceDoc,setLicenceDocument]=useState(null);
+
   const [currentForm, setCurrentForm] = useState(0);
   const [emergencyContacts, setEmergencyContacts] = useState([emptyContact]);
+
+  useEffect(() => {
+    if (rolesData != null) setRoles(rolesData);
+  }, [rolesData]);
+
+  const formPageIncrement=()=>{
+    if((personalInfo.firstName||personalInfo.lastName||personalInfo.gender||personalInfo.dob||personalInfo.phoneNumber||personalInfo.nicNumber) ==''){
+      alert("All feilds should be filled")
+      return
+    }
+    if(nicDocument == null){
+      alert("Please upload Nic Document")
+      return
+    }
+
+    setCurrentForm(currentForm+1)
+     
+  }
+
   const handlePersonalChange = (e) => {
     setPersonalInfo({
       ...personalInfo,
@@ -41,6 +69,7 @@ const CreateUserForm = () => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     // Handle form submission here
     //await postData("/user/createuser", );
   };
@@ -64,7 +93,7 @@ const CreateUserForm = () => {
   };
 
   return (
-    <div className="border-black border-2 bg-white shadow-md rounded flex flex-col items-center">
+    <div className="shadow-xl bg-white rounded flex flex-col items-center">
       <h2 className="font-bold text-3xl w-fit mt-10">Add New User</h2>
 
       <form onSubmit={handleSubmit} className="mt-6 px-8 pt-6 pb-8 mb-4 w-full">
@@ -87,6 +116,7 @@ const CreateUserForm = () => {
                 type="text"
                 name="firstName"
                 id="firstName"
+                required
               />
             </div>
             <div className="col-span-1 w-full flex flex-col mb-4 ">
@@ -119,6 +149,7 @@ const CreateUserForm = () => {
                 type="text"
                 name="lastName"
                 id="lastName"
+                required
               />
             </div>
             <div className="col-span-1 w-full flex flex-col mb-4 ">
@@ -133,6 +164,7 @@ const CreateUserForm = () => {
                 name="gender"
                 value={personalInfo.gender}
                 onChange={handlePersonalChange}
+                required
               >
                 <option value="">Select Gender </option>
                 <option value="Male">Male</option>
@@ -151,6 +183,9 @@ const CreateUserForm = () => {
                 type="date"
                 name="dob"
                 id="dob"
+                value={personalInfo.dob}
+                onChange={handlePersonalChange}
+                required
               />
             </div>
             <div className="col-span-1 w-full flex flex-col mb-4 ">
@@ -165,6 +200,9 @@ const CreateUserForm = () => {
                 type="text"
                 name="phoneNumber"
                 id="phoneNumber"
+                value={personalInfo.phoneNumber}
+                onChange={handlePersonalChange}
+                required
               />
             </div>
             <div className="col-span-1 w-full flex flex-col mb-4 ">
@@ -179,6 +217,9 @@ const CreateUserForm = () => {
                 type="text"
                 name="nicNumber"
                 id="nicNumber"
+                value={personalInfo.nicNumber}
+                onChange={handlePersonalChange}
+                required
               />
             </div>
             <div className="col-span-1 w-full flex flex-col mb-4 ">
@@ -193,6 +234,9 @@ const CreateUserForm = () => {
                 type="file"
                 name="nicDocument"
                 id="nicDocument"
+               
+                onChange={(e)=>{setNicDocument(e.target.files[0])}}
+                required
               />
             </div>
             <div className="grid grid-cols-2 col-span-2 w-full ">
@@ -226,6 +270,7 @@ const CreateUserForm = () => {
                         type="text"
                         name="emergencyName"
                         id={`emergencyName${index}`}
+                        required
                       />
                     </div>
                     <div className="col-span-1 w-full flex flex-col">
@@ -241,6 +286,7 @@ const CreateUserForm = () => {
                           type="text"
                           name="emergencyContact"
                           id={`emergencyContact${index}`}
+                          required
                         />
                         <button
                           className={index > 0 ? "bg-red-600 py-2 px-4 ml-2 rounded-md text-white font-bold " : "hidden"}
@@ -268,6 +314,8 @@ const CreateUserForm = () => {
               <select
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 name="role"
+                value={personalInfo.role}
+                onChange={handlePersonalChange}
               >
                 <option value="">Select Role</option>
                 <option value="admin">Administrator</option>
@@ -281,6 +329,8 @@ const CreateUserForm = () => {
                 type="text"
                 name="department"
                 id="department"
+                value={personalInfo.department}
+                onChange={handlePersonalChange}
               />
             </div>
             <div className="col-span-1 w-full flex flex-col mb-4">
@@ -290,6 +340,8 @@ const CreateUserForm = () => {
                 type="date"
                 name="empDate"
                 id="empDate"
+                value={personalInfo.empDate}
+                onChange={handlePersonalChange}
               />
             </div>
             <div className="col-span-1 w-full flex flex-col mb-4">
@@ -299,6 +351,9 @@ const CreateUserForm = () => {
                 type="text"
                 name="baseSal"
                 id="baseSal"
+                value={personalInfo.baseSal}
+                onChange={handlePersonalChange}
+                required
               />
             </div>
 
@@ -309,6 +364,9 @@ const CreateUserForm = () => {
                 type="text"
                 name="licenceNum"
                 id="licenceNum"
+                value={personalInfo.licenceNum}
+                onChange={handlePersonalChange}
+                required
               />
             </div>
             <div className="col-span-1 w-full flex flex-col mb-4">
@@ -318,6 +376,8 @@ const CreateUserForm = () => {
                 type="file"
                 name="licenceDoc"
                 id="licenceDoc"
+                onChange={(e)=>{setLicenceDocument(e.target.files[0])}}
+                required
               />
             </div>
 
@@ -326,6 +386,8 @@ const CreateUserForm = () => {
               <select
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 name="status"
+                value={personalInfo.status}
+                onChange={handlePersonalChange}
               >
                 <option value="">Select Status</option>
                 <option value="active">Active</option>
@@ -346,6 +408,8 @@ const CreateUserForm = () => {
                 type="email"
                 name="email"
                 id="email"
+                value={personalInfo.email}
+                onChange={handlePersonalChange}
               />
             </div>
             <div className="col-span-1 w-full flex flex-col mb-4">
@@ -355,6 +419,8 @@ const CreateUserForm = () => {
                 type="password"
                 name="password"
                 id="password"
+                value={personalInfo.password}
+                onChange={handlePersonalChange}
               />
             </div>
           </div>
@@ -362,9 +428,7 @@ const CreateUserForm = () => {
         <div className="w-full flex justify-end mt-4">
           <button
             type="button"
-            onClick={() => {
-              if (currentForm < 1) setCurrentForm(currentForm + 1);
-            }}
+            onClick={formPageIncrement}
             className={
               currentForm < 1
                 ? "bg-blue-600 py-2 px-6 rounded-md text-white font-bold "
@@ -386,7 +450,7 @@ const CreateUserForm = () => {
           </button>
 
           <button
-            type="button"
+            type="submit"
             onClick={() => {
               if (currentForm < 1) setCurrentForm(currentForm + 1);
             }}

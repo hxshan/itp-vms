@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import DriverDashboard from "./pages/driver/DriverDashboard";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import HireDashboard from "./pages/hires/HireDashboard";
-import {Login,Navbar} from "./pages/shared"
+import {Login,Navbar, TopBar} from "./pages/shared"
 import { useAuthContext } from "./hooks/useAuthContext";
 import { CreateMaintainceForm } from "./components/VR/CreateMaintainceForm";
 import AddVehicle from "./pages/vehicle/AddVehicle"
@@ -19,7 +19,8 @@ function App() {
     <QueryClientProvider client={queryClient}>   
      <main className="flex w-full">
      <Navbar/>
-      <div className={"ml-32 w-full mr-14 lg:ml-80"}>
+     <TopBar/>
+      <div className={"ml-32 w-full mr-14 mt-[90px] lg:ml-80"}>
         <Routes>        
           <Route path="/login" element={<Login/>}/>
           <Route path="/admin" element={<AdminDashboard/>}/>

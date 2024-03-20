@@ -60,7 +60,7 @@ const createUser = async (req, res) => {
 const getAllUsers = async(req,res)=>{
     try {
       
-        const users = await User.find();
+        const users = await User.find().populate('role');
     
         if (!users) {
           return res.json([{}]);

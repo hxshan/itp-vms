@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+
+
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState({
@@ -25,9 +27,11 @@ const Navbar = () => {
   };
 
   return (
-      <div className="fixed top-0 left-0 flex h-full w-20 lg:w-80">
-          <div className="h-screen bg-gray-800 text-white w-64 flex flex-col items-start ">
-
+      <div className="h-screen fixed z-10 top-0 left-0 flex w-20 lg:w-80">
+          <div className=" bg-gray-800 text-white w-64 h-full flex flex-col items-start ">
+            <div className='w-full h-[80px] bg-red-600 flex'>
+                
+            </div>
           <div className="relative">
                   <button className="w-full flex flex-row py-4 px-2 hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => toggleMenu('user')}>
                       User Management
