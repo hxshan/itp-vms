@@ -23,7 +23,7 @@ const SearchHire = ({onSearch}) => {
 
   return (
     <div className="">
-    <form className="border-2 border-black rounded-sm flex justify-between px-5 py-2" onSubmit={handleSubmit}>
+    <form className="border-[1px] border-black rounded-md flex justify-between px-5 py-2" onSubmit={handleSubmit}>
         <input
             type="text"
             placeholder="Search..."
