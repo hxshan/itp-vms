@@ -1,36 +1,35 @@
-import useAxiosGet from "@/hooks/useAxiosGet"
-import { useEffect, useState } from "react"
+import {useEffect,useState} from 'react'
+import useAxiosGet from '@/hooks/useAxiosGet'
 
-const EmployeeTable = () => {
-const columns=["Name","Email","Role","Status"]
+const RolesTable = () => {
 
-const [users,setUsers]=useState([])
-const {data:userData,error:userErr,isLoading:userIsLoading,refetch:userRefetch} = useAxiosGet('/user/getall')
+const [roles,setroles]=useState([])
+const {data:roleData,error:roleErr,isLoading:roleIsLoading,refetch:roleRefetch} = useAxiosGet('/user/getallroles')
 const [search,setSearch]=useState('')
 
 
 useEffect(()=>{
-  if(userData !=null)
-    setUsers(userData)
+  if(roleData !=null)
+    setroles(roleData)
   else
-    setUsers([])
-},[userData])
+    setroles([])
+},[roleData])
 
 
-  if(userIsLoading){
+  if(roleIsLoading){
     return(
       <p>Loading...</p>
     )
   }
-
+  
   return (
     <div className="w-full">
       <div className="w-full flex justify-between mb-4">
-        <h2 className="font-bold text-xl underline mb-4">User List</h2>
+        <h2 className="font-bold text-xl underline mb-4">Role List</h2>
         <div className="flex gap-4 w-fit">
           <button 
           className="w-[130px] bg-blue-600 p-1 px-1 rounded-lg shadow-md text-sm text-white font-bold">
-            Add user
+            Add Role
           </button>
           
           <input type="text" name="Search" 
@@ -45,31 +44,24 @@ useEffect(()=>{
     <table className="min-w-full divide-y divide-gray-200">
         <thead className="bg-gray-500">
           <tr>
-            {columns.map((col,index) => {
-              return <th className="px-6 py-3 text-left text-xs font-bold text-white uppercase tracking-wider" key={index}>{col}</th>
-            })}
+            <th className="relative px-6 py-3">
+              <span className="text-center text-xs font-bold text-white uppercase tracking-wider">Role</span>
+            </th>
             <th className="relative px-6 py-3">
               <span className="text-center text-xs font-bold text-white uppercase tracking-wider">Action</span>
             </th>
           </tr>
         </thead>
         <tbody>
-          {(users!=null && users.length>0)  ?(users.filter((user)=>{
+          {(roles!=null && roles.length>0)  ?(roles.filter((role)=>{
             return search.toLowerCase === ''? 
-            user:
-            user.firstName.toLowerCase().includes(search);
+            role:
+            role.name.toLowerCase().includes(search);
           })
           .map((row) => {
             return (
                 <tr className="bg-white border-t border-gray-200" key={row._id}>
-                  <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{row.firstName}</td>
-                  <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{row.email}</td>
-                  <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{row.role.name}</td>
-                  <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">
-                    <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
-                      {row.status?'Inactive':row.status}
-                    </span>
-                  </td>
+                  <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{row.name}</td>
                   <td className="px-6 py-2 whitespace-nowrap justify-between flex">
                     <button className="bg-yellow-300 text-white py-1 px-6 rounded-md">Edit</button>
                     <button className="bg-red-700 text-white py-1 px-6 rounded-md">Delete</button>
@@ -78,7 +70,7 @@ useEffect(()=>{
             );
           })):(
             <tr>
-              <td colSpan={columns.length}>No data available</td>
+              <td colSpan={roles.length}>No data available</td>
             </tr>
           )}
         </tbody>
@@ -87,7 +79,7 @@ useEffect(()=>{
       
     </div>
 
-  );
-};
+  )
+}
 
-export default EmployeeTable;
+export default RolesTable

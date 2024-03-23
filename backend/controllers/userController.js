@@ -8,7 +8,7 @@ const Role = require("../models/roleModel")
 
 const createUser = async (req, res) => {
   try {
-    const { firstName,middleName,lastName, email, password, role,gender,phoneNumber,emergencyContacts,nicNumber,status,department,employmentDate,baseSalary,licenceNumber} = req.body;
+    const {firstName,middleName,lastName, gender,dob,phoneNumber,nicNumber,role,department,empDate,baseSal,licenceNum,status,email,password,emergencyContacts} = req.body;
 
     if (!firstName || !lastName || !email || !password)
       return res.status(400).json({ msg: "Not all fields have been entered." });
@@ -23,37 +23,46 @@ const createUser = async (req, res) => {
     const salt = await bcrypt.genSalt();
     const passwordHash = await bcrypt.hash(password, salt);
 
+    //match front and back names
     const user = new User({
       firstName,
       middleName,
       lastName,
       gender,
+      dob,
       phoneNumber,
       nicNumber,
       status,
       department,
-      employmentDate,
-      baseSalary,
-      licenceNumber,
+      employmentDate:empDate,
+      baseSalary:baseSal,
+      licenceNumber:licenceNum,
       email,
       password: passwordHash,
       status: "active",
       role,
     });
 
-    await user.save();
-   /* emergencyContacts.forEach(contact => {
-      const EmContact= new emergencyContacts({
-        name:contact.name,
-        number:contact.number
-      })
-       await EmContact.save()
-    });*/
-      
+    try{
+      emergencyContacts.forEach(async (contact) => {
+        
+        const EmContact= new EmergencyContact({
+          name:contact.emergencyName,
+          number:contact.emergencyContact
+        })
+         let newContact =await EmContact.save()
+         user.emergencyContacts.push(newContact._id);
+      });
+    }catch(err){
+      res.status(500).json({ message: err.message });
+    }
 
-    res.status(200).json({ msg: "User created succesfully" });
+    await user.save();
+    
+    return res.status(200).json({ message: "User created succesfully" });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    console.log(err)
+    return res.status(500).json({ message: err.message });
   }
 };
 
@@ -91,5 +100,33 @@ const getAllRoles = async(req,res)=>{
       }
 }
 
+const addrole = async(req,res)=>{
+  try {
+    const {name,userPermissions,vehiclePermissions,vehicleMaintenencePermissions,HirePermissions,ContractPermissions,FinancePermissions}=req.body
 
-module.exports = {createUser,getAllUsers,getAllRoles };
+    if(name==='' || name ===null)res.status(501).json({message:"Role must be given a name"})
+
+    const roleExist = await Role.findOne({ name: name });
+
+    if (roleExist)
+      return res
+        .status(400)
+        .json({ message: "An Role with this name already exists." });
+
+    const role = new Role({
+      name,
+      userPermissions,
+      vehiclePermissions,
+      vehicleMaintenencePermissions,
+      HirePermissions,
+      ContractPermissions,
+      FinancePermissions
+    })
+    await role.save()
+    return res.status(200).json({ message: "Role created succesfully" });
+  }catch(err){
+    return res.status(500).json({ message: err.message });
+  }
+}
+
+module.exports = {createUser,getAllUsers,getAllRoles,addrole };

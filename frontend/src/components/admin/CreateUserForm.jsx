@@ -9,6 +9,7 @@ const CreateUserForm = () => {
     refetch: roleRefetch,
   } = useAxiosGet("/user/getallroles");
   const { status, error, isLoading, postData } = useAxiosPost();
+
   //constants
   const emptyContact = {
     emergencyName: "",
@@ -37,8 +38,8 @@ const CreateUserForm = () => {
     password: "",
   });
 
-const[nicDocument,setNicDocument]=useState(null);
-const[licenceDoc,setLicenceDocument]=useState(null);
+  const[nicDocument,setNicDocument]=useState(null);
+  const[licenceDoc,setLicenceDocument]=useState(null);
 
   const [currentForm, setCurrentForm] = useState(0);
   const [emergencyContacts, setEmergencyContacts] = useState([emptyContact]);
@@ -67,11 +68,20 @@ const[licenceDoc,setLicenceDocument]=useState(null);
       [e.target.name]: e.target.value,
     });
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const formData = {
+      ...personalInfo,
+      nicDocument: nicDocument,
+      licenceDoc: licenceDoc,
+      emergencyContacts: emergencyContacts
+  };
+
     // Handle form submission here
-    //await postData("/user/createuser", );
+    await postData("/user/createuser",formData);
+    if(error)console.log(error)
   };
 
   const AddContact = () => {
@@ -234,7 +244,6 @@ const[licenceDoc,setLicenceDocument]=useState(null);
                 type="file"
                 name="nicDocument"
                 id="nicDocument"
-               
                 onChange={(e)=>{setNicDocument(e.target.files[0])}}
                 required
               />
@@ -269,6 +278,8 @@ const[licenceDoc,setLicenceDocument]=useState(null);
                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                         type="text"
                         name="emergencyName"
+                        value={emergencyContacts[index].emergencyName}
+                        onChange={(e)=>{handleContactChange(index,e.target.name,e.target.value)}}
                         id={`emergencyName${index}`}
                         required
                       />
@@ -286,6 +297,8 @@ const[licenceDoc,setLicenceDocument]=useState(null);
                           type="text"
                           name="emergencyContact"
                           id={`emergencyContact${index}`}
+                          value={emergencyContacts[index].emergencyContact}
+                          onChange={(e)=>{handleContactChange(index,e.target.name,e.target.value)}}
                           required
                         />
                         <button
@@ -318,8 +331,13 @@ const[licenceDoc,setLicenceDocument]=useState(null);
                 onChange={handlePersonalChange}
               >
                 <option value="">Select Role</option>
-                <option value="admin">Administrator</option>
-                <option value="driver">Driver</option>
+                {
+                  roles.map((role)=>{
+                    return(
+                      <option key={role.name} value={role._id}>{role.name}</option>
+                    )
+                  })
+                }
               </select>
             </div>
             <div className="col-span-1 w-full flex flex-col mb-4">
@@ -451,9 +469,6 @@ const[licenceDoc,setLicenceDocument]=useState(null);
 
           <button
             type="submit"
-            onClick={() => {
-              if (currentForm < 1) setCurrentForm(currentForm + 1);
-            }}
             className={currentForm == 1 ? "bg-green-600 py-2 px-6 rounded-md text-white font-bold " : "hidden"}
           >
             Create
