@@ -1,19 +1,39 @@
 import React from 'react'
 import { useState } from 'react'
+import axios from 'axios';
 
 export const CreateMaintainceForm = () => {
     const [files, setFiles] = useState([]);
     const [formdata, setFormdata] = useState({
         //type change into vrtype
-        vrtype: 'vrcar',
+        vrtype: '',
         vrid: '',
         vrissue: '',
         vrcost: '',
         vraddit: '',
     });
+    const handleSubmit = () => {
+        // Assuming you want to submit formdata somewhere using Axios
+        axios.post('http://localhost:3000/api/vehiclemaintain/createmainform', formdata)
+            .then(response => {
+                console.log('Submission successful:', response);
+                // Optionally, you can reset the form after successful submission
+                setFormdata({
+                    vrtype: '',
+                    vrid: '',
+                    vrissue: '',
+                    vrcost: '',
+                    vraddit: '',
+                });
+            })
+            .catch(error => {
+                console.error('Error submitting form:', error);
+                // Handle errors here
+            });
+    };
 
     const handlechange = (e) => {
-        if (e.target.id === 'vrcar' || e.target.id === 'vrvan' || e.target.id === 'vrbus' || e.target.id === 'vrmover') {
+        if (e.target.id === 'Car' || e.target.id === 'Van' || e.target.id === 'Bus' || e.target.id === 'Mover'|| e.target.id === 'Lorry') {
             setFormdata({
                 ...formdata,
                 vrtype: e.target.id
@@ -26,9 +46,7 @@ export const CreateMaintainceForm = () => {
             })
         }
     }
-    const handleSubmit = ()=>{
-        
-    }
+    
 
     const handleImageSubmit = () => {
 
@@ -46,28 +64,34 @@ export const CreateMaintainceForm = () => {
                         <h1 className=' text-xl font-semibold m-5 text-center'>Vehicle Type</h1>
                         <div className="flex justify-evenly">
                             <div className="flex ">
-                                <input type="checkbox" id="vrcar" className='w-5'
+                                <input type="checkbox" id="Car" className='w-5'
                                     onChange={handlechange}
-                                    checked={formdata.type === 'vrcar'} />
+                                    checked={formdata.vrtype === 'Car'} />
                                 <span className='font-semibold ml-2'>Car</span>
                             </div>
                             <div className="flex ">
-                                <input type="checkbox" id="vrvan" className='w-5'
+                                <input type="checkbox" id="Van" className='w-5'
                                     onChange={handlechange}
-                                    checked={formdata.type === 'vrvan'} />
+                                    checked={formdata.vrtype === 'Van'} />
                                 <span className='font-semibold ml-2'>Van</span>
                             </div>
                             <div className="flex ">
-                                <input type="checkbox" id="vrbus" className='w-5'
+                                <input type="checkbox" id="Bus" className='w-5'
                                     onChange={handlechange}
-                                    checked={formdata.type === 'vrbus'} />
+                                    checked={formdata.vrtype === 'Bus'} />
                                 <span className='font-semibold ml-2'>Bus</span>
                             </div>
                             <div className="flex ">
-                                <input type="checkbox" id="vrmover" className='w-5'
+                                <input type="checkbox" id="Mover" className='w-5'
                                     onChange={handlechange}
-                                    checked={formdata.type === 'vrmover'} />
+                                    checked={formdata.vrtype === 'Mover'} />
                                 <span className='font-semibold ml-2'>Prime Mover</span>
+                            </div>
+                            <div className="flex ">
+                                <input type="checkbox" id="Lorry" className='w-5'
+                                    onChange={handlechange}
+                                    checked={formdata.vrtype === 'Lorry'} />
+                                <span className='font-semibold ml-2'>Lorry</span>
                             </div>
                         </div>
                         <div className='flex flex-col gap-5 mt-9'>
@@ -109,7 +133,6 @@ export const CreateMaintainceForm = () => {
                                 id='vraddit'
                                 placeholder='Additional Info'
                                 className='border p-4 rounded-lg'
-                                required
                                 onChange={handlechange}
                                 value={formdata.vraddit} />
                         </div>
@@ -140,7 +163,7 @@ export const CreateMaintainceForm = () => {
                         </div>
                     </div>
                 </form>
-                <button
+                <button onClick={handleSubmit}
                     className='hover:opacity-80 mt-10 bg-slate-800 p-3 rounded-lg text-white font-bold'>
                     Add To Maintaince List
                 </button>

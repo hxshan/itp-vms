@@ -8,6 +8,7 @@ import { useAuthContext } from "./hooks/useAuthContext";
 import { CreateMaintainceForm } from "./components/VR/CreateMaintainceForm";
 import AddVehicle from "./pages/vehicle/AddVehicle"
 import AddContract from "./pages/contract/AddContract";
+import { MaintainceDashboard } from "./pages/Maintains/MaintainceDashboard";
 
 
 function App() {
@@ -28,6 +29,8 @@ function App() {
           <Route path="/Contract/:id" element={<AddContract/>}/>
           <Route path="/Vrform" element={<CreateMaintainceForm/>}/>
           <Route path="/driver" element={<DriverDashboard />} />
+
+          <Route path="/Mdashboard" element={<MaintainceDashboard />} />
         </Routes>
         </div>
       </main>
