@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 const hireSchema = new mongoose.Schema({
+ 
   startDate: { 
     type: Date, 
     required: true 
@@ -65,6 +66,17 @@ const hireSchema = new mongoose.Schema({
     type: String, 
     required: true 
 },
+  estimatedTotal: {
+    type: Number,
+    required: true
+},
+  finalTotal: {
+    type: Number, 
+},
+  advancedPayment: {
+    type : Number,
+    required: true
+},
 });
 
-module.exports = mongoose.model('FormData', hireSchema);
+module.exports = mongoose.model('Hire', hireSchema);
