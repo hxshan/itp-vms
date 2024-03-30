@@ -1,8 +1,5 @@
-import useAxiosGet from "@/hooks/useAxiosGet"
-import {EmployeeTable,CreateUserForm, CreateRoleForm} from "../../components/admin/"
-import { useEffect, useState } from "react"
 
-
+import {UserTable,CreateUserForm} from "../../components/admin/"
 const AdminDashboard = () => {
 
 //console.log(users)
@@ -12,7 +9,7 @@ const AdminDashboard = () => {
     <div className="container mx-auto pb-10 min-h-full">
       <h1 className="text-2xl font-bold underline mt-4 mb-8">Dashboard</h1>
       <CreateUserForm/>
-      <EmployeeTable/>
+      <UserTable/>
      </div>
 
   )

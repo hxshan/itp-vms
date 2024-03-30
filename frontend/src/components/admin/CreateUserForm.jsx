@@ -1,16 +1,44 @@
 import useAxiosPost from "@/hooks/useAxiosPost";
 import useAxiosGet from "@/hooks/useAxiosGet";
 import useAxios from "@/hooks/useAxios";
+import axios from "@/api/axios";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const CreateUserForm = () => {
   //Api Hooks
-  const {
+  const [roleData,roleerror, loading, axiosFetch] = useAxios()
+  const [user,usererror, userloading, useraxiosFetch] = useAxios()
+  const navigate = useNavigate()
+  /*const {
     data: rolesData,
     refetch: roleRefetch,
   } = useAxiosGet("/role/");
+*/
+  //const { status, error, isLoading, postData } = useAxiosPost();
 
-  const { status, error, isLoading, postData } = useAxiosPost();
+  const getRoleData =()=>{
+    axiosFetch({
+     axiosInstance: axios,
+     method: "GET",
+     url: `/role/`,
+   });
+ }
+
+  useEffect(()=>{
+    getRoleData()
+  },[])
+
+  useEffect(()=>{
+    console.log(roleData)
+    /*if(error){
+      alert(error)
+      navigate('/admin')
+    }*/
+    if(roleData && roleData.length > 0){
+      setRoles(roleData)
+    }
+  },[roleData])
 
   //constants
   const emptyContact = {
@@ -46,9 +74,7 @@ const CreateUserForm = () => {
   const [currentForm, setCurrentForm] = useState(0);
   const [emergencyContacts, setEmergencyContacts] = useState([emptyContact]);
 
-  useEffect(() => {
-    if (rolesData != null) setRoles(rolesData);
-  }, [rolesData]);
+
 
   const formPageIncrement=()=>{
     if((personalInfo.firstName||personalInfo.lastName||personalInfo.gender||personalInfo.dob||personalInfo.phoneNumber||personalInfo.nicNumber) ==''){
@@ -82,8 +108,23 @@ const CreateUserForm = () => {
   };
 
     // Handle form submission here
-    await postData("/user/createuser",formData);
-    if(error)console.log(error)
+    useraxiosFetch({
+      axiosInstance:axios,
+      method:'POST',
+      url:'/user/',
+      requestConfig:{
+        data:{
+          ...formData
+        }
+      }
+    })
+    if(usererror){
+      alert(usererror)
+    }
+    if(user){
+      alert("user created succesfully")
+      navigate('/admin')
+    }
   };
 
   const AddContact = () => {

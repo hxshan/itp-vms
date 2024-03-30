@@ -20,16 +20,16 @@ const RolesTable = () => {
 
   const deleteData =async(e) => {
     e.preventDefault()
-    console.log(e.target.id)
-    await axiosFetch({
-      axiosInstance: axios,
-      method: "DELETE",
-      url: `/role/${e.target.id}`,
-    });
-
-    if(!error){
-      setReload(reload + 1);
-    } 
+    if(confirm("Are you sure you want to Delete the following")){
+      await axiosFetch({
+        axiosInstance: axios,
+        method: "DELETE",
+        url: `/role/${e.target.id}`,
+      });
+      if(!error){
+        setReload(reload + 1);
+      } 
+    }
   };
 
   useEffect(() => {
