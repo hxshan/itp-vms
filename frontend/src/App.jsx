@@ -4,7 +4,7 @@ import DriverDashboard from "./pages/driver/DriverDashboard";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import HireDashboard from "./pages/hires/HireDashboard";
 import {Login,Navbar} from "./pages/shared"
-import CaseFileForm from "./pages/EAM/CaseFileForm";
+import CaseFileForm from "./components/EAM/CaseFileForm";
 import { useAuthContext } from "./hooks/useAuthContext";
 import { CreateMaintainceForm } from "./components/VR/CreateMaintainceForm";
 import AddVehicle from "./pages/vehicle/AddVehicle"
