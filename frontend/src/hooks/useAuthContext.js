@@ -1,12 +1,11 @@
 import { AuthContext } from "../context/AuthContext";
-import { useContext } from "react";
+import { useContext ,useDebugValue} from "react";
 
 export const useAuthContext = () => {
-    const context = useContext(AuthContext)
+    const auth = useContext(AuthContext)
 
-    if(!context){
-        throw Error('must be used inside authcontext provider')
-    }
+    useDebugValue(auth, auth => auth?.user ? "Logged In" : "Logged Out")
 
-    return context
+
+    return useContext(auth)
 }
