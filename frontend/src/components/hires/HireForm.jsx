@@ -213,7 +213,7 @@ const fetchVehicleData = async () => {
                 <div className="mb-10 flex justify-start align-baseline">
 
                       <label htmlFor="airCondition" 
-                      className="block font-medium text-black mr-[10px] text-base mr-8">
+                      className="block font-medium text-black text-base mr-8">
                         Air Condition
                       </label>
 
@@ -344,7 +344,7 @@ const fetchVehicleData = async () => {
                   <div className="mb-6 flex justify-start align-baseline xl:mr-16">
 
                     <label htmlFor="tripType" 
-                    className="block font-medium text-black mr-[10px] text-base mr-8">
+                    className="block font-medium text-black text-base mr-8">
                       Round Trip
                     </label>
 
