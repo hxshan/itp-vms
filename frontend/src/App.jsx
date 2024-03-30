@@ -8,6 +8,8 @@ import { useAuthContext } from "./hooks/useAuthContext";
 import { CreateMaintainceForm } from "./components/VR/CreateMaintainceForm";
 import AddVehicle from "./pages/vehicle/AddVehicle"
 import AddContract from "./pages/contract/AddContract";
+import ContractDasbored from "./pages/contract/ContractDasbored";
+
 
 
 function App() {
@@ -17,7 +19,7 @@ function App() {
   return (
     <BrowserRouter>
     <QueryClientProvider client={queryClient}>   
-     <main className="flex w-full">
+     <main className="flex w-full h-screen">
      <Navbar/>
       <div className={"ml-32 w-full mr-14 lg:ml-80"}>
         <Routes>        
@@ -28,6 +30,7 @@ function App() {
           <Route path="/Contract/:id" element={<AddContract/>}/>
           <Route path="/Vrform" element={<CreateMaintainceForm/>}/>
           <Route path="/driver" element={<DriverDashboard />} />
+          <Route path="/Contract/Dashbored" element={<ContractDasbored/>}/>
         </Routes>
         </div>
       </main>

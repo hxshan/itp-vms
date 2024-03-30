@@ -121,4 +121,19 @@ const getContractbyID = async(req,res) =>{
   }
 }
 
-module.exports = {createContract,createClient,getContractbyID,getClientbyId}
+const getallContract = async(req,res) =>{
+  try{
+    const Contracts = await Contract.find({})
+    .populate({path:'clientID',select:'-password'});
+
+    if(!Contracts){
+      return res.status(301).json({"error":"No contracts available"});
+    }
+
+    return res.status(200).json(Contracts)
+  }catch(error){
+    return res.status(400).json({"error":error.message})
+  }
+}
+
+module.exports = {createContract,createClient,getContractbyID,getClientbyId,getallContract}

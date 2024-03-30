@@ -25,7 +25,7 @@ const Navbar = () => {
   };
 
   return (
-      <div className="fixed top-0 left-0 flex h-full w-20 lg:w-80">
+      <div className="fixed top-0 left-0 flex h-full w-20 lg:w-64">
           <div className="h-screen bg-gray-800 text-white w-64 flex flex-col items-start ">
 
           <div className="relative">
