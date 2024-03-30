@@ -10,8 +10,10 @@ import { useAuthContext } from "./hooks/useAuthContext";
 import { CreateMaintainceForm } from "./components/VR/CreateMaintainceForm";
 import AddVehicle from "./pages/vehicle/AddVehicle"
 import AddContract from "./pages/contract/AddContract";
+import ContractDasbored from "./pages/contract/ContractDasbored";
 import FinanaceDashboard from "./pages/finance/FinanaceDashboard";
 import {AdminDashboard,Roles,EditRoles} from "./pages/admin";
+
 
 function App() {
   const queryClient = new QueryClient();
@@ -20,7 +22,6 @@ function App() {
   return (
     <BrowserRouter>
     <QueryClientProvider client={queryClient}>   
-
      <main className="flex w-full">
      <Navbar/>
      <TopBar/>
@@ -38,8 +39,8 @@ function App() {
           <Route path="/Contract/:id" element={<AddContract/>}/>
           <Route path="/Vrform" element={<CreateMaintainceForm/>}/>
           <Route path="/driver" element={<DriverDashboard />} />
+          <Route path="/Contract/Dashbored" element={<ContractDasbored/>}/>
           <Route path = "/finance" element ={<FinanaceDashboard />} />
-        
         </Routes>
         </div>
      </main>
