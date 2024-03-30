@@ -71,6 +71,22 @@ const addHire = async (req, res) => {
   }
 }
 
+const editHire = async (req, res) => {
+  const { id } = req.params;
+  const { startDate, endDate, vehicleType, vehicleSubcategory, passengerCount, airCondition, vehicle, driver, startPoint, endPoint, tripType, distence, cusName, cusEmail, cusMobile, cusNic, estimatedTotal, finalTotal, advancedPayment } = req.body;
+  try {
+    const hire = await Hire.findByIdAndUpdate(id, { startDate, endDate, vehicleType, vehicleSubcategory, passengerCount, airCondition, vehicle, driver, startPoint, endPoint, tripType, distence, cusName, cusEmail, cusMobile, cusNic, estimatedTotal, finalTotal, advancedPayment }, { new: true });
+    if (!hire) {
+      return res.status(404).json({ message: 'Hire not found' });
+    }
+    res.json({ message: 'Hire updated successfully', hire });
+  } catch (error) {
+    console.error('Error updating hire:', error);
+    res.status(500).json({ message: 'Error updating hire', error: error.message });
+  }
+};
+
+
 const deleteHire = async (req, res) => {
   try {
     const hireId = req.params.id;
@@ -89,4 +105,4 @@ const deleteHire = async (req, res) => {
 
 
 
-module.exports = {addHire, fetchHires, deleteHire}
+module.exports = {addHire, fetchHires,editHire, deleteHire}
