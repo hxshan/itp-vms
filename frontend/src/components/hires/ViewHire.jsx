@@ -57,7 +57,7 @@ const ViewHire = ({setViewHire , viewHireData}) => {
                 <h1 className="text-2xl underline font-bold text-center mb-5">Payment info</h1>
 
                 
-                <p className=' text-lg font-semibold leading-8'>Status : &nbsp;&nbsp; {viewHireData.cusNic}</p>
+                <p className=' text-lg font-semibold leading-8'>Status : &nbsp;&nbsp; {viewHireData.hireStatus}</p>
                 <p className=' text-lg font-semibold leading-8'>Estimated Total : &nbsp;&nbsp; {viewHireData.estimatedTotal}</p>
                 <p className=' text-lg font-semibold leading-8'>Advanced Payment : &nbsp;&nbsp; {viewHireData.advancedPayment}</p>
                 <p className={`text-lg font-semibold leading-8 ${viewHireData.finalTotal === null ? 'hidden' : 'block' }`}>Final Total : &nbsp;&nbsp; {viewHireData.finalTotal}</p>

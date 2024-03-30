@@ -77,7 +77,7 @@ const HireTable = ({ vehicleNo, setResults, results }) => {
                             <td className="px-4 py-2">{hire.vehicle}</td>
                             <td className="px-4 py-2">{new Date(hire.startDate).toLocaleDateString()}</td>
                             <td className="px-4 py-2">{new Date(hire.endDate).toLocaleDateString()}</td>
-                            <td className="px-4 py-2">{hire.Status}</td>
+                            <td className="px-4 py-2">{hire.hireStatus}</td>
                             <td className="px-4 py-4 flex justify-between items-baseline">
                                 <button
                                     className="px-2 py-1 bg-[#D4D800] text-white rounded-md mr-2"

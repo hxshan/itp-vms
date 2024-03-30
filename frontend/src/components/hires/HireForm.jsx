@@ -47,7 +47,8 @@ const Form = ({setShowForm }) => {
     cusName, cusEmail, cusMobile, cusNic,
     estimatedTotal: 0,
     finalTotal: null,
-    advancedPayment: 0
+    advancedPayment: 0,
+    hireStatus: "Pending"
   }
 
   //Handle Submit
