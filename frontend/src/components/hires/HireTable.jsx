@@ -13,6 +13,7 @@ const HireTable = ({vehicleNo , setResults, results}) => {
 
     const [hireData, setHireData] = useState([{
         id : 0,
+        Status: "",
         startDate: new Date(),
         endDate: new Date(),
         vehicleType: "",
@@ -28,7 +29,10 @@ const HireTable = ({vehicleNo , setResults, results}) => {
         cusName: "",
         cusEmail: "",
         cusMobile: "",
-        cusNic: ""
+        cusNic: "",
+        estimatedTotal:0,
+        advancedPayment:0 ,
+        finalTotal: 0
     }])
 
     useEffect(() => {
@@ -72,7 +76,7 @@ const HireTable = ({vehicleNo , setResults, results}) => {
                                 <td className="px-4 py-2">{hire.vehicle}</td>
                                 <td className="px-4 py-2">{new Date(hire.startDate).toLocaleDateString()}</td>
                                 <td className="px-4 py-2">{new Date(hire.endDate).toLocaleDateString()}</td>
-                                <td className="px-4 py-2">Active</td>
+                                <td className="px-4 py-2">{hire.Status}</td>
                                 <td className="px-4 py-4 flex justify-between items-baseline">
                                     <button 
                                     className="px-2 py-1 bg-[#D4D800] text-white rounded-md mr-2"

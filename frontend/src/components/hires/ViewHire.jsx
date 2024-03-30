@@ -53,6 +53,17 @@ const ViewHire = ({setViewHire , viewHireData}) => {
 
               </div>
 
+              <div className='mr-[20px]'>
+                <h1 className="text-2xl underline font-bold text-center mb-5">Payment info</h1>
+
+                
+                <p className=' text-lg font-semibold leading-8'>Status : &nbsp;&nbsp; {viewHireData.cusNic}</p>
+                <p className=' text-lg font-semibold leading-8'>Estimated Total : &nbsp;&nbsp; {viewHireData.estimatedTotal}</p>
+                <p className=' text-lg font-semibold leading-8'>Advanced Payment : &nbsp;&nbsp; {viewHireData.advancedPayment}</p>
+                <p className={`text-lg font-semibold leading-8 ${viewHireData.finalTotal === null ? 'hidden' : 'block' }`}>Final Total : &nbsp;&nbsp; {viewHireData.finalTotal}</p>
+
+              </div>
+
               <div className='mr-[20px] mt-10 flex justify-between items-baseline'>  
                 <button className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md mr-4 " onClick={cancel}>Cancel</button> 
                 <button className="px-7 py-2 bg-[#0E6300] text-white rounded-md mr-4">Edit</button>
