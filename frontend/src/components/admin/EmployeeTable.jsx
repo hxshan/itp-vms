@@ -1,23 +1,25 @@
+import useAxios from "@/hooks/useAxios";
+import axios from "@/api/axios";
 import useAxiosGet from "@/hooks/useAxiosGet"
 import { useEffect, useState } from "react"
 
 const EmployeeTable = () => {
 const columns=["Name","Email","Role","Status"]
-
-const [users,setUsers]=useState([])
-const {data:userData,error:userErr,isLoading:userIsLoading,refetch:userRefetch} = useAxiosGet('/user/getall')
 const [search,setSearch]=useState('')
+const [users, error, loading, axiosFetch] = useAxios()
 
-
+const getData = ()=>{
+    axiosFetch({
+      axiosInstance:axios,
+      method:'GET',
+      url:'/user/getall'
+    })
+}
 useEffect(()=>{
-  if(userData !=null)
-    setUsers(userData)
-  else
-    setUsers([])
-},[userData])
+  getData()
+},[])
 
-
-  if(userIsLoading){
+  if(loading){
     return(
       <p>Loading...</p>
     )

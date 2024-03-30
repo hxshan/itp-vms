@@ -118,6 +118,28 @@ const roleSchema = new Schema({
             required:true
         }
     },
+    EmergencyPermissions:{
+        Create:{
+            type:Boolean,
+            default:false,
+            required:true
+        },
+        Read:{
+            type:Boolean,
+            default:false,
+            required:true
+        },
+        Update:{
+            type:Boolean,
+            default:false,
+            required:true
+        },
+        Delete:{
+            type:Boolean,
+            default:false,
+            required:true
+        }
+    },
     FinancePermissions:{
         Create:{
             type:Boolean,

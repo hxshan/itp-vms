@@ -7,7 +7,7 @@ const CreateUserForm = () => {
   const {
     data: rolesData,
     refetch: roleRefetch,
-  } = useAxiosGet("/user/getallroles");
+  } = useAxiosGet("/role/");
   const { status, error, isLoading, postData } = useAxiosPost();
 
   //constants

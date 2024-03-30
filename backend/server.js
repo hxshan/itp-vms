@@ -12,12 +12,14 @@ app.use(coookieParser())
 const PORT = process.env.PORT || 3000;
 
 const userRoutes = require('./routes/userRoutes')
+const roleRoutes = require('./routes/roleRoutes')
 const vehicleRoutes = require('./routes/vehicleRoutes')
 const authRoutes = require('./routes/authRoutes')
 const {notFound,errorHandler} = require('./middleware/errorMiddleware')
 
 app.use('/api/auth',authRoutes)
 app.use('/api/user',userRoutes)
+app.use('/api/role',roleRoutes)
 app.use('/api/vehicle',vehicleRoutes)
 
 app.use(notFound)
