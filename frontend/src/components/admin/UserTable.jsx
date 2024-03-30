@@ -1,9 +1,8 @@
 import useAxios from "@/hooks/useAxios";
 import axios from "@/api/axios";
-import useAxiosGet from "@/hooks/useAxiosGet"
 import { useEffect, useState } from "react"
 
-const EmployeeTable = () => {
+const UserTable = () => {
 const columns=["Name","Email","Role","Status"]
 const [search,setSearch]=useState('')
 const [users, error, loading, axiosFetch] = useAxios()
@@ -12,7 +11,7 @@ const getData = ()=>{
     axiosFetch({
       axiosInstance:axios,
       method:'GET',
-      url:'/user/getall'
+      url:'/user/'
     })
 }
 useEffect(()=>{
@@ -22,6 +21,11 @@ useEffect(()=>{
   if(loading){
     return(
       <p>Loading...</p>
+    )
+  }
+  if(error){
+    return(
+      <p>Unexpected Error has occured!</p>
     )
   }
 
@@ -92,4 +96,4 @@ useEffect(()=>{
   );
 };
 
-export default EmployeeTable;
+export default UserTable;
