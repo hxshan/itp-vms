@@ -12,9 +12,11 @@ const PORT = process.env.PORT || 3000;
 const userRoutes = require('./routes/userRoutes')
 const vehicleRoutes = require('./routes/vehicleRoutes')
 const {notFound,errorHandler} = require('./middleware/errorMiddleware')
+const hireRoutes = require('./routes/hireRoutes')
 
 app.use('/api/user',userRoutes)
 app.use('/api/vehicle',vehicleRoutes)
+app.use('/api/hire', hireRoutes)
 
 app.use(notFound)
 app.use(errorHandler)
