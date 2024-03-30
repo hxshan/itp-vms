@@ -1,47 +1,99 @@
-const TourVehicle = require('../models/vehicleModel')
-const Vehicle = require('../models/vehicleModel')
+
+const {Vehicles} = require('../models/vehicleModel')
 const path = require('path')
 const fs = require('fs')
-const {v4: uuid} = require('uuid')
 const HttpError = require ('../models/errorModel')
 
 //POST:api/vehicle
-const addVehicle = async (req,res,next) => {
+const addVehicle = async (req, res, next) => {
+
     try {
-        let {category,vehicleType,vehicleRegister,vehicleManuYear} = req.body;
-        if(!category || !vehicleType || !vehicleRegister || !vehicleManuYear){
-            return next (new HttpError("Fill in  all fields.", 422))
-        }  
-        
-        const newVehicle = await Vehicle.create({category,vehicleType,vehicleRegister,vehicleManuYear})
-            if(!newVehicle){
-                    return next(new HttpError("Vehicle couldn't be created." , 422))
+        let { category } = req.body;
+
+        if (category === 'car' || category === 'van' || category === 'bus' ) {
+         const { vehicleType, vehicleRegister,vehicleModel,vehicleManuYear,engineCap,lastMileage,vehicleColour,vehicleGearSys,airCon,numOfSeats,lugSpace,gps,fridge,tv,licEndDate,insEndDate} = req.body;
+    
+            const newVehicle = await Vehicles.create({ category,vehicleType, vehicleRegister,vehicleModel,vehicleManuYear,engineCap,lastMileage,vehicleColour,vehicleGearSys,airCon,numOfSeats,lugSpace,gps,fridge,tv,licEndDate,insEndDate});
+            if (!newVehicle) {
+                return next(new HttpError("Vehicle couldn't be created.", 422));
             }
-               
+             res.status(201).json(newVehicle);
+  
+
+        } else if (category === 'lorry') {
+            const { vehicleType, vehicleRegister,vehicleModel,vehicleManuYear,engineCap,lastMileage,vehicleWeight,cargoCapacity,cargoArea,vehicleGearSys,airCon,numOfSeats,gps,licEndDate,insEndDate } = req.body;
+            
+
+        
+            const newVehicle = await Vehicles.create({ category,vehicleType, vehicleRegister,vehicleModel,vehicleManuYear,engineCap,lastMileage,vehicleWeight,cargoCapacity,cargoArea,vehicleGearSys,airCon,numOfSeats,gps,licEndDate,insEndDate});
+            if (!newVehicle) {
+                return next(new HttpError("Vehicle couldn't be created.", 422));
+            }
+
             res.status(201).json(newVehicle);
-           
+
+
+
+        } else if (category === 'truck') {
+
+            const {  vehicleType, vehicleRegister,vehicleModel,vehicleManuYear,engineCap,lastMileage,vehicleWeight,cargoCapacity,trailerLength,passengerCabin,vehicleGearSys,airCon,numOfSeats,gps,fridge,tv,licEndDate,insEndDate } = req.body;
+            const newVehicle = await Vehicles.create({ category,vehicleType, vehicleRegister,vehicleModel,vehicleManuYear,engineCap,lastMileage,vehicleWeight,cargoCapacity,trailerLength,passengerCabin,vehicleGearSys,airCon,numOfSeats,gps,fridge,tv,licEndDate,insEndDate });
+            if (!newVehicle) {
+
+                return next(new HttpError("Vehicle couldn't be created.", 422));
+            }
+
+            res.status(201).json(newVehicle);
+
+        } else {
+            return next(new HttpError("Invalid category.", 422));
+        }
+        
     } catch (error) {
-        return next (new HttpError(error))
+        return next(new HttpError(error.message));
     }
-}
+};
+
+
 
 //PATCH:api/vehicle
 const editVehicle = async (req,res,next) => {
     try {
-        
         const vehicleId = req.params.id;
-        let {category,vehicleType,vehicleRegister,vehicleManuYear} = req.body;
+        let {category} = req.body;
 
-        if(!category || !vehicleType || !vehicleRegister || !vehicleManuYear){
-            return next(new HttpError("Fill in the all feild."),422)
+        if(category === 'car' || category === 'van' || category === 'bus'){
+            let{vehicleType, vehicleRegister,vehicleModel,vehicleManuYear,engineCap,lastMileage,vehicleColour,vehicleGearSys,airCon,numOfSeats,lugSpace,gps,fridge,tv,licEndDate,insEndDate,availability,status} = req.body
+
+            updatedVehicle = await Vehicles.findByIdAndUpdate(vehicleId,{category,vehicleType, vehicleRegister,vehicleModel,vehicleManuYear,engineCap,lastMileage,vehicleColour,vehicleGearSys,airCon,numOfSeats,lugSpace,gps,fridge,tv,licEndDate,insEndDate,availability,status}, {new: true})
+            if(!updatedVehicle){
+                return next(new HttpError("Couldn;t update Vehicle.",400))
+            }
+
+            res.status(200).json(updatedVehicle)
         }
 
-        updatedVehicle = await Vehicle.findByIdAndUpdate(vehicleId,{category,vehicleType,vehicleRegister,vehicleManuYear}, {new: true})
-        if(!updatedVehicle){
-            return next(new HttpError("Couldn;t update Vehicle.",400))
+        if(category === 'lorry' ){
+            let{vehicleType, vehicleRegister,vehicleModel,vehicleManuYear,engineCap,lastMileage,vehicleWeight,cargoCapacity,cargoArea,vehicleGearSys,airCon,numOfSeats,gps,licEndDate,insEndDate,availability,status} = req.body
+
+            updatedVehicle = await Vehicles.findByIdAndUpdate(vehicleId,{category,vehicleType, vehicleRegister,vehicleModel,vehicleManuYear,engineCap,lastMileage,vehicleWeight,cargoCapacity,cargoArea,vehicleGearSys,airCon,numOfSeats,gps,licEndDate,insEndDate,availability,status}, {new: true})
+            if(!updatedVehicle){
+                return next(new HttpError("Couldn;t update Vehicle.",400))
+            }
+
+            res.status(200).json(updatedVehicle)
         }
 
-        res.status(200).json(updatedVehicle)
+        if(category === 'truck' ){
+            let{vehicleType, vehicleRegister,vehicleModel,vehicleManuYear,engineCap,lastMileage,vehicleWeight,cargoCapacity,trailerLength,passengerCabin,vehicleGearSys,airCon,numOfSeats,gps,fridge,tv,licEndDate,insEndDate,availability,status} = req.body
+
+            updatedVehicle = await Vehicles.findByIdAndUpdate(vehicleId,{category,vehicleType, vehicleRegister,vehicleModel,vehicleManuYear,engineCap,lastMileage,vehicleWeight,cargoCapacity,trailerLength,passengerCabin,vehicleGearSys,airCon,numOfSeats,gps,fridge,tv,licEndDate,insEndDate,availability,status}, {new: true})
+            if(!updatedVehicle){
+                return next(new HttpError("Couldn;t update Vehicle.",400))
+            }
+
+            res.status(200).json(updatedVehicle)
+        }
         
     } catch (error) {
         return next (new HttpError(error)) 
@@ -55,10 +107,10 @@ const deleteVehicle = async (req,res,next) => {
         if(!vehicleId){
             return next(new HttpError("Vehicle unavailable.",400))
         }
-        const vehicle = await Vehicle.findById(vehicleId);
+        
 
-       
-        await Vehicle.findByIdAndDelete(vehicleId);    
+       await Vehicles.findByIdAndDelete(vehicleId);    
+ 
         
         res.json(`Vehicle ${vehicleId} deleted successfully.`)
 
@@ -67,21 +119,41 @@ const deleteVehicle = async (req,res,next) => {
     }
 }
 
-//GET:api/vehicle
-const getVehicle = async (req,res,next) => {
+
+const getVehicle = async (req, res, next) => {
     try {
         const vehicleId = req.params.id;
-        const vehicle = await Vehicle.findById(vehicleId);
+        
+        // Determine the type of vehicle based on its _id
+        const vehicles = await Vehicles.findById(vehicleId);
+    
 
-        if(!vehicle){
-            return next (new HttpError("Vehicle not found."),404)
+        // Check if any of the vehicles are found
+        if (!vehicles) {
+            return next(new HttpError("Vehicle not found.", 404));
         }
-        res.status(200).json(vehicle);
+        
+        else
+            res.status(200).json(vehicles);
+        
+    } catch (error) {
+        return next(new HttpError(error));
+    }
+}
+
+
+
+//GET:api/vehicles
+const getVehicles = async (req, res, next) => {
+    try {
+        const vehicles = await Vehicles.find().sort({updatedAt: -1})
+        res.status(200).json(vehicles)
         
     } catch (error) {
         return next (new HttpError(error))
     }
 }
 
-module.exports = {addVehicle,editVehicle,deleteVehicle,getVehicle}
+
+module.exports = {addVehicle,editVehicle,deleteVehicle,getVehicle,getVehicles}
 

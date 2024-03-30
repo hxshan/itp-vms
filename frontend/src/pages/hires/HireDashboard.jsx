@@ -10,7 +10,7 @@ const HireDashboard = () => {
     const [showForm , setShowForm] = useState(false)
 
     return (
-        <div className="container">
+        <div className="container py-7 px-7">
             {showForm ? (
             <HireForm showForm={showForm} setShowForm={setShowForm} />) : (
             <HireList showForm={showForm} setShowForm={setShowForm} />)}
