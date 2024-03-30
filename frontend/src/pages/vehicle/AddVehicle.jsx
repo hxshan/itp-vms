@@ -56,15 +56,16 @@ const AddVehicle = () => {
         console.log(formState)
 
         try {
-          const response = await axios.post(`http://165.22.213.22:3000/api/vehicle/`, formState)
+          const response = await axios.post(`http://localhost:3000/api/vehicle/`, formState)
           const newVehicle = await response.data;
           console.log(newVehicle);
           
           if(!newVehicle){
-           setError("Couldn't register user.Please try again.")
+           setError("Couldn't add Vehicle.Please try again.")
           }
          
-          navigate('/add_vehicle');
+          alert("Add vehicle successfully.");
+          setFormState(initialFormState);
    
         } catch (err) {
            setError(err.response.data.message)

@@ -18,9 +18,7 @@ const addVehicle = async (req, res, next) => {
                 return next(new HttpError("Vehicle couldn't be created.", 422));
             }
              res.status(201).json(newVehicle);
-         
-                
-          
+  
 
         } else if (category === 'lorry') {
             const { vehicleType, vehicleRegister,vehicleModel,vehicleManuYear,engineCap,lastMileage,vehicleWeight,cargoCapacity,cargoArea,vehicleGearSys,airCon,numOfSeats,gps,licEndDate,insEndDate } = req.body;
