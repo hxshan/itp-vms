@@ -13,6 +13,7 @@ const userRoutes = require('./routes/userRoutes')
 const vehicleRoutes = require('./routes/vehicleRoutes')
 const {notFound,errorHandler} = require('./middleware/errorMiddleware')
 
+
 app.use('/api/user',userRoutes)
 app.use('/api/vehicle',vehicleRoutes)
 

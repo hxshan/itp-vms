@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useNavigate} from 'react-router-dom'
+import axios from 'axios'
 import { CarForm } from '../../components/vehicle/';
 import { VanForm } from '../../components/vehicle/';
 import { BusForm } from '../../components/vehicle/';
@@ -6,7 +8,7 @@ import { LorryForm } from '../../components/vehicle/';
 import { TruckForm } from '../../components/vehicle/';
 
 const AddVehicle = () => {
-    const [formState, setFormState] = useState({
+    const initialFormState= {
         category: '',
         vehicleType: '',
         vehicleRegister: '',
@@ -32,23 +34,49 @@ const AddVehicle = () => {
         vehicleBookImage: null,
         vehicleLicenceImage: null,
         vehicleInsuImage: null
-    });
+    }
+    
+    const [formState, setFormState] = useState(initialFormState);
+    const [error,setError] = useState('')
+    const navigate = useNavigate;
 
     const handleCategoryChange = (event) => {
-        setFormState({ ...formState, category: event.target.value });
+        setFormState({ ...formState,initialFormState, category: event.target.value });
     };
 
-    const handleSubmit = () => {
-        // Handle form submission logic here
-        console.log('Form submitted:', formState);
+    const resetForm = () => {
+        setFormState(initialFormState);
+        setError('');
     };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+        setError('')
+
+        console.log(formState)
+
+        try {
+          const response = await axios.post(`http://165.22.213.22:3000/api/vehicle/`, formState)
+          const newVehicle = await response.data;
+          console.log(newVehicle);
+          
+          if(!newVehicle){
+           setError("Couldn't register user.Please try again.")
+          }
+         
+          navigate('/add_vehicle');
+   
+        } catch (err) {
+           setError(err.response.data.message)
+        }
+     }
 
     return (
         <div className="place-content-center m-8 bg-cover bg-center bg-white">
             <h1 className="text-lg font-bold">Add Vehicle Details</h1>
             
 
-            <form className="space-y-2 m-3 p-3  bg-slate-200 rounded-md pad">
+            <form className="space-y-2 m-3 p-3  bg-slate-200 rounded-md pad" onSubmit={handleSubmit}>
             <p class="text-sm text-red-600 leading-relaxed">
             - Before adding a vehicle, please ensure you have all the necessary information at hand. This includes vehicle details such as registration number, model, manufacturing year, and more.
             </p>
@@ -72,8 +100,8 @@ const AddVehicle = () => {
                 </select>
             </form>
             {formState.category && (
-                <form className="m-3 p-3  bg-slate-200 rounded-md pad">
-                    <p className='mb-3 p-3 font-medium text-sm text-black bg-red-400 rounded-md pad'>This is an error.</p>
+                <form className="m-3 p-3  bg-slate-200 rounded-md pad" onSubmit={handleSubmit}>
+                    {error &&<p className='mb-3 p-3 font-medium text-sm text-black bg-red-400 rounded-md pad'>{error}</p>}
                     {/* Render appropriate form based on selected category */}
                     {formState.category === 'car' && <CarForm formState={formState} setFormState={setFormState} />}
                     {formState.category === 'van' && <VanForm formState={formState} setFormState={setFormState} />}
@@ -88,8 +116,8 @@ const AddVehicle = () => {
                         </div>
 
                         <div>
-                            <button className= "m-1 p-2 bg-black text-zinc-50 rounded-md" type="reset">Reset</button>
-                            <button className= "m-1 p-2 bg-black text-zinc-50 rounded-md" type="button" onClick={handleSubmit}>Add vehicle</button>
+                            <button className= "m-1 p-2 bg-black text-zinc-50 rounded-md" onClick={resetForm}>Reset</button>
+                            <button className= "m-1 p-2 bg-black text-zinc-50 rounded-md" type="submit" >Add vehicle</button>
                         </div>
                     </div>
                 </form>
