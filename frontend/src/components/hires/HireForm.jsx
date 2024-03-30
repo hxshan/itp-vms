@@ -66,8 +66,9 @@ const Form = ({setShowForm }) => {
     setShowForm(false)
   }
   
-  const handleNextStep = () => {
-    
+  const handleNextStep = (e) => {
+    e.preventDefault()
+
     let errors = {};
     if(step == 1) {
       
