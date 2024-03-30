@@ -1,58 +1,132 @@
-import React, {useState,useEffect} from 'react';
+import React, { useState } from 'react';
+import { FaCalendarAlt } from 'react-icons/fa';
 import TripCard from './UpcomingTrip';
 import TripDetailCard from './TripDetailCard';
-import StartTripForm from './StartTripForm';
+import useAxiosGet from '@/hooks/useAxiosGet';
 
-
-const  Dashboard = () => {
-    const upcomingTrip = {
-      customerName: 'Ramla',
-      contact: '1234579',
-      vehicleName: 'Toyota Prius',
-      vehicleNumber: 'ABC 123',
-      pickupLocation: 'No 55 park road',
-      destination: 'Airport',
+const Dashboard = () => {
+  const [upcomingTrips, setUpcomingTrips] = useState([
+    {
+      id: 101,
+      customerName: 'Alice',
+      contact: '987654321',
+      vehicleName: 'Ford Mustang',
+      vehicleNumber: 'DEF 456',
+      pickupLocation: 'Some Street',
+      destination: 'Mall',
       startDate: '2024-03-17',
-      startTime: '11:00:00',
-    };
-  
-    const trip = {
-      date: 'March 13, 2024',
-      pickupLocation: 'Main Street',
-      destination: 'Airport',
-      startTime: '10:00 AM',
-      vehicleName: 'Toyota Camry',
-      vehicleNumber: 'ABC 123',
-    };
-  
-    const driverName = 'kamala';
-    const [showStartTripForm, setShowStartTripForm] = useState(false);
-  
-    const handleStartTrip = () => {
-      setShowStartTripForm(true);
-    };
-  
-    return (
-      <div>
-       
-       
-       
-          <div>
-            <div className='flex right mt-14 mb-14 ml-10 mr-10'>
-              <TripCard {...upcomingTrip} />
-            </div>
-            <div className='flex right ml-10 mr-10 mt-4 mb-4'>
-              <h2> Your Upcoming Trips</h2>
-            </div>
-            <div> <TripDetailCard trip={trip} /></div>
-  
-          </div>
-       
-      
-      </div>
-    );
-  };
-   
-  export default Dashboard;
+      startTime: '17:30',
+    },
+    {
+      id: 101,
+      customerName: 'Alice',
+      contact: '987654321',
+      vehicleName: 'Ford Mustang',
+      vehicleNumber: 'DEF 456',
+      pickupLocation: 'Some Street',
+      destination: 'Mall',
+      startDate: '2024-03-15',
+      startTime: '10:30',
+    },
+    {
+      id: 101,
+      customerName: 'Alice',
+      contact: '987654321',
+      vehicleName: 'Ford Mustang',
+      vehicleNumber: 'DEF 456',
+      pickupLocation: 'Some Street',
+      destination: 'Mall',
+      startDate: '2024-03-15',
+      startTime: '10:30',
+    },
+  ]);
+  const [pastTrips, setPastTrips] = useState([
+    {
+      id: 101,
+      customerName: 'Alice',
+      contact: '987654321',
+      vehicleName: 'Ford Mustang',
+      vehicleNumber: 'DEF 456',
+      pickupLocation: 'Some Street',
+      destination: 'Mall',
+      startDate: '2024-03-15',
+      startTime: '10:30',
+    },
+    {
+      id: 101,
+      customerName: 'Alice',
+      contact: '987654321',
+      vehicleName: 'Ford Mustang',
+      vehicleNumber: 'DEF 456',
+      pickupLocation: 'Some Street',
+      destination: 'Mall',
+      startDate: '2024-03-15',
+      startTime: '10:30',
+    },
+    {
+      id: 101,
+      customerName: 'Alice',
+      contact: '987654321',
+      vehicleName: 'Ford Mustang',
+      vehicleNumber: 'DEF 456',
+      pickupLocation: 'Some Street',
+      destination: 'Mall',
+      startDate: '2024-03-15',
+      startTime: '10:30',
+    },
+  ]);
 
-  
+  // Select the very next trip
+  const nextTrip = upcomingTrips.length > 0 ? upcomingTrips[0] : null;
+
+  return (
+    <div className="container mx-auto">
+      
+        
+      <div className="flex flex-col items-start ml-10 mt-4 ">
+          <div>
+            {nextTrip ? (
+              <TripCard key={nextTrip.id} {...nextTrip} />
+            ) : (
+              <p>No upcoming trips</p>
+            )}
+          </div>
+     </div>
+        
+     <div className="flex flex-col lg:flex-row lg:justify-between">
+  <div className="lg:w-1/2 lg:ml-10 mr-4">
+    <div className="flex flex-col items-start mt-4 mb-4">
+      <div className="flex items-center">
+        <FaCalendarAlt className="text-gray-500 mr-2" />
+        <h2 className="text-xl lg:text-2xl font-bold">Your Upcoming Trips</h2>
+      </div>
+      <div className="max-h-96 overflow-y-auto scrollbar-thin scrollbar-thumb-blue-400 scrollbar-track-gray-200 mt-2">
+        {upcomingTrips.map((trip) => (
+          <TripDetailCard key={trip.id} trip={trip} />
+        ))}
+      </div>
+    </div>
+  </div>
+
+  <div className="lg:w-1/2 lg:ml-4 mt-4 lg:mt-0">
+    <div className="flex flex-col items-start mt-4 mb-4">
+      <div className="flex items-center">
+        <FaCalendarAlt className="text-gray-500 mr-2" />
+        <h2 className="text-xl lg:text-2xl font-bold">Your Past Trips</h2>
+      </div>
+      <div className="max-h-96 overflow-y-auto scrollbar-thin scrollbar-thumb-blue-400 scrollbar-track-gray-200 mt-2">
+        {pastTrips.map((trip) => (
+          <TripDetailCard key={trip.id} trip={trip} />
+        ))}
+      </div>
+    </div>
+  </div>
+</div>
+
+
+      
+    </div>
+  );
+};
+
+export default Dashboard;

@@ -1,87 +1,36 @@
-const {Schema,model} = require('mongoose')
+const mongoose = require('mongoose')
 
-const testVehicle = new Schema({
-    category : {type:String,required:true},
+const VehicleSchema = new mongoose.Schema({
+    category : {type:String},
     vehicleType : {type:String},
-    vehicleRegister : {type:String,required:true},
-    vehicleManuYear : {type:Number,required:true},
-})
-
-// const tourVehicleSchema = new Schema({
-//     category : {type:String,required:true},
-//     vehicleType : {type:String},
-//     vehicleRegister : {type:String,required:true},
-//     vehicleModel : {type:String,required:true},
-//     vehicleManuYear : {type:Number,required:true},
-//     engineCap : {type:Number,required:true},
-//     lastMileage : {type:Number,required:true},
-//     vehicleColour : {type:String,required:true},
-//     vehicleGearSys : {type:String,required:true},
-//     airCon : {type:String,required:true},
-//     numOfSeats : {type:Number,required:true},
-//     lugSpace : {type:Number,required:true},
-//     gps : {type:String,required:true},
-//     fridge : {type:String,default:"no"},
-//     tv : {type:String, default:"no"},
-//     licEndDate : {type:Number,required:true},
-//     insEndDate : {type:Number,required:true},
-//     vehicleBookImage : {type:String,required:true},
-//     vehicleLicenceImage : {type:String,required:true},
-//     vehicleInsuImage : {type:String,required:true},
-//     availability : {type:String},
-// },{timestamps:true})
-
-// const lorrySchema = new Schema ({
-//     category : {type:String,required:true},
-//     vehicleType : {type:String,required:true},
-//     vehicleRegister : {type:String,required:true},
-//     vehicleModel : {type:String,required:true},
-//     vehicleManuYear : {type:Number,required:true},
-//     engineCap : {type:Number,required:true},
-//     lastMileage : {type:Number,required:true},
-//     vehicleWeight : {type:Number,required:true},
-//     cargoCapacity : {type:Number,required:true},
-//     cargoArea : {type:String,required:true},
-//     vehicleGearSys : {type:String,required:true},
-//     airCon : {type:String,required:true},
-//     numOfSeats : {type:Number,required:true},
-//     gps : {type:String,required:true},
-//     licEndDate : {type:Number,required:true},
-//     insEndDate : {type:Number,required:true},
-//     vehicleBookImage : {type:String},
-//     vehicleLicenceImage : {type:String},
-//     vehicleInsuImage : {type:String},
-//     availability : {type:String},
-// },{timestamps:true})
-
-// const truckSchema = new Schema ({
-//     category : {type:String,required:true},
-//     vehicleType : {type:String, required:true},
-//     vehicleRegister : {type:String,required:true},
-//     vehicleModel : {type:String,required:true},
-//     vehicleManuYear : {type:Number,required:true},
-//     engineCap : {type:Number,required:true},
-//     lastMileage : {type:Number,required:true},
-//     vehicleWeight : {type:Number,required:true},
-//     cargoCapacity : {type:Number,required:true},
-//     trailerLength : {type:Number,required:true},
-//     passengerCabin : {type:String,required:true},
-//     vehicleGearSys : {type:String,required:true},
-//     airCon : {type:String,required:true},
-//     numOfSeats : {type:Number,required:true},
-//     gps : {type:String, default:"no"},
-//     fridge : {type:String, default:"no"},
-//     tv : {type:String,  default:"no"},
-//     licEndDate : {type:Number,required:true},
-//     insEndDate : {type:Number,required:true},
-//     vehicleBookImage : {type:String,required:true},
-//     vehicleLicenceImage : {type:String,required:true},
-//     vehicleInsuImage : {type:String,required:true},
-//     availability : {type:String},
-// },{timestamps:true})
+    vehicleRegister : {type:String},
+    vehicleModel : {type:String},
+    vehicleManuYear : {type:Number},
+    engineCap : {type:Number},
+    lastMileage : {type:Number},
+    vehicleColour : {type:String},
+    vehicleGearSys : {type:String},
+    vehicleWeight : {type:Number},
+    cargoCapacity : {type:Number},
+    cargoArea : {type:String},
+    trailerLength : {type:Number},
+    passengerCabin : {type:String},
+    airCon : {type:String},
+    numOfSeats : {type:Number},
+    lugSpace : {type:Number},
+    gps : {type:String},
+    fridge : {type:String, default:'No'},
+    tv : {type:String, default:'No'},
+    licEndDate : {type:Date},
+    insEndDate : {type:Date},
+    vehicleBookImage : {type:String},
+    vehicleLicenceImage : {type:String},
+    vehicleInsuImage : {type:String},
+    availability : {type:String},
+    status:{type:String}
+},{timestamps:true})
 
 
-// module.exports = model("TourVehicle",tourVehicleSchema)
-// module.exports = model("Lorry",lorrySchema)
-// module.exports = model("Truck",truckSchema)
-module.exports = model("Vehicle",testVehicle)
+const Vehicles = mongoose.model('Vehicles',VehicleSchema)
+
+module.exports = {Vehicles}

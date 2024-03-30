@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+
+import  { useState } from 'react';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState({
@@ -25,9 +26,11 @@ const Navbar = () => {
   };
 
   return (
-      <div className="fixed top-0 left-0 flex h-full w-20 lg:w-64">
-          <div className="h-screen bg-gray-800 text-white w-64 flex flex-col items-start ">
-
+      <div className="h-screen fixed z-10 top-0 left-0 flex w-20 lg:w-80">
+          <div className=" bg-gray-800 text-white w-64 h-full flex flex-col items-start ">
+            <div className='w-full h-[80px] bg-red-600 flex'>
+                
+            </div>
           <div className="relative">
                   <button className="w-full flex flex-row py-4 px-2 hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => toggleMenu('user')}>
                       User Management
@@ -80,7 +83,7 @@ const Navbar = () => {
                   </button>
                   {isOpen.hire && (
                       <div className="ml-6">
-                          <button className="w-full py-2 px-4 hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => handleItemClick('Hire Management', 'Sub Fun')}>Sub Fun</button>
+                          <button className="w-full py-2 px-4 hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => handleItemClick('Hire Management', 'Sub Fun')}>Add Hire</button>
                           <button className="w-full py-2 px-4 hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => handleItemClick('Hire Management', 'Sub Fun')}>Sub Fun</button>
                           <button className="w-full py-2 px-4 hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => handleItemClick('Hire Management', 'Sub Fun')}>Sub Fun</button>
                       </div>
@@ -92,11 +95,11 @@ const Navbar = () => {
                      Emergency Management
                      
                   </button>
-                  {isOpen.contract && (
+                  {isOpen.emergency && (
                       <div className="ml-6">
-                          <button className="w-full py-2 px-4 hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => handleItemClick('Emergency Management', 'Sub Fun')}>Sub Fun</button>
-                          <button className="w-full py-2 px-4 hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => handleItemClick('Emergency Management', 'Sub Fun')}>Sub Fun</button>
-                          <button className="w-full py-2 px-4 hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => handleItemClick('Emergency Management', 'Sub Fun')}>Sub Fun</button>
+                          <button className="w-full py-2 px-4 hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => handleItemClick('Emergency Management', 'Sub Fun')}>Create Case File</button>
+                          <button className="w-full py-2 px-4 hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => handleItemClick('Emergency Management', 'Sub Fun')}>Edit Case File</button>
+                          <button className="w-full py-2 px-4 hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => handleItemClick('Emergency Management', 'Sub Fun')}>View Case File Logs</button>
                       </div>
                   )}
               </div>
@@ -106,7 +109,7 @@ const Navbar = () => {
                     Contract Management
                     
                   </button>
-                  {isOpen.emergency && (
+                  {isOpen.contract && (
                       <div className="ml-6">
                           <button className="w-full py-2 px-4 hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => handleItemClick('Contract Management', 'Sub Fun')}>Sub Fun</button>
                           <button className="w-full py-2 px-4 hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => handleItemClick('Contract Management', 'Sub Fun')}>Sub Fun</button>
