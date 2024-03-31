@@ -4,11 +4,12 @@ import ViewHire from "./ViewHire";
 import PropTypes from 'prop-types'
 import axios from "@/api/axios";
 
-const HireTable = ({ vehicleNo, setResults, results }) => {
+const HireTable = ({ vehicleNo,searchType, setResults, results }) => {
 
     HireTable.propTypes = {
         setResults: PropTypes.func.isRequired,
         vehicleNo: PropTypes.string.isRequired,
+        searchType: PropTypes.string.isRequired,
         results: PropTypes.array.isRequired
     };
 
@@ -38,11 +39,17 @@ const HireTable = ({ vehicleNo, setResults, results }) => {
 
     // Search function
     useEffect(() => {
-        const result = hireData.filter((hire) =>
-            hire.vehicle.toLowerCase().includes(vehicleNo.toLowerCase())
-        );
+        const result = hireData.filter((hire) => {
+            if (searchType === 'vehicleNumber') {
+                return hire.vehicle.toLowerCase().includes(vehicleNo.toLowerCase());
+            } else if (searchType === 'customerMobile') {
+                return hire.cusMobile.includes(vehicleNo);
+            }
+            return false;
+        });
         setResults(result);
-    }, [hireData, vehicleNo, setResults]);
+    }, [hireData, vehicleNo, searchType, setResults]);
+    
 
     // Handle Delete
     const deleteHire = async (id) => {
@@ -62,10 +69,10 @@ const HireTable = ({ vehicleNo, setResults, results }) => {
             <table className="w-full text-center ">
                 <thead className="border-b-2 border-black">
                     <tr>
-                        <th className="px-4 py-2">Hire ID</th>
                         <th className="px-4 py-2">Vehicle No</th>
                         <th className="px-4 py-2">Start Date</th>
                         <th className="px-4 py-2">End Date</th>
+                        <th className="px-4 py-2">Cus Mobile</th>
                         <th className="px-4 py-2">Status</th>
                         <th className="px-4 py-2">Actions</th>
                     </tr>
@@ -73,10 +80,10 @@ const HireTable = ({ vehicleNo, setResults, results }) => {
                 <tbody>
                     {(vehicleNo ? results : hireData).map((hire) =>
                         <tr key={hire._id} className="border-b-2 border-black">
-                            <td className="px-4 py-2">{hire._id}</td>
                             <td className="px-4 py-2">{hire.vehicle}</td>
                             <td className="px-4 py-2">{new Date(hire.startDate).toLocaleDateString()}</td>
                             <td className="px-4 py-2">{new Date(hire.endDate).toLocaleDateString()}</td>
+                            <td className="px-4 py-2">{hire.cusMobile}</td>
                             <td className="px-4 py-2">{hire.hireStatus}</td>
                             <td className="px-4 py-4 flex justify-between items-baseline">
                                 <button
