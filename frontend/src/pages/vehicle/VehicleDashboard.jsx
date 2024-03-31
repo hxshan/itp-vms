@@ -1,9 +1,9 @@
 import useAxiosGet from "@/hooks/useAxiosGet"
-import {EmployeeTable,CreateUserForm} from "../../components/admin/"
+import {EmployeeTable,CreateUserForm} from "../../components/admin"
 import { useEffect, useState } from "react"
 import { Navbar } from "../shared"
 
-const AdminDashboard = () => {
+const VehicleDashboard = () => {
 
     const columns =["Name ","Email","IDK foreal","something","Actions"]
     const [users,setUsers]=useState([])
@@ -26,4 +26,4 @@ const AdminDashboard = () => {
   )
 }
 
-export default AdminDashboard
+export default VehicleDashboard

@@ -12,6 +12,18 @@ const addVehicle = async (req, res, next) => {
 
         if (category === 'car' || category === 'van' || category === 'bus' ) {
          const { vehicleType, vehicleRegister,vehicleModel,vehicleManuYear,engineCap,lastMileage,vehicleColour,vehicleGearSys,airCon,numOfSeats,lugSpace,gps,fridge,tv,licEndDate,insEndDate} = req.body;
+            
+            if(!vehicleRegister || !vehicleModel || !vehicleManuYear || !engineCap || !lastMileage || !vehicleGearSys){
+                return next(new HttpError("Please fill all feiled under Performance.", 400))
+            }
+
+            if(!airCon || !numOfSeats || !lugSpace || !gps){
+                return next(new HttpError("Please fill all feiled under Features.", 400))
+            }
+
+            if(!licEndDate || !insEndDate){
+                return next(new HttpError("Please fill all feiled under Documentary.", 400))
+            }
     
             const newVehicle = await Vehicles.create({ category,vehicleType, vehicleRegister,vehicleModel,vehicleManuYear,engineCap,lastMileage,vehicleColour,vehicleGearSys,airCon,numOfSeats,lugSpace,gps,fridge,tv,licEndDate,insEndDate});
             if (!newVehicle) {
@@ -22,8 +34,18 @@ const addVehicle = async (req, res, next) => {
 
         } else if (category === 'lorry') {
             const { vehicleType, vehicleRegister,vehicleModel,vehicleManuYear,engineCap,lastMileage,vehicleWeight,cargoCapacity,cargoArea,vehicleGearSys,airCon,numOfSeats,gps,licEndDate,insEndDate } = req.body;
-            
 
+            if(!vehicleType || !vehicleRegister || !vehicleModel || !vehicleManuYear || !engineCap || !lastMileage || !vehicleGearSys ||!vehicleWeight || !cargoArea || !cargoArea){
+                return next(new HttpError("Please fill all feiled under Performance.", 400))
+            }
+
+            if(!airCon || !numOfSeats || !gps){
+                return next(new HttpError("Please fill all feiled under Features.", 400))
+            }
+
+            if(!licEndDate || !insEndDate){
+                return next(new HttpError("Please fill all feiled under Documentary.", 400))
+            }
         
             const newVehicle = await Vehicles.create({ category,vehicleType, vehicleRegister,vehicleModel,vehicleManuYear,engineCap,lastMileage,vehicleWeight,cargoCapacity,cargoArea,vehicleGearSys,airCon,numOfSeats,gps,licEndDate,insEndDate});
             if (!newVehicle) {
@@ -37,6 +59,20 @@ const addVehicle = async (req, res, next) => {
         } else if (category === 'truck') {
 
             const {  vehicleType, vehicleRegister,vehicleModel,vehicleManuYear,engineCap,lastMileage,vehicleWeight,cargoCapacity,trailerLength,passengerCabin,vehicleGearSys,airCon,numOfSeats,gps,fridge,tv,licEndDate,insEndDate } = req.body;
+
+            if(!vehicleType || !vehicleRegister || !vehicleModel || !vehicleManuYear || !engineCap || !lastMileage || !vehicleGearSys ||!vehicleWeight || !trailerLength || !cargoCapacity){
+                return next(new HttpError("Please fill all feiled under Performance.", 400))
+            }
+
+            if(!airCon || !numOfSeats || !gps || !passengerCabin || !fridge || !tv){
+                return next(new HttpError("Please fill all feiled under Features.", 400))
+            }
+
+            if(!licEndDate || !insEndDate){
+                return next(new HttpError("Please fill all feiled under Documentary.", 400))
+            }
+
+
             const newVehicle = await Vehicles.create({ category,vehicleType, vehicleRegister,vehicleModel,vehicleManuYear,engineCap,lastMileage,vehicleWeight,cargoCapacity,trailerLength,passengerCabin,vehicleGearSys,airCon,numOfSeats,gps,fridge,tv,licEndDate,insEndDate });
             if (!newVehicle) {
 
