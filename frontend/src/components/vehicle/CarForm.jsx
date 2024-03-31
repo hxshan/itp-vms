@@ -30,24 +30,24 @@ const CarForm = ({ formState, setFormState }) => {
             </select>
             <div className='flex flex-row'>
     <label className='ml-2 mr-1 font-semibold text-base' htmlFor="vehicleRegister">Register Number:</label>
-    <input className='mr-8 pl-2 pr-2 ' type="text" id="vehicleRegister" name="vehicleRegister" value={formState.vehicleRegister} onChange={handleChange} required/>
+    <input className='mr-8 pl-2 pr-2 ' type="text" id="vehicleRegister" name="vehicleRegister" value={formState.vehicleRegister} onChange={handleChange} />
 
     <label className='ml-2 mr-1 font-semibold text-base' htmlFor="vehicleModel">Model Number:</label>
-    <input className='mr-8 pl-2 pr-2 ' type="text" id="vehicleModel" name="vehicleModel" value={formState.vehicleModel} onChange={handleChange} required/>
+    <input className='mr-8 pl-2 pr-2 ' type="text" id="vehicleModel" name="vehicleModel" value={formState.vehicleModel} onChange={handleChange} />
 
     <label className='ml-2 mr-1 font-semibold text-base' htmlFor="vehicleManuYear">Year of Manufactured:</label>
-    <input className='mr-8 pl-2 pr-2' type="text" id="vehicleManuYear" name="vehicleManuYear" value={formState.vehicleManuYear} onChange={handleChange} required/>
+    <input className='mr-8 pl-2 pr-2' type="text" id="vehicleManuYear" name="vehicleManuYear" value={formState.vehicleManuYear} onChange={handleChange} />
     </div>  
 
     <div>
     <label className='ml-2 mr-2 font-semibold text-base' htmlFor="engineCap">Engine Capacity:</label>
-    <input className='mr-12 pl-2 pr-2' type="number" id="engineCap" name="engineCap" value={formState.engineCap} onChange={handleChange} placeholder='0cc' required/>
+    <input className='mr-12 pl-2 pr-2' type="number" id="engineCap" name="engineCap" value={formState.engineCap} onChange={handleChange} placeholder='0cc' />
 
     <label className='ml-2 mr-2 font-semibold text-base' htmlFor="lastMileage">Last Mileage:</label>
-    <input className='mr-12 pl-2 pr-2' type="number" id="lastMileage" name="lastMileage" value={formState.lastMileage} onChange={handleChange} required/>
+    <input className='mr-12 pl-2 pr-2' type="number" id="lastMileage" name="lastMileage" value={formState.lastMileage} onChange={handleChange} />
 
     <label className='ml-2 mr-2 font-semibold text-base' htmlFor="vehicleGearSys">Vehicle Transmisstion:</label>
-    <select className='mr-12 pl-2 pr-2' id="vehicleGearSys" name="vehicleGearSys" value={formState.vehicleGearSys} onChange={handleChange} required>
+    <select className='mr-12 pl-2 pr-2' id="vehicleGearSys" name="vehicleGearSys" value={formState.vehicleGearSys} onChange={handleChange} >
                 <option value="">Select</option>
                 <option value="auto">Auto</option> 
                 <option value="manual">Manual</option>                
@@ -60,10 +60,10 @@ const CarForm = ({ formState, setFormState }) => {
             </div>
     <div>
     <label className='ml-2 mr-2 font-semibold text-base' htmlFor="vehicleColour">Colour of Vehicle:</label>
-    <input className='mr-12 pl-2 pr-2' type="text" id="vehicleColour" name="vehicleColour" value={formState.vehicleColour} onChange={handleChange} required/>
+    <input className='mr-12 pl-2 pr-2' type="text" id="vehicleColour" name="vehicleColour" value={formState.vehicleColour} onChange={handleChange} />
 
     <label className='ml-2 mr-2 font-semibold text-base' htmlFor="airCon">Air Condition:</label>
-    <select className='mr-12 pl-2 pr-2' id="airCon" name="airCon" value={formState.airCon} onChange={handleChange} required>
+    <select className='mr-12 pl-2 pr-2' id="airCon" name="airCon" value={formState.airCon} onChange={handleChange} >
                 <option value="">Select</option>
                 <option value="yes">Yes</option> 
                 <option value="no">No</option>                
@@ -72,15 +72,15 @@ const CarForm = ({ formState, setFormState }) => {
 
     <div>
     <label className='ml-2 mr-2 font-semibold text-base' htmlFor="numOfSeats">Number of Seats without Driver:</label>
-    <input className='mr-12 pl-2 pr-2' type="number" id="numOfSeats" name="numOfSeats" value={formState.numOfSeats} onChange={handleChange} required/>
+    <input className='mr-12 pl-2 pr-2' type="number" id="numOfSeats" name="numOfSeats" value={formState.numOfSeats} onChange={handleChange} />
 
     <label className='ml-2 mr-2 font-semibold text-base' htmlFor="lugSpace">Vehicle Luggage Space:</label>
-    <input className='mr-12 pl-2 pr-2' type="number" id="lugSpace" name="lugSpace" value={formState.lugSpace} onChange={handleChange} required/>
+    <input className='mr-12 pl-2 pr-2' type="number" id="lugSpace" name="lugSpace" value={formState.lugSpace} onChange={handleChange} />
     </div>
 
     <div>
     <label className='ml-2 mr-2 font-semibold text-base' htmlFor="gps">GPS :</label>
-    <select className='mr-12 pl-2 pr-2' id="gps" name="gps" value={formState.gps} onChange={handleChange} required>
+    <select className='mr-12 pl-2 pr-2' id="gps" name="gps" value={formState.gps} onChange={handleChange} >
                 <option value="">Select</option>
                 <option value="available">Available</option> 
                 <option value="no">No</option>                
@@ -94,10 +94,10 @@ const CarForm = ({ formState, setFormState }) => {
             </div>
     <div>
     <label className='ml-2 mr-2 font-semibold text-base' htmlFor="licEndDate">Vehicle Licence End Date:</label>
-    <input className='mr-12 pl-2 pr-2' type="date" id="licEndDate" name="licEndDate" value={formState.licEndDate} onChange={handleChange} required/>
+    <input className='mr-12 pl-2 pr-2' type="date" id="licEndDate" name="licEndDate" value={formState.licEndDate} onChange={handleChange} />
 
     <label className='ml-2 mr-2 font-semibold text-base' htmlFor="insEndDate">Vehicle Insurance End Date:</label>
-    <input className='mr-12 pl-2 pr-2' type="date" id="insEndDate" name="insEndDate" value={formState.insEndDate} onChange={handleChange} required/>
+    <input className='mr-12 pl-2 pr-2' type="date" id="insEndDate" name="insEndDate" value={formState.insEndDate} onChange={handleChange} />
     </div>
 
     <div> 
