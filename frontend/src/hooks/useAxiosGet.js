@@ -12,9 +12,12 @@ const useAxiosGet = (apiUrl) => {
     const fetchData = useCallback(async(url) => {
         setIsLoading(true);
         try{
+            console.log('here')
             const response= await axios.get(url)
+            
             if(response.data != null)
                 setData(response.data)
+            console.log(response.data)
         }catch(error){
             setError(error.message)
             setData(error.message)

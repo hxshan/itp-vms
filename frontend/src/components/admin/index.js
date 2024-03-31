@@ -1,7 +1,13 @@
 import CreateUserForm from "./CreateUserForm";
-import EmployeeTable from "./EmployeeTable";
+import UserTable from "./UserTable";
+import CreateRoleForm from "./CreateRoleForm";
+import RolesTable from "./RolesTable";
+import EditRoleForm from "./EditRoleForm";
 
 export {
+    EditRoleForm,
+    RolesTable,
+    CreateRoleForm,
     CreateUserForm,
-    EmployeeTable
+    UserTable
 }

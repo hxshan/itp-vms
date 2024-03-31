@@ -9,12 +9,12 @@ const useLogin = () => {
     const [isLoading, setIsLoading] = useState(null);
     const { dispatch } = useAuthContext();
 
-    const login = async (email, password,url) => {
+    const login = async (email, password) => {
         setIsLoading(true);
         setError(null);
         try {
           const response = await axios.post(
-            url,
+            '/auth/login',
             JSON.stringify({ email, password}),
             {
               headers: { "Content-Type": "application/json" },
