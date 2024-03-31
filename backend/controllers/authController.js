@@ -8,7 +8,7 @@ const login = async (req,res)=>{
 
     if(!email||!password) return res.status(400).json({message:'All felds must be filled'})
 
-    const user =await User.findOne({email}).exec()
+    const user =await User.findOne({email}).populate('role').exec()
 
     if(!user || user.status=='inactive') return res.status(401).json({message:'Unauthorized'})
 
@@ -35,23 +35,16 @@ const login = async (req,res)=>{
         process.env.REFRESH_SECRET,
         {expiresIn:'1d'}
     )
-
-    res.cookie('jwt',refreshToken,{
-        httpOnly:true,
-        secure:true,
-        sameSite:'None',
-        maxAge:7*24*60*60*1000 //7days
-    })
-
-    return res.json({accessToken})
+    const permissions = user.role
+    return res.status(200).json({accessToken,refreshToken,permissions})
 }
 
 const refresh = (req,res) =>{
-    const cookies = req.cookies
-
+    const cookie = req.cookies;
+    console.log(cookie)
     if(!cookie.jwt) return res.status(401).json({message:'Unauthorized'})
 
-    const refreshToken = cookies.jwt
+    const refreshToken = cookie.jwt
 
     jwt.verify(
         refreshToken,
@@ -82,8 +75,8 @@ const refresh = (req,res) =>{
 }
 
 const logout = (req,res) =>{
-    const cookies = req.cookies
-    if(!cookies.jwt) return res.sendStatus(204)
+    const cookie = req.cookies
+    if(!cookie.jwt) return res.sendStatus(204)
     res.clearCookie('jwt',{httpOnly:true,sameSite:None,secure:true})
     res.json({message:'cookie cleared'})
 

@@ -1,32 +1,37 @@
+import { useContext, useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useLogin } from "@/hooks/useLogin";
 
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import useLogin from "../../hooks/useLogin";
 
 const Login = () => {
+  const navigate = useNavigate();
+  const {login,error,isLoading}=useLogin()
 
-    const navigate = useNavigate()
-
+  //const from = location.state?.from?.pathname || "/admin"
   const [email, setEmail] = useState("");
   const [pwd, setPwd] = useState("");
-  const {error,isLoading,login}=useLogin()
 
-  
   const handleSubmit = async (e) => {
     e.preventDefault();
-   const status= await login(email, pwd,'/superuser/login');
-   
-    if(status){
-      navigate('/admin')
-    }
-   
-  };
+    try {
+      
+      await login(email,pwd)
 
+      if(!error){
+        setEmail("");
+        setPwd("");
+        navigate("/admin");
+      }
+      
+
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <section className="w-full">
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-       
         <div className="w-full bg-white rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl ">
@@ -47,7 +52,9 @@ const Login = () => {
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
                   placeholder="name@company.com"
                   value={email}
-                  onChange={(e)=>{setEmail(e.target.value)}}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                  }}
                   required
                 />
               </div>
@@ -63,6 +70,8 @@ const Login = () => {
                   name="password"
                   id="password"
                   placeholder="••••••••"
+                  value={pwd}
+                  onChange={(e) => setPwd(e.target.value)}
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
                   required
                 />
@@ -75,14 +84,10 @@ const Login = () => {
                       aria-describedby="remember"
                       type="checkbox"
                       className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300"
-                      
                     />
                   </div>
                   <div className="ml-3 text-sm">
-                    <label
-                      htmlFor="remember"
-                      className="text-gray-500 "
-                    >
+                    <label htmlFor="remember" className="text-gray-500 ">
                       Remember me
                     </label>
                   </div>
@@ -96,6 +101,7 @@ const Login = () => {
               </div>
               <button
                 type="submit"
+                onClick={handleSubmit}
                 className="w-full text-white bg-blue-700 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
               >
                 Sign in

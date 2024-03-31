@@ -1,7 +1,8 @@
 
 import  { useState } from 'react';
-
+import { useNavigate } from 'react-router-dom';
 const Navbar = () => {
+    const navigate = useNavigate()
   const [isOpen, setIsOpen] = useState({
       user:false,
       vehicle: false,
@@ -38,9 +39,9 @@ const Navbar = () => {
                   </button>
                   {isOpen.user && (
                       <div className="ml-6">
-                          <button className="w-full py-2 px-4 hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => handleItemClick('User Management', 'Sub Fun')}>Sub Fun</button>
-                          <button className="w-full py-2 px-4 hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => handleItemClick('User Management', 'Sub Fun')}>Sub Fun</button>
-                          <button className="w-full py-2 px-4 hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => handleItemClick('User Management', 'Sub Fun')}>Sub Fun</button>
+                          <button className="w-full py-2 px-4 hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => {navigate('/admin')}}>Dashboard</button>
+                          <button className="w-full py-2 px-4 hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => handleItemClick('User Management', 'Sub Fun')}>Manage Users</button>
+                          <button className="w-full py-2 px-4 hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => {navigate('/admin/roles')}}>Manage Roles</button>
                           <button className="w-full py-2 px-4 hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => handleItemClick('User Management', 'Sub Fun')}>Sub Fun</button>
                           <button className="w-full py-2 px-4 hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => handleItemClick('User Management', 'Sub Fun')}>Sub Fun</button>
                       </div>
