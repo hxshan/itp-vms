@@ -9,6 +9,7 @@ import { CreateMaintainceForm } from "./components/VR/CreateMaintainceForm";
 import AddVehicle from "./pages/vehicle/AddVehicle"
 import AddContract from "./pages/contract/AddContract";
 import { MaintainceDashboard } from "./pages/Maintains/MaintainceDashboard";
+import { EditMaintainceOrder } from "./components/VR/EditMaintainceOrder";
 
 
 function App() {
@@ -31,6 +32,8 @@ function App() {
           <Route path="/driver" element={<DriverDashboard />} />
 
           <Route path="/Mdashboard" element={<MaintainceDashboard />} />
+          <Route path="/vehiclemaintain/edit/:id" element={<EditMaintainceOrder/>}/>
+
         </Routes>
         </div>
       </main>
