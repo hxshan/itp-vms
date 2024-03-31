@@ -58,6 +58,22 @@ const EditForm = ({ setShowEditForm, viewHireData }) => {
       <form className="mx-10 my-5">
         <h1 className="text-2xl underline font-bold text-center mb-5">Edit Details</h1>
 
+        {/* Status */}
+        <div className="mb-6">
+            <label htmlFor="hireStatus" className="block text-lg font-semibold mb-1">Status</label>
+            <select
+              id="hireStatus"
+              value={hireStatus}
+              onChange={(e) => setHireStatus(e.target.value)}
+              className="w-full px-3 py-2 border rounded-md"
+            >
+              <option value="Pending">Pending</option>
+              <option value="Active">Active</option>
+              <option value="Completed">Completed</option>
+              {/* Add more options as needed */}
+            </select>
+          </div>
+
         {/* Date Section */}
         <div className="flex flex-col xl:flex-row justify-between mb-6">
           <div className="mb-3 xl:mr-6">
@@ -248,22 +264,6 @@ const EditForm = ({ setShowEditForm, viewHireData }) => {
             />
           </div>
         </div>
-
-        {/* Status */}
-          <div className="mb-6">
-            <label htmlFor="hireStatus" className="block text-lg font-semibold mb-1">Status</label>
-            <select
-              id="hireStatus"
-              value={hireStatus}
-              onChange={(e) => setHireStatus(e.target.value)}
-              className="w-full px-3 py-2 border rounded-md"
-            >
-              <option value="Pending">Pending</option>
-              <option value="Approved">Active</option>
-              <option value="Rejected">Completed</option>
-              {/* Add more options as needed */}
-            </select>
-          </div>
 
 
         {/* Buttons */}
