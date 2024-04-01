@@ -1,8 +1,10 @@
 import useAxios from "@/hooks/useAxios";
 import axios from "@/api/axios";
 import { useEffect, useState } from "react"
+import { useAuthContext } from "@/hooks/useAuthContext";
 
 const UserTable = () => {
+const { user } = useAuthContext()
 const columns=["Name","Email","Role","Status"]
 const [search,setSearch]=useState('')
 const [users, error, loading, axiosFetch] = useAxios()
@@ -11,12 +13,16 @@ const getData = ()=>{
     axiosFetch({
       axiosInstance:axios,
       method:'GET',
-      url:'/user/'
+      url:'/user/',
+      headers:{
+        authorization:`Bearer ${user?.accessToken}`
+      }
     })
 }
 useEffect(()=>{
-  getData()
-},[])
+  if(user?.accessToken)
+    getData()
+},[user])
 
   if(loading){
     return(

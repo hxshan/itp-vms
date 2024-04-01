@@ -6,8 +6,6 @@ import { useLogin } from "@/hooks/useLogin";
 const Login = () => {
   const navigate = useNavigate();
   const {login,error,isLoading}=useLogin()
-
-  //const from = location.state?.from?.pathname || "/admin"
   const [email, setEmail] = useState("");
   const [pwd, setPwd] = useState("");
 
@@ -100,6 +98,7 @@ const Login = () => {
                 </a>
               </div>
               <button
+                disabled={isLoading}
                 type="submit"
                 onClick={handleSubmit}
                 className="w-full text-white bg-blue-700 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"

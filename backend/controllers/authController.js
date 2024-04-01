@@ -27,13 +27,13 @@ const login = async (req,res)=>{
             }
         },
         process.env.SECRET,
-        {expiresIn:'10s'}
+        {expiresIn:'1d'}
     )
 
     const refreshToken = jwt.sign(
         {"email":user.email},
         process.env.REFRESH_SECRET,
-        {expiresIn:'1d'}
+        {expiresIn:'10d'}
     )
     const permissions = user.role
     return res.status(200).json({accessToken,refreshToken,permissions})
