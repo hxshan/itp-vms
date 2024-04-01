@@ -91,7 +91,6 @@ const HireTable = ({ vehicleNo,searchType, setResults, results }) => {
                                     onClick={() => handleView(hire._id)}>
                                     View
                                 </button>
-                                <button className="hidden xl:grid px-2 py-1 bg-[#0E6300] text-white rounded-md mr-2">Edit</button>
                                 <button
                                     className="hidden xl:grid px-2 py-1 bg-[#A90000] text-white rounded-md"
                                     onClick={() => deleteHire(hire._id)}>
