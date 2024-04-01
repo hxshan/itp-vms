@@ -182,9 +182,24 @@ const getVehicle = async (req, res, next) => {
 //GET:api/vehicles
 const getVehicles = async (req, res, next) => {
     try {
-        const vehicles = await Vehicles.find().sort({updatedAt: -1})
-        res.status(200).json(vehicles)
+
+        const vehiclesCount = await Vehicles.countDocuments();
+        const carCount = await Vehicles.countDocuments({ category: 'car' });
+        const vanCount = await Vehicles.countDocuments({ category: 'van' });
+        const busCount = await Vehicles.countDocuments({ category: 'bus' });
+        const lorryCount = await Vehicles.countDocuments({ category: 'lorry' });
+        const truckCount = await Vehicles.countDocuments({ category: 'truck' });
         
+        const vehicles = await Vehicles.find().sort({updatedAt: -1});
+        const car = await Vehicles.find({category: 'car'}).sort({ updatedAt: -1 });
+        const van = await Vehicles.find({category: 'van'}).sort({ updatedAt: -1 });
+        const bus = await Vehicles.find({category: 'bus'}).sort({ updatedAt: -1 });
+        const lorry = await Vehicles.find({category: 'lorry'}).sort({ updatedAt: -1 });
+        const truck = await Vehicles.find({category: 'truck'}).sort({ updatedAt: -1 });
+
+
+        res.status(200).json({vehiclesCount,carCount, vanCount, busCount, lorryCount, truckCount , vehicles , car , van , bus , lorry , truck});
+
     } catch (error) {
         return next (new HttpError(error))
     }

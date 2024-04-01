@@ -17,7 +17,7 @@ const TruckForm = ({ formState, setFormState }) => {
                         <h1 className="text-lg font-bold">Add Truck Details</h1>
                         <div className='flex flex-row'>
                         <h3 className='text-s font-bold'>Performance</h3>
-                        <div class="border-b-2 ml-2 border-black w-full"></div>
+                        <div className="border-b-2 ml-2 border-black w-full"></div>
                         </div>
                         <label className='m-2 font-semibold text-base' htmlFor="vehicleType">Truck Type:</label>
                                  <select className='mr-15  pl-2 pr-2' id="carType" name="vehicleType" value={formState.vehicleType} onChange={handleChange} >
@@ -65,7 +65,7 @@ const TruckForm = ({ formState, setFormState }) => {
 
                         <div className='flex flex-row'>
                         <h3 className='text-s font-bold'>Features</h3>
-                        <div class="border-b-2 ml-2 border-black w-full"></div>
+                        <div className="border-b-2 ml-2 border-black w-full"></div>
                       </div>
 
                         <div>                 
@@ -114,7 +114,7 @@ const TruckForm = ({ formState, setFormState }) => {
 
                         <div className='flex flex-row'>
                         <h3 className='text-s font-bold'>Documentary</h3>
-                        <div class="border-b-2 ml-2 border-black w-full"></div>
+                        <div className="border-b-2 ml-2 border-black w-full"></div>
                         </div>
                         
                         <div>
