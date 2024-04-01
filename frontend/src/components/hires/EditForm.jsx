@@ -48,9 +48,7 @@ const EditForm = ({ setShowEditForm, viewHireData }) => {
 
       axios.post(`http://localhost:3000/api/hire/edit/${viewHireData._id}`, editedData)
     }
-    
-    
-    
+  
   };
 
   return (
