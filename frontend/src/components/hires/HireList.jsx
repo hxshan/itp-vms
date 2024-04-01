@@ -9,16 +9,19 @@ const HireList = ({showForm ,setShowForm}) => {
     HireList.propTypes = {
         showForm: PropTypes.bool.isRequired,
         setShowForm: PropTypes.func.isRequired,
+        setShowEditForm: PropTypes.func.isRequired
     };
 
 
     //Handle Search function
 
     const [vehicleNo , setVehicleNo] = useState('')
+    const [searchType, setSearchType] = useState('')
     const [results, setResults] = useState([])
 
-    const handleSearch = (vehicle) => {
+    const handleSearch = (vehicle, searchT) => {
         setVehicleNo(vehicle)
+        setSearchType(searchT)
     }
 
   return (
@@ -40,7 +43,7 @@ const HireList = ({showForm ,setShowForm}) => {
                 </div>
 
  
-                <HireTable  vehicleNo = {vehicleNo} setResults = {setResults} results ={results}/>
+                <HireTable  vehicleNo = {vehicleNo} searchType = {searchType} setResults = {setResults} results ={results}/>
             </div>
         </div>
     
