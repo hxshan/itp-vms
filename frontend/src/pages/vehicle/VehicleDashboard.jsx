@@ -113,32 +113,32 @@ const VehicleDashboard = () => {
     <div className="place-content-center space-y-4 mt-8 bg-cover bg-center bg-white ">
       <h1 className="text-lg font-bold">Vehicle Management Dashboard</h1>
       <div className='mt-5 mb-5 flex flex-row items-center justify-start '> 
-        <div className='w-full p-4 bg-slate-200 rounded-md pad mr-9'>
+        <div className='w-full p-4 bg-slate-200 rounded-md pad mr-2'>
           <h1 className="text-base font-bold">Stored vehicle details</h1>
       
           <div className="flex m-2 flex-row justify-between  bg-slate-200 rounded-md pad">
             <div className='space-y-4'>
-             <div className="grow mr-6 p-3 bg-black rounded-md pad">
+             <div className="grow p-3 bg-black rounded-md pad">
                <Pie data={chartData} /> 
              </div>
 
              <div className='flex flex-row'>
-             <div className=" mr-6 p-3 bg-black rounded-md pad">
+             <div className=" mr-2 p-3 bg-black rounded-md pad">
                <div className="text-xs text-white font-semibold rounded-md pad">Total Vehicle Count<h1 className='text-yellow-500 text-xl'>{data.vehiclesCount}</h1> </div>
              </div>
-             <div className=" mr-6 p-3 bg-black rounded-md pad">
+             <div className=" mr-2 p-3 bg-black rounded-md pad">
                <div className="text-xs text-white font-semibold rounded-md pad">Car Count<h1 className='text-white-500 text-xl'>{data.carCount}</h1> </div>
              </div>
-             <div className=" mr-6 p-3 bg-black rounded-md pad">
+             <div className=" mr-2 p-3 bg-black rounded-md pad">
                <div className="text-xs text-white font-semibold rounded-md pad">Van Count<h1 className='text-white-500 text-xl'> {data.vanCount}</h1></div>
              </div>
-             <div className=" mr-6 p-3 bg-black rounded-md pad">
+             <div className=" mr-2 p-3 bg-black rounded-md pad">
                <div className="text-xs text-white font-semibold rounded-md pad">Bus Count<h1 className='text-white-500 text-xl'>{data.busCount}</h1></div>
              </div>
-             <div className=" mr-6 p-3 bg-black rounded-md pad">
+             <div className=" mr-2 p-3 bg-black rounded-md pad">
                <div className="text-xs text-white font-semibold rounded-md pad">Lorry Count<h1 className='text-white-500 text-xl'>{data.lorryCount}</h1></div>
              </div>
-             <div className=" mr-6 p-3 bg-black rounded-md pad">
+             <div className=" mr p-3 bg-black rounded-md pad">
                <div className="text-xs text-white font-semibold rounded-md pad">Truck Count<h1 className='text-white-500 text-xl'>{data.truckCount}</h1></div>
              </div>
              </div>
