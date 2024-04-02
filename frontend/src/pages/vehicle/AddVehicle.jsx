@@ -38,7 +38,8 @@ const AddVehicle = () => {
         passengerCabin: '',
         vehicleBookImage: null,
         vehicleLicenceImage: null,
-        vehicleInsuImage: null
+        vehicleInsuImage: null,
+        availability:'available'
     }
     
     const [formState, setFormState] = useState(initialFormState);

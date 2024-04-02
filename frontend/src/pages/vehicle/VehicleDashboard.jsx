@@ -1,29 +1,39 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Pie } from 'react-chartjs-2';
+import useAxios from "@/hooks/useAxios";
+import axios from "@/api/axios";
 
 const VehicleDashboard = () => {
 
-  const [data, setData] = useState({});
   const navigate = useNavigate();
-  const categories = Object.keys(data).filter(category => category !== 'vehiclesCount');
+  const [data, error, loading, axiosFetch] = useAxios()
+
+  const categories = Object.keys(data).filter(key => key !== 'vehiclesCount' && key !== 'availableCount' && key !== 'underMaintanceCount' && key !== 'underClientCount' && key !== 'underSpecialTaskCount');
   const counts = categories.map(category => data[category])
+  
+  const getData = ()=>{
+    axiosFetch({
+      axiosInstance:axios,
+      method:'GET',
+      url:'/vehicle/'
+    })
+  }
 
-
-  useEffect(() => {
-    // Fetch data from the backend API endpoint
-    const fetchData = async () => {
-      try {
-        const response = await axios.get('http://localhost:3000/api/vehicle/');
-        setData(response.data);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-
-    fetchData();
-  }, []); 
+  useEffect(()=>{
+    getData()
+  },[])
+  
+    if(loading){
+      return(
+        <p className="flex flex-col items-center justify-center h-screen text-center text-lg font-bold text-black" >Loading...</p>
+      )
+    }
+    if(error){
+      return(
+        <p>Unexpected Error has occured!</p>
+      )
+  }
 
   const chartData = {
     labels: categories,
@@ -42,9 +52,6 @@ const VehicleDashboard = () => {
       },
     ],
   };
-
-
-  
 
 
   const renderCategoryTable = (category) => {
@@ -117,24 +124,31 @@ const VehicleDashboard = () => {
 
              <div className='flex flex-row'>
              <div className=" mr-6 p-3 bg-black rounded-md pad">
-               <div className="text-sm text-white font-semibold rounded-md pad">Available Vehicle Count <h1 className='text-lime-500 text-xl'>{data.availability}</h1> </div>
+               <div className="text-xs text-white font-semibold rounded-md pad">Total Vehicle Count<h1 className='text-yellow-500 text-xl'>{data.vehiclesCount}</h1> </div>
              </div>
              <div className=" mr-6 p-3 bg-black rounded-md pad">
-               <div className="text-sm text-white font-semibold rounded-md pad">Under Maintance Vehicle Count <h1 className='text-red-500 text-xl'>{data.maintaince}</h1> </div>
+               <div className="text-xs text-white font-semibold rounded-md pad">Car Count<h1 className='text-white-500 text-xl'>{data.carCount}</h1> </div>
              </div>
              <div className=" mr-6 p-3 bg-black rounded-md pad">
-               <div className="text-sm text-white font-semibold rounded-md pad">Client Vehicle Count <h1 className='text-white-500 text-xl'>{data.clientVeh}</h1></div>
+               <div className="text-xs text-white font-semibold rounded-md pad">Van Count<h1 className='text-white-500 text-xl'> {data.vanCount}</h1></div>
+             </div>
+             <div className=" mr-6 p-3 bg-black rounded-md pad">
+               <div className="text-xs text-white font-semibold rounded-md pad">Bus Count<h1 className='text-white-500 text-xl'>{data.busCount}</h1></div>
+             </div>
+             <div className=" mr-6 p-3 bg-black rounded-md pad">
+               <div className="text-xs text-white font-semibold rounded-md pad">Lorry Count<h1 className='text-white-500 text-xl'>{data.lorryCount}</h1></div>
+             </div>
+             <div className=" mr-6 p-3 bg-black rounded-md pad">
+               <div className="text-xs text-white font-semibold rounded-md pad">Truck Count<h1 className='text-white-500 text-xl'>{data.truckCount}</h1></div>
              </div>
              </div>
             </div>
 
              <div className=" space-y-2 p-3 pl-10 bg-white rounded-md pad">  
-               <div className="text-sm p-2 bg-slate-200 text-black font-semibold rounded-md pad">Total Vehicle Count <h1 className='text-red-500 text-xl'>{data.vehiclesCount}</h1> </div>
-               <div className="text-sm p-2 bg-slate-200 text-black font-semibold rounded-md pad">Car Count <h1 className='text-black text-lg'> {data.carCount} </h1></div>
-               <div className="text-sm p-2 bg-slate-200 text-black font-semibold rounded-md pad">Van Count <h1 className='text-black text-lg'> {data.vanCount}</h1> </div>
-               <div className="text-sm p-2 bg-slate-200 text-black font-semibold rounded-md pad">Bus Count <h1 className='text-black text-lg'> {data.busCount}</h1></div>
-               <div className="text-sm p-2 bg-slate-200 text-black font-semibold rounded-md pad">Lorry Count <h1 className='text-black text-lg'> {data.lorryCount}</h1></div>
-               <div className="text-sm p-2 bg-slate-200 text-black font-semibold rounded-md pad">Truck Count <h1 className='text-black text-lg'> {data.truckCount}</h1></div>
+               <div className="text-sm p-2 bg-slate-200 text-black font-semibold rounded-md pad">Available Vehicle <h1 className='text-lime-600 text-xl'>{data.availableCount}</h1> </div>
+               <div className="text-sm p-2 bg-slate-200 text-black font-semibold rounded-md pad">Under Maintance Vehicle<h1 className='text-red-500 text-lg'>{data.underMaintanceCount}</h1></div>
+               <div className="text-sm p-2 bg-slate-200 text-black font-semibold rounded-md pad">Under Client Vehicle<h1 className='text-black text-lg'> {data.underClientCount}</h1> </div>
+               <div className="text-sm p-2 bg-slate-200 text-black font-semibold rounded-md pad">Under Special Task Vehicle<h1 className='text-black text-lg'>{data.underSpecialTaskCount}</h1></div>
              </div>   
          </div>
         </div>
