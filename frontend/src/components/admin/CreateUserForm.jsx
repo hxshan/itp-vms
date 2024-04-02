@@ -1,5 +1,4 @@
-import useAxiosPost from "@/hooks/useAxiosPost";
-import useAxiosGet from "@/hooks/useAxiosGet";
+
 import useAxios from "@/hooks/useAxios";
 import axios from "@/api/axios";
 import { useEffect, useState } from "react";

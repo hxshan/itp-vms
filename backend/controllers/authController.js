@@ -4,39 +4,40 @@ const User = require("../models/userModel");
 
 
 const login = async (req,res)=>{
-    const {email,password}=req.body
 
-    if(!email||!password) return res.status(400).json({message:'All felds must be filled'})
+    try{
+        const {email,password}=req.body
+        if(!email||!password) return res.status(400).json({message:'All felds must be filled'})
+        const user =await User.findOne({email}).populate('role').exec()
 
-    const user =await User.findOne({email}).populate('role').exec()
+        if(!user) return res.status(401).json({message:'No such User'})
+        if(user.status=='inactive') return res.status(401).json({message:`Account is ${user.status}`})
 
-    if(!user || user.status=='inactive') return res.status(401).json({message:'Unauthorized'})
+        const match = await bcrypt.compare(password,user.password)
 
+        if(!match) return res.status(401).json({message:'Unauthorized'})
+        const accessToken = jwt.sign(
+            {
+                UserInfo:{
+                    "name":user.firstName,
+                    "email":user.email,
+                    "role":user.role
+                }
+            },
+            process.env.SECRET,
+            {expiresIn:'1d'}
+        )
 
-    const match = await bcrypt.compare(password,user.password)
-
-    if(!match) return res.status(401).json({message:'Unauthorized'})
-
-
-    const accessToken = jwt.sign(
-        {
-            UserInfo:{
-                "name":user.firstName,
-                "email":user.email,
-                "role":user.role
-            }
-        },
-        process.env.SECRET,
-        {expiresIn:'1d'}
-    )
-
-    const refreshToken = jwt.sign(
-        {"email":user.email},
-        process.env.REFRESH_SECRET,
-        {expiresIn:'10d'}
-    )
-    const permissions = user.role
-    return res.status(200).json({accessToken,refreshToken,permissions})
+        const refreshToken = jwt.sign(
+            {"email":user.email},
+            process.env.REFRESH_SECRET,
+            {expiresIn:'10d'}
+        )
+        const permissions = user.role
+        return res.status(200).json({accessToken,refreshToken,permissions})
+    }catch(error){
+        return res.status(401).json({message:'Unauthorized'})
+    }
 }
 
 const refresh = (req,res) =>{

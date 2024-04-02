@@ -78,8 +78,8 @@ useEffect(()=>{
                   <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{row.email}</td>
                   <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{row.role.name}</td>
                   <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">
-                    <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
-                      {row.status?'Inactive':row.status}
+                    <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded -full ${row.status=='active'?'text-green-500 bg-green-100':'text-red-500 bg-red-100'}`}>
+                      {row.status.toUpperCase()}
                     </span>
                   </td>
                   <td className="px-6 py-2 whitespace-nowrap justify-between flex">
