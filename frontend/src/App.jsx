@@ -1,6 +1,5 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
+import {Routes, Route, Navigate } from "react-router-dom";
 import DriverDashboard from "./pages/driver/DriverDashboard";
 import HireDashboard from "./pages/hires/HireDashboard";
 import { Login, Navbar, TopBar, UnAuthorized } from "./pages/shared";
