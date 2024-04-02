@@ -102,12 +102,12 @@ const editVehicle = async (req,res,next) => {
 
             let{vehicleType, vehicleRegister,vehicleModel,vehicleManuYear,engineCap,lastMileage,vehicleColour,vehicleGearSys,airCon,numOfSeats,lugSpace,gps,fridge,tv,licEndDate,insEndDate,availability,status} = req.body
 
-            if(status === 'maintance'  || status === 'clinetBase' || status === 'specialTask'){
+            if(status === 'maintance'  || status === 'clinetBase' || status === 'specialTask' || status === 'inActive'){
                 availability = 'unavailable'
             }
 
             else{
-             availability = 'available'
+                availability = 'available'
             }
 
             updatedVehicle = await Vehicles.findByIdAndUpdate(vehicleId,{category,vehicleType, vehicleRegister,vehicleModel,vehicleManuYear,engineCap,lastMileage,vehicleColour,vehicleGearSys,airCon,numOfSeats,lugSpace,gps,fridge,tv,licEndDate,insEndDate,availability,status}, {new: true})
@@ -121,7 +121,7 @@ const editVehicle = async (req,res,next) => {
         if(category === 'lorry' ){
             let{vehicleType, vehicleRegister,vehicleModel,vehicleManuYear,engineCap,lastMileage,vehicleWeight,cargoCapacity,cargoArea,vehicleGearSys,airCon,numOfSeats,gps,licEndDate,insEndDate,availability,status} = req.body
 
-            if(status === 'maintance'  || status === 'clinetBase' || status === 'specialTask'){
+            if(status === 'maintance'  || status === 'clinetBase' || status === 'specialTask' || status === 'inActive'){
                    availability = 'unavailable'
             }
 
@@ -140,7 +140,7 @@ const editVehicle = async (req,res,next) => {
         if (category === 'truck' ){
             let{vehicleType, vehicleRegister,vehicleModel,vehicleManuYear,engineCap,lastMileage,vehicleWeight,cargoCapacity,trailerLength,passengerCabin,vehicleGearSys,airCon,numOfSeats,gps,fridge,tv,licEndDate,insEndDate,availability,status} = req.body
 
-            if(status === 'maintance'  || status === 'clinetBase' || status === 'specialTask'){
+            if(status === 'maintance'  || status === 'clinetBase' || status === 'specialTask' || status === 'inActive'){
                 availability = 'unavailable'
             }
 
@@ -218,8 +218,9 @@ const getVehicles = async (req, res, next) => {
         const underMaintanceCount = await Vehicles.countDocuments({ status: 'maintance' });
         const underClientCount = await Vehicles.countDocuments({ status: 'clinetBase' });
         const underSpecialTaskCount = await Vehicles.countDocuments({ status: 'specialTask' });
+        const underInactiveCount = await Vehicles.countDocuments({ status: 'inActive' });
 
-        if (underSpecialTaskCount === null || underClientCount === null || underMaintanceCount=== null || truckCount=== null || lorryCount=== null || busCount=== null || vanCount=== null || carCount=== null || vehiclesCount === null) {
+        if (underSpecialTaskCount === null || underClientCount === null || underMaintanceCount=== null || truckCount=== null || lorryCount=== null || busCount=== null || vanCount=== null || carCount=== null || vehiclesCount === null || underInactiveCount === null) {
             underSpecialTaskCount = 0;
             underClientCount = 0;
             underMaintanceCount = 0;
@@ -229,6 +230,7 @@ const getVehicles = async (req, res, next) => {
             vanCount = 0;
             carCount = 0;
             vehiclesCount = 0;
+            underInactiveCount =0 ;
           }
 
         
@@ -240,7 +242,7 @@ const getVehicles = async (req, res, next) => {
         const truck = await Vehicles.find({category: 'truck'}).sort({ updatedAt: -1 });
 
 
-        res.status(200).json({vehiclesCount,carCount, vanCount, busCount, lorryCount, truckCount ,availableCount,underMaintanceCount,underClientCount,underSpecialTaskCount, vehicles , car , van , bus , lorry , truck});
+        res.status(200).json({vehiclesCount,carCount, vanCount, busCount, lorryCount, truckCount ,availableCount,underMaintanceCount,underClientCount,underSpecialTaskCount,underInactiveCount, vehicles , car , van , bus , lorry , truck});
 
     } catch (error) {
         return next (new HttpError(error))
