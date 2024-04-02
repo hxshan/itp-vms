@@ -30,7 +30,7 @@ const CreateUserForm = () => {
   },[])
 
   useEffect(()=>{
-    console.log(roleData)
+    //console.log(roleData)
     /*if(error){
       alert(error)
       navigate('/admin')
