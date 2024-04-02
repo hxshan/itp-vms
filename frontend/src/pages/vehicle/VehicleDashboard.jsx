@@ -1,17 +1,19 @@
-import React, { useEffect } from 'react';
+import React, { useState,useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Pie } from 'react-chartjs-2';
 import useAxios from "@/hooks/useAxios";
 import axios from "@/api/axios";
+import NewAddedVeh from '../../components/vehicle/NewAddedVeh';
 
 const VehicleDashboard = () => {
 
   const navigate = useNavigate();
   const [data, error, loading, axiosFetch] = useAxios()
+  const [newAdded,setnewAdded] = useState({});
 
   const categories = Object.keys(data).filter(key => key !== 'vehiclesCount' && key !== 'availableCount' && key !== 'underMaintanceCount' && key !== 'underClientCount' && key !== 'underSpecialTaskCount');
   const counts = categories.map(category => data[category])
-  
+
   const getData = ()=>{
     axiosFetch({
       axiosInstance:axios,
@@ -108,6 +110,8 @@ const VehicleDashboard = () => {
     );
   };
 
+  
+
   return (
     
     <div className="place-content-center space-y-4 mt-8 bg-cover bg-center bg-white ">
@@ -171,6 +175,30 @@ const VehicleDashboard = () => {
           renderCategoryTable(category)
         )}
        </div>
+       <h2 className="text-xl font-bold">Newly Added Vehicle Summary Data</h2>
+         <div>
+             
+         <div className='flex flex-col border-2 border-zinc-700  rounded-xl w-fit p-4'>
+          <div className='my-4'>
+            <span className='text-xl mr-4 text-gray-500'>ID</span>
+            <span>{newAdded.category}</span>
+          </div>
+          <div className='my-4'>
+            <span className='text-xl mr-4 text-gray-500'>Title</span>
+            <span>{newAdded.vehicleType}</span>
+          </div>
+          <div className='my-4'>
+            <span className='text-xl mr-4 text-gray-500'>Author</span>
+            <span>{newAdded.vehicleRegister}</span>
+          </div>
+          <div className='my-4'>
+            <span className='text-xl mr-4 text-gray-500'>Publish Year</span>
+            <span>{newAdded.lastMileage}</span>
+          </div>
+          
+        </div>
+
+         </div>
       </div>
 
       

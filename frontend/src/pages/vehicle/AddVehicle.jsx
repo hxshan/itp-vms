@@ -44,7 +44,7 @@ const AddVehicle = () => {
     
     const [formState, setFormState] = useState(initialFormState);
     const [error,setError] = useState('')
-    const navigate = useNavigate;
+    const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
@@ -102,8 +102,11 @@ const AddVehicle = () => {
         ) : (
 
         <div className="place-content-center mt-8 bg-cover bg-center bg-white ">
+
+            <div className='flex flex-row justify-between'>
             <h1 className="text-lg font-bold">Add Vehicle Details</h1>
-            
+            <button className='px-3 py-1 rounded-md bg-blue-500 text-white text-sm text-bold' onClick={() => navigate('/vehicle')}>Dashboard</button>
+            </div>
 
             <form className="space-y-2 m-3 p-3  bg-slate-200 rounded-md pad" onSubmit={handleSubmit}>
             <p className="text-sm text-red-600 leading-relaxed">
