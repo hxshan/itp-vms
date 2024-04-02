@@ -164,7 +164,7 @@ const VehicleDashboard = () => {
       </div>
       
       <div className='p-4 bg-slate-200 rounded-md pad'>
-       <h2 className="text-xl font-bold">Vehicle Data</h2>
+       <h2 className="text-xl font-bold">Vehicle Summary Data</h2>
        <div>
         {['car', 'van', 'bus', 'lorry', 'truck'].map((category) =>
           renderCategoryTable(category)
