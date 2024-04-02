@@ -18,7 +18,7 @@ const BusForm = ({ formState, setFormState }) => {
                         
                         <div className='flex flex-row'>
                         <h3 className='text-s font-bold'>Performance</h3>
-                        <div class="border-b-2 ml-2 border-black w-full"></div>
+                        <div className="border-b-2 ml-2 border-black w-full"></div>
                         </div>
 
                         <div className='flex flex-row'>
@@ -49,7 +49,7 @@ const BusForm = ({ formState, setFormState }) => {
                         
                         <div className='flex flex-row'>
                         <h3 className='text-s font-bold'>Features</h3>
-                        <div class="border-b-2 ml-2 border-black w-full"></div>
+                        <div className="border-b-2 ml-2 border-black w-full"></div>
                         </div>
     
                         <div>
@@ -95,7 +95,7 @@ const BusForm = ({ formState, setFormState }) => {
 
                         <div className='flex flex-row'>
                         <h3 className='text-s font-bold'>Documentary</h3>
-                        <div class="border-b-2 ml-2 border-black w-full"></div>
+                        <div className="border-b-2 ml-2 border-black w-full"></div>
                         </div>
     
                         <div>

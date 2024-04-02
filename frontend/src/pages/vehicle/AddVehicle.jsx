@@ -27,7 +27,7 @@ const AddVehicle = () => {
         numOfSeats: '',
         lugSpace: '',
         gps: '',
-        licEndDate: '',
+        licStartDate: '',
         insEndDate: '',
         fridge: 'No',
         tv: 'No',
@@ -38,7 +38,8 @@ const AddVehicle = () => {
         passengerCabin: '',
         vehicleBookImage: null,
         vehicleLicenceImage: null,
-        vehicleInsuImage: null
+        vehicleInsuImage: null,
+        availability:'available'
     }
     
     const [formState, setFormState] = useState(initialFormState);
@@ -74,8 +75,6 @@ const AddVehicle = () => {
         e.preventDefault()
         setError('')
 
-        console.log(formState)
-
         try {
           const response = await axios.post(`http://localhost:3000/api/vehicle/`, formState)
           const newVehicle = await response.data;
@@ -107,16 +106,16 @@ const AddVehicle = () => {
             
 
             <form className="space-y-2 m-3 p-3  bg-slate-200 rounded-md pad" onSubmit={handleSubmit}>
-            <p class="text-sm text-red-600 leading-relaxed">
+            <p className="text-sm text-red-600 leading-relaxed">
             - Before adding a vehicle, please ensure you have all the necessary information at hand. This includes vehicle details such as registration number, model, manufacturing year, and more.
             </p>
-            <p class="text-sm text-red-600 leading-relaxed">
+            <p className="text-sm text-red-600 leading-relaxed">
             - To add a vehicle, select the appropriate category from the dropdown menu. Once selected, the system will display the corresponding form where you can enter the vehicle details. 
            </p>
-           <p class="text-sm text-red-600 leading-relaxed">
+           <p className="text-sm text-red-600 leading-relaxed">
             - Ensure all fields are filled accurately before submitting.
            </p>
-           <p class="text-sm text-red-600 leading-relaxed">
+           <p className="text-sm text-red-600 leading-relaxed">
             - If you have any questions or require assistance while adding a vehicle, feel free to reach out to our support team. We're here to help you every step of the way.
            </p>
                 <label className='m-2 font-semibold text-base' htmlFor="category">Select Vehicle Category:</label>

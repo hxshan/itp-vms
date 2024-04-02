@@ -2,6 +2,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import DriverDashboard from "./pages/driver/DriverDashboard";
+import VehicleDashboard from "./pages/vehicle/VehicleDashboard";
+
 import HireDashboard from "./pages/hires/HireDashboard";
 import {Login,Navbar, TopBar} from "./pages/shared"
 
@@ -36,7 +38,10 @@ function App() {
           </Route>
           <Route path="/hires" element={<HireDashboard/>}/>
           <Route path="/emergency" element={<CaseFileForm/>}/>
-          <Route path="/add_vehicle" element={<AddVehicle/>}/>
+          <Route path="vehicle" > 
+            {<Route index={true} element = {<VehicleDashboard/>}/>}
+            <Route path="add"  element = {<AddVehicle/>}/>
+          </Route>
           <Route path="/Contract/:id" element={<AddContract/>}/>
           <Route path="/Vrform" element={<CreateMaintainceForm/>}/>
           <Route path="/driver" element={<DriverDashboard />} />

@@ -1,7 +1,11 @@
 
 import  { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
+
+  const navigate  = useNavigate(); 
+
   const [isOpen, setIsOpen] = useState({
       user:false,
       vehicle: false,
@@ -54,8 +58,8 @@ const Navbar = () => {
                   </button>
                   {isOpen.vehicle && (
                       <div className="ml-0">
-                          <button className="w-full py-2 px-4 hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => handleItemClick('Vehicle Management', 'Add Vehicle')}>Add Vehicle</button>
-                          <button className="w-full py-2 px-4 hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => handleItemClick('Vehicle Management', 'view vehicles')}>View vehicles</button>
+                          <button className="w-full py-2 px-4 hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => navigate('/vehicle')}>Vehicle Dashboard</button>
+                          <button className="w-full py-2 px-4 hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => navigate('/vehicle/add')}>Add Vehicle</button>
                           <button className="w-full py-2 px-4 hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => handleItemClick('Vehicle Management', 'Vehicle Reports')}>Vehicle Reports</button>
                           <button className="w-full py-2 px-4 hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => handleItemClick('Vehicle Management', 'View Vehicles')}>Alers</button>  
                       </div>
