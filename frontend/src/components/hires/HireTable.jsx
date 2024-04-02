@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import ViewHire from "./ViewHire";
 import PropTypes from 'prop-types'
 import axios from "@/api/axios";
+import useAxios from "@/hooks/useAxios";
 
 const HireTable = ({ vehicleNo,searchType, setResults, results }) => {
 
@@ -13,16 +14,23 @@ const HireTable = ({ vehicleNo,searchType, setResults, results }) => {
         results: PropTypes.array.isRequired
     };
 
-    const [hireData, setHireData] = useState([]);
+    const [hireData, error, loading, axiosFetch] = useAxios();
 
     useEffect(() => {
         const fetchHires = async () => {
-            try {
+
+            axiosFetch({
+                axiosInstance: axios,
+                method: "GET",
+                url: "/hire",
+              });
+              
+            /*try {
                 const response = await axios.get('http://localhost:3000/api/hire');
                 setHireData(response.data);
             } catch (error) {
                 console.error('Error fetching data in Hire: ' + error);
-            }
+            }*/
         };
 
         fetchHires();
