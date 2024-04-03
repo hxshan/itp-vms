@@ -1,7 +1,10 @@
 
 import  { useState } from 'react';
+import { useNavigate  } from 'react-router-dom'; 
 
 const Navbar = () => {
+
+    const navigate = useNavigate ();
   const [isOpen, setIsOpen] = useState({
       user:false,
       vehicle: false,
@@ -11,7 +14,7 @@ const Navbar = () => {
       contract: false,
       finance: false
   });
-
+ 
   const toggleMenu = (menu) => {
       setIsOpen(prevState => ({
           ...prevState,
@@ -21,12 +24,19 @@ const Navbar = () => {
 
   const handleItemClick = (menu, subFunction) => {
       console.log(`Selected sub function under ${menu}: ${subFunction}`);
-      // You can perform any action based on the selected subFunction here
-      // For example, you can navigate to a specific page or perform a specific action
+
+      if(menu === "Contract Management"){
+        if(subFunction === "Client dashboard"){
+            navigate('/client/dashboard') 
+        }else if(subFunction === "Contract dashboard"){
+            navigate('/contract/dashboard')
+        }
+    }
+      
   };
 
   return (
-      <div className="h-screen fixed z-10 top-0 left-0 flex w-20 lg:w-80">
+      <div className="h-screen fixed z-10 top-0 left-0 flex w-20 lg:w-60">
           <div className=" bg-gray-800 text-white w-64 h-full flex flex-col items-start ">
             <div className='w-full h-[80px] bg-red-600 flex'>
                 
@@ -91,7 +101,7 @@ const Navbar = () => {
               </div>
 
               <div className="relative">
-                  <button className="w-full flex flex-row py-4 px-2 hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => toggleMenu('contract')}>
+                  <button className="w-full flex flex-row py-4 px-2 hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => toggleMenu('emergency')}>
                      Emergency Management
                      
                   </button>
@@ -105,14 +115,14 @@ const Navbar = () => {
               </div>
 
               <div className="relative">
-                  <button className="w-full flex flex-row py-4 px-2 hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => toggleMenu('emergency')}>
+                  <button className="w-full flex flex-row py-4 px-2 hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => toggleMenu('contract')}>
                     Contract Management
                     
                   </button>
                   {isOpen.contract && (
                       <div className="ml-6">
-                          <button className="w-full py-2 px-4 hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => handleItemClick('Contract Management', 'Sub Fun')}>Sub Fun</button>
-                          <button className="w-full py-2 px-4 hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => handleItemClick('Contract Management', 'Sub Fun')}>Sub Fun</button>
+                          <button className="w-full py-2 px-4 hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => handleItemClick('Contract Management', 'Client dashboard')}>Client dashboard</button>
+                          <button className="w-full py-2 px-4 hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => handleItemClick('Contract Management', 'Contract dashboard')}>Contract dashboard</button>
                           <button className="w-full py-2 px-4 hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => handleItemClick('Contract Management', 'Sub Fun')}>Sub Fun</button>
                       </div>
                   )}

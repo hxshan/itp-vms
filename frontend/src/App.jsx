@@ -10,9 +10,12 @@ import { useAuthContext } from "./hooks/useAuthContext";
 import { CreateMaintainceForm } from "./components/VR/CreateMaintainceForm";
 import AddVehicle from "./pages/vehicle/AddVehicle"
 import AddContract from "./pages/contract/AddContract";
-import ContractDasbored from "./pages/contract/ContractDasbored";
+import ContractDasboard from "./pages/contract/ContractDasboard";
 import FinanaceDashboard from "./pages/finance/FinanaceDashboard";
 import {AdminDashboard,Roles,EditRoles} from "./pages/admin";
+import ClientDashboard from "./pages/contract/ClientDashboard";
+import ViewContract from "./pages/contract/ViewContract";
+import ContractEditForm from "./pages/contract/ContractEditForm";
 
 
 function App() {
@@ -39,7 +42,10 @@ function App() {
           <Route path="/Contract/:id" element={<AddContract/>}/>
           <Route path="/Vrform" element={<CreateMaintainceForm/>}/>
           <Route path="/driver" element={<DriverDashboard />} />
-          <Route path="/Contract/Dashbored" element={<ContractDasbored/>}/>
+          <Route path="/Contract/Dashboard" element={<ContractDasboard/>}/>
+          <Route path="/Client/Dashboard" element={<ClientDashboard/>}/>
+          <Route path="/viewContract/:id" element={<ViewContract/>}/>
+          <Route path="/EditContract/:id" element={<ContractEditForm/>}/>
           <Route path = "/finance" element ={<FinanaceDashboard />} />
         </Routes>
         </div>

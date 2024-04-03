@@ -57,6 +57,21 @@ const getClientbyId = async(req,res) =>{
   }
 }
 
+const getallClients = async(req,res) =>{
+  try{
+     const clients = await Client.find({});
+
+     if(!clients){
+      return res.status(301).json({"error":"there are no clients"});
+     }
+
+     return res.status(200).json(clients);
+  }catch(error){
+    console.error;
+    return res.status(400).json({"error":error.message});
+  }
+}
+
 
 const createContract = async(req,res)=>{
     try{
@@ -109,7 +124,7 @@ const getContractbyID = async(req,res) =>{
   try{
     const contractID  = req.params.id;
 
-    const contractExist = await Contract.findOne({_id:contractID})
+    const contractExist = await Contract.findOne({_id:contractID}).populate({path:'clientID',select:'-password'});
 
     if(!contractExist){
       return res.status(301).json({"error":"contract dosent exist"})
@@ -136,4 +151,4 @@ const getallContract = async(req,res) =>{
   }
 }
 
-module.exports = {createContract,createClient,getContractbyID,getClientbyId,getallContract}
+module.exports = {createContract,createClient,getContractbyID,getClientbyId,getallContract,getallClients}
