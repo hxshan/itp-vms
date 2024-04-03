@@ -19,7 +19,7 @@ const Auth = async (req, res, next) =>{
 
     }catch(error){
         console.log(error)
-        res.status(401).json({error:'request not authorized '+token})
+        res.status(401).json({error:'request not authorized '})
     }
 
 }

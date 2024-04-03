@@ -56,8 +56,11 @@ function App() {
             />
             <Route path="/admin/roles" element={<Roles />} />
             <Route path="/admin/roles/:id" element={<EditRoles />} />
+
+
             <Route path="/hires" element={<HireDashboard />} />
             <Route path="/emergency" element={<CaseFileForm />} />
+            
             <Route path="vehicle">
               <Route index={true} element={<VehicleDashboard />} />
               <Route path="add" element={<AddVehicle />} />

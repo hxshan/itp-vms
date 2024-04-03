@@ -34,7 +34,7 @@ const login = async (req,res)=>{
             {expiresIn:'10d'}
         )
         const permissions = user.role
-        return res.status(200).json({accessToken,refreshToken,permissions})
+        return res.status(200).json({accessToken,refreshToken,permissions,email})
     }catch(error){
         return res.status(401).json({message:'Unauthorized'})
     }

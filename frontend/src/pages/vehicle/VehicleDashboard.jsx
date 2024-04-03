@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react';
+import { useState,useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Pie } from 'react-chartjs-2';
@@ -43,7 +43,7 @@ const VehicleDashboard = () => {
     labels: ['Car', 'Van', 'Bus', 'Lorry', 'Truck'],
     datasets: [
       {
-        label: '# of Votes',
+        label: '% of Vehicles',
         data: counts,
         backgroundColor: [
           'rgba(255, 99, 132, 0.2)',
