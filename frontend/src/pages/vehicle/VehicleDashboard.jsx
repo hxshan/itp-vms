@@ -1,17 +1,19 @@
-import React, { useEffect } from 'react';
+import React, { useState,useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Pie } from 'react-chartjs-2';
 import useAxios from "@/hooks/useAxios";
 import axios from "@/api/axios";
+import NewAddedVeh from '../../components/vehicle/NewAddedVeh';
 
 const VehicleDashboard = () => {
 
   const navigate = useNavigate();
   const [data, error, loading, axiosFetch] = useAxios()
+  const [newAdded,setnewAdded] = useState({});
 
   const categories = Object.keys(data).filter(key => key !== 'vehiclesCount' && key !== 'availableCount' && key !== 'underMaintanceCount' && key !== 'underClientCount' && key !== 'underSpecialTaskCount');
   const counts = categories.map(category => data[category])
-  
+
   const getData = ()=>{
     axiosFetch({
       axiosInstance:axios,
@@ -108,37 +110,39 @@ const VehicleDashboard = () => {
     );
   };
 
+  
+
   return (
     
     <div className="place-content-center space-y-4 mt-8 bg-cover bg-center bg-white ">
       <h1 className="text-lg font-bold">Vehicle Management Dashboard</h1>
       <div className='mt-5 mb-5 flex flex-row items-center justify-start '> 
-        <div className='w-full p-4 bg-slate-200 rounded-md pad mr-9'>
+        <div className='w-full p-4 bg-slate-200 rounded-md pad mr-2'>
           <h1 className="text-base font-bold">Stored vehicle details</h1>
       
           <div className="flex m-2 flex-row justify-between  bg-slate-200 rounded-md pad">
             <div className='space-y-4'>
-             <div className="grow mr-6 p-3 bg-black rounded-md pad">
+             <div className="grow p-3 bg-black rounded-md pad">
                <Pie data={chartData} /> 
              </div>
 
              <div className='flex flex-row'>
-             <div className=" mr-6 p-3 bg-black rounded-md pad">
+             <div className=" mr-2 p-3 bg-black rounded-md pad">
                <div className="text-xs text-white font-semibold rounded-md pad">Total Vehicle Count<h1 className='text-yellow-500 text-xl'>{data.vehiclesCount}</h1> </div>
              </div>
-             <div className=" mr-6 p-3 bg-black rounded-md pad">
+             <div className=" mr-2 p-3 bg-black rounded-md pad">
                <div className="text-xs text-white font-semibold rounded-md pad">Car Count<h1 className='text-white-500 text-xl'>{data.carCount}</h1> </div>
              </div>
-             <div className=" mr-6 p-3 bg-black rounded-md pad">
+             <div className=" mr-2 p-3 bg-black rounded-md pad">
                <div className="text-xs text-white font-semibold rounded-md pad">Van Count<h1 className='text-white-500 text-xl'> {data.vanCount}</h1></div>
              </div>
-             <div className=" mr-6 p-3 bg-black rounded-md pad">
+             <div className=" mr-2 p-3 bg-black rounded-md pad">
                <div className="text-xs text-white font-semibold rounded-md pad">Bus Count<h1 className='text-white-500 text-xl'>{data.busCount}</h1></div>
              </div>
-             <div className=" mr-6 p-3 bg-black rounded-md pad">
+             <div className=" mr-2 p-3 bg-black rounded-md pad">
                <div className="text-xs text-white font-semibold rounded-md pad">Lorry Count<h1 className='text-white-500 text-xl'>{data.lorryCount}</h1></div>
              </div>
-             <div className=" mr-6 p-3 bg-black rounded-md pad">
+             <div className=" mr p-3 bg-black rounded-md pad">
                <div className="text-xs text-white font-semibold rounded-md pad">Truck Count<h1 className='text-white-500 text-xl'>{data.truckCount}</h1></div>
              </div>
              </div>
@@ -171,6 +175,30 @@ const VehicleDashboard = () => {
           renderCategoryTable(category)
         )}
        </div>
+       <h2 className="text-xl font-bold">Newly Added Vehicle Summary Data</h2>
+         <div>
+             
+         <div className='flex flex-col border-2 border-zinc-700  rounded-xl w-fit p-4'>
+          <div className='my-4'>
+            <span className='text-xl mr-4 text-gray-500'>ID</span>
+            <span>{newAdded.category}</span>
+          </div>
+          <div className='my-4'>
+            <span className='text-xl mr-4 text-gray-500'>Title</span>
+            <span>{newAdded.vehicleType}</span>
+          </div>
+          <div className='my-4'>
+            <span className='text-xl mr-4 text-gray-500'>Author</span>
+            <span>{newAdded.vehicleRegister}</span>
+          </div>
+          <div className='my-4'>
+            <span className='text-xl mr-4 text-gray-500'>Publish Year</span>
+            <span>{newAdded.lastMileage}</span>
+          </div>
+          
+        </div>
+
+         </div>
       </div>
 
       
