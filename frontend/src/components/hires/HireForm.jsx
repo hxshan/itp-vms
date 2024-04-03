@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import {validateFormFirstPage, validateFormSecondPage} from './Validation';
 import axios from '@/api/axios';
+import useAxios from '@/hooks/useAxios'
 
 const Form = ({setShowForm }) => { 
   const [step, setStep] = useState(1);
@@ -24,7 +25,7 @@ const Form = ({setShowForm }) => {
   const [startPoint, setStartPoint] = useState('')
   const [endPoint, setEndPoint] = useState('')
   const [tripType, setTripType] = useState(false)
-  const [distence, setSetDistence] = useState()
+  const [distence, setSetDistence] = useState('')
   const [cusName, setCusName] = useState('')
   const [cusEmail, setCusEmail] = useState('')
   const [cusMobile, setCusMobile] = useState('')
@@ -32,7 +33,7 @@ const Form = ({setShowForm }) => {
   const [estimatedTotal, setEstimatedTotal] = useState(0)
   const [advancedPayment, setAdvancedPayment] = useState(0)
 
-
+  const [response, error, loading, axiosFetch] = useAxios()
 
   const formData = {
     startDate,
@@ -55,16 +56,36 @@ const Form = ({setShowForm }) => {
   }
 
   //Handle Submit
-  const submit = () => {
+  const submit =async (e) => {
+
+    e.preventDefault()
   
     const confirm = window.confirm("Are you sure")
     if(confirm){
       setShowForm(false)
 
-      axios.post('http://localhost:3000/api/hire/add', formData)
+      
+      await axiosFetch({
+        axiosInstance:axios,
+        method:'POST',
+        url:'/hire/add',
+        requestConfig:{
+          data:{
+            ...formData
+          }
+        }
+      })
+
+      if(error){
+        alert(error)
+      }
+
+      //axios.post('http://localhost:3000/api/hire/add', formData)
     }
     
   }
+
+ 
 
   const cancel = () => {
     setShowForm(false)
@@ -98,16 +119,17 @@ const Form = ({setShowForm }) => {
     setStep(step - 1);
   };
 
-
+/*
 //Retreve data
 useEffect(() => {
 
   fetchVehicleData();
 }, [])
-
+*/
 const [vehcleTypes, setVehcleTypes] = useState(["Car", "Van", "Lorry" , "Bus"])
 const [vehcleSubTypes, setVehcleSubTypes] = useState(["Maruti" , "C200"])
 
+/*
 const fetchVehicleData = async () => {
   try {
     const response = await axios.get()
@@ -118,7 +140,7 @@ const fetchVehicleData = async () => {
     console.error("Error Fetching Data from database: " , error)
   }
 }
-
+*/
 /*
 {vehcleTypes.map(type) => (
   <option key={type.id} value={type.name}>{type.name}</option>
@@ -156,6 +178,9 @@ const calculateEstimatedFare= () => {
 
   estimatedFare = baseRate + additionalDistance * additionalRate;
   advancedPay = estimatedFare * 0.1;
+
+  estimatedFare = parseFloat(estimatedFare.toFixed(2))
+  advancedPay = Math.round(advancedPay)
 
   return { estimatedFare, advancedPay };
 
@@ -563,14 +588,14 @@ useEffect(() => {
               <div className=' xl:flex justify-between'>
                 <div className='mr-[20px]'>
 
-                  <p className=' text-lg font-semibold leading-8'>Estimated Distence : &nbsp;&nbsp; {distence}</p>          
-                  <p className=' text-lg font-semibold leading-8'>Estimated Total : &nbsp;&nbsp; {estimatedTotal}</p>
+                  <p className=' text-lg font-semibold leading-8'>Estimated Distence : &nbsp;&nbsp;{distence} Km</p>          
+                  <p className=' text-lg font-semibold leading-8'>Estimated Total : &nbsp;&nbsp;Rs. {estimatedTotal}</p>
                 </div>
 
                 <div className='mr-[20px]'>
 
-                  <p className=' text-lg font-semibold leading-8'>Vehicle Fare(perKm) : &nbsp;&nbsp; </p>
-                  <p className=' text-lg font-semibold leading-8'>Advanced Payment : &nbsp;&nbsp; {advancedPayment}</p>
+                  <p className=' text-lg font-semibold leading-8'>Vehicle Fare(perKm) : &nbsp;&nbsp;Rs. </p>
+                  <p className=' text-lg font-semibold leading-8'>Advanced Payment : &nbsp;&nbsp;Rs. {advancedPayment}</p>
 
                 </div>
                 
