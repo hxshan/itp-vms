@@ -41,7 +41,8 @@ function App() {
           <Route path = "/finance" element ={<FinanaceDashboard />} />
         
         </Routes>
-     
+     </div>
+     </main>
       
     </QueryClientProvider>
   </BrowserRouter>
