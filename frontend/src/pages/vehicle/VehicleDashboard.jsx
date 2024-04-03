@@ -1,5 +1,6 @@
-import React, { useState,useEffect } from 'react';
+import { useState,useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Pie } from 'react-chartjs-2';
 import useAxios from "@/hooks/useAxios";
 import axios from "@/api/axios";
@@ -35,19 +36,29 @@ const VehicleDashboard = () => {
         <p>Unexpected Error has occured!</p>
       )
   }
+  ChartJS.register(ArcElement, Tooltip, Legend);
 
   const chartData = {
-    labels: categories,
+    labels: ['Car', 'Van', 'Bus', 'Lorry', 'Truck'],
     datasets: [
       {
+        label: '% of Vehicles',
         data: counts,
         backgroundColor: [
-          'rgba(255, 99, 132, 0.6)',
-          'rgba(54, 162, 235, 0.6)',
-          'rgba(255, 206, 86, 0.6)',
-          'rgba(75, 192, 192, 0.6)',
-          'rgba(153, 102, 255, 0.6)',
-          'rgba(255, 159, 64, 0.6)'
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 206, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+          'rgba(153, 102, 255, 0.2)',
+          'rgba(255, 159, 64, 0.2)',
+        ],
+        borderColor: [
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)',
         ],
         borderWidth: 1,
       },
@@ -118,11 +129,11 @@ const VehicleDashboard = () => {
       <div className='mt-5 mb-5 flex flex-row items-center justify-start '> 
         <div className='w-full p-4 bg-slate-200 rounded-md pad mr-2'>
           <h1 className="text-base font-bold">Stored vehicle details</h1>
-      
+          
           <div className="flex m-2 flex-row justify-between  bg-slate-200 rounded-md pad">
             <div className='space-y-4'>
              <div className="grow p-3 bg-black rounded-md pad">
-               <Pie data={chartData} /> 
+             <Pie data={chartData} /> 
              </div>
 
              <div className='flex flex-row'>

@@ -1,46 +1,33 @@
-import { useState } from "react";
-import { useAuthContext } from "./useAuthContext";
-import axios from "../api/axios";
+import { useState } from 'react'
+import { useAuthContext } from './useAuthContext'
+import axios from '@/api/axios'
 
+export const useLogin = () => {
+  const [error, setError] = useState(null)
+  const [isLoading, setIsLoading] = useState(null)
+  const { dispatch } = useAuthContext()
 
-const useLogin = () => {
+  const login = async (email, password) => {
+    setIsLoading(true)
+    setError(null)
 
-    const [error, setError] = useState(null);
-    const [isLoading, setIsLoading] = useState(null);
-    const { dispatch } = useAuthContext();
+    const response = await axios.post('/auth/login',{email,password})
+    const json =  await response?.data
 
-    const login = async (email, password) => {
-        setIsLoading(true);
-        setError(null);
-        try {
-          const response = await axios.post(
-            '/auth/login',
-            JSON.stringify({ email, password}),
-            {
-              headers: { "Content-Type": "application/json" },
-              withCredentials: true,
-            }
-          );
-    
-          const token = JSON.stringify(response.data)
-    
-          localStorage.setItem("token",token);
-          dispatch({type: 'LOGIN', payload: JSON.parse(token)})
-    
-          setIsLoading(false)
-          return true
-        } catch (err) {
-          setIsLoading(false);
-          setError(JSON.stringify(err.response.data.error));
-          return false
-        } finally {
-          setIsLoading(false);
-        } 
-      };
-    
+    console.log(response.status)
+    if (!response.status==200) {
+      setIsLoading(false)
+      setError(json.error)
+    }
+    if (response.status ==200) {
+      // save the user to local storage
+      localStorage.setItem('user', JSON.stringify(json))
+      // update the auth context
+      dispatch({type: 'LOGIN', payload: json})
+      // update loading state
+      setIsLoading(false)
+    }
+  }
 
-
-  return {error,isLoading,login}
+  return { login, isLoading, error }
 }
-
-export default useLogin

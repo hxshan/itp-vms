@@ -1,4 +1,6 @@
 import  { useState } from "react";
+import axios from "axios";
+import { validate } from "./FormValidation";
 
 const CaseFileForm = () => {
   const [formData, setFormData] = useState({
@@ -18,10 +20,23 @@ const CaseFileForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Send the form data to the server
-    console.log("Form Submitted", formData);
-    // Reset form data
-   
+
+    const errors = validate(formData);
+    if(Object.keys(errors).length > 0){
+      console.error('Validation failed:', errors);
+      return;
+    }
+    
+    axios.post("http://localhost:3000/api/casefile", formData)
+      .then(Response => {
+        console.log('Form submitted successfully:', Response.data);
+        handleReset();
+      
+      })
+      
+      .catch(error =>{
+        console.error('Error submitting form:', error);
+      });
   };
 
   const handleReset = () => {

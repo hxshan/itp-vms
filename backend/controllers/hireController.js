@@ -39,7 +39,7 @@ const addHire = async (req, res) => {
       finalTotal,
       advancedPayment,
       hireStatus
-    } = req.body;
+    } = req.body.data;
 
     const newHire = new Hire({
       startDate,

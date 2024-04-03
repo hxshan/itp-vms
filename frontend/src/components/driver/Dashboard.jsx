@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { FaCalendarAlt } from 'react-icons/fa';
 import TripCard from './UpcomingTrip';
 import TripDetailCard from './TripDetailCard';
-import useAxiosGet from '@/hooks/useAxiosGet';
 
 const Dashboard = () => {
   const [upcomingTrips, setUpcomingTrips] = useState([

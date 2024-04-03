@@ -95,7 +95,24 @@ const getAllUsers = async (req, res) => {
   }
 };
 
+const getDrivers= async (req,res)=>{
+  try{
+    const driverRole= await Role.findOne({name:'driver'}).exec()
+    if(!driverRole) return res.status(404).json({message:'No such Role Exists in the System'})
 
+    const drivers=await User.find({role:driverRole._id}).exec()
+
+    if (!drivers) {
+      return res.json([{}]);
+    }
+
+    return res.status(200).json(drivers);  
+
+  }catch(error){
+    console.log(error)
+  }
+  
+}
 
 
 module.exports = { createUser, getAllUsers};

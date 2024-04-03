@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import ViewHire from "./ViewHire";
 import PropTypes from 'prop-types'
 import axios from "@/api/axios";
+import useAxios from "@/hooks/useAxios";
 
 const HireTable = ({ vehicleNo,searchType, setResults, results }) => {
 
@@ -13,16 +14,23 @@ const HireTable = ({ vehicleNo,searchType, setResults, results }) => {
         results: PropTypes.array.isRequired
     };
 
-    const [hireData, setHireData] = useState([]);
+    const [hireData, error, loading, axiosFetch] = useAxios();
 
     useEffect(() => {
         const fetchHires = async () => {
-            try {
+
+            axiosFetch({
+                axiosInstance: axios,
+                method: "GET",
+                url: "/hire",
+              });
+              
+            /*try {
                 const response = await axios.get('http://localhost:3000/api/hire');
                 setHireData(response.data);
             } catch (error) {
                 console.error('Error fetching data in Hire: ' + error);
-            }
+            }*/
         };
 
         fetchHires();
@@ -30,6 +38,7 @@ const HireTable = ({ vehicleNo,searchType, setResults, results }) => {
 
     const [viewHire, setViewHire] = useState(false);
     const [viewHireData, setViewHireData] = useState(null);
+    const [reload, setReload] = useState(0);
 
     const handleView = (hId) => {
         const selected = hireData.find((hire) => hire._id === hId);
@@ -52,6 +61,7 @@ const HireTable = ({ vehicleNo,searchType, setResults, results }) => {
     
 
     // Handle Delete
+    /*
     const deleteHire = async (id) => {
         try {
             await axios.delete(`http://localhost:3000/api/hire/${id}`);
@@ -62,7 +72,25 @@ const HireTable = ({ vehicleNo,searchType, setResults, results }) => {
         } catch (error) {
             console.error('Error deleting hire: ' + error);
         }
-    };
+    };*/
+
+    const deleteHire =async(id) => {
+        if(confirm("Are you sure you want to Delete the following")){
+          await axiosFetch({
+            axiosInstance: axios,
+            method: "DELETE",
+            url: `/hire/${id}`,
+          });
+          if(!error){
+            setReload(reload + 1);
+          } 
+        }
+      };
+    
+    
+      if (loading) {
+        return <p>Loading...</p>;
+      }
 
     return (
         <div className="w-full h-full flex px-2 py-[20px] justify-center align-center xl:px-[60px] xl:py-[50px] ">
