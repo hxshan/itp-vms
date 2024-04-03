@@ -1,7 +1,10 @@
 const mongoose = require('mongoose');
 
 const hireSchema = new mongoose.Schema({
- 
+  hireStatus: {
+    type: String, 
+    required: true
+  },
   startDate: { 
     type: Date, 
     required: true 

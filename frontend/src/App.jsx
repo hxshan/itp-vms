@@ -1,6 +1,8 @@
 
-import {Routes, Route, Navigate } from "react-router-dom";
+import {BrowserRouter,Routes, Route, Navigate } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import DriverDashboard from "./pages/driver/DriverDashboard";
+import VehicleDashboard from "./pages/vehicle/VehicleDashboard";
 import HireDashboard from "./pages/hires/HireDashboard";
 import { Login, Navbar, TopBar, UnAuthorized } from "./pages/shared";
 
@@ -8,8 +10,15 @@ import CaseFileForm from "./components/EAM/CaseFileForm";
 import { CreateMaintainceForm } from "./components/VR/CreateMaintainceForm";
 import AddVehicle from "./pages/vehicle/AddVehicle";
 import AddContract from "./pages/contract/AddContract";
+
+
 import { AdminDashboard, Roles, EditRoles } from "./pages/admin";
 import { useAuthContext } from "./hooks/useAuthContext";
+import { MaintainceDashboard } from "./pages/Maintains/MaintainceDashboard";
+import { EditMaintainceOrder } from "./components/VR/EditMaintainceOrder";
+import ContractDasboard from "./pages/contract/ContractDasboard";
+import FinanaceDashboard from "./pages/finance/FinanaceDashboard";
+import {VehicleServiceList} from './components/VR/VehicleServiceList'
 
 function App() {
   const { user,loading }= useAuthContext()
@@ -53,6 +62,7 @@ function App() {
           </main>
       </>
   );
+
 }
 
 export default App;

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import {validateFormFirstPage, validateFormSecondPage} from './Validation';
 import axios from '@/api/axios';
+import useAxios from '@/hooks/useAxios'
 
 const Form = ({setShowForm }) => { 
   const [step, setStep] = useState(1);
@@ -24,12 +25,15 @@ const Form = ({setShowForm }) => {
   const [startPoint, setStartPoint] = useState('')
   const [endPoint, setEndPoint] = useState('')
   const [tripType, setTripType] = useState(false)
-  const [distence, setSetDistence] = useState()
+  const [distence, setSetDistence] = useState('')
   const [cusName, setCusName] = useState('')
   const [cusEmail, setCusEmail] = useState('')
   const [cusMobile, setCusMobile] = useState('')
   const [cusNic, setCusNic] = useState('')
+  const [estimatedTotal, setEstimatedTotal] = useState(0)
+  const [advancedPayment, setAdvancedPayment] = useState(0)
 
+  const [response, error, loading, axiosFetch] = useAxios()
 
   const formData = {
     startDate,
@@ -45,22 +49,43 @@ const Form = ({setShowForm }) => {
     tripType,
     distence,
     cusName, cusEmail, cusMobile, cusNic,
-    estimatedTotal: 0,
+    estimatedTotal,
     finalTotal: null,
-    advancedPayment: 0
+    advancedPayment,
+    hireStatus: "Pending"
   }
 
   //Handle Submit
-  const submit = () => {
+  const submit =async (e) => {
+
+    e.preventDefault()
   
     const confirm = window.confirm("Are you sure")
     if(confirm){
       setShowForm(false)
 
-      axios.post('http://localhost:3000/api/hire/add', formData)
+      
+      await axiosFetch({
+        axiosInstance:axios,
+        method:'POST',
+        url:'/hire/add',
+        requestConfig:{
+          data:{
+            ...formData
+          }
+        }
+      })
+
+      if(error){
+        alert(error)
+      }
+
+      //axios.post('http://localhost:3000/api/hire/add', formData)
     }
     
   }
+
+ 
 
   const cancel = () => {
     setShowForm(false)
@@ -84,22 +109,27 @@ const Form = ({setShowForm }) => {
         setStep(step + 1);
       }
     }
+
+    if(step == 3) {
+        setStep(step + 1);
+    }
   };
 
   const handlePrevStep = () => {
     setStep(step - 1);
   };
 
-
+/*
 //Retreve data
 useEffect(() => {
 
   fetchVehicleData();
 }, [])
-
+*/
 const [vehcleTypes, setVehcleTypes] = useState(["Car", "Van", "Lorry" , "Bus"])
 const [vehcleSubTypes, setVehcleSubTypes] = useState(["Maruti" , "C200"])
 
+/*
 const fetchVehicleData = async () => {
   try {
     const response = await axios.get()
@@ -110,14 +140,59 @@ const fetchVehicleData = async () => {
     console.error("Error Fetching Data from database: " , error)
   }
 }
-
+*/
 /*
 {vehcleTypes.map(type) => (
   <option key={type.id} value={type.name}>{type.name}</option>
 )}
 */
 
-//Add data to database
+//Calculate total
+const vehicleRates = {
+  Car: { baseRate: 8000, additionalRate: 100 },
+  Van: { baseRate: 10000, additionalRate: 110 },
+  Bus: { baseRate: 15000, additionalRate: 150 },
+  Lorry: { baseRate: 15000, additionalRate: 180 }
+};
+
+const calculateEstimatedFare= () => {
+  let estimatedFare = 0
+  let advancedPay = 0
+
+  if (!vehicleType || !distence) {
+    console.log("Vehicle type or distance not selected");
+    return { estimatedFare: 0, advancedPay: 0 };
+  }
+
+  console.log("Calculating estimated fare...");
+  const { baseRate, additionalRate } = vehicleRates[vehicleType];
+  let estimatedDistence = distence
+
+  if(tripType === true) {
+    estimatedDistence = estimatedDistence * 2
+    
+  }
+
+  const baseDistance = 100;
+  const additionalDistance = Math.max(estimatedDistence - baseDistance, 0);
+
+  estimatedFare = baseRate + additionalDistance * additionalRate;
+  advancedPay = estimatedFare * 0.1;
+
+  estimatedFare = parseFloat(estimatedFare.toFixed(2))
+  advancedPay = Math.round(advancedPay)
+
+  return { estimatedFare, advancedPay };
+
+}
+
+useEffect(() => {
+  if (step === 4) {
+    const { estimatedFare, advancedPay } = calculateEstimatedFare();
+    setEstimatedTotal(estimatedFare);
+    setAdvancedPayment(advancedPay);
+  }
+}, [step, vehicleType, distence, tripType]);
 
 
   return (
@@ -503,6 +578,31 @@ const fetchVehicleData = async () => {
             </div>
           )}
 
+            {/* Receipt */}
+          {step === 4 && (
+            <div>
+              <div className="mt-3 px-4">
+                <h2 className="text-2xl font-semibold text-center mb-4 underline ">Receipt</h2>
+              </div>
+
+              <div className=' xl:flex justify-between'>
+                <div className='mr-[20px]'>
+
+                  <p className=' text-lg font-semibold leading-8'>Estimated Distence : &nbsp;&nbsp;{distence} Km</p>          
+                  <p className=' text-lg font-semibold leading-8'>Estimated Total : &nbsp;&nbsp;Rs. {estimatedTotal}</p>
+                </div>
+
+                <div className='mr-[20px]'>
+
+                  <p className=' text-lg font-semibold leading-8'>Vehicle Fare(perKm) : &nbsp;&nbsp;Rs. </p>
+                  <p className=' text-lg font-semibold leading-8'>Advanced Payment : &nbsp;&nbsp;Rs. {advancedPayment}</p>
+
+                </div>
+                
+                </div>
+            </div>
+          )}
+
           <div className={`flex ali mt-8 px-4 justify-between`}>
             {step === 1 && (
               <button type='button' className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md mr-4 place-" onClick={cancel}>
@@ -514,7 +614,7 @@ const fetchVehicleData = async () => {
                 Previous
               </button>
             )}
-            {step !== 3 ? (
+            {step !== 4 ? (
               <button type='button' className="px-4 py-2 text-white bg-black rounded-md hover:bg-gray-800 focus:outline-none" onClick={handleNextStep}>
                 Next
               </button>
