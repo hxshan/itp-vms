@@ -2,8 +2,6 @@
 import {UserTable,CreateUserForm} from "../../components/admin/"
 const AdminDashboard = () => {
 
-//console.log(users)
-//
   return (
   
     <div className="container mx-auto pb-10 min-h-full">

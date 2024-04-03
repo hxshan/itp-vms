@@ -4,54 +4,48 @@ const User = require("../models/userModel");
 
 
 const login = async (req,res)=>{
-    const {email,password}=req.body
 
-    if(!email||!password) return res.status(400).json({message:'All felds must be filled'})
+    try{
+        const {email,password}=req.body
+        if(!email||!password) return res.status(400).json({message:'All felds must be filled'})
+        const user =await User.findOne({email}).populate('role').exec()
 
-    const user =await User.findOne({email}).exec()
+        if(!user) return res.status(401).json({message:'No such User'})
+        if(user.status=='inactive') return res.status(401).json({message:`Account is ${user.status}`})
 
-    if(!user || user.status=='inactive') return res.status(401).json({message:'Unauthorized'})
+        const match = await bcrypt.compare(password,user.password)
 
+        if(!match) return res.status(401).json({message:'Unauthorized'})
+        const accessToken = jwt.sign(
+            {
+                UserInfo:{
+                    "name":user.firstName,
+                    "email":user.email,
+                    "role":user.role
+                }
+            },
+            process.env.SECRET,
+            {expiresIn:'1d'}
+        )
 
-    const match = await bcrypt.compare(password,user.password)
-
-    if(!match) return res.status(401).json({message:'Unauthorized'})
-
-
-    const accessToken = jwt.sign(
-        {
-            UserInfo:{
-                "name":user.firstName,
-                "email":user.email,
-                "role":user.role
-            }
-        },
-        process.env.SECRET,
-        {expiresIn:'10s'}
-    )
-
-    const refreshToken = jwt.sign(
-        {"email":user.email},
-        process.env.REFRESH_SECRET,
-        {expiresIn:'1d'}
-    )
-
-    res.cookie('jwt',refreshToken,{
-        httpOnly:true,
-        secure:true,
-        sameSite:'None',
-        maxAge:7*24*60*60*1000 //7days
-    })
-
-    return res.json({accessToken})
+        const refreshToken = jwt.sign(
+            {"email":user.email},
+            process.env.REFRESH_SECRET,
+            {expiresIn:'10d'}
+        )
+        const permissions = user.role
+        return res.status(200).json({accessToken,refreshToken,permissions})
+    }catch(error){
+        return res.status(401).json({message:'Unauthorized'})
+    }
 }
 
 const refresh = (req,res) =>{
-    const cookies = req.cookies
-
+    const cookie = req.cookies;
+    console.log(cookie)
     if(!cookie.jwt) return res.status(401).json({message:'Unauthorized'})
 
-    const refreshToken = cookies.jwt
+    const refreshToken = cookie.jwt
 
     jwt.verify(
         refreshToken,
@@ -82,8 +76,8 @@ const refresh = (req,res) =>{
 }
 
 const logout = (req,res) =>{
-    const cookies = req.cookies
-    if(!cookies.jwt) return res.sendStatus(204)
+    const cookie = req.cookies
+    if(!cookie.jwt) return res.sendStatus(204)
     res.clearCookie('jwt',{httpOnly:true,sameSite:None,secure:true})
     res.json({message:'cookie cleared'})
 

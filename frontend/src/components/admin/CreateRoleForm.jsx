@@ -104,7 +104,8 @@ const CreateRoleForm = () => {
   }
 
   return (
-    <div>
+    <div >
+      <h1 className="text-2xl font-bold underline mt-4 mb-8">Create Role</h1>
       <form onSubmit={handleSubmit}>
         <div>
           <div className="col-span-1 w-full flex flex-col mb-4 ">
@@ -132,24 +133,23 @@ const CreateRoleForm = () => {
         </div>
 
         <div>
-          <h1>Permissions</h1>
-          <div>
-            <table>
-              <thead>
+          <div className="w-full mt-8">
+            <table className="min-w-full divide-y divide-gray-200 border-x border-b border-gray-200">
+              <thead className="bg-gray-500">
                 <tr>
-                  <th></th>
-                  <th>Can Create</th>
-                  <th>Can Read</th>
-                  <th>Can Update</th>
-                  <th>Can Delete</th>
+                  <th className="px-6 py-3 text-xs font-bold text-white text-center uppercase tracking-wider">Permissions</th>
+                  <th className="px-6 py-3 text-xs font-bold text-white text-center uppercase tracking-wider">Can Create</th>
+                  <th className="px-6 py-3 text-xs font-bold text-white text-center uppercase tracking-wider">Can Read</th>
+                  <th className="px-6 py-3 text-xs font-bold text-white text-center uppercase tracking-wider">Can Update</th>
+                  <th className="px-6 py-3 text-xs font-bold text-white text-center uppercase tracking-wider">Can Delete</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>
+                <tr className="bg-white border-t border-gray-200">
+                  <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200 font-semibold">
                     <span>User Permissions</span>
                   </td>
-                  <td>
+                  <td className="text-center">
                     <input
                       type="checkbox"
                       name="Create"
@@ -163,7 +163,7 @@ const CreateRoleForm = () => {
                       }}
                     />
                   </td>
-                  <td>
+                  <td className="text-center">
                     <input
                       type="checkbox"
                       name="Read"
@@ -177,7 +177,7 @@ const CreateRoleForm = () => {
                       }}
                     />
                   </td>
-                  <td>
+                  <td className="text-center">
                     <input
                       type="checkbox"
                       name="Update"
@@ -191,7 +191,7 @@ const CreateRoleForm = () => {
                       }}
                     />
                   </td>
-                  <td>
+                  <td className="text-center">
                     <input
                       type="checkbox"
                       name="Delete"
@@ -206,11 +206,11 @@ const CreateRoleForm = () => {
                     />
                   </td>
                 </tr>
-                <tr>
-                  <td>
+                <tr className="bg-white border-t border-gray-200">
+                  <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200 font-semibold">
                     <span>vehiclePermissions</span>
                   </td>
-                  <td>
+                  <td className="text-center">
                     <input
                       type="checkbox"
                       name="Create"
@@ -224,7 +224,7 @@ const CreateRoleForm = () => {
                       }}
                     />
                   </td>
-                  <td>
+                  <td className="text-center">
                     <input
                       type="checkbox"
                       name="Read"
@@ -238,7 +238,7 @@ const CreateRoleForm = () => {
                       }}
                     />
                   </td>
-                  <td>
+                  <td className="text-center">
                     <input
                       type="checkbox"
                       name="Update"
@@ -252,7 +252,7 @@ const CreateRoleForm = () => {
                       }}
                     />
                   </td>
-                  <td>
+                  <td className="text-center">
                     <input
                       type="checkbox"
                       name="Delete"
@@ -267,11 +267,11 @@ const CreateRoleForm = () => {
                     />
                   </td>
                 </tr>
-                <tr>
-                  <td>
+                <tr className="bg-white border-t border-gray-200">
+                  <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200 font-semibold">
                     <span>vehicle Maintenence Permissions</span>
                   </td>
-                  <td>
+                  <td className="text-center">
                     <input
                       type="checkbox"
                       name="Create"
@@ -285,7 +285,7 @@ const CreateRoleForm = () => {
                       }}
                     />
                   </td>
-                  <td>
+                  <td className="text-center">
                     <input
                       type="checkbox"
                       name="Read"
@@ -299,7 +299,7 @@ const CreateRoleForm = () => {
                       }}
                     />
                   </td>
-                  <td>
+                  <td className="text-center">
                     <input
                       type="checkbox"
                       name="Update"
@@ -313,7 +313,7 @@ const CreateRoleForm = () => {
                       }}
                     />
                   </td>
-                  <td>
+                  <td className="text-center">
                     <input
                       type="checkbox"
                       name="Delete"
@@ -328,11 +328,11 @@ const CreateRoleForm = () => {
                     />
                   </td>
                 </tr>
-                <tr>
-                  <td>
+                <tr className="bg-white border-t border-gray-200">
+                  <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200 font-semibold">
                     <span>Hire Permissions</span>
                   </td>
-                  <td>
+                  <td className="text-center">
                     <input
                       type="checkbox"
                       name="Create"
@@ -346,7 +346,7 @@ const CreateRoleForm = () => {
                       }}
                     />
                   </td>
-                  <td>
+                  <td className="text-center">
                     <input
                       type="checkbox"
                       name="Read"
@@ -360,7 +360,7 @@ const CreateRoleForm = () => {
                       }}
                     />
                   </td>
-                  <td>
+                  <td className="text-center">
                     <input
                       type="checkbox"
                       name="Update"
@@ -374,7 +374,7 @@ const CreateRoleForm = () => {
                       }}
                     />
                   </td>
-                  <td>
+                  <td className="text-center">
                     <input
                       type="checkbox"
                       name="Delete"
@@ -389,11 +389,11 @@ const CreateRoleForm = () => {
                     />
                   </td>
                 </tr>
-                <tr>
-                  <td>
+                <tr className="bg-white border-t border-gray-200">
+                  <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200 font-semibold">
                     <span>Contract Permissions</span>
                   </td>
-                  <td>
+                  <td className="text-center">
                     <input
                       type="checkbox"
                       name="Create"
@@ -407,7 +407,7 @@ const CreateRoleForm = () => {
                       }}
                     />
                   </td>
-                  <td>
+                  <td className="text-center">
                     <input
                       type="checkbox"
                       name="Read"
@@ -421,7 +421,7 @@ const CreateRoleForm = () => {
                       }}
                     />
                   </td>
-                  <td>
+                  <td className="text-center">
                     <input
                       type="checkbox"
                       name="Update"
@@ -435,7 +435,7 @@ const CreateRoleForm = () => {
                       }}
                     />
                   </td>
-                  <td>
+                  <td className="text-center">
                     <input
                       type="checkbox"
                       name="Delete"
@@ -451,11 +451,11 @@ const CreateRoleForm = () => {
                   </td>
                 </tr>
                 
-                <tr>
-                  <td>
+                <tr className="bg-white border-t border-gray-200">
+                  <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200 font-semibold">
                     <span>Emergency Managment Permissions</span>
                   </td>
-                  <td>
+                  <td className="text-center">
                     <input
                       type="checkbox"
                       name="Create"
@@ -469,7 +469,7 @@ const CreateRoleForm = () => {
                       }}
                     />
                   </td>
-                  <td>
+                  <td className="text-center">
                     <input
                       type="checkbox"
                       name="Read"
@@ -483,7 +483,7 @@ const CreateRoleForm = () => {
                       }}
                     />
                   </td>
-                  <td>
+                  <td className="text-center">
                     <input
                       type="checkbox"
                       name="Update"
@@ -497,7 +497,7 @@ const CreateRoleForm = () => {
                       }}
                     />
                   </td>
-                  <td>
+                  <td className="text-center">
                     <input 
                       type="checkbox"
                       name="Delete"
@@ -513,11 +513,11 @@ const CreateRoleForm = () => {
                   </td>
                 </tr>
                 
-                <tr>
-                  <td>
+                <tr className="bg-white border-t border-gray-200">
+                  <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200 font-semibold">
                     <span>Finance Permissions</span>
                   </td>
-                  <td>
+                  <td className="text-center">
                     <input
                       type="checkbox"
                       name="Create"
@@ -531,7 +531,7 @@ const CreateRoleForm = () => {
                       }}
                     />
                   </td>
-                  <td>
+                  <td className="text-center">
                     <input
                       type="checkbox"
                       name="Read"
@@ -545,7 +545,7 @@ const CreateRoleForm = () => {
                       }}
                     />
                   </td>
-                  <td>
+                  <td className="text-center">
                     <input
                       type="checkbox"
                       name="Update"
@@ -559,7 +559,7 @@ const CreateRoleForm = () => {
                       }}
                     />
                   </td>
-                  <td>
+                  <td className="text-center">
                     <input 
                       type="checkbox"
                       name="Delete"
@@ -580,7 +580,7 @@ const CreateRoleForm = () => {
         </div>
         <button
           type="submit"
-          className="bg-green-600 py-2 px-6 rounded-md text-white font-bold"
+          className="bg-green-600 py-2 px-6 rounded-md my-8 text-white font-bold"
         >
           Submit
         </button>

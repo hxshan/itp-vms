@@ -1,5 +1,4 @@
-import useAxiosPost from "@/hooks/useAxiosPost";
-import useAxiosGet from "@/hooks/useAxiosGet";
+
 import useAxios from "@/hooks/useAxios";
 import axios from "@/api/axios";
 import { useEffect, useState } from "react";
@@ -30,7 +29,7 @@ const CreateUserForm = () => {
   },[])
 
   useEffect(()=>{
-    console.log(roleData)
+    //console.log(roleData)
     /*if(error){
       alert(error)
       navigate('/admin')
