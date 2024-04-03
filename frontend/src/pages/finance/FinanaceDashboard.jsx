@@ -1,5 +1,5 @@
 import React from 'react';
-import { ExpenseTable } from '@/components/finanace';
+import { ExpenseTable, ExpenseForm } from '@/components/finanace';
 import useAxiosGet from '@/hooks/useAxiosGet';
 
 const FinanceDashboard = () => {
@@ -11,13 +11,9 @@ const FinanceDashboard = () => {
     return (
       <div className="container mx-auto py-8">
         <h1 className="text-3xl font-semibold mb-4">Finance Dashboard</h1>
-        {isLoading ? (
-          <p>Loading expenses...</p>
-        ) : error ? (
-          <p>Error: {error}</p>
-        ) : (
-          <ExpenseTable data={expenses} isLoading={isLoading} /> 
-        )}
+        
+          <ExpenseForm/>
+       
       </div>
     );
   };

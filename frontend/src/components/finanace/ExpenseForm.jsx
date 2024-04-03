@@ -1,136 +1,112 @@
 import React, { useState } from 'react';
 
-const ExpenseForm = ({ onSubmit }) => {
-  const [expenseData, setExpenseData] = useState({
-    vehicle: '',
-    type: '',
-    amount: '',
-    date: '',
-    receiptImage: '',
-    notes: '',
-    fuelDetails: {
-      fuelType: '',
-      fuelQuantity: '',
-      fuelPricePerUnit: ''
-    },
-    maintenanceDetails: {
-      description: '',
-      partsCost: '',
-      laborCost: ''
-    }
-  });
+const ExpenseForm = () => {
+  const [date, setDate] = useState('');
+  const [vehicle, setVehicle] = useState('');
+  const [recordedBy, setRecordedBy] = useState('');
+  const [tripId, setTripId] = useState('');
+  const [category, setCategory] = useState('');
+  const [categoryDetails, setCategoryDetails] = useState('');
+  const [status, setStatus] = useState('Pending'); // Default status to Pending
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setExpenseData({
-      ...expenseData,
-      [name]: value
-    });
-  };
-
-  const handleFuelDetailsChange = (e) => {
-    const { name, value } = e.target;
-    setExpenseData({
-      ...expenseData,
-      fuelDetails: {
-        ...expenseData.fuelDetails,
-        [name]: value
-      }
-    });
-  };
-
-  const handleMaintenanceDetailsChange = (e) => {
-    const { name, value } = e.target;
-    setExpenseData({
-      ...expenseData,
-      maintenanceDetails: {
-        ...expenseData.maintenanceDetails,
-        [name]: value
-      }
-    });
+  const handleCategoryChange = (e) => {
+    const selectedCategory = e.target.value;
+    setCategory(selectedCategory);
+    // Reset category details when category changes
+    setCategoryDetails('');
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit(expenseData);
+    const expenseData = { date, vehicle, recordedBy, tripId, category, categoryDetails, status };
+    // You can submit expenseData to a backend API or perform other actions here
+    console.log(expenseData);
   };
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-md mx-auto p-8 bg-white rounded-lg shadow-md">
-      <h2 className="text-2xl font-semibold mb-4">Add Expense</h2>
+    <form onSubmit={handleSubmit} className="max-w-md mx-auto bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
       <div className="mb-4">
-        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="vehicle">
-          Vehicle:
-        </label>
-        <input
-          type="text"
-          name="vehicle"
-          value={expenseData.vehicle}
-          onChange={handleChange}
-          className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-500"
-          required
-        />
+        <label htmlFor="date" className="block text-gray-700 text-sm font-bold mb-2">Expense Date:</label>
+        <input type="date" id="date" value={date} onChange={(e) => setDate(e.target.value)} required className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
       </div>
+
       <div className="mb-4">
-        <label className="block text-gray-700 text-sm font-bold mb-2">Expense Type:</label>
-        <div className="flex items-center">
-          {['Fuel', 'Maintenance', 'Insurance', 'Repairs', 'Other'].map((type) => (
-            <div key={type} className="mr-4">
-              <input
-                type="radio"
-                id={type}
-                name="type"
-                value={type}
-                checked={expenseData.type === type}
-                onChange={handleChange}
-                className="mr-2"
-              />
-              <label htmlFor={type} className="text-gray-700">{type}</label>
-            </div>
-          ))}
-        </div>
+        <label htmlFor="vehicle" className="block text-gray-700 text-sm font-bold mb-2">Vehicle:</label>
+        <input type="text" id="vehicle" value={vehicle} onChange={(e) => setVehicle(e.target.value)} required className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
       </div>
-      {expenseData.type === 'Fuel' && (
-        <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="fuelType">
-            Fuel Type:
-          </label>
-          <select
-            name="fuelType"
-            value={expenseData.fuelDetails.fuelType}
-            onChange={handleFuelDetailsChange}
-            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-500"
-            required
-          >
-            <option value="">Select Fuel Type</option>
-            {['Petrol', 'Diesel', 'CNG', 'Electric', 'Hybrid'].map((fuelType) => (
-              <option key={fuelType} value={fuelType}>{fuelType}</option>
-            ))}
-          </select>
-        </div>
+
+      <div className="mb-4">
+        <label htmlFor="recordedBy" className="block text-gray-700 text-sm font-bold mb-2">Recorded By:</label>
+        <input type="text" id="recordedBy" value={recordedBy} onChange={(e) => setRecordedBy(e.target.value)} required className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+      </div>
+
+      <div className="mb-4">
+        <label htmlFor="tripId" className="block text-gray-700 text-sm font-bold mb-2">Trip ID:</label>
+        <input type="text" id="tripId" value={tripId} onChange={(e) => setTripId(e.target.value)} required className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+      </div>
+
+      <div className="mb-4">
+        <label htmlFor="category" className="block text-gray-700 text-sm font-bold mb-2">Expense Category:</label>
+        <select id="category" value={category} onChange={handleCategoryChange} required className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+          <option value="">Select category</option>
+          <option value="Fuel">Fuel</option>
+          <option value="Maintenance and Repair">Maintenance and Repair</option>
+          <option value="Insurance">Insurance</option>
+          <option value="Licensing and Permits">Licensing and Permits</option>
+          <option value="Driver Wages">Driver Wages</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+
+      {/* Render additional fields based on selected category */}
+      {category && (
+        <>
+          {/* Common fields */}
+          <div className="mb-4">
+            <label htmlFor="categoryDetails" className="block text-gray-700 text-sm font-bold mb-2">{category} Details:</label>
+            <textarea id="categoryDetails" value={categoryDetails} onChange={(e) => setCategoryDetails(e.target.value)} required className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder={`Enter details for ${category}`} rows={4} />
+          </div>
+
+          {/* Render additional fields based on selected category */}
+          {category === 'Fuel' && (
+            <>
+              <div className="mb-4">
+                {/* Render additional fields specific to Fuel category */}
+                <label htmlFor="fuelType" className="block text-gray-700 text-sm font-bold mb-2">Fuel Type:</label>
+                <input type="text" id="fuelType" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+              </div>
+              {/* Add more fields specific to Fuel category as needed */}
+            </>
+          )}
+
+          {category === 'Maintenance and Repair' && (
+            <>
+              <div className="mb-4">
+                {/* Render additional fields specific to Maintenance and Repair category */}
+                <label htmlFor="maintenanceType" className="block text-gray-700 text-sm font-bold mb-2">Maintenance Type:</label>
+                <input type="text" id="maintenanceType" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+              </div>
+              {/* Add more fields specific to Maintenance and Repair category as needed */}
+            </>
+          )}
+
+          {/* Add more conditions for other categories */}
+        </>
       )}
-      {expenseData.type === 'Maintenance' && (
-        <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="description">
-            Description:
-          </label>
-          <input
-            type="text"
-            name="description"
-            value={expenseData.maintenanceDetails.description}
-            onChange={handleMaintenanceDetailsChange}
-            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-500"
-            required
-          />
-        </div>
-      )}
-      {/* Add other expense fields here with similar conditional rendering */}
-      <button
-        type="submit"
-        className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-      >
-        Submit
-      </button>
+
+      <div className="mb-4">
+        <label htmlFor="status" className="block text-gray-700 text-sm font-bold mb-2">Status:</label>
+        <select id="status" value={status} onChange={(e) => setStatus(e.target.value)} required className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+          <option value="Pending">Pending</option>
+          <option value="Approved">Approved</option>
+          <option value="Paid">Paid</option>
+          <option value="Rejected">Rejected</option>
+        </select>
+      </div>
+
+      <div className="flex items-center justify-between">
+        <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Submit</button>
+      </div>
     </form>
   );
 };

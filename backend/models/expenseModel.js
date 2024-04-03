@@ -1,56 +1,83 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 
-const Schema = mongoose.Schema 
+// Define main expense schema with embedded documents for category-specific details
+const expenseSchema = new mongoose.Schema({
+  date: { 
+    type: Date, 
+    required: true 
+  },
+  vehicle: { 
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: 'vehicles', 
+    required: true 
+  },
+  recordedBy: { 
+    type: String, 
+    required: true 
+  },
+  tripId: { 
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: 'hires' 
+  },
+  category: { 
+    type: String, 
+    enum: ['Fuel', 'Maintenance and Repairs', 'Insurance', 'Licensing and Permits', 'Other'], 
+    required: true 
+  },
+  status: { 
+    type: String, 
+    enum: ['Pending', 'Approved', 'Paid', 'Rejected'], 
+    required: true 
+  },
+  receiptImage: { 
+    type: String 
+  },
+  notes: {
+    type: String 
+  },
+  fuelDetails: {
+    odometerReading: Number,
+    fuelType: { 
+      type: String, 
+      enum: ['Petrol', 'Diesel', 'Electric'] 
+    },
+    fuelQuantity: Number,
+    fuelPricePerUnit: Number,
+    totalPrice : Number
+  },
+  maintenanceDetails: {
+    description: String,
+    serviceProvider: String,
+    invoiceNumber: String,
+    maintenanceCost: Number
+  },
+  insuranceDetails: {
+    insuaranceProvider: String,
+    policyNumber: Number,
+    premiumAmount: Number
+  },
+  licensingDetails: {
+    licenseType: { 
+      type: String, 
+      enum: ['Vehicle Registration', 'Vehicle Emmission Testing', 'Taxi Permit'] 
+    },
+    licenseCost: Number
+  },
+  driverWages: {
+    driverName: String,
+    hoursWorked: Number,
+    hoursWorked: Number,
+    hourlyRate: Number,
+    totalEarning: Number
 
+  },
+  otherDetails: {
+    description: String,
+    amount: Number
+  }
+});
 
-const expenseSchema = new Schema ({
+// Create expense model
+const Expense = mongoose.model('Expense', expenseSchema);
 
-    
-    vehicle: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'tourVehicles',
-        required: true
-      },
-      type: {
-        type: String,
-        enum: ['Fuel', 'Maintenance', 'Insurance', 'Repairs', 'Other'],
-        required: true
-      },
-      amount: {
-        type: Number,
-        required: true
-      },
-      date: {
-        type: Date,
-        default: Date.now
-      },
-      receiptImage: {
-        type: String,
-         
-      },
-      notes: {
-        type: String
-      },
-      fuelDetails: {
-        type: {
-          fuelType: {
-            type: String,
-            enum: ['Petrol', 'Diesel', 'CNG', 'Electric', 'Hybrid']
-          },
-          fuelQuantity: Number,
-          fuelPricePerUnit: Number
-        }
-      },
-      maintenanceDetails: {
-        type: {
-          description: String,
-          partsCost: Number,
-          laborCost: Number
-        }
-      }
-   
-
-} , { timestamps: true });
-
-
-module.exports = mongoose.model('expense', expenseSchema)
+module.exports = Expense;
