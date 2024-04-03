@@ -19,8 +19,8 @@ const VehicleSchema = new mongoose.Schema({
     numOfSeats : {type:Number},
     lugSpace : {type:Number},
     gps : {type:String},
-    fridge : {type:String, default:'No'},
-    tv : {type:String, default:'No'},
+    fridge : {type:String},
+    tv : {type:String},
     licEndDate : {type:Date},
     insEndDate : {type:Date},
     vehicleBookImage : {type:String},
@@ -28,7 +28,7 @@ const VehicleSchema = new mongoose.Schema({
     vehicleInsuImage : {type:String},
     availability : {type:String},
     status:{type:String}
-},{timestamps:true})
+},{timestamps: { currentTime: () => Date.now() + 5.5 * 60 * 60 * 1000 }})
 
 
 const Vehicles = mongoose.model('Vehicles',VehicleSchema)

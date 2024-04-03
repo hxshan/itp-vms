@@ -1,6 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect } from 'react';
 import { useNavigate} from 'react-router-dom'
 import axios from 'axios'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import { CarForm } from '../../components/vehicle/';
 import { VanForm } from '../../components/vehicle/';
 import { BusForm } from '../../components/vehicle/';
@@ -8,6 +11,8 @@ import { LorryForm } from '../../components/vehicle/';
 import { TruckForm } from '../../components/vehicle/';
 
 const AddVehicle = () => {
+     
+
     const initialFormState= {
         category: '',
         vehicleType: '',
@@ -22,10 +27,10 @@ const AddVehicle = () => {
         numOfSeats: '',
         lugSpace: '',
         gps: '',
-        licEndDate: '',
+        licStartDate: '',
         insEndDate: '',
-        fridge: '',
-        tv: '',
+        fridge: 'No',
+        tv: 'No',
         vehicleWeight: '',
         cargoCapacity: '',
         cargoArea: '',
@@ -33,12 +38,29 @@ const AddVehicle = () => {
         passengerCabin: '',
         vehicleBookImage: null,
         vehicleLicenceImage: null,
-        vehicleInsuImage: null
+        vehicleInsuImage: null,
+        availability:'available'
     }
     
     const [formState, setFormState] = useState(initialFormState);
     const [error,setError] = useState('')
     const navigate = useNavigate;
+    const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        const handleOnlineStatus = () => {
+          setLoading(navigator.onLine === false);
+        };
+    
+        window.addEventListener('online', handleOnlineStatus);
+        window.addEventListener('offline', handleOnlineStatus);
+    
+        // Cleanup event listeners on component unmount
+        return () => {
+          window.removeEventListener('online', handleOnlineStatus);
+          window.removeEventListener('offline', handleOnlineStatus);
+        };
+      }, []);
 
     const handleCategoryChange = (event) => {
         setFormState({ ...formState,initialFormState, category: event.target.value });
@@ -53,8 +75,6 @@ const AddVehicle = () => {
         e.preventDefault()
         setError('')
 
-        console.log(formState)
-
         try {
           const response = await axios.post(`http://localhost:3000/api/vehicle/`, formState)
           const newVehicle = await response.data;
@@ -64,30 +84,38 @@ const AddVehicle = () => {
            setError("Couldn't add Vehicle.Please try again.")
           }
          
-          alert("Add vehicle successfully.");
-          setFormState(initialFormState);
+          else{
+          toast.success('Vehicle added successfully!');
+          resetForm();
+          }
    
         } catch (err) {
            setError(err.response.data.message)
         }
      }
 
+
     return (
-        <div className="place-content-center m-8 bg-cover bg-center bg-white">
+     <div className='m-0 p-0'>
+        {loading ? (
+          <p className="flex flex-col items-center justify-center h-screen text-center">Loading... Please check your internet connection.</p>
+        ) : (
+
+        <div className="place-content-center mt-8 bg-cover bg-center bg-white ">
             <h1 className="text-lg font-bold">Add Vehicle Details</h1>
             
 
             <form className="space-y-2 m-3 p-3  bg-slate-200 rounded-md pad" onSubmit={handleSubmit}>
-            <p class="text-sm text-red-600 leading-relaxed">
+            <p className="text-sm text-red-600 leading-relaxed">
             - Before adding a vehicle, please ensure you have all the necessary information at hand. This includes vehicle details such as registration number, model, manufacturing year, and more.
             </p>
-            <p class="text-sm text-red-600 leading-relaxed">
+            <p className="text-sm text-red-600 leading-relaxed">
             - To add a vehicle, select the appropriate category from the dropdown menu. Once selected, the system will display the corresponding form where you can enter the vehicle details. 
            </p>
-           <p class="text-sm text-red-600 leading-relaxed">
+           <p className="text-sm text-red-600 leading-relaxed">
             - Ensure all fields are filled accurately before submitting.
            </p>
-           <p class="text-sm text-red-600 leading-relaxed">
+           <p className="text-sm text-red-600 leading-relaxed">
             - If you have any questions or require assistance while adding a vehicle, feel free to reach out to our support team. We're here to help you every step of the way.
            </p>
                 <label className='m-2 font-semibold text-base' htmlFor="category">Select Vehicle Category:</label>
@@ -102,7 +130,7 @@ const AddVehicle = () => {
             </form>
             {formState.category && (
                 <form className="m-3 p-3  bg-slate-200 rounded-md pad" onSubmit={handleSubmit}>
-                    {error &&<p className='mb-3 p-3 font-medium text-sm text-black bg-red-400 rounded-md pad'>{error}</p>}
+                    
                     {/* Render appropriate form based on selected category */}
                     {formState.category === 'car' && <CarForm formState={formState} setFormState={setFormState} />}
                     {formState.category === 'van' && <VanForm formState={formState} setFormState={setFormState} />}
@@ -120,10 +148,17 @@ const AddVehicle = () => {
                             <button className= "m-1 p-2 bg-black text-zinc-50 rounded-md" onClick={resetForm}>Reset</button>
                             <button className= "m-1 p-2 bg-black text-zinc-50 rounded-md" type="submit" >Add vehicle</button>
                         </div>
+                        
                     </div>
-                </form>
+                    {error &&<p className='mt-3 p-3 font-medium text-sm text-white bg-red-500 rounded-md pad'>{error}</p>}
+                </form>      
             )}
+
+                       <ToastContainer />
+
         </div>
+        )}
+     </div>
     );
 };
 
