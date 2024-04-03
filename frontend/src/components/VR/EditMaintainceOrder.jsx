@@ -9,56 +9,56 @@ export const EditMaintainceOrder = () => {
     const [vrissue, setVrissue] = useState('');
     const [vrcost, setVrcost] = useState('');
     const [vraddit, setVraddit] = useState('');
-   
+
     const navigate = useNavigate();
     const { id } = useParams();
-  
+
     useEffect(() => {
-     
-      axios
-        .get(`http://localhost:3000/api/vehiclemaintain/${id}`)
-        .then((response) => {
-            setVrtype(response.data.vrtype);
-            setVrid(response.data.vrid);
-            setVrissue(response.data.vrissue);
-            setVrcost(response.data.vrcost);
-            setVraddit(response.data.vraddit);
-          
-        })
-        .catch((error) => {
-          console.log(error);
-          
-        })
-  
+
+        axios
+            .get(`http://localhost:3000/api/vehiclemaintain/${id}`)
+            .then((response) => {
+                setVrtype(response.data.vrtype);
+                setVrid(response.data.vrid);
+                setVrissue(response.data.vrissue);
+                setVrcost(response.data.vrcost);
+                setVraddit(response.data.vraddit);
+
+            })
+            .catch((error) => {
+                console.log(error);
+
+            })
+
     }, [])
-  
-  
-  
+
+
+
     const handleSubmit = () => {
-      const data = {
-        vrtype,
-        vrid,
-        vrissue,
-        vrcost,
-        vraddit
-      };
-     
-      axios
-        .put(`http://localhost:3000/api/vehiclemaintain/${id}`, data)
-        .then(() => {
-        
-          // alert(` updated `);
-          navigate('/');
-        })
-        .catch((error) => {
-          console.log(error);
-          alert((error.message || 'Failed to update Order details'));
-        
-        });
+        const data = {
+            vrtype,
+            vrid,
+            vrissue,
+            vrcost,
+            vraddit
+        };
+
+        axios
+            .put(`http://localhost:3000/api/vehiclemaintain/${id}`, data)
+            .then(() => {
+
+                // alert(` updated `);
+                navigate('/');
+            })
+            .catch((error) => {
+                console.log(error);
+                alert((error.message || 'Failed to update Order details'));
+
+            });
     }
 
-  return (
-    <main className='w-full  flex flex-col justify-center items-center bg-slate-200'>
+    return (
+        <main className='w-full  flex flex-col justify-center items-center bg-slate-200'>
             <h1 className='text-3xl font-semibold  my-9'>
                 Edit Maintaince Form
             </h1>
@@ -169,11 +169,11 @@ export const EditMaintainceOrder = () => {
                 </form>
                 <button onClick={handleSubmit}
                     className='hover:opacity-80 mt-10 bg-slate-800 p-3 rounded-lg text-white font-bold'>
-                    Edit Maintaince Order
+                    Update Maintaince Order
                 </button>
 
             </div>
         </main>
 
-  )
+    )
 }
