@@ -23,13 +23,6 @@ const Navbar = () => {
   const handleItemClick = (menu, subFunction) => {
       console.log(`Selected sub function under ${menu}: ${subFunction}`);
 
-      if(menu === "Contract Management"){
-        if(subFunction === "Client dashboard"){
-            navigate('/client/dashboard') 
-        }else if(subFunction === "Contract dashboard"){
-            navigate('/contract/dashboard')
-        }
-    }
       
   };
 
@@ -119,8 +112,8 @@ const Navbar = () => {
                   </button>
                   {isOpen.contract && (
                       <div className="ml-6">
-                          <button className="w-full py-2 px-4 hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => handleItemClick('Contract Management', 'Client dashboard')}>Client dashboard</button>
-                          <button className="w-full py-2 px-4 hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => handleItemClick('Contract Management', 'Contract dashboard')}>Contract dashboard</button>
+                          <button className="w-full py-2 px-4 hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => navigate('/client')}>Client dashboard</button>
+                          <button className="w-full py-2 px-4 hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => navigate('/Contract/Dashbored')}>Contract dashboard</button>
                           <button className="w-full py-2 px-4 hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => handleItemClick('Contract Management', 'Sub Fun')}>Sub Fun</button>
                       </div>
                   )}

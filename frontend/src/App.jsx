@@ -2,8 +2,6 @@
 import { useAuthContext } from "./hooks/useAuthContext";
 import {Routes, Route, Navigate } from "react-router-dom";
 import { Login, Navbar, TopBar, UnAuthorized } from "./pages/shared";
-
-
 import DriverDashboard from "./pages/driver/DriverDashboard";
 import VehicleDashboard from "./pages/vehicle/VehicleDashboard";
 import HireDashboard from "./pages/hires/HireDashboard";
@@ -17,6 +15,9 @@ import { EditMaintainceOrder } from "./components/VR/EditMaintainceOrder";
 import ContractDasboard from "./pages/contract/ContractDasboard";
 import FinanaceDashboard from "./pages/finance/FinanaceDashboard";
 import { VehicleServiceList } from "./components/VR/VehicleServiceList";
+import ClientDashboard from "./pages/contract/ClientDashboard";
+import ViewContract from "./pages/contract/ViewContract";
+import ContractEditForm from "./pages/contract/ContractEditForm";
 
 function App() {
   const { user, loading } = useAuthContext();
@@ -56,17 +57,14 @@ function App() {
             />
             <Route path="/admin/roles" element={<Roles />} />
             <Route path="/admin/roles/:id" element={<EditRoles />} />
-
-
             <Route path="/hires" element={<HireDashboard />} />
             <Route path="/emergency" element={<CaseFileForm />} />
-            
             <Route path="vehicle">
               <Route index={true} element={<VehicleDashboard />} />
               <Route path="add" element={<AddVehicle />} />
             </Route>
-            <Route path="/Contract/:id" element={<AddContract />} />
-            <Route path="/Vrform" element={<CreateMaintainceForm />} />
+            <Route path="/Contract/:id" element={<AddContract />}/>
+            <Route path="/Vrform" element={<CreateMaintainceForm />}/>
             <Route path="/driver" element={<DriverDashboard />} />
             <Route path="/Mdashboard" element={<MaintainceDashboard />} />
             <Route
@@ -74,7 +72,12 @@ function App() {
               element={<EditMaintainceOrder />}
             />
             <Route path="/Contract/Dashbored" element={<ContractDasboard />} />
+            <Route path="/Contract/Dashboard" element={<ContractDasboard/>}/>
+            <Route path="/Client/Dashboard" element={<ClientDashboard/>}/>
+            <Route path="/viewContract/:id" element={<ViewContract/>}/>
+            <Route path="/EditContract/:id" element={<ContractEditForm/>}/>
             <Route path="/finance" element={<FinanaceDashboard />} />
+            <Route path="/client" element={<ClientDashboard/>}/>
             <Route
               path="/VehicleServiceList"
               element={<VehicleServiceList />}
