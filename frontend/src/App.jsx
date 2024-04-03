@@ -13,6 +13,7 @@ import { EditMaintainceOrder } from "./components/VR/EditMaintainceOrder";
 import ContractDasboard from "./pages/contract/ContractDasboard";
 import FinanaceDashboard from "./pages/finance/FinanaceDashboard";
 import {AdminDashboard,Roles,EditRoles} from "./pages/admin";
+import {VehicleServiceList} from './components/VR/VehicleServiceList'
 
 function App() {
   const queryClient = new QueryClient();
@@ -45,6 +46,7 @@ function App() {
           <Route path="/vehiclemaintain/edit/:id" element={<EditMaintainceOrder/>}/>
           <Route path="/Contract/Dashbored" element={<ContractDasboard/>}/>
           <Route path = "/finance" element ={<FinanaceDashboard />} />
+          <Route path= "/VehicleServiceList" element = {<VehicleServiceList/>}/>
         </Routes>
         </div>
      </main>
