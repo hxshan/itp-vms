@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { Pie } from 'react-chartjs-2';
 import useAxios from "@/hooks/useAxios";
 import axios from "@/api/axios";
-import NewAddedVeh from '../../components/vehicle/NewAddedVeh';
 
 const VehicleDashboard = () => {
 
@@ -54,7 +53,7 @@ const VehicleDashboard = () => {
       },
     ],
   };
-
+  
 
   const renderCategoryTable = (category) => {
     const filteredData = data[category];
@@ -177,27 +176,6 @@ const VehicleDashboard = () => {
        </div>
        <h2 className="text-xl font-bold">Newly Added Vehicle Summary Data</h2>
          <div>
-             
-         <div className='flex flex-col border-2 border-zinc-700  rounded-xl w-fit p-4'>
-          <div className='my-4'>
-            <span className='text-xl mr-4 text-gray-500'>ID</span>
-            <span>{newAdded.category}</span>
-          </div>
-          <div className='my-4'>
-            <span className='text-xl mr-4 text-gray-500'>Title</span>
-            <span>{newAdded.vehicleType}</span>
-          </div>
-          <div className='my-4'>
-            <span className='text-xl mr-4 text-gray-500'>Author</span>
-            <span>{newAdded.vehicleRegister}</span>
-          </div>
-          <div className='my-4'>
-            <span className='text-xl mr-4 text-gray-500'>Publish Year</span>
-            <span>{newAdded.lastMileage}</span>
-          </div>
-          
-        </div>
-
          </div>
       </div>
 
