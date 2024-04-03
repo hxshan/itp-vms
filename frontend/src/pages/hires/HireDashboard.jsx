@@ -11,6 +11,7 @@ const HireDashboard = () => {
 
     return (
         <div className="container py-7 px-7">
+            
             {showForm ? (
             <HireForm showForm={showForm} setShowForm={setShowForm} />) : (
             <HireList showForm={showForm} setShowForm={setShowForm} />)}

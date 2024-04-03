@@ -23,7 +23,7 @@ const createUser = async (req, res) => {
       email,
       password,
       emergencyContacts,
-    } = req.body;
+    } = req.body.data;
 
     if (!firstName || !lastName || !email || !password)
       return res.status(400).json({ msg: "Not all fields have been entered." });
