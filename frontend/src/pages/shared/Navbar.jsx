@@ -27,15 +27,14 @@ const Navbar = () => {
   };
 
   return (
-      <div className="h-screen fixed z-10 top-0 left-0 flex w-20 lg:w-60">
-          <div className=" bg-gray-800 text-white w-64 h-full flex flex-col items-start ">
-            <div className='w-full h-[80px] bg-red-600 flex'>
+      <div className="h-screen fixed z-20 top-0 left-0 flex w-20 lg:w-60">
+          <div className=" bg-gray-800 text-white w-64 h-full flex flex-col items-start text-sm">
+            <div className='w-full h-[80px]'>
                 
             </div>
-          <div className="relative">
-                  <button className="w-full flex flex-row py-4 px-2 hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => toggleMenu('user')}>
+          <div className="relative w-full px-4">
+                  <button className="w-full flex flex-row py-4 px-2 rounded-md hover:shadow-green-400 hover:shadow-md hover:bg-green-500 focus:outline-none focus:bg-gray-700" onClick={() => toggleMenu('user')}>
                       User Management
-                      
                   </button>
                   {isOpen.user && (
                       <div className="ml-6">
@@ -48,7 +47,7 @@ const Navbar = () => {
                   )}
               </div>
 
-              <div className="relative">
+              <div className="relative w-full px-4 ">
                   <button className="w-full flex flex-row py-4 px-2 hover:bg-gray-700 focus:outline-none focus:bg-gray-700 " onClick={() => toggleMenu('vehicle')}>
                       Vehicle Management
                       
@@ -63,7 +62,7 @@ const Navbar = () => {
                   )}
               </div>
 
-              <div className="relative">
+              <div className="relative w-full px-4 ">
                   <button className="w-full flex flex-row py-4 px-2 hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => toggleMenu('maintenance')}>
                       Maintenance Management
                       
@@ -77,7 +76,7 @@ const Navbar = () => {
                   )}
               </div>
 
-              <div className="relative">
+              <div className="relative w-full px-4 ">
                   <button className="w-full flex flex-row py-4 px-2 hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => toggleMenu('hire')}>
                       Hire Management
                       
@@ -91,7 +90,7 @@ const Navbar = () => {
                   )}
               </div>
 
-              <div className="relative">
+              <div className="relative w-full px-4 ">
                   <button className="w-full flex flex-row py-4 px-2 hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => toggleMenu('emergency')}>
                      Emergency Management
                      
@@ -105,7 +104,7 @@ const Navbar = () => {
                   )}
               </div>
 
-              <div className="relative">
+              <div className="relative w-full px-4 ">
                   <button className="w-full flex flex-row py-4 px-2 hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => toggleMenu('contract')}>
                     Contract Management
                     
@@ -119,7 +118,7 @@ const Navbar = () => {
                   )}
               </div>
 
-              <div className="relative">
+              <div className="relative w-full px-4 ">
                   <button className="w-full flex flex-row py-4 px-2 hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => toggleMenu('finance')}>
                     Finance Management
                     

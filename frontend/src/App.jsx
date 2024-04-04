@@ -40,8 +40,9 @@ function App() {
         <Route path="/userauth/failed" element={<UnAuthorized />} />
       </Routes>
       <main className="flex w-full">
-        <Navbar />
         <TopBar />
+        <Navbar />
+        
         <div className={"ml-32 w-full mr-14 mt-[90px] lg:ml-80"}>
           <Routes>
             <Route path="/login" element={<Login />} />
