@@ -8,6 +8,7 @@ const { user } = useAuthContext()
 const columns=["Name","Email","Role","Status"]
 const [search,setSearch]=useState('')
 const [users, error, loading, axiosFetch] = useAxios()
+const [reload,setReload]= useState(0)
 
 const getData = ()=>{
     axiosFetch({
@@ -19,6 +20,21 @@ const getData = ()=>{
       }
     })
 }
+
+const deleteData =async(e) => {
+  e.preventDefault()
+  if(confirm("Are you sure you want to Delete the following user")){
+    await axiosFetch({
+      axiosInstance: axios,
+      method: "DELETE",
+      url: `/user/${e.target.id}`,
+    });
+    if(!error){
+      setReload(reload + 1);
+    } 
+  }
+};
+
 useEffect(()=>{
   if(user?.accessToken)
     getData()
@@ -84,7 +100,7 @@ useEffect(()=>{
                   </td>
                   <td className="px-6 py-2 whitespace-nowrap justify-between flex">
                     <button className="bg-yellow-300 text-white py-1 px-6 rounded-md">Edit</button>
-                    <button className="bg-red-700 text-white py-1 px-6 rounded-md">Delete</button>
+                    <button type="submit" onClick={(e)=>deleteData(e)} className="bg-red-700 text-white py-1 px-6 rounded-md">Delete</button>
                   </td>   
               </tr>
             );

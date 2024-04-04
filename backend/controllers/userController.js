@@ -27,8 +27,9 @@ const createUser = async (req, res) => {
 
     if (!firstName || !lastName || !email || !password)
       return res.status(400).json({ msg: "Not all fields have been entered." });
+  
 
-    const userExist = await User.findOne({ email: email });
+    const userExist = await User.findOne({ email: email.toLowerCase()});
 
     if (userExist)
       return res
@@ -52,7 +53,7 @@ const createUser = async (req, res) => {
       employmentDate: empDate,
       baseSalary: baseSal,
       licenceNumber: licenceNum,
-      email,
+      email:email.toLowerCase(),
       password: passwordHash,
       status: "active",
       role,

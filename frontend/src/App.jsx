@@ -73,7 +73,6 @@ function App() {
               element={<EditMaintainceOrder />}
             />
             <Route path="/Contract/Dashbored" element={<ContractDasboard />} />
-            <Route path="/Contract/Dashboard" element={<ContractDasboard/>}/>
             <Route path="/Client/Dashboard" element={<ClientDashboard/>}/>
             <Route path="/viewContract/:id" element={<ViewContract/>}/>
             <Route path="/EditContract/:id" element={<ContractEditForm/>}/>

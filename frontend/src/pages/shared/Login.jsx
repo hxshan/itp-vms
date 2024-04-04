@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate} from "react-router-dom";
 import { useLogin } from "@/hooks/useLogin";
+import { useAuthContext } from "@/hooks/useAuthContext";
 
 
 const Login = () => {
@@ -8,6 +9,29 @@ const Login = () => {
   const {login,error,isLoading}=useLogin()
   const [email, setEmail] = useState("");
   const [pwd, setPwd] = useState("");
+  const {user}= useAuthContext()
+
+
+  /*const navigateTo=()=>{
+    if(user?.accessToken){
+      console.log('went in')
+      if(user.permission?.userManagment?.Read)
+        navigate('/admin')
+      if(user.permission?.vehiclePermissions?.Read)
+        navigate('/vehicle')
+      if(user.permission?.vehicleMaintenencePermissions?.Read)
+        navigate('/Mdashboard')
+      if(user.permission?.hirePermissions?.Read)
+        navigate('/hires')
+      if(user.permission?.emergencyPermissions?.Read)
+        navigate('/emergency')
+      if(user.permission?.contractPermissions?.Read)
+        navigate('//Contract/Dashbored')
+      if(user.permission?.financePermissions?.Read)
+        navigate('/finance')
+    }
+    console.log('didnt init')
+  }*/
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -18,7 +42,7 @@ const Login = () => {
       if(!error){
         setEmail("");
         setPwd("");
-        navigate("/admin");
+       navigate('/admin')
       }
       
 
