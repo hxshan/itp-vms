@@ -1,6 +1,7 @@
 import React, { useState , useEffect } from 'react'
-import useAxiosGet from "@/hooks/useAxiosGet";
-import { useNavigate } from 'react-router-dom'
+import useAxios from "@/hooks/useAxios";
+import { useNavigate } from 'react-router-dom';
+import axios from "@/api/axios";
 
 
 const ClientDashboard = () => {
@@ -19,12 +20,16 @@ const ClientDashboard = () => {
     { name: "Options", width: "w-[200px]" },
   ];
 
-  const {
-    data: Clients,
-    error,
-    isLoading,
-    refetch,
-  } = useAxiosGet("/contract/getClients");
+  const [data, error, loading, axiosFetch] = useAxios()
+
+  const getClients =()=>{
+    axiosFetch({
+     axiosInstance: axios,
+     method: "GET",
+     url: `/contract/getClients`,
+   });
+ }
+  
 
   const handleInput = (e)=>{
 
@@ -37,12 +42,25 @@ const ClientDashboard = () => {
 
  
 
-  useEffect(()=>{
-    if(Clients){
-      setallClients(Clients)
-    }
-  },[Clients])
+    useEffect(() => {
+      if(error){
+        alert(error)
+      }
+      else if (data) {
+        setallClients(data);
+      }
+    }, [data]);
   
+    useEffect(()=>{
+      getClients()
+    },[])
+  
+    if(loading){
+      return(
+        <h1>Loading ...</h1>
+      )
+    }
+
   return (
     <div className="w-full h-full py-5">
         <div className="flex items-center justify-center ">
