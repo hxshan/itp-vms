@@ -69,13 +69,19 @@ const EditHire = () => {
                 method:'PUT',
                 url:`/hire/edit/${viewHireData._id}`,
                 requestConfig:{
-                    response:{
+                    data:{
                     ...editedData
                   }
                 }
               })
-            console.log("Response:", response);
-            alert("Successfully updated");
+
+              if(error){
+                alert(error)
+              }
+              if(response){
+                alert("successfully updated")
+              }
+            console.log("Response:", response.data);
           } catch (error) {
             console.error("Error:", error);
             alert("An error occurred. Please try again.");
