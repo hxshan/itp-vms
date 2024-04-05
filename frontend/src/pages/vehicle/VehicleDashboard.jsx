@@ -13,10 +13,8 @@ const VehicleDashboard = () => {
 
   const navigate = useNavigate();
   const [data, error, loading, axiosFetch] = useAxios()
-  const [newAdded,setnewAdded] = useState({});
   const [activeComponent, setActiveComponent] = useState('');
-  const [category, setcategory] = useState([]);
-  const [vehicle, setvehicle] = useState([]);
+
 
   const categories = Object.keys(data).filter(key => key !== 'vehiclesCount' && key !== 'availableCount' && key !== 'underMaintanceCount' && key !== 'underClientCount' && key !== 'underSpecialTaskCount');
   const counts = categories.map(category => data[category])
@@ -32,6 +30,12 @@ const VehicleDashboard = () => {
   useEffect(()=>{
     getData()
   },[])
+
+  useEffect(() => {
+    if (data) {
+      console.log('Backend Response:', data);
+    }
+  }, [data]);
   
     if(loading){
       return(
@@ -77,9 +81,20 @@ const VehicleDashboard = () => {
       case 'search':
         return <VehicleSearch />;
       case 'summary':
-        return <SummaryTable />;
+        return (
+          <div>
+            {['car', 'van', 'bus', 'lorry', 'truck'].map((category) =>
+              <SummaryTable key={category} category={category} filteredData={data[category]} />
+           )}
+          </div>
+        );
       case 'newAdded':
-        return <NewlyAddedTable />;
+        return (
+          <div>
+          
+          </div>
+        );
+        
       case 'unavalable':
         return <UnavailableTable />;
       default:
@@ -88,28 +103,58 @@ const VehicleDashboard = () => {
   };
   
 
-  const renderCategoryTable = (category) => {
-    const filteredData = data[category];
-    
+  // const renderNewlyAddedTable = (category, categoryData) => {
+  //   return (
+  //     <div className='mt-4' key={category}>
+  //       <h2 className='text-l font-bold'>{category}</h2>
+  //       <table className='w-full border-collapse border-spacing-2  border-black'>
+  //         <thead className=' bg-slate-500 text-white'>
+  //           <tr>
+  //             <th className='border border-slate-600'>Vehicle Type</th>
+  //             <th className='border border-slate-600'>Vehicle Model</th>
+  //             <th className='border border-slate-600'>Vehicle Register</th>
+  //             <th className='border border-slate-600'>Licence End Date</th>
+  //             <th className='border border-slate-600'>Insurance End Date</th>
+  //           </tr>
+  //         </thead>
+  //         <tbody className=''>
+  //           {categoryData.map((vehicle) => (
+  //             <tr key={vehicle._id}>
+  //               <td className='border border-slate-700'>{vehicle.vehicleType}</td>
+  //               <td className='border border-slate-700'>{vehicle.vehicleModel}</td>
+  //               <td className='border border-slate-700'>{vehicle.vehicleRegister}</td>
+  //               <td className='border border-slate-700'>{new Date(vehicle.licEndDate).toLocaleDateString('en-US', {
+  //                 year: 'numeric',
+  //                 month: '2-digit',
+  //                 day: '2-digit'
+  //               })}</td>
+  //               <td className='border border-slate-700'>{new Date(vehicle.insEndDate).toLocaleDateString('en-US', {
+  //                 year: 'numeric',
+  //                 month: '2-digit',
+  //                 day: '2-digit'
+  //               })}</td>
+  //             </tr>
+  //           ))}
+  //         </tbody>
+  //       </table>
+  //     </div>
+  //   );
+  // };
+  
+  // if (!data) {
+  //   return null; // Handle no data scenario
+
+  
+  //onst { vehicles, newAdded } = data;
+
+  const { vehicles, newAdded } = data;
+
+  const renderNewlyAddedTable = (category, categoryData) => {
     return (
       <div className='mt-4' key={category}>
-        {category === 'car' && (
-        <h2 className='text-l font-bold'>Car</h2>
-        )}
-        {category === 'van' && (
-        <h2 className='text-l font-bold'>Van</h2>
-        )}
-        {category === 'bus' && (
-        <h2 className='text-l font-bold'>Bus</h2>
-        )}
-        {category === 'lorry' && (
-        <h2 className='text-l font-bold'>Lorry</h2>
-        )}
-        {category === 'truck' && (
-        <h2 className='text-l font-bold'>Truck</h2>
-        )}
-        <table className='w-full border-collapse border-spacing-2  border-black'>
-          <thead className=' bg-slate-500 text-white'>
+        <h2 className='text-l font-bold'>{category}</h2>
+        <table className='w-full border-collapse border-spacing-2 border-black'>
+          <thead className='bg-slate-500 text-white'>
             <tr>
               <th className='border border-slate-600'>Vehicle Type</th>
               <th className='border border-slate-600'>Vehicle Model</th>
@@ -118,8 +163,8 @@ const VehicleDashboard = () => {
               <th className='border border-slate-600'>Insurance End Date</th>
             </tr>
           </thead>
-          <tbody className=''>
-            {filteredData && filteredData.map((vehicle) => (
+          <tbody>
+            {categoryData.map((vehicle) => (
               <tr key={vehicle._id}>
                 <td className='border border-slate-700'>{vehicle.vehicleType}</td>
                 <td className='border border-slate-700'>{vehicle.vehicleModel}</td>
@@ -142,9 +187,7 @@ const VehicleDashboard = () => {
     );
   };
 
-  
-
-  return (
+  return  (
     
     <div className="place-content-center space-y-4 mt-8 bg-cover bg-center bg-white ">
       <h1 className="text-lg font-bold">Vehicle Management Dashboard</h1>
@@ -211,20 +254,16 @@ const VehicleDashboard = () => {
       
       
       <div className='p-4 bg-slate-200 rounded-md pad'>
-       <h2 className="text-xl font-bold">Vehicle Summary Data</h2>
        <div>
-        {['car', 'van', 'bus', 'lorry', 'truck'].map((category) =>
-          renderCategoryTable(category)
-        )}
         {renderComponent()}
        </div>
+
        <div>
-        
+        {renderNewlyAddedTable('Newly Added', newAdded)}
        </div>
+        
       </div>
 
-      
-     
     </div>
     
   );

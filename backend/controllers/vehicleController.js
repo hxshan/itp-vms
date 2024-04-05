@@ -259,10 +259,10 @@ const getVehicles = async (req, res, next) => {
         const truck = await Vehicles.find({category: 'truck'}).sort({ updatedAt: -1 });
         const newAdded = await Vehicles.find(query).sort({ updatedAt: -1 });
 
-
-        res.status(200).json({vehiclesCount,carCount, vanCount, busCount, lorryCount, truckCount ,availableCount,underMaintanceCount,underClientCount,underSpecialTaskCount,underInactiveCount, vehicles , car , van , bus , lorry , truck , newAdded});
         
 
+
+        res.status(200).json({vehiclesCount,carCount, vanCount, busCount, lorryCount, truckCount ,availableCount,underMaintanceCount,underClientCount,underSpecialTaskCount,underInactiveCount, vehicles , car , van , bus , lorry , truck , newAdded});
     } catch (error) {
         return next (new HttpError(error))
     }
