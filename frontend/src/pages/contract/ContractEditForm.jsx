@@ -10,7 +10,6 @@ const ContractEditForm = () => {
   const navigate = useNavigate()
 
   const contractID = params.id;
-  console.log(contractID)
 
   const [contractData, setContractData] = useState({
     _id: "",
