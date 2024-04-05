@@ -18,6 +18,7 @@ import { VehicleServiceList } from "./components/VR/VehicleServiceList";
 import ClientDashboard from "./pages/contract/ClientDashboard";
 import ViewContract from "./pages/contract/ViewContract";
 import ContractEditForm from "./pages/contract/ContractEditForm";
+import CreateHire from "./pages/hires/CreateHire";
 
 function App() {
   const { user, loading } = useAuthContext();
@@ -57,7 +58,12 @@ function App() {
             />
             <Route path="/admin/roles" element={<Roles />} />
             <Route path="/admin/roles/:id" element={<EditRoles />} />
-            <Route path="/hires" element={<HireDashboard />} />
+
+            <Route path="/hires">
+              <Route index={true} element={<HireDashboard />} />
+              <Route path="add" element={<CreateHire />}/>
+            </Route>
+            
             <Route path="/emergency" element={<CaseFileForm />} />
             <Route path="vehicle">
               <Route index={true} element={<VehicleDashboard />} />
