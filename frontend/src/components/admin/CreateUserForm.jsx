@@ -29,13 +29,11 @@ const CreateUserForm = () => {
   },[])
 
   useEffect(()=>{
-    //console.log(roleData)
-    /*if(error){
-      alert(error)
-      navigate('/admin')
-    }*/
     if(roleData && roleData.length > 0){
       setRoles(roleData)
+      setIsDriver(()=>{
+        return roleData.find(role=>role.name.toUpperCase() == 'DRIVER')
+      })
     }
   },[roleData])
 
@@ -48,6 +46,7 @@ const CreateUserForm = () => {
 
   //states
   const [roles, setRoles] = useState([]);
+  const [isDriver, setIsDriver] = useState(null);
 
   const [personalInfo, setPersonalInfo] = useState({
     firstName: "",
@@ -416,8 +415,10 @@ const CreateUserForm = () => {
                 required
               />
             </div>
-
-            <div className="col-span-1 w-full flex flex-col mb-4">
+            {
+              isDriver!=null && isDriver?._id == personalInfo.role ? (
+                <>
+                <div className="col-span-1 w-full flex flex-col mb-4">
               <label className="block text-gray-700 text-md font-bold mb-2" htmlFor="licenceNum">Licence Number</label>
               <input
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -440,6 +441,10 @@ const CreateUserForm = () => {
                 required
               />
             </div>
+                </>
+              ):(<></>)
+            }
+            
 
             <div className="col-span-1 w-full flex flex-col mb-4">
               <label className="block text-gray-700 text-md font-bold mb-2" htmlFor="status">Status</label>

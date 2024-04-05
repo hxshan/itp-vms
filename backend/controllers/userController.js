@@ -1,5 +1,4 @@
 const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
 const User = require("../models/userModel");
 const EmergencyContact = require("../models/emergencyContactModel");
 const Role = require("../models/roleModel");
@@ -55,7 +54,6 @@ const createUser = async (req, res) => {
       licenceNumber: licenceNum,
       email:email.toLowerCase(),
       password: passwordHash,
-      status: "active",
       role,
     });
 

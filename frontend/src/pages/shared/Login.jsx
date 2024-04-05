@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate} from "react-router-dom";
 import { useLogin } from "@/hooks/useLogin";
 import { useAuthContext } from "@/hooks/useAuthContext";
@@ -9,47 +9,22 @@ const Login = () => {
   const {login,error,isLoading}=useLogin()
   const [email, setEmail] = useState("");
   const [pwd, setPwd] = useState("");
-  const {user}= useAuthContext()
-
-
-  /*const navigateTo=()=>{
-    if(user?.accessToken){
-      console.log('went in')
-      if(user.permission?.userManagment?.Read)
-        navigate('/admin')
-      if(user.permission?.vehiclePermissions?.Read)
-        navigate('/vehicle')
-      if(user.permission?.vehicleMaintenencePermissions?.Read)
-        navigate('/Mdashboard')
-      if(user.permission?.hirePermissions?.Read)
-        navigate('/hires')
-      if(user.permission?.emergencyPermissions?.Read)
-        navigate('/emergency')
-      if(user.permission?.contractPermissions?.Read)
-        navigate('//Contract/Dashbored')
-      if(user.permission?.financePermissions?.Read)
-        navigate('/finance')
-    }
-    console.log('didnt init')
-  }*/
-
+  const {user} = useAuthContext()
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      
-      await login(email,pwd)
 
+      await login(email,pwd)
       if(!error){
         setEmail("");
-        setPwd("");
-       navigate('/admin')
+        setPwd(""); 
       }
-      
-
-    } catch (error) {
-      console.log(error);
-    }
+    
   };
+
+  useEffect(()=>{
+    if(user?.accessToken)
+      navigate('/admin')
+  },[user])
 
   return (
     <section className="w-full">
@@ -97,6 +72,9 @@ const Login = () => {
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
                   required
                 />
+                {
+                  error && <p className="text-red-500 font-bold mt-4">{error}</p>
+                }
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-start">

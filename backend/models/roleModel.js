@@ -166,8 +166,11 @@ const roleSchema = new Schema({
         type:Boolean,
         default:false,
         required:true
+    },
+    isSystemRole:{
+        type:Boolean,
+        default:false
     }
-    
 })
 
 module.exports = mongoose.model('Role',roleSchema)

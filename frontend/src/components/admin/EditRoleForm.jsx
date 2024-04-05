@@ -30,25 +30,25 @@ const EditRoleForm = () => {
       Update: false,
       Delete: false,
     },
-    HirePermissions: {
+    hirePermissions: {
       Create: false,
       Read: false,
       Update: false,
       Delete: false,
     },
-    ContractPermissions: {
+    contractPermissions: {
       Create: false,
       Read: false,
       Update: false,
       Delete: false,
     },
-    EmergencyPermissions:{
+    emergencyPermissions:{
       Create: false,
       Read: false,
       Update: false,
       Delete: false,
     },
-    FinancePermissions: {
+    financePermissions: {
       Create: false,
       Read: false,
       Update: false,
@@ -92,16 +92,16 @@ const EditRoleForm = () => {
         updatedRoleData.vehicleMaintenencePermissions[type] = checked;
         break;
       case "hire":
-        updatedRoleData.HirePermissions[type] = checked;
+        updatedRoleData.hirePermissions[type] = checked;
         break;
       case "contract":
-        updatedRoleData.ContractPermissions[type] = checked;
+        updatedRoleData.contractPermissions[type] = checked;
         break;
       case "emergency":
-        updatedRoleData.EmergencyPermissions[type] = checked;
+        updatedRoleData.emergencyPermissions[type] = checked;
         break;
       case "finance":
-        updatedRoleData.FinancePermissions[type] = checked;
+        updatedRoleData.financePermissions[type] = checked;
         break;
     }
     setRoleData(updatedRoleData);

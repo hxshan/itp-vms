@@ -99,6 +99,7 @@ useEffect(()=>{
                     </span>
                   </td>
                   <td className="px-6 py-2 whitespace-nowrap justify-between flex">
+                  <button className="bg-blue-600 text-white py-1 px-6 rounded-md">View</button>
                     <button className="bg-yellow-300 text-white py-1 px-6 rounded-md">Edit</button>
                     <button type="submit" onClick={(e)=>deleteData(e)} className="bg-red-700 text-white py-1 px-6 rounded-md">Delete</button>
                   </td>   

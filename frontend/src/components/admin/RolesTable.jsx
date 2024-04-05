@@ -18,17 +18,17 @@ const RolesTable = () => {
     });
   };
 
-  const deleteData =async(e) => {
-    e.preventDefault()
-    if(confirm("Are you sure you want to Delete the following")){
+  const deleteData = async (e) => {
+    e.preventDefault();
+    if (confirm("Are you sure you want to Delete the following")) {
       await axiosFetch({
         axiosInstance: axios,
         method: "DELETE",
         url: `/role/${e.target.id}`,
       });
-      if(!error){
+      if (!error) {
         setReload(reload + 1);
-      } 
+      }
     }
   };
 
@@ -95,24 +95,41 @@ const RolesTable = () => {
                       <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">
                         {row.name}
                       </td>
-                      <td className="px-6 py-2 whitespace-nowrap justify-between flex">
-                        <button
-                          className="bg-yellow-300 text-white py-1 px-6 rounded-md"
-                          id={row._id}
-                          onClick={(e) => {
-                            navigate(e.target.id);
-                          }}
-                        >
-                          Edit
-                        </button>
-                        <button
-                          className="bg-red-700 text-white py-1 px-6 rounded-md"
-                          id={row._id}
-                          onClick={(e)=>{deleteData(e)}}
-                        >
-                          Delete
-                        </button>
-                      </td>
+                      {row?.isSystemRole ? (
+                         <td>
+                            <p>System Role cannot be changed</p>
+                         </td>
+                      ) : (
+                        <td className="px-6 py-2 whitespace-nowrap justify-evenly flex">
+                          <button
+                            className="bg-blue-600 text-white py-1 px-6 rounded-md"
+                            id={row._id}
+                            onClick={(e) => {
+                              navigate(e.target.id);
+                            }}
+                          >
+                            View
+                          </button>
+                          <button
+                            className="bg-yellow-300 text-white py-1 px-6 rounded-md"
+                            id={row._id}
+                            onClick={(e) => {
+                              navigate(e.target.id);
+                            }}
+                          >
+                            Edit
+                          </button>
+                          <button
+                            className="bg-red-700 text-white py-1 px-6 rounded-md"
+                            id={row._id}
+                            onClick={(e) => {
+                              deleteData(e);
+                            }}
+                          >
+                            Delete
+                          </button>
+                        </td>
+                      )}
                     </tr>
                   );
                 })

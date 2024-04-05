@@ -143,10 +143,12 @@ const deleteRole = async (req, res) => {
     if (!id) {
       return res.status(500).json({ message: "Role not found" });
     }
+    const role = await Role.findOne(id)
+    if(role.isSystemRole)
+      return res.status(500).json({ message: "System Roles cannot be changed" });
 
     await Role.findByIdAndDelete(id);
-
-    return res.status(200).json({ message: "" });
+    return res.status(200).json({ message: "Role Deleted Successfully"});
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
