@@ -1,18 +1,13 @@
 import { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
-
 import {validateFormFirstPage, validateFormSecondPage} from './Validation';
 import axios from '@/api/axios';
 import useAxios from '@/hooks/useAxios'
+import {useNavigate} from "react-router-dom";
 
-const Form = ({setShowForm }) => { 
+const Form = () => { 
   const [step, setStep] = useState(1);
 
-  Form.propTypes = {
-    showForm: PropTypes.bool.isRequired,
-    setShowForm: PropTypes.func.isRequired,
-  };
-
+  const navigate = useNavigate();
 
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
@@ -62,7 +57,7 @@ const Form = ({setShowForm }) => {
   
     const confirm = window.confirm("Are you sure")
     if(confirm){
-      setShowForm(false)
+      navigate('/hires')
 
       
       await axiosFetch({
@@ -85,10 +80,14 @@ const Form = ({setShowForm }) => {
     
   }
 
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
  
 
   const cancel = () => {
-    setShowForm(false)
+    navigate('/hires')
   }
   
   const handleNextStep = (e) => {
@@ -197,14 +196,7 @@ useEffect(() => {
 
   return (
     <div className="w-full h-full flex bg-gray-200 px-2 py-[20px] justify-center align-center xl:px-[60px] xl:py-[50px]">
-
-      <div className="w-full h-full bg-white px-3 py-5 xl:px-10">
-        {/*Titile*/}
-        <div className="text-center pt-[10px] pb-8 border-b-2 border-[#37A000] ">
-          <h1 className="text-2xl font-semibold xl:text-4xl">Add Hire</h1>
-        </div>
-
-        <form>
+        <form className="w-full h-full bg-white px-3 py-5 xl:px-10">
           {/* Form */}
           {step === 1 && (
             <div className="mt-10  w-full border-2 border-black pt-5 px-4 xl:px-12 xl:py-10">
@@ -628,7 +620,7 @@ useEffect(() => {
 
         </form>
         
-      </div>
+      
     </div>
   );
 };
