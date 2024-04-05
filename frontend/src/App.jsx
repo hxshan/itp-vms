@@ -62,7 +62,7 @@ function App() {
             <Route path="/hires">
               <Route index={true} element={<HireDashboard />} />
               <Route path="add" element={<CreateHire />}/>
-              <Route path="edit" element={<EditHire />}/>
+              <Route path="edit/:id" element={<EditHire />}/>
             </Route>
             
             <Route path="/emergency" element={<CaseFileForm />} />

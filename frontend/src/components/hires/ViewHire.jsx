@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom'
+import { useEffect, useState } from 'react';
 
 
 const ViewHire = ({setViewHire , viewHireData}) => {
@@ -10,14 +11,21 @@ const ViewHire = ({setViewHire , viewHireData}) => {
       };
 
       const navigate = useNavigate()
+      const [reload, setReload] = useState(false);
 
     const cancel = () => {
         setViewHire(false)
       }
 
     const handleEdit = () => {
-      navigate(`/hires/edit`, {state: {viewHireData} })
+      navigate(`/hires/edit/${viewHireData._id}`, {state: {viewHireData} })
     }
+
+    useEffect(() => {
+      if (reload) {
+          window.location.reload();
+      }
+  }, [reload])
 
       
 

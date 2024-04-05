@@ -80,6 +80,7 @@ const EditHire = () => {
               }
               if(response){
                 alert("successfully updated")
+                navigate('/hires')
               }
             console.log("Response:", response.data);
           } catch (error) {
@@ -89,12 +90,6 @@ const EditHire = () => {
         }
 
       };
-    
-      if(loading){
-        return(
-          <h1>Loading ...</h1>
-        )
-      }
 
       const cancel = () => {
         const confirmCancel = window.confirm("Are you sure you want to cancel?");
