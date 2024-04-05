@@ -316,7 +316,7 @@ const EditForm = ({ setShowEditForm, viewHireData }) => {
     </div>
   );
 };
-
+ 
 EditForm.propTypes = {
   setShowEditForm: PropTypes.func.isRequired,
   viewHireData: PropTypes.object.isRequired,

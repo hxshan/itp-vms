@@ -4,7 +4,6 @@ import {Routes, Route, Navigate } from "react-router-dom";
 import { Login, Navbar, TopBar, UnAuthorized } from "./pages/shared";
 import DriverDashboard from "./pages/driver/DriverDashboard";
 import VehicleDashboard from "./pages/vehicle/VehicleDashboard";
-import HireDashboard from "./pages/hires/HireDashboard";
 import CaseFileForm from "./components/EAM/CaseFileForm";
 import { CreateMaintainceForm } from "./components/VR/CreateMaintainceForm";
 import AddVehicle from "./pages/vehicle/AddVehicle";
@@ -18,7 +17,8 @@ import { VehicleServiceList } from "./components/VR/VehicleServiceList";
 import ClientDashboard from "./pages/contract/ClientDashboard";
 import ViewContract from "./pages/contract/ViewContract";
 import ContractEditForm from "./pages/contract/ContractEditForm";
-import CreateHire from "./pages/hires/CreateHire";
+import {HireDashboard, CreateHire, EditHire} from "./pages/hires/hires"
+
 
 function App() {
   const { user, loading } = useAuthContext();
@@ -62,6 +62,7 @@ function App() {
             <Route path="/hires">
               <Route index={true} element={<HireDashboard />} />
               <Route path="add" element={<CreateHire />}/>
+              <Route path="edit" element={<EditHire />}/>
             </Route>
             
             <Route path="/emergency" element={<CaseFileForm />} />
