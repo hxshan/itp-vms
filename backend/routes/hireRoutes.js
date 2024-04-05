@@ -8,7 +8,7 @@ const {addHire, fetchHires,editHire, deleteHire} = require('../controllers/hireC
 
   router.post('/add', addHire)
 
-  router.post('/edit/:id', editHire)
+  router.put('/edit/:id', editHire)
 
   router.delete('/:id', deleteHire)
 

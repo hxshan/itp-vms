@@ -1,6 +1,8 @@
 import axios from '@/api/axios';
+import useAxios from "@/hooks/useAxios";
 import PropTypes from 'prop-types';
 import { useState } from 'react';
+
 
 const EditForm = ({ setShowEditForm, viewHireData }) => {
   const [startDate, setStartDate] = useState(viewHireData.startDate);
@@ -21,7 +23,11 @@ const EditForm = ({ setShowEditForm, viewHireData }) => {
   const [cusNic, setCusNic] = useState(viewHireData.cusNic);
   const [hireStatus, setHireStatus] = useState(viewHireData.hireStatus);
 
-  const handleEdit = () => {
+  const [data, error, loading, axiosFetch] = useAxios()
+
+  const handleEdit =async (e) => {
+    e.preventDefault()
+
     const editedData = {
       startDate,
       endDate,
@@ -45,13 +51,36 @@ const EditForm = ({ setShowEditForm, viewHireData }) => {
     if(confirm){
       setShowEditForm(false);
       console.log('Edited Data:', editedData);
+      e.preventDefault();
 
-      
+      await axiosFetch({
+        axiosInstance:axios,
+        method:'PUT',
+        url:`/hire/edit/${viewHireData._id}`,
+        requestConfig:{
+          data:{
+            ...editedData
+          }
+        }
+      })
+      if(error){
+        alert(error)
+      }
+      if(data){
+        console.log("Data:", data);
+        alert("successfully updated")
+      }  
 
-      axios.post(`http://localhost:3000/api/hire/edit/${viewHireData._id}`, editedData)
+      //axios.post(`http://localhost:3000/api/hire/edit/${viewHireData._id}`, editedData)
     }
   
   };
+
+  if(loading){
+    return(
+      <h1>Loading ...</h1>
+    )
+  }
 
   return (
     <div className="absolute bg-white border-2 border-[#0E6300] w-[75%] mb-6 top-11 right-11 xl:top-5">
