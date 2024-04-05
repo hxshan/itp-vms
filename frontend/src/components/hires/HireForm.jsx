@@ -57,7 +57,7 @@ const Form = () => {
   
     const confirm = window.confirm("Are you sure")
     if(confirm){
-      navigate('/hires')
+      navigate('/hires', { replace: true, state: { forceRefresh: true } });
 
       
       await axiosFetch({
