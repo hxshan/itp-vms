@@ -3,11 +3,15 @@ import { useAuthContext } from "./hooks/useAuthContext";
 import {Routes, Route, Navigate } from "react-router-dom";
 import { Login, Navbar, TopBar, UnAuthorized } from "./pages/shared";
 import DriverDashboard from "./pages/driver/DriverDashboard";
-import VehicleDashboard from "./pages/vehicle/VehicleDashboard";
+
 import HireDashboard from "./pages/hires/HireDashboard";
 import CaseFileForm from "./components/EAM/CaseFileForm";
 import { CreateMaintainceForm } from "./components/VR/CreateMaintainceForm";
+
 import AddVehicle from "./pages/vehicle/AddVehicle";
+import VehReport from "./pages/vehicle/VehReport";
+import VehicleDashboard from "./pages/vehicle/VehicleDashboard";
+
 import AddContract from "./pages/contract/AddContract";
 import { AdminDashboard, Roles, EditRoles } from "./pages/admin";
 import { MaintainceDashboard } from "./pages/Maintains/MaintainceDashboard";
@@ -62,6 +66,7 @@ function App() {
             <Route path="vehicle">
               <Route index={true} element={<VehicleDashboard />} />
               <Route path="add" element={<AddVehicle />} />
+              <Route path="report" element={<VehReport />} />
             </Route>
             <Route path="/Contract/:id" element={<AddContract />}/>
             <Route path="/Vrform" element={<CreateMaintainceForm />}/>

@@ -4,12 +4,19 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Pie } from 'react-chartjs-2';
 import useAxios from "@/hooks/useAxios";
 import axios from "@/api/axios";
+import SummaryTable from '../../components/vehicle/SummaryTable';
+import NewlyAddedTable from '../../components/vehicle/NewlyAddedTable';
+import UnavailableTable from '../../components/vehicle/UnavailableTable';
+import VehicleSearch from '../../components/vehicle/VehicleSearch';
 
 const VehicleDashboard = () => {
 
   const navigate = useNavigate();
   const [data, error, loading, axiosFetch] = useAxios()
   const [newAdded,setnewAdded] = useState({});
+  const [activeComponent, setActiveComponent] = useState('');
+  const [category, setcategory] = useState([]);
+  const [vehicle, setvehicle] = useState([]);
 
   const categories = Object.keys(data).filter(key => key !== 'vehiclesCount' && key !== 'availableCount' && key !== 'underMaintanceCount' && key !== 'underClientCount' && key !== 'underSpecialTaskCount');
   const counts = categories.map(category => data[category])
@@ -63,6 +70,21 @@ const VehicleDashboard = () => {
         borderWidth: 1,
       },
     ],
+  };
+
+  const renderComponent = () => {
+    switch (activeComponent) {
+      case 'search':
+        return <VehicleSearch />;
+      case 'summary':
+        return <SummaryTable />;
+      case 'newAdded':
+        return <NewlyAddedTable />;
+      case 'unavalable':
+        return <UnavailableTable />;
+      default:
+        return null;
+    }
   };
   
 
@@ -130,30 +152,32 @@ const VehicleDashboard = () => {
         <div className='w-full p-4 bg-slate-200 rounded-md pad mr-2'>
           <h1 className="text-base font-bold">Stored vehicle details</h1>
           
-          <div className="flex m-2 flex-row justify-between  bg-slate-200 rounded-md pad">
-            <div className='space-y-4'>
+          <div className="flex m-2 flex-row justify-satart  bg-slate-200 rounded-md pad">
+            <div className='space-y-4 mr-5'>
              <div className="grow p-3 bg-black rounded-md pad">
              <Pie data={chartData} /> 
              </div>
 
+             <div className='text-black text-xs font-bold'>Vehicle count summary</div>
+
              <div className='flex flex-row'>
              <div className=" mr-2 p-3 bg-black rounded-md pad">
-               <div className="text-xs text-white font-semibold rounded-md pad">Total Vehicle Count<h1 className='text-yellow-500 text-xl'>{data.vehiclesCount}</h1> </div>
+               <div className="text-xs text-white font-semibold rounded-md pad">Total<h1 className='text-yellow-500 text-xl'>{data.vehiclesCount}</h1> </div>
              </div>
              <div className=" mr-2 p-3 bg-black rounded-md pad">
-               <div className="text-xs text-white font-semibold rounded-md pad">Car Count<h1 className='text-white-500 text-xl'>{data.carCount}</h1> </div>
+               <div className="text-xs text-white font-semibold rounded-md pad">Car<h1 className='text-white-500 text-xl'>{data.carCount}</h1> </div>
              </div>
              <div className=" mr-2 p-3 bg-black rounded-md pad">
-               <div className="text-xs text-white font-semibold rounded-md pad">Van Count<h1 className='text-white-500 text-xl'> {data.vanCount}</h1></div>
+               <div className="text-xs text-white font-semibold rounded-md pad">Van<h1 className='text-white-500 text-xl'> {data.vanCount}</h1></div>
              </div>
              <div className=" mr-2 p-3 bg-black rounded-md pad">
-               <div className="text-xs text-white font-semibold rounded-md pad">Bus Count<h1 className='text-white-500 text-xl'>{data.busCount}</h1></div>
+               <div className="text-xs text-white font-semibold rounded-md pad">Bus<h1 className='text-white-500 text-xl'>{data.busCount}</h1></div>
              </div>
              <div className=" mr-2 p-3 bg-black rounded-md pad">
-               <div className="text-xs text-white font-semibold rounded-md pad">Lorry Count<h1 className='text-white-500 text-xl'>{data.lorryCount}</h1></div>
+               <div className="text-xs text-white font-semibold rounded-md pad">Lorry<h1 className='text-white-500 text-xl'>{data.lorryCount}</h1></div>
              </div>
              <div className=" mr p-3 bg-black rounded-md pad">
-               <div className="text-xs text-white font-semibold rounded-md pad">Truck Count<h1 className='text-white-500 text-xl'>{data.truckCount}</h1></div>
+               <div className="text-xs text-white font-semibold rounded-md pad">Truck<h1 className='text-white-500 text-xl'>{data.truckCount}</h1></div>
              </div>
              </div>
             </div>
@@ -165,18 +189,26 @@ const VehicleDashboard = () => {
                <div className="text-sm p-2 bg-slate-200 text-black font-semibold rounded-md pad">Under Special Task Vehicle<h1 className='text-black text-lg'>{data.underSpecialTaskCount}</h1></div>
                <div className="text-sm p-2 bg-slate-200 text-black font-semibold rounded-md pad">Under Special Task Vehicle<h1 className='text-black text-lg'>{data.underInactiveCount}</h1></div>
              </div>   
-         </div>
+
+            <div className='w-full ml-5 flex flex-col justify-start  bg-white rounded-md pad'>
+             <div className='m-4 flex flex-row'>
+             <button className= "m-1 p-2 bg-blue-500 text-zinc-50 rounded-md text-s font-semibold  hover:bg-slate-500 ease-in-out duration-300" onClick={() => navigate('add')}>Add vehicle</button>
+             <button className= "m-1 p-2 bg-blue-500 text-zinc-50 rounded-md text-s font-semibold  hover:bg-lime-500 ease-in-out duration-300" onClick={() => setActiveComponent('search')}>Search vehicle</button>
+             <button className= "m-1 p-2 bg-blue-500 text-zinc-50 rounded-md text-s font-semibold  hover:bg-red-500 ease-in-out duration-300" onClick={() => navigate()}>Report Generate</button>
+             <button className= "m-1 p-2 bg-blue-500 text-zinc-50 rounded-md text-s font-semibold  hover:bg-slate-500 ease-in-out duration-300" onClick={() => setActiveComponent('summary')}>Vehicle Summary</button>
+             <button className= "m-1 p-2 bg-blue-500 text-zinc-50 rounded-md text-s font-semibold  hover:bg-slate-500 ease-in-out duration-300" onClick={() => setActiveComponent('newAdded')}>Newly added</button>
+             <button className= "m-1 p-2 bg-blue-500 text-zinc-50 rounded-md text-s font-semibold  hover:bg-slate-500 ease-in-out duration-300" onClick={() => setActiveComponent('unavalable')}>Unavailable vehicles</button>
+             </div>
+
+            </div>
+          </div>
         </div>
         <div>
 
         
       </div>
       </div>
-      <div className='flex flex-row justify-start'>
-           <button className= "m-1 p-2 bg-black text-zinc-50 rounded-md text-s font-semibold  hover:bg-slate-500 ease-in-out duration-300" onClick={() => navigate('add')}>Add vehicle</button>
-           <button className= "m-1 p-2 bg-black text-zinc-50 rounded-md text-s font-semibold  hover:bg-lime-500 ease-in-out duration-300">Search vehicle</button>
-           <button className= "m-1 p-2 bg-black text-zinc-50 rounded-md text-s font-semibold  hover:bg-red-500 ease-in-out duration-300">Report Generate</button>
-      </div>
+      
       
       <div className='p-4 bg-slate-200 rounded-md pad'>
        <h2 className="text-xl font-bold">Vehicle Summary Data</h2>
@@ -184,10 +216,11 @@ const VehicleDashboard = () => {
         {['car', 'van', 'bus', 'lorry', 'truck'].map((category) =>
           renderCategoryTable(category)
         )}
+        {renderComponent()}
        </div>
-       <h2 className="text-xl font-bold">Newly Added Vehicle Summary Data</h2>
-         <div>
-         </div>
+       <div>
+        
+       </div>
       </div>
 
       
