@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
-import axios from 'axios';
+import React from 'react'
 
 const VehReport = () => {
-   <div> What the hell </div>
+  return (
+    <div>VehReport</div>
+  )
 }
 
 export default VehReport
