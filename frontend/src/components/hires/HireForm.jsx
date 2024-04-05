@@ -127,6 +127,8 @@ useEffect(() => {
 */
 const [vehcleTypes, setVehcleTypes] = useState(["Car", "Van", "Lorry" , "Bus"])
 const [vehcleSubTypes, setVehcleSubTypes] = useState(["Maruti" , "C200"])
+const [availableVehicles, setAvailableVehicles] = useState(["CHJ-2233", "CGF-5568"])
+const [availableDrivers, setavailableDrivers] = useState(["Chamara" , "Jonny", "Danny", "Chanchala"])
 
 /*
 const fetchVehicleData = async () => {
@@ -339,9 +341,9 @@ useEffect(() => {
                       required
                       >
                         <option value="">Select Vehicle</option>
-                        <option value={"CHJ-2233"}>CHJ-2233</option>
-                        <option value={"CHJ-2233"}>CHJ-2233</option>
-
+                        {availableVehicles.map((type) => (
+                          <option key={type.id} value={type}>{type}</option>
+                        ))}
                     </select>
 
                   </div>
@@ -358,10 +360,9 @@ useEffect(() => {
                       required
                       >
                         <option value="">Select Driver</option>
-                        <option value={"Chamara"}>Chamara</option>
-                        <option value={"Chanchala"}>Chanchala</option>
-                        <option value={"Danny"}>Danny</option>
-                        <option value={"Jonny"}>Jonny</option>
+                          {availableDrivers.map((type) => (
+                            <option key={type.id} value={type}>{type}</option>
+                          ))}
                     </select>
                   </div>
 
