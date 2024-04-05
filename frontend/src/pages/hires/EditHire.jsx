@@ -1,15 +1,16 @@
-import React from 'react'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useParams, useNavigate  } from 'react-router-dom'
 import { useState } from 'react'
 
 import axios from '@/api/axios';
 import useAxios from "@/hooks/useAxios";
 
 
-const editHire = () => {
+const EditHire = () => {
 
     const location = useLocation()
     const viewHireData = location.state.viewHireData
+
+    const navigate = useNavigate();
 
 
     const [startDate, setStartDate] = useState(viewHireData.startDate);
@@ -33,11 +34,11 @@ const editHire = () => {
     const [availableVehicles, setAvailableVehicles] = useState(["CHJ-2233", "CGF-5568"])
     const [availableDrivers, setavailableDrivers] = useState(["Chamara" , "Jonny", "Danny", "Chanchala"])
 
-    const [data, error, loading, axiosFetch] = useAxios()
+    const [response, error, loading, axiosFetch] = useAxios()
 
-    const handleEdit =async (e) => {
-        e.preventDefault()
-    
+    const handleEdit = async (e) => {
+        e.preventDefault();
+      
         const editedData = {
           startDate,
           endDate,
@@ -57,32 +58,30 @@ const editHire = () => {
           cusNic,
           hireStatus,
         };
-        const confirm = window.confirm("Are you sure")
-        if(confirm){
-          console.log('Edited Data:', editedData);
-          e.preventDefault();
-    
-          await axiosFetch({
-            axiosInstance:axios,
-            method:'PUT',
-            url:`/hire/edit/${viewHireData._id}`,
-            requestConfig:{
-              data:{
-                ...editedData
-              }
-            }
-          })
-          if(error){
-            alert(error)
-          }
-          if(data){
-            console.log("Data:", data);
-            alert("successfully updated")
-          }  
-    
-          //axios.post(`http://localhost:3000/api/hire/edit/${viewHireData._id}`, editedData)
-        }
       
+        const confirm = window.confirm("Are you sure?");
+        if (confirm) {
+          console.log('Edited Data:', editedData);
+          try {
+            //const response = await axios.put(`/hire/edit/${viewHireData._id}`, editedData);
+            await axiosFetch({
+                axiosInstance:axios,
+                method:'PUT',
+                url:`/hire/edit/${viewHireData._id}`,
+                requestConfig:{
+                    response:{
+                    ...editedData
+                  }
+                }
+              })
+            console.log("Response:", response);
+            alert("Successfully updated");
+          } catch (error) {
+            console.error("Error:", error);
+            alert("An error occurred. Please try again.");
+          }
+        }
+
       };
     
       if(loading){
@@ -90,6 +89,14 @@ const editHire = () => {
           <h1>Loading ...</h1>
         )
       }
+
+      const cancel = () => {
+        const confirmCancel = window.confirm("Are you sure you want to cancel?");
+        if (confirmCancel) {
+            navigate('/hires');
+        }
+    }
+      
 
   return (
     <div>
@@ -316,7 +323,7 @@ const editHire = () => {
                         </button>
                         <button
                             type="button"
-                            onClick={() => setShowEditForm(false)}
+                            onClick={cancel}
                             className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md mr-4"
                         >
                             Cancel
@@ -335,4 +342,4 @@ const editHire = () => {
   )
 }
 
-export default editHire
+export default EditHire
