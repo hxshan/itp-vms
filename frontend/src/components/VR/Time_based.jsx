@@ -73,7 +73,7 @@ rangeStart.setMonth(rangeStart.getMonth() - 1);
                 </thead>
                 <tbody>
                     {data && data.length > 0 ? (data.filter((item) => {
-                        return serach.toLowerCase() === '' ? item : item.vrtype.toLowerCase().includes(serach) || serach.toLowerCase() === '' ? item : item.vrid.toLowerCase().includes(serach)
+                        return serach.toLowerCase() === '' ? item : item.vrtype.toLowerCase().includes(serach) || serach.toLowerCase() === '' ? item : item.vrid.toLowerCase().includes(serach) ||serach.toUpperCase()=== '' ? item : item.vrtype.toUpperCase().includes(serach)
 
                     }).map((item, index) => {
                         // Filter data only if applyFilter is true

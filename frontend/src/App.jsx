@@ -18,6 +18,7 @@ import { VehicleServiceList } from "./components/VR/VehicleServiceList";
 import ClientDashboard from "./pages/contract/ClientDashboard";
 import ViewContract from "./pages/contract/ViewContract";
 import ContractEditForm from "./pages/contract/ContractEditForm";
+import { View } from '../src/components/VR/View';
 
 function App() {
   const { user, loading } = useAuthContext();
@@ -67,6 +68,7 @@ function App() {
             <Route path="/Vrform" element={<CreateMaintainceForm />}/>
             <Route path="/driver" element={<DriverDashboard />} />
             <Route path="/Mdashboard" element={<MaintainceDashboard />} />
+            <Route path="/view/:id" element={<View />} />
             <Route
               path="/vehiclemaintain/edit/:id"
               element={<EditMaintainceOrder />}

@@ -1,15 +1,39 @@
-import React, { useState } from 'react'
+import React, { useState , useEffect } from 'react'
 import { Link } from 'react-router-dom';
 import { data } from './data'
+import axios from '@/api/axios';
+import useAxios from '@/hooks/useAxios';
 
 export const Kilometer_based = () => {
-    const [rangeend, setRangeend] = useState('5000');
+    const [rangeend, setRangeend] = useState(5000);
     const [serach, setSearch] = useState('');
     const [applyFilter, setApplyFilter] = useState(false);
 
+    const [data, error, loading, axiosFetch] = useAxios()
+
+    const [vehicles, setMaintains] = useState([]);
+
+     const getData = ()=>{
+    axiosFetch({
+      axiosInstance:axios,
+      method:'GET',
+      url:'/vehicle/'
+    })
+  }
+
+    useEffect(() => {
+        getData()
+    }, []);
+
+    useEffect(() => {
+        console.log(data)
+        if (data && data.length > 0)
+            setMaintains(data)
+    }, [data]);
+
     const resetState = () => {
         setSearch('');
-        setRangeend('5000');
+        setRangeend(5000);
         setApplyFilter(false); 
     };
 
@@ -66,30 +90,30 @@ export const Kilometer_based = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {data && data.length > 0 ? (data.filter((item) => {
+                    {vehicles && vehicles.length > 0 ? (vehicles.filter((item) => {
                         return serach.toLowerCase() === '' ? item : item.vrtype.toLowerCase().includes(serach) || serach.toLowerCase() === '' ? item : item.vrid.toLowerCase().includes(serach)
 
                     }).map((item, index) => {
                         // Filter data only if applyFilter is true
-                        if (applyFilter && !(item.vrcost > parseInt(rangeend - 5000) && parseInt(item.vrcost) < parseInt(rangeend))) {
-                            return null; // Return null for records that don't meet the filter criteria
-                        }
+                        // if (applyFilter && !(item.vrcost > parseInt(rangeend - 5000) && parseInt(item.vrcost) < parseInt(rangeend))) {
+                        //     return null; // Return null for records that don't meet the filter criteria
+                        // }
                         return (
                             <tr key={item._id} className='h-8 '>
                                 <td className='border border-slate-700 rounded-md text-center'>
                                     {index + 1}
                                 </td>
                                 <td className='border border-slate-700 rounded-md text-center'>
-                                    {item.vrtype}
+                                    {item.vehicleType}
                                 </td>
                                 <td className='border border-slate-700 rounded-md text-center'>
-                                    {item.vrid}
+                                    {item.vehicleRegister}
                                 </td>
                                 <td className='border border-slate-700 rounded-md text-center'>
-                                    {item.vrcost + ' km'}
+                                    {item.lastMileage + ' km'}
                                 </td>
                                 <td className='border border-slate-700 rounded-md text-center'>
-                                    {item.vrcost > parseInt(rangeend - 5000) && parseInt(item.vrcost) < parseInt(rangeend) ? (<p className='bg-red-100 font-semibold'>Under the Range</p>) : (<p className='bg-blue-100 font-semibold'>Stil Not close to Range</p>)}
+                                    {item.lastMileage > parseInt(rangeend - 5000) && parseInt(item.lastMileage) < parseInt(rangeend) ? (<p className='bg-red-100 font-semibold'>Under the Range</p>) : (<p className='bg-blue-100 font-semibold'>Stil Not close to Range</p>)}
                                 </td>
                                 <td className='border border-slate-700 rounded-md text-center'>
                                     <div className="flex justify-center gap-x-4">

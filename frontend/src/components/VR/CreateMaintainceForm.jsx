@@ -1,18 +1,28 @@
 import React from 'react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import useAxios from '@/hooks/useAxios';
+
 import {
     validateVehicleType,
     validateVehicleId,
     validateVehicleIssue,
     validateVehicleCost,
-    validateAdditionalInfo
+    validateAdditionalInfo,
+    validateSDate,
+    validateEDate
+
 } from './validation';
 
 
 export const CreateMaintainceForm = () => {
     const [files, setFiles] = useState([]);
+    const [searchinput, setSearchinput] = useState('');
+    const [data, error, loading, axiosFetch] = useAxios()
+    const currentDate = new Date().toISOString().split('T')[0];
+
+
     const [formdata, setFormdata] = useState({
         //type change into vrtype
         vrtype: '',
@@ -20,7 +30,10 @@ export const CreateMaintainceForm = () => {
         vrissue: '',
         vrcost: '',
         vraddit: '',
+        vrsdate: currentDate,
+        vredate: ''
     });
+
     const navigate = useNavigate();
     const handleSubmit = () => {
         if (!validateForm()) {
@@ -39,6 +52,8 @@ export const CreateMaintainceForm = () => {
                     vrissue: '',
                     vrcost: '',
                     vraddit: '',
+                    vrsdate: '',
+                    vredate: ''
                 });
 
                 navigate('/Mdashboard');
@@ -49,13 +64,16 @@ export const CreateMaintainceForm = () => {
             });
     };
 
+
     const validateForm = () => {
         return (
             validateVehicleType(formdata.vrtype) &&
             validateVehicleId(formdata.vrid) &&
             validateVehicleIssue(formdata.vrissue) &&
             validateVehicleCost(formdata.vrcost) &&
-            validateAdditionalInfo(formdata.vraddit)
+            validateAdditionalInfo(formdata.vraddit)&&
+            validateSDate(formdata.vrsdate)&&
+            validateEDate(formdata.vrsdate,formdata.vredate)
         );
     };
     const handlechange = (e) => {
@@ -65,7 +83,7 @@ export const CreateMaintainceForm = () => {
                 vrtype: e.target.id
             })
         }
-        if (e.target.id === 'vrid' || e.target.id === 'vrissue' || e.target.id === 'vrcost' || e.target.id === 'vraddit') {
+        if (e.target.id === 'vrid' || e.target.id === 'vrissue' || e.target.id === 'vrcost' || e.target.id === 'vraddit' || e.target.id === 'vrsdate' || e.target.id === 'vredate') {
             setFormdata({
                 ...formdata,
                 [e.target.id]: e.target.value
@@ -166,6 +184,25 @@ export const CreateMaintainceForm = () => {
                         </div>
                     </div>
                     <div className="mt-5 flex flex-col justify-center items-center w-full">
+
+                        <div className="flex flex-col gap-5 mb-5 items-center">
+                            <div className="flex items-center gap-4">
+                                <label className='  font-semibold' >Start Date :</label>
+                                <input type='date'
+                                    id='vrsdate'
+                                    className='rounded-lg p-2'
+                                    onChange={handlechange}
+                                    value={formdata.vrsdate} />
+                            </div>
+                            <div className="flex  items-center gap-4">
+                                <label className='  font-semibold'>End Date :</label>
+                                <input type='date'
+                                    className='rounded-lg p-2'
+                                    id='vredate'
+                                    onChange={handlechange}
+                                    value={formdata.vredate} />
+                            </div>
+                        </div>
                         <p className='font-medium'>
                             Format Images :
                             <span

@@ -2,17 +2,18 @@ const mongoose = require('mongoose')
 
 const maintainSchema = mongoose.Schema(
     {
+
+        vrid:{
+            type: String,
+            required: true
+        }, 
+        
         vrtype: {
             type: String,
             required: true
 
         },
-
-        vrid: {
-            type: String,
-            required: true
-        },
-
+  
         vrissue: {
             type: String,
             required: true
@@ -25,8 +26,16 @@ const maintainSchema = mongoose.Schema(
 
         vraddit: {
             type: String,
+        },
 
+        vrsdate:{
+            type:Date
+        },
+        
+        vredate:{
+            type:Date
         }
+
     },{
         timestamps:true,
     }

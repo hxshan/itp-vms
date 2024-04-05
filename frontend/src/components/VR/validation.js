@@ -49,3 +49,19 @@ export const validateAdditionalInfo = (vraddit) => {
     }
     return true;
 };
+
+export const validateSDate = (vrsdate) => {
+    if (!(new Date(vrsdate) >= new Date())) {
+        alert('Start date must be a future date');
+        return false;
+    }
+    return true;
+};
+
+export const validateEDate = (vrsdate,vredate) => {
+    if (!(new Date(vrsdate) <= new Date(vredate))) {
+        alert('End date must be greater than start date');
+        return false;
+    }
+    return true;
+};

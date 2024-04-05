@@ -1,40 +1,34 @@
-import React from 'react'
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useParams ,useNavigate} from 'react-router-dom';
 import axios from 'axios';
-import { useNavigate, useParams } from 'react-router-dom';
 
 export const EditMaintainceOrder = () => {
+    const { id } = useParams();
+    const navigate = useNavigate();
+
     const [vrtype, setVrtype] = useState('');
     const [vrid, setVrid] = useState('');
     const [vrissue, setVrissue] = useState('');
     const [vrcost, setVrcost] = useState('');
     const [vraddit, setVraddit] = useState('');
 
-    const navigate = useNavigate();
-    const { id } = useParams();
-
     useEffect(() => {
-
-        axios
-            .get(`http://localhost:3000/api/vehiclemaintain/${id}`)
+        axios.get(`http://localhost:3000/api/vehiclemaintain/${id}`)
             .then((response) => {
-                setVrtype(response.data.vrtype);
-                setVrid(response.data.vrid);
-                setVrissue(response.data.vrissue);
-                setVrcost(response.data.vrcost);
-                setVraddit(response.data.vraddit);
-
+                const data = response.data;
+                setVrtype(data.vrtype);
+                setVrid(data.vrid);
+                setVrissue(data.vrissue);
+                setVrcost(data.vrcost);
+                setVraddit(data.vraddit);
             })
             .catch((error) => {
                 console.log(error);
+            });
+    }, [id]);
 
-            })
-
-    }, [])
-
-
-
-    const handleSubmit = () => {
+    const handleSubmit = (e) => {
+        e.preventDefault();
         const data = {
             vrtype,
             vrid,
@@ -43,22 +37,18 @@ export const EditMaintainceOrder = () => {
             vraddit
         };
 
-        axios
-            .put(`http://localhost:3000/api/vehiclemaintain/${id}`, data)
+        
+        axios.put(`http://localhost:3000/api/vehiclemaintain/${id}`, data)
             .then(() => {
-
-                // alert(` updated `);
-                navigate('/');
+                navigate('/Mdashboard');
             })
             .catch((error) => {
                 console.log(error);
-                alert((error.message || 'Failed to update Order details'));
-
             });
-    }
+    };
 
     return (
-        <main className='w-full  flex flex-col justify-center items-center bg-slate-200'>
+<main className='w-full  flex flex-col justify-center items-center bg-slate-200'>
             <h1 className='text-3xl font-semibold  my-9'>
                 Edit Maintaince Form
             </h1>
@@ -69,31 +59,31 @@ export const EditMaintainceOrder = () => {
                         <div className="flex justify-evenly">
                             <div className="flex ">
                                 <input type="checkbox" id="Car" className='w-5'
-                                    onChange={(e) => setVrtype(e.target.value)}
+                                    readOnly={(e) => setVrtype(e.target.value)}
                                     checked={vrtype === 'Car'} />
                                 <span className='font-semibold ml-2'>Car</span>
                             </div>
                             <div className="flex ">
                                 <input type="checkbox" id="Van" className='w-5'
-                                    onChange={(e) => setVrtype(e.target.value)}
+                                    readOnly={(e) => setVrtype(e.target.value)}
                                     checked={vrtype === 'Van'} />
                                 <span className='font-semibold ml-2'>Van</span>
                             </div>
                             <div className="flex ">
                                 <input type="checkbox" id="Bus" className='w-5'
-                                    onChange={(e) => setVrtype(e.target.value)}
+                                    readOnly={(e) => setVrtype(e.target.value)}
                                     checked={vrtype === 'Bus'} />
                                 <span className='font-semibold ml-2'>Bus</span>
                             </div>
                             <div className="flex ">
                                 <input type="checkbox" id="Mover" className='w-5'
-                                    onChange={(e) => setVrtype(e.target.value)}
+                                    readOnly={(e) => setVrtype(e.target.value)}
                                     checked={vrtype === 'Mover'} />
                                 <span className='font-semibold ml-2'>Prime Mover</span>
                             </div>
                             <div className="flex ">
                                 <input type="checkbox" id="Lorry" className='w-5'
-                                    onChange={(e) => setVrtype(e.target.value)}
+                                    readOnly={(e) => setVrtype(e.target.value)}
                                     checked={vrtype === 'Lorry'} />
                                 <span className='font-semibold ml-2'>Lorry</span>
                             </div>
@@ -101,17 +91,17 @@ export const EditMaintainceOrder = () => {
                         <div className='flex flex-col gap-5 mt-9'>
                             <input
                                 type="text"
-                                id='vrid'
+                              
                                 placeholder='Vehicle Number'
                                 className='border p-4 rounded-lg'
                                 maxLength='7'
                                 required
-                                onChange={(e) => setVrid(e.target.value)}
+                                readOnly={(e) => setVrid(e.target.value)}
                                 value={vrid} />
 
                             <textarea
                                 type="text"
-                                id='vrissue'
+                               
                                 placeholder='Fault of the Vehicle'
                                 className='border p-4 rounded-lg'
                                 required
@@ -120,7 +110,7 @@ export const EditMaintainceOrder = () => {
 
                             <input
                                 type="number"
-                                id='vrcost'
+                              
                                 placeholder='Estimated Cost'
                                 className='border p-4 rounded-lg'
                                 required
@@ -134,7 +124,7 @@ export const EditMaintainceOrder = () => {
                         <div className="flex flex-col gap-5 mt-9">
                             <textarea
                                 type="text"
-                                id='vraddit'
+                              
                                 placeholder='Additional Info'
                                 className='border p-4 rounded-lg'
                                 onChange={(e) => setVraddit(e.target.value)}
@@ -157,11 +147,11 @@ export const EditMaintainceOrder = () => {
                                 accept='image/*'
                                 multiple
                                 className='p-3 border border-gray-800 w-full rounded-lg'
-                                onChange={(e) => setFiles(e.target.files)} />
+                                 />
                             <button
                                 className='p-3 border border-green-600 rounded-lg font-semibold text-green-600 hover:shadow-lg disabled:opacity-50'
-                                type='button'
-                                onClick={handleImageSubmit}>
+                                type='submit'
+                           >
                                 Upload
                             </button>
                         </div>
@@ -174,6 +164,5 @@ export const EditMaintainceOrder = () => {
 
             </div>
         </main>
-
-    )
-}
+    );
+};

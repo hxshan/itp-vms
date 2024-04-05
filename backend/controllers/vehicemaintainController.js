@@ -9,7 +9,9 @@ const createmaintain = async (req , res)=>{
             !req.body.vrid||
             !req.body.vrissue||
             !req.body.vrcost||
-            !req.body.vraddit
+            !req.body.vraddit||
+            !req.body.vrsdate||
+            !req.body.vredate
 
         ) {
             return res.status(400).send({message:'Send required Fields'});
@@ -20,7 +22,9 @@ const createmaintain = async (req , res)=>{
             vrid : req.body.vrid,
             vrissue : req.body.vrissue,
             vrcost : req.body.vrcost,
-            vraddit : req.body.vraddit
+            vraddit : req.body.vraddit,
+            vrsdate :  req.body.vrsdate,
+            vredate : req.body.vredate
         };
         const newmaintain = await vehicleMaintain.create(maintain);
         return res.status(201).send(newmaintain)
@@ -64,7 +68,9 @@ const editmaintain = async (req, res)=>{
             !req.body.vrid||
             !req.body.vrissue||
             !req.body.vrcost||
-            !req.body.vraddit
+            !req.body.vraddit||
+            !req.body.vrsdate||
+            !req.body.vredate
         ) {
             return res.status(400).send({ message: 'Send All required Filds' });
         }
