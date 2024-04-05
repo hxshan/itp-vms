@@ -9,6 +9,8 @@ const columns=["Name","Email","Role","Status"]
 const [search,setSearch]=useState('')
 const [users, error, loading, axiosFetch] = useAxios()
 const [reload,setReload]= useState(0)
+const [startIdx, setStartIdx] = useState(0);
+const [endIdx, setEndIdx] = useState(6);
 
 const getData = ()=>{
     axiosFetch({
@@ -86,7 +88,7 @@ useEffect(()=>{
             return search.toLowerCase === ''? 
             user:
             user.firstName.toLowerCase().includes(search);
-          })
+          }).slice(startIdx,endIdx)
           .map((row) => {
             return (
                 <tr className="bg-white border-t border-gray-200" key={row._id}>
@@ -113,7 +115,33 @@ useEffect(()=>{
         </tbody>
       </table>
     </div>
-      
+    <div className="w-full flex justify-end">
+        <button
+          className={`${
+            startIdx == 0 ? "hidden" : ""
+          } py-1 px-2 border border-gray-600 rounded-md mt-4`}
+        
+          onClick={() => {
+            setStartIdx(startIdx - 6);
+            setEndIdx(endIdx - 6);
+          }}
+          type="button"
+        >
+          Previous
+        </button>
+        <button
+          className={`${
+            users.length - endIdx <= 0 ? "hidden" : " "
+          } ml-8 py-1 px-2 border border-gray-600 rounded-md mt-4`}    
+          onClick={() => {
+            setStartIdx(startIdx + 6);
+            setEndIdx(endIdx + 6);
+          }}
+          type="button"
+        >
+          Next
+        </button>
+      </div>
     </div>
 
   );
