@@ -3,7 +3,7 @@ import React from 'react'
 const NewlyAddedTable = ({ category, categoryData }) => {
 
   if (categoryData.length === 0) {
-    return <p className='mt-3 p-3 font-medium text-sm text-white bg-red-500 rounded-md pad'>New added Vehicles not found. </p>;
+    return <p className='mt-3 p-3 font-medium text-sm text-white bg-red-500 rounded-md pad'>Vehicles not found. </p>;
   }
 
   return (

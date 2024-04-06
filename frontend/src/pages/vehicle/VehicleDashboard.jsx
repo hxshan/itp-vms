@@ -13,6 +13,9 @@ const VehicleDashboard = () => {
 
   const navigate = useNavigate();
   const [data, error, loading, axiosFetch] = useAxios()
+  
+  const [search, setSearch] = useState("");
+
   const [activeComponent, setActiveComponent] = useState('');
 
 
@@ -36,8 +39,8 @@ const VehicleDashboard = () => {
       console.log('Backend Response:', data);
     }
   }, [data]);
-  
-    if(loading){
+
+  if(loading){
       return(
         <p className="flex flex-col items-center justify-center h-screen text-center text-lg font-bold text-black" >Loading...</p>
       )
@@ -48,8 +51,20 @@ const VehicleDashboard = () => {
       )
   }
 
-  ChartJS.register(ArcElement, Tooltip, Legend);
 
+  const deleteVehicle = async (vehicleId) => {
+    if (window.confirm('Are you sure you want to delete this vehicle?')) {
+      try {
+        await axios.delete(`/vehicle/${vehicleId}`);
+       
+        setVehicles(vehicles.filter(vehicle => vehicle._id !== vehicleId));
+      } catch (error) {
+        console.error('Error deleting vehicle:', error);
+      }
+    }
+  };
+  
+  ChartJS.register(ArcElement, Tooltip, Legend);
 
 
   const chartData = {
@@ -82,7 +97,11 @@ const VehicleDashboard = () => {
   const renderComponent = () => {
     switch (activeComponent) {
       case 'search':
-        return <VehicleSearch />;
+        return (
+          <div>
+            <VehicleSearch vehicles={vehicles} />
+          </div>
+        );
       case 'summary':
         return (
           <div>
@@ -106,10 +125,11 @@ const VehicleDashboard = () => {
   };
 
   if (!data || !data.newAdded) {
-    return <p className='mt-3 p-3 font-medium text-sm text-white bg-red-500 rounded-md pad'>No data available.</p>;
+    return <p className='mt-3 p-3 font-medium text-sm text-white bg-red-500 rounded-md pad'>No data available or Server is offline.</p>;
   }
 
   const { newAdded } = data;
+  const { vehicles } = data;
 
 
   return  (
@@ -182,11 +202,9 @@ const VehicleDashboard = () => {
     
         {renderComponent()}
 
-    </div>
     
-  );
-
-  
+  </div>
+ )
 };
 
 export default VehicleDashboard
