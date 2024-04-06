@@ -22,7 +22,7 @@ const fetchHiresRates = async (req, res) => {
         baseRate,
         baseDistence,
         additionalRate
-      } = req.body;
+      } = req.body.data;
   
       const newHireRate = new hireRates({
         vehicleCatagory,
@@ -49,7 +49,7 @@ const editHireRate = async (req, res) => {
         baseRate,
         baseDistence,
         additionalRate
-     } = req.body;
+     } = req.body.data;
     try {
       const hire = await hireRates.findByIdAndUpdate(id, { 
         vehicleCatagory,

@@ -150,8 +150,29 @@ const fetchVehicleData = async () => {
 
 //Calculate total
 
-const [vehicleRates, setVehicleRates] = useState({});
+const [vehicleRates, Verror, Vloading, VaxiosFetch] = useAxios();
 
+
+  const fetchVehicleRates = async () => {
+    VaxiosFetch({
+          axiosInstance: axios,
+          method: "GET",
+          url: "/hire/rates",
+      });
+  };
+
+    useEffect(() => {
+      fetchVehicleRates();
+    },[])
+    
+        if(Verror){
+            return(
+              <p>Can not Fetch Data</p>
+            )
+          }
+    
+
+/*
     useEffect(() => {
         const fetchVehicleRates = async () => {
             try {
@@ -163,7 +184,7 @@ const [vehicleRates, setVehicleRates] = useState({});
         };
 
         fetchVehicleRates();
-    }, []);
+    }, []);*/
 
     const calculateEstimatedFare = async () => {
       try {
@@ -175,8 +196,10 @@ const [vehicleRates, setVehicleRates] = useState({});
           console.log("Calculating estimated fare...");
   
           // Fetch vehicle rates from the backend
-          const response = await axios.get('http://localhost:3000/api/hire//rates');
-          const vehicleRates = response.data;
+          //const response = await axios.get('http://localhost:3000/api/hire/rates');
+          //const vehicleRates = response.data;
+
+          
   
           // Find the rate for the selected vehicle type
           const selectedVehicleRate = vehicleRates.find(rate => rate.vehicleCatagory === vehicleType);
