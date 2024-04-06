@@ -39,28 +39,28 @@ const TruckForm = ({ formState, setFormState }) => {
 
                         <div>
                         <label className='ml-2 mr-2 font-semibold text-base' htmlFor="engineCap">Engine Capacity:</label>
-                        <input className='mr-12 pl-2 pr-2' type="number" id="engineCap" name="engineCap" value={formState.engineCap} onChange={handleChange} placeholder='0cc' />
+                        <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="number" id="engineCap" name="engineCap" value={formState.engineCap} onChange={handleChange} placeholder='0cc' />
 
                         <label className='ml-2 mr-2 font-semibold text-base' htmlFor="vehicleGearSys">Vehicle Transmisstion:</label>
-                        <select className='mr-12 pl-2 pr-2' id="vehicleGearSys" name="vehicleGearSys" value={formState.vehicleGearSys} onChange={handleChange} >
+                        <select className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="vehicleGearSys" name="vehicleGearSys" value={formState.vehicleGearSys} onChange={handleChange} >
                                     <option value="">Select</option>
                                     <option value="auto">Auto</option> 
                                     <option value="manual">Manual</option>                
                         </select>
 
                         <label className='ml-2 mr-2 font-semibold text-base' htmlFor="lastMileage">Last Mileage:</label>
-                        <input className='mr-12 pl-2 pr-2' type="number" id="lastMileage" name="lastMileage" value={formState.lastMileage} onChange={handleChange} />
+                        <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="number" id="lastMileage" name="lastMileage" value={formState.lastMileage} onChange={handleChange} />
                         </div>
 
                         <div>
                         <label className='ml-2 mr-2 font-semibold text-base' htmlFor="vehicleWeight">Vehicle Weight:</label>
-                        <input className='mr-12 pl-2 pr-2' type="number" id="vehicleWeight" name="vehicleWeight" value={formState.vehicleWeight} onChange={handleChange} />
+                        <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="number" id="vehicleWeight" name="vehicleWeight" value={formState.vehicleWeight} onChange={handleChange} />
 
                         <label className='ml-2 mr-2 font-semibold text-base' htmlFor="trailerLength">Max trailer length:</label>
-                        <input className='mr-12 pl-2 pr-2' type="number" id="trailerLength" name="trailerLength" value={formState.trailerLength} onChange={handleChange} />
+                        <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="number" id="trailerLength" name="trailerLength" value={formState.trailerLength} onChange={handleChange} />
 
                         <label className='ml-2 mr-2 font-semibold text-base' htmlFor="cargoCapacity">Cargo Capacity:</label>
-                        <input className='mr-12 pl-2 pr-2' type="number" id="cargoCapacity" name="cargoCapacity" value={formState.cargoCapacity} onChange={handleChange} />
+                        <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="number" id="cargoCapacity" name="cargoCapacity" value={formState.cargoCapacity} onChange={handleChange} />
                         </div>   
 
                         <div className='flex flex-row'>
@@ -70,19 +70,19 @@ const TruckForm = ({ formState, setFormState }) => {
 
                         <div>                 
                         <label className='ml-2 mr-2 font-semibold text-base' htmlFor="airCon">Air Condition:</label>
-                        <select className='mr-12 pl-2 pr-2' id="airCon" name="airCon" value={formState.airCon} onChange={handleChange} >
+                        <select className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="airCon" name="airCon" value={formState.airCon} onChange={handleChange} >
                                     <option value="">Select</option>
                                     <option value="yes">Yes</option> 
                                     <option value="no">No</option>                
                         </select>
                         
                         <label className='ml-2 mr-2 font-semibold text-base' htmlFor="numOfSeats">Number of Seats without Driver:</label>
-                        <input className='mr-12 pl-2 pr-2' type="number" id="numOfSeats" name="numOfSeats" value={formState.numOfSeats} onChange={handleChange} />
+                        <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="number" id="numOfSeats" name="numOfSeats" value={formState.numOfSeats} onChange={handleChange} />
                         </div>
 
                         <div>
                         <label className='ml-2 mr-2 font-semibold text-base' htmlFor="gps">GPS :</label>
-                        <select className='mr-12 pl-2 pr-2' id="gps" name="gps" value={formState.gps} onChange={handleChange} >
+                        <select className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="gps" name="gps" value={formState.gps} onChange={handleChange} >
                                     <option value="">Select</option>
                                     <option value="no">No</option> 
                                     <option value="available">Available</option> 
@@ -91,21 +91,21 @@ const TruckForm = ({ formState, setFormState }) => {
 
                         <div>   
                         <label className='ml-2 mr-2 font-semibold text-base' htmlFor="passengerCabin">Passenger Cabin:</label>
-                        <select className='mr-12 pl-2 pr-2' id="passengerCabin" name="passengerCabin" value={formState.passengerCabin} onChange={handleChange} >
+                        <select className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="passengerCabin" name="passengerCabin" value={formState.passengerCabin} onChange={handleChange} >
                                     <option value="">Select</option>
                                     <option value="no">No</option> 
                                     <option value="available">Available</option>                
                         </select>
 
                         <label className='ml-2 mr-2 font-semibold text-base' htmlFor="fridge">Mini fridge :</label>
-                        <select className='mr-12 pl-2 pr-2' id="fridge" name="fridge" value={formState.fridge} onChange={handleChange} >
+                        <select className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="fridge" name="fridge" value={formState.fridge} onChange={handleChange} >
                                     <option value="">Select</option>
                                     <option value="no">No</option> 
                                     <option value="available">Available</option>                                                  
                         </select>
 
                         <label className='ml-2 mr-2 font-semibold text-base' htmlFor="tv">TV :</label>
-                        <select className='mr-12 pl-2 pr-2' id="tv" name="tv" value={formState.tv} onChange={handleChange} >
+                        <select className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="tv" name="tv" value={formState.tv} onChange={handleChange} >
                                     <option value="">Select</option>
                                     <option value="no">No</option> 
                                     <option value="available">Available</option>  
@@ -119,25 +119,25 @@ const TruckForm = ({ formState, setFormState }) => {
                         
                         <div>
                         <label className='ml-2 mr-2 font-semibold text-base' htmlFor="licEndDate">Vehicle Licence End Date:</label>
-                        <input className='mr-12 pl-2 pr-2' type="date" id="licEndDate" name="licEndDate" value={formState.licEndDate} onChange={handleChange} />
+                        <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="date" id="licEndDate" name="licEndDate" value={formState.licEndDate} onChange={handleChange} />
 
                         <label className='ml-2 mr-2 font-semibold text-base' htmlFor="insEndDate">Vehicle Insurance End Date:</label>
-                        <input className='mr-12 pl-2 pr-2' type="date" id="insEndDate" name="insEndDate" value={formState.insEndDate} onChange={handleChange} />
+                        <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="date" id="insEndDate" name="insEndDate" value={formState.insEndDate} onChange={handleChange} />
                         </div>
                          
                         <div> 
                         <label className='ml-2 mr-2 font-semibold text-base' htmlFor="vehicleBookImage">Vehicle Book Image:</label>
-                        <input className='mr-12' type="file" id="vehicleBookImage" name="vehicleBookImage" accept="image/*" onChange={handleFileChange} />
+                        <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="file" id="vehicleBookImage" name="vehicleBookImage" accept="image/*" onChange={handleFileChange} />
                         </div>
 
                         <div>
                         <label className='ml-2 mr-2 font-semibold text-base' htmlFor="vehicleLicenceImage">Updated Licence Image:</label>
-                        <input className='mr-12' type="file" id="vehicleLicenceImage" name="vehicleLicenceImage" accept="image/*" onChange={handleFileChange} />
+                        <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="file" id="vehicleLicenceImage" name="vehicleLicenceImage" accept="image/*" onChange={handleFileChange} />
                         </div>
 
                         <div>
                         <label className='ml-2 mr-2 font-semibold text-base' htmlFor="vehicleInsuImage">Updated Insurance Image:</label>
-                        <input className='mr-12' type="file" id="vehicleInsuImage" name="vehicleInsuImage" accept="image/*" onChange={handleFileChange} />
+                        <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="file" id="vehicleInsuImage" name="vehicleInsuImage" accept="image/*" onChange={handleFileChange} />
                         </div>
 
     </div>

@@ -117,7 +117,7 @@ const VehicleDashboard = () => {
     <div className="place-content-center space-y-4 mt-8 bg-cover bg-center bg-white ">
       <h1 className="text-lg font-bold">Vehicle Management Dashboard</h1>
       <div className='mt-5 mb-5 flex flex-row items-center justify-start '> 
-        <div className='w-full p-4 bg-slate-200 rounded-md pad mr-2'>
+        <div className='shadow-xl bg-white rounded flex flex-col items-center'>
           <h1 className="text-base font-bold">Stored vehicle details</h1>
           
           <div className="flex m-2 flex-row justify-satart  bg-slate-200 rounded-md pad">
