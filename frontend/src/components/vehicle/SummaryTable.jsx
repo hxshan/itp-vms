@@ -1,9 +1,16 @@
 import React from 'react'
 
 const SummaryTable = ({ category, filteredData }) => {
+  
+  if (filteredData.length === 0) {
+    return <p className='mt-3 p-3 font-medium text-sm text-white bg-red-500 rounded-md pad'>Vehicles not found. </p>;
+  }
+
   return (
+  
+  <div className='p-4 bg-slate-200 rounded-md pad'>  
     <div className='mt-4' key={category}>
-      <h2 className='text-l font-bold'>{category.charAt(0).toUpperCase() + category.slice(1)}</h2>
+      <h2 className='text-l font-bold mb-3'>{category.charAt(0).toUpperCase() + category.slice(1)}</h2>
       <table className='w-full border-collapse border-spacing-2 border-black'>
         <thead className=' bg-slate-500 text-white'>
           <tr>
@@ -27,6 +34,7 @@ const SummaryTable = ({ category, filteredData }) => {
         </tbody>
       </table>
     </div>
+  </div>  
   )
 }
 
