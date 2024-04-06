@@ -86,7 +86,7 @@ const Navbar = () => {
                       <div className="ml-6">
                           <button className="w-full py-2 px-4 hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => navigate('/hires')}>Dashboard</button>
                           <button className="w-full py-2 px-4 hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => navigate('/hires/add')}>Add Hire</button>
-                          <button className="w-full py-2 px-4 hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => handleItemClick('Hire Management', 'Sub Fun')}>Sub Fun</button>
+                          <button className="w-full py-2 px-4 hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => navigate('/hires/rates')}>Hire Rates</button>
                       </div>
                   )}
               </div>

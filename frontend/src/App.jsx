@@ -17,7 +17,7 @@ import { VehicleServiceList } from "./components/VR/VehicleServiceList";
 import ClientDashboard from "./pages/contract/ClientDashboard";
 import ViewContract from "./pages/contract/ViewContract";
 import ContractEditForm from "./pages/contract/ContractEditForm";
-import {HireDashboard, CreateHire, EditHire} from "./pages/hires/hires"
+import {HireDashboard, CreateHire, EditHire, HireRates} from "./pages/hires/hires"
 
 
 function App() {
@@ -63,6 +63,7 @@ function App() {
               <Route index={true} element={<HireDashboard />} />
               <Route path="add" element={<CreateHire />}/>
               <Route path="edit/:id" element={<EditHire />}/>
+              <Route path="rates" element={<HireRates />}/>
             </Route>
             
             <Route path="/emergency" element={<CaseFileForm />} />
