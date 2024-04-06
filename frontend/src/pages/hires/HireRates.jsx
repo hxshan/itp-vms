@@ -2,10 +2,12 @@ import { useState, useEffect } from "react";
 import axios from "@/api/axios";
 import useAxios from "@/hooks/useAxios";
 import EditHireRates from "@/components/hires/EditHireRates";
+import AddHireRate from '@/components/hires/AddHireRate'
 
 const HireRates = () => {
     const [rates, error, loading, axiosFetch] = useAxios();
     const [editRates, setEditRates] = useState(false);
+    const [showAddForm, setShowAddForm] = useState(false);
     const [editHireData, setEditHireData] = useState()
 
     const fetchHireRates = async () => {
@@ -39,10 +41,24 @@ const HireRates = () => {
         setEditRates(true);
     };
 
+    const handleAddForm = () => {
+        setShowAddForm(true);
+    };
+
     return (
         <div className="w-full h-full flex flex-col px-2 py-[20px] justify-center align-center xl:px-[60px] xl:py-[50px] ">
             <div className="text-center pt-[10px] pb-8 border-b-2 border-[#37A000] ">
                 <h1 className="text-2xl font-semibold xl:text-4xl">Vehicle Rates</h1>
+            </div>
+
+            <div className="flex justify-end my-5">
+                <button
+                className="px-2 py-1 bg-[#D4D800] text-white rounded-md mr-2"
+                onClick={handleAddForm}
+                >
+                    Add
+                </button>
+
             </div>
             <div>
                 <table className="w-full text-center ">
@@ -74,6 +90,7 @@ const HireRates = () => {
                 </table>
             </div>
             {editRates && <div><EditHireRates setEditRates={setEditRates} editHireData={editHireData} reload={reload}/></div>}
+            {showAddForm && <div><AddHireRate reload={reload} setShowAddForm={setShowAddForm}/></div>}
         </div>
     );
 };

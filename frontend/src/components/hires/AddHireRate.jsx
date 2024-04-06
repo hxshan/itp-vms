@@ -5,34 +5,33 @@ import axios from '@/api/axios';
 import useAxios from "@/hooks/useAxios";
 
 
-const EditHireRates = ({setEditRates, editHireData, reload}) => {
+const EditHireRates = ({setShowAddForm, reload}) => {
 
-    const [rateId , setRateId] = useState(editHireData._id)
-    const [vehicleCatagory , setVehicleSubcategory] = useState(editHireData.vehicleCatagory)
-    const [baseRate , setBaseRate] = useState(editHireData.baseRate)
-    const [baseDistence , setBaseDistence] = useState(editHireData.baseDistence)
-    const [additionalRate, setAdditionalRate] = useState(editHireData.additionalRate)
+    const [vehicleCatagory , setVehicleSubcategory] = useState('')
+    const [baseRate , setBaseRate] = useState('')
+    const [baseDistence , setBaseDistence] = useState('')
+    const [additionalRate, setAdditionalRate] = useState('')
 
     const [response, error, loading, axiosFetch] = useAxios()
 
     const handleEditSubmit = async () => {
 
-        const editedRates = {
+        const hireRates = {
             vehicleCatagory,
             baseRate,
             baseDistence,
             additionalRate
         }
 
-        setEditRates(false)
+        setShowAddForm(false)
         
         await axiosFetch({
             axiosInstance:axios,
-            method:'PUT',
-            url:`/hire/rates/edit/${rateId}`,
+            method:'POST',
+            url:`/hire/rates/add`,
             requestConfig:{
             data:{
-                ...editedRates
+                ...hireRates
             }
             }
         })
@@ -49,12 +48,12 @@ const EditHireRates = ({setEditRates, editHireData, reload}) => {
           
 
         
-        console.log("Edited Data")
-        console.log(editedRates)
+        console.log("Data")
+        console.log(hireRates)
     }
 
     const handleCancle = () => {
-        setEditRates(false)
+        setShowAddForm(false)
     }
 
 
@@ -62,10 +61,17 @@ const EditHireRates = ({setEditRates, editHireData, reload}) => {
         <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50">
             <div className="bg-white p-6 rounded-lg shadow-xl">
                 <div className="text-center pb-4 border-b">
-                    <h1 className="text-2xl font-semibold xl:text-4xl">Edit Vehicle Rates - {vehicleCatagory}</h1>
+                    <h1 className="text-2xl font-semibold xl:text-4xl">Add Vehicle Rate</h1>
                 </div>
                 <div className="mt-4">
                     <form onSubmit={handleEditSubmit}>
+                        <div className="mb-4">
+                            <label className="block text-sm font-bold mb-2">Vehicle Catagory</label>
+                            <input type="text" className="border rounded-md px-3 py-2 w-full" 
+                            value={vehicleCatagory}
+                            onChange={(e) => setVehicleSubcategory(e.target.value)}
+                            />
+                        </div>
                         <div className="mb-4">
                             <label className="block text-sm font-bold mb-2">Base Rate</label>
                             <input type="number" className="border rounded-md px-3 py-2 w-full" 
@@ -111,9 +117,8 @@ const EditHireRates = ({setEditRates, editHireData, reload}) => {
 };
 
 EditHireRates.propTypes = {
-    setEditRates: PropTypes.func.isRequired,
+    setShowAddForm: PropTypes.func.isRequired,
     reload: PropTypes.func.isRequired,
-    editHireData: PropTypes.object.isRequired
 };
 
 export default EditHireRates;
