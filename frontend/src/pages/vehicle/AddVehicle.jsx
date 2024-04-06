@@ -121,8 +121,8 @@ const AddVehicle = () => {
            <p className=" text-sm text-red-600 leading-relaxed">
             - If you have any questions or require assistance while adding a vehicle, feel free to reach out to our support team. We're here to help you every step of the way.
            </p>
-           <div className='mt-4'>
-                <label className='m-1 font-semibold text-base' htmlFor="category">Select Vehicle Category:</label>
+           <div className="col-span-1 w-full flex flex-col mt-4 mb-4 ">
+                <label className="block text-gray-700 text-md font-bold mb-2" htmlFor="category">Select Vehicle Category:</label>
                 <select id="category" name="category" value={formState.category} onChange={handleCategoryChange} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                     <option value="">Select</option>
                     <option value="car">Car</option>
