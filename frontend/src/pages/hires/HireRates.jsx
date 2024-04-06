@@ -8,16 +8,21 @@ const HireRates = () => {
     const [editRates, setEditRates] = useState(false);
     const [editHireData, setEditHireData] = useState()
 
-    useEffect(() => {
-        const fetchHireRates = async () => {
-            axiosFetch({
-                axiosInstance: axios,
-                method: "GET",
-                url: "/hire/rates",
-            });
-        };
+    const fetchHireRates = async () => {
+        axiosFetch({
+            axiosInstance: axios,
+            method: "GET",
+            url: "/hire/rates",
+        });
+    };
+
+    useEffect(() => { 
         fetchHireRates();
     }, []);
+
+    const reload = () => {
+        fetchHireRates();
+    }
 
     if (error) {
         return <p>Cannot Fetch Data</p>;
@@ -68,7 +73,7 @@ const HireRates = () => {
                     </tbody>
                 </table>
             </div>
-            {editRates && <div><EditHireRates setEditRates={setEditRates} editHireData={editHireData}/></div>}
+            {editRates && <div><EditHireRates setEditRates={setEditRates} editHireData={editHireData} reload={reload}/></div>}
         </div>
     );
 };
