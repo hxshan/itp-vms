@@ -25,7 +25,7 @@ const TopBar = () => {
   },[])
   //
   return (
-    <div className='w-screen h-[80px] text-sm fixed top-0 left-0 shadow-md bg-white flex items-center justify-end'>
+    <div className='w-screen h-[80px] text-sm fixed z-20 top-0 left-0 shadow-md bg-white flex items-center justify-end'>
       {user && 
         <div className='relative flex w-fit gap-4 mr-8 items-center'>
           <p>{user?.email.split('@')[0]}</p>

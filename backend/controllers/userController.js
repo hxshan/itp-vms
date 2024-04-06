@@ -2,8 +2,8 @@ const bcrypt = require("bcrypt");
 const User = require("../models/userModel");
 const EmergencyContact = require("../models/emergencyContactModel");
 const Role = require("../models/roleModel");
-const { json } = require("express");
 
+//TODO:add validation use REGEX 
 const createUser = async (req, res) => {
   try {
     const {
@@ -129,6 +129,8 @@ const getUserById = async (req,res)=>{
   
 }
 
+
+//TODO:add validation use REGEX
 const resetPassword = async(req,res)=>{
   try{
     const {id} = req.params

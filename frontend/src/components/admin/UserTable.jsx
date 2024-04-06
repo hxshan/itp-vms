@@ -7,6 +7,7 @@ const UserTable = () => {
 const { user } = useAuthContext()
 const columns=["Name","Email","Role","Status"]
 const [search,setSearch]=useState('')
+const [statusFilter,setStatusFilter]=useState('')
 const [users, error, loading, axiosFetch] = useAxios()
 const [reload,setReload]= useState(0)
 const [startIdx, setStartIdx] = useState(0);
@@ -58,16 +59,20 @@ useEffect(()=>{
       <div className="w-full flex justify-between mb-4">
         <h2 className="font-bold text-xl underline mb-4">User List</h2>
         <div className="flex gap-4 w-fit">
-          <button 
-          className="w-[130px] bg-blue-600 p-1 px-1 rounded-lg shadow-md text-sm text-white font-bold">
-            Add user
-          </button>
-          
+          <select name="status"
+          value={statusFilter}
+          onChange={(e)=>setStatusFilter(e.target.value)}
+           className="shadow appearance-none border rounded w-full min-w-40 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+            <option value="">Select Status</option>
+            <option value="active">Active</option>
+            <option value="inactive">Inactive</option>
+            <option value="suspended">Suspended</option>
+          </select>
           <input type="text" name="Search" 
           placeholder="Search"
           value={search}
           onChange={(e)=>{setSearch(e.target.value)}}
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+          className="shadow appearance-none border rounded min-w-40 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
         </div>
       </div>
       
@@ -85,9 +90,9 @@ useEffect(()=>{
         </thead>
         <tbody>
           {(users!=null && users.length>0)  ?(users.filter((user)=>{
-            return search.toLowerCase === ''? 
+            return search.toLowerCase === '' && statusFilter == '' ? 
             user:
-            user.firstName.toLowerCase().includes(search);
+            user.firstName.toLowerCase().includes(search) && user.status.includes(statusFilter);
           }).slice(startIdx,endIdx)
           .map((row) => {
             return (
@@ -101,9 +106,9 @@ useEffect(()=>{
                     </span>
                   </td>
                   <td className="px-6 py-2 whitespace-nowrap justify-between flex">
-                  <button className="bg-blue-600 text-white py-1 px-6 rounded-md">View</button>
-                    <button className="bg-yellow-300 text-white py-1 px-6 rounded-md">Edit</button>
-                    <button type="submit" onClick={(e)=>deleteData(e)} className="bg-red-700 text-white py-1 px-6 rounded-md">Delete</button>
+                  <button className="bg-actionBlue text-white py-1 px-6 rounded-md">View</button>
+                    <button className="bg-actionGreen text-white py-1 px-6 rounded-md">Edit</button>
+                    <button type="submit" onClick={(e)=>deleteData(e)} className="bg-actionRed text-white py-1 px-6 rounded-md">Delete</button>
                   </td>   
               </tr>
             );
