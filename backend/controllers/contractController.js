@@ -76,7 +76,7 @@ const getallClients = async(req,res) =>{
 const createContract = async(req,res)=>{
     try{
         const clientID = req.params.id;
-      const {Insurance_Source,Vehical,contract_SD,contract_ED,Insurace_provider,Policy_Number,Coverage_Type,Coverage_Amount,Deductible,Insurance_SD,Insurance_ED,Insurance_notes,Payment_Amount,Payment_Plan,Payment_Date,Amount_Payed} = req.body; 
+      const {Insurance_Source,Vehical_Type,Vehical,contract_SD,contract_ED,Insurace_provider,Policy_Number,Coverage_Type,Coverage_Amount,Deductible,Insurance_SD,Insurance_ED,Insurance_notes,Payment_Amount,Payment_Plan,Payment_Date,Amount_Payed} = req.body; 
       
       const clientExist = await  Client.findOne({_id:clientID})
 
@@ -85,12 +85,13 @@ const createContract = async(req,res)=>{
       }
 
 
-      if(!Vehical || !contract_SD|| !contract_ED|| !Insurance_Source || !Insurace_provider || !Policy_Number || !Coverage_Type || !Coverage_Amount || !Deductible || !Insurance_SD || !Insurance_ED || !Insurance_notes || !Payment_Amount || !Payment_Plan || !Payment_Date || !Amount_Payed){
+      if(!Vehical_Type ||!Vehical || !contract_SD|| !contract_ED|| !Insurance_Source || !Insurace_provider || !Policy_Number || !Coverage_Type || !Coverage_Amount || !Deductible || !Insurance_SD || !Insurance_ED || !Insurance_notes || !Payment_Amount || !Payment_Plan || !Payment_Date || !Amount_Payed){
         return res.status(301).json({"error":"fields are not filled"})
       }
 
       const contract = new Contract({
         clientID,
+        Vehical_Type,
         Vehical,
         contract_SD,
         contract_ED,

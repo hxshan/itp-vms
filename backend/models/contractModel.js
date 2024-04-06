@@ -7,6 +7,9 @@ const contractSchema = new Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref:'Client',
     },
+    Vehical_Type:{
+        type:String,
+    },
     Vehical:{
         type:mongoose.Schema.Types.ObjectId,
         ref:'Vehical' 

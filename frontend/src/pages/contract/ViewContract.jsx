@@ -14,6 +14,7 @@ const ViewContract = () => {
   const [contractData, setContractData] = useState({
     _id: "",
     Vehical: "",
+    Vehical_Type:"loading",
     contract_SD: "loading",
     contract_ED: "loading",
     Insurance_Source: "loading",
@@ -57,6 +58,7 @@ const ViewContract = () => {
 if (data) {
       setContractData({
         _id: data._id,
+        Vehical_Type:data.Vehical_Type,
         Vehical: data.Vehical,
         contract_SD: data.contract_SD,
         contract_ED: data.contract_ED,
@@ -146,6 +148,13 @@ if (data) {
           <div className="  w-fit h-fit  pb-8 rounded-xl ">
             <div>
               <p className="text-[25px] font-bold">Rental Info</p>
+            </div>
+
+            <div>
+              <p>Vehical Type</p>
+              <p className=" text-[#000ac2] font-semibold">
+                {contractData.Vehical_Type}
+              </p>
             </div>
 
             <div>
