@@ -22,7 +22,7 @@ const fetchHiresRates = async (req, res) => {
             baseRate,
             baseDistence,
             additionalRate
-        } = req.body;
+        } = req.body.data;
 
         const Category = vehicleCatagory.toLowerCase();
         // Check if the category already exists in the database
