@@ -9,12 +9,6 @@ const CreateUserForm = () => {
   const [roleData,roleerror, loading, axiosFetch] = useAxios()
   const [user,usererror, userloading, useraxiosFetch] = useAxios()
   const navigate = useNavigate()
-  /*const {
-    data: rolesData,
-    refetch: roleRefetch,
-  } = useAxiosGet("/role/");
-*/
-  //const { status, error, isLoading, postData } = useAxiosPost();
 
   const getRoleData =()=>{
     axiosFetch({

@@ -20,6 +20,7 @@ const useAxios = () => {
         signal: ctrl.signal,
       });
       setResponse(res.data);
+      setError("")
     } catch (error) {
       console.log(error);
       setResponse([])

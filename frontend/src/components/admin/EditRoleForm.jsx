@@ -57,12 +57,15 @@ const EditRoleForm = () => {
   });
 
   const getData =()=>{
+
      axiosFetch({
       axiosInstance: axios,
       method: "GET",
       url: `/role/${id}`,
     });
+
   }
+
   useEffect(()=>{
     console.log(data)
     if(error){
@@ -153,7 +156,7 @@ const EditRoleForm = () => {
               type="text"
               value={roleData.name}
               onChange={(e) => {
-                return setRoleData({
+                  return setRoleData({
                   ...roleData,
                   name: e.target.value,
                 });

@@ -1,12 +1,11 @@
 import React from 'react'
 
-const UserProfile = () => {
+const EditUser = () => {
   return (
     <div>
         
-
     </div>
   )
 }
 
-export default UserProfile
+export default EditUser
