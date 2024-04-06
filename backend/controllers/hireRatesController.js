@@ -17,28 +17,37 @@ const fetchHiresRates = async (req, res) => {
 
   const addHireRates = async (req, res) => {
     try {
-      const {
-        vehicleCatagory,
-        baseRate,
-        baseDistence,
-        additionalRate
-      } = req.body.data;
-  
-      const newHireRate = new hireRates({
-        vehicleCatagory,
-        baseRate,
-        baseDistence,
-        additionalRate
-      });
-  
-      await newHireRate.save();
-  
-      res.status(201).json({ message: 'Hire rate added successfully' });
+        const {
+            vehicleCatagory,
+            baseRate,
+            baseDistence,
+            additionalRate
+        } = req.body;
+
+        const Category = vehicleCatagory.toLowerCase();
+        // Check if the category already exists in the database
+        const existingCategory = await hireRates.findOne({ vehicleCatagory:  Category});
+
+        if (existingCategory) {
+            return res.status(400).json({ message: 'Category already exists' });
+        }
+
+        const newHireRate = new hireRates({
+            vehicleCatagory: Category,
+            baseRate,
+            baseDistence,
+            additionalRate
+        });
+
+        await newHireRate.save();
+
+        res.status(201).json({ message: 'Hire rate added successfully' });
     } catch (error) {
-      console.error('Error adding hire rate:', error);
-      res.status(500).json({ message: 'Internal server error' });
+        console.error('Error adding hire rate:', error);
+        res.status(500).json({ message: 'Internal server error' });
     }
-  }
+}
+
   
 
 //Edit the hires rates
