@@ -125,7 +125,7 @@ useEffect(() => {
   fetchVehicleData();
 }, [])
 */
-const [vehcleTypes, setVehcleTypes] = useState(["Car", "Van", "Lorry" , "Bus"])
+const [vehcleTypes, setVehcleTypes] = useState(["Car", "Van" , "Bus"])
 const [vehcleSubTypes, setVehcleSubTypes] = useState(["Maruti" , "C200"])
 const [availableVehicles, setAvailableVehicles] = useState(["CHJ-2233", "CGF-5568"])
 const [availableDrivers, setavailableDrivers] = useState(["Chamara" , "Jonny", "Danny", "Chanchala"])
@@ -149,51 +149,84 @@ const fetchVehicleData = async () => {
 */
 
 //Calculate total
-const vehicleRates = {
-  Car: { baseRate: 8000, additionalRate: 100 },
-  Van: { baseRate: 10000, additionalRate: 110 },
-  Bus: { baseRate: 15000, additionalRate: 150 },
-  Lorry: { baseRate: 15000, additionalRate: 180 }
-};
 
-const calculateEstimatedFare= () => {
-  let estimatedFare = 0
-  let advancedPay = 0
+const [vehicleRates, setVehicleRates] = useState({});
 
-  if (!vehicleType || !distence) {
-    console.log("Vehicle type or distance not selected");
-    return { estimatedFare: 0, advancedPay: 0 };
-  }
+    useEffect(() => {
+        const fetchVehicleRates = async () => {
+            try {
+                const response = await axios.get('http://localhost:3000/api/hire/rates');
+                setVehicleRates(response.data);
+            } catch (error) {
+                console.error('Error fetching vehicle rates:', error);
+            }
+        };
 
-  console.log("Calculating estimated fare...");
-  const { baseRate, additionalRate } = vehicleRates[vehicleType];
-  let estimatedDistence = distence
+        fetchVehicleRates();
+    }, []);
 
-  if(tripType === true) {
-    estimatedDistence = estimatedDistence * 2
-    
-  }
+    const calculateEstimatedFare = async () => {
+      try {
+          if (!vehicleType || !distence) {
+              console.log("Vehicle type or distance not selected");
+              return { estimatedFare: 0, advancedPay: 0 };
+          }
+  
+          console.log("Calculating estimated fare...");
+  
+          // Fetch vehicle rates from the backend
+          const response = await axios.get('http://localhost:3000/api/hire//rates');
+          const vehicleRates = response.data;
+  
+          // Find the rate for the selected vehicle type
+          const selectedVehicleRate = vehicleRates.find(rate => rate.vehicleCatagory === vehicleType);
+  
+          if (!selectedVehicleRate) {
+              console.log("Rate not found for the selected vehicle type");
+              return { estimatedFare: 0, advancedPay: 0 };
+          }
+  
+          const { baseRate, baseDistence, additionalRate } = selectedVehicleRate;
+          let estimatedFare = baseRate;
+          let advancedPay = 0;
+  
+          let estimatedDistence = distence;
+  
+          if (tripType) {
+              estimatedDistence *= 2;
+          }
+  
+          const baseDistance = baseDistence;
+          const additionalDistance = Math.max(estimatedDistence - baseDistance, 0);
+  
+          estimatedFare += additionalDistance * additionalRate;
+          advancedPay = estimatedFare * 0.1;
+  
+          estimatedFare = parseFloat(estimatedFare.toFixed(2));
+          advancedPay = Math.round(advancedPay);
 
-  const baseDistance = 100;
-  const additionalDistance = Math.max(estimatedDistence - baseDistance, 0);
+          console.log("Estimated Fare : " + estimatedFare)
+          console.log("Advanced Payment: " + advancedPay)
+  
+          return { estimatedFare, advancedPay };
+      } catch (error) {
+          console.error('Error calculating estimated fare:', error);
+          return { estimatedFare: 0, advancedPay: 0 };
+      }
+  };
+  
 
-  estimatedFare = baseRate + additionalDistance * additionalRate;
-  advancedPay = estimatedFare * 0.1;
-
-  estimatedFare = parseFloat(estimatedFare.toFixed(2))
-  advancedPay = Math.round(advancedPay)
-
-  return { estimatedFare, advancedPay };
-
-}
-
-useEffect(() => {
-  if (step === 4) {
-    const { estimatedFare, advancedPay } = calculateEstimatedFare();
-    setEstimatedTotal(estimatedFare);
-    setAdvancedPayment(advancedPay);
-  }
-}, [step, vehicleType, distence, tripType]);
+  useEffect(() => {
+    if (step === 4) {
+      const calculateFare = async () => {
+        const { estimatedFare, advancedPay } = await calculateEstimatedFare();
+        setEstimatedTotal(estimatedFare);
+        setAdvancedPayment(advancedPay);
+      };
+      calculateFare();
+    }
+  }, [step, vehicleType, distence, tripType]);
+  
 
 
   return (
