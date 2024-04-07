@@ -163,6 +163,9 @@ const [vehicleRates, Verror, Vloading, VaxiosFetch] = useAxios();
 
     useEffect(() => {
       fetchVehicleRates();
+
+      console.log("Vehicle Rates")
+      console.log(vehicleRates)
     },[])
     
         if(Verror){
@@ -202,7 +205,9 @@ const [vehicleRates, Verror, Vloading, VaxiosFetch] = useAxios();
           
   
           // Find the rate for the selected vehicle type
-          const selectedVehicleRate = vehicleRates.find(rate => rate.vehicleCatagory === vehicleType);
+          console.log("Selected Vehicle : " + vehicleType)
+          const selectedVehicleRate = vehicleRates.find(rate => rate.vehicleCatagory.toLowerCase() === vehicleType.toLowerCase());
+          console.log(selectedVehicleRate)
   
           if (!selectedVehicleRate) {
               console.log("Rate not found for the selected vehicle type");
@@ -228,8 +233,10 @@ const [vehicleRates, Verror, Vloading, VaxiosFetch] = useAxios();
           estimatedFare = parseFloat(estimatedFare.toFixed(2));
           advancedPay = Math.round(advancedPay);
 
+          console.log("Catogory : " + selectedVehicleRate.vehicleCatagory)
           console.log("Estimated Fare : " + estimatedFare)
           console.log("Advanced Payment: " + advancedPay)
+          console.log("Base Distence : " +  baseDistance)
   
           return { estimatedFare, advancedPay };
       } catch (error) {
