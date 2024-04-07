@@ -18,6 +18,7 @@ const ContractEditForm = () => {
   const [InsuranceED,setInsuranceED] = useState('');
   const [paymentDate,setpaymentDate] = useState('');
 
+
   const [contractData, setContractData] = useState({
     Vehical_Type:"",
     Vehical: "",
@@ -57,7 +58,9 @@ const ContractEditForm = () => {
     })
   }
 
+  
   const [Contract, error, loading, axiosFetch] = useAxios()
+  const [updateData,updateError,updLoading,updateCon] = useAxios()
 
   const getContract =()=>{
     axiosFetch({
@@ -66,6 +69,25 @@ const ContractEditForm = () => {
      url: `/contract/getContract/${contractID}`,
    });
  }
+
+ const updateContract = async () =>{
+  await updateCon({
+    axiosInstance:axios,
+    method:'PATCH',
+    url:`/contract/updateContract/${contractID}`,
+    requestConfig:{
+      data:contractData,
+     }
+  })
+ }
+ const HandleSubmit = async(e)=>{
+  e.preventDefault()
+  await updateContract()
+  navigate(`/viewContract/${contractID}`)
+}
+
+
+ console.log(updateData)
 
   useEffect(() => {
     if (Contract) {
@@ -349,6 +371,7 @@ const ContractEditForm = () => {
             <p>Loading</p>
         </div>
     </div>
+    <button onClick={HandleSubmit} className=" bg-yellow-600 px-5 py-2 rounded-xl w-[100px] mt-4" >Submit</button>
     </div>
   
 

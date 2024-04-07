@@ -163,31 +163,50 @@ const updateContract = async(req,res) =>{
       return res.status(301).json({"error":"no contract found"});
     }
 
+    const {Vehical,
+      Vehical_Type,
+      contract_SD,
+      contract_ED,
+      Insurance_Source,
+      Insurace_provider,
+      Policy_Number,
+      Coverage_Type,
+      Coverage_Amount,
+      Deductible,
+      Insurance_SD,
+      Insurance_ED,
+      Insurance_notes,
+      Payment_Amount,
+      Payment_Plan,
+      Payment_Date,
+      Amount_Payed} = req.body.data;
+
     const updateContract = {
       $set:{
-      Vehical:req.body.Vehical,
-      Vehical_Type:req.body.Vehical_Type,
-      contract_SD:req.body.contract_SD,
-      contract_ED:req.body.contract_ED,
-      Insurance_Source:req.body.Insurance_Source,
-      Insurace_provider:req.body.Insurace_provider,
-      Policy_Number:req.body.Policy_Number,
-      Coverage_Type:req.body.Coverage_Type,
-      Coverage_Amount:req.body.Coverage_Amount,
-      Deductible:req.body.Deductible,
-      Insurance_SD:req.body.Insurance_SD,
-      Insurance_ED:req.body.Insurance_ED,
-      Insurance_notes:req.body.Insurance_notes,
-      Payment_Amount:req.body.Payment_Amount,
-      Payment_Plan:req.body.Payment_Plan,
-      Payment_Date:req.body.Payment_Date,
-      Amount_Payed:req.body.Amount_Payed
+      Vehical:Vehical,
+      Vehical_Type:Vehical_Type,
+      contract_SD:contract_SD,
+      contract_ED:contract_ED,
+      Insurance_Source:Insurance_Source,
+      Insurace_provider:Insurace_provider,
+      Policy_Number:Policy_Number,
+      Coverage_Type:Coverage_Type,
+      Coverage_Amount:Coverage_Amount,
+      Deductible:Deductible,
+      Insurance_SD:Insurance_SD,
+      Insurance_ED:Insurance_ED,
+      Insurance_notes:Insurance_notes,
+      Payment_Amount:Payment_Amount,
+      Payment_Plan:Payment_Plan,
+      Payment_Date:Payment_Date,
+      Amount_Payed:Amount_Payed
       }
     };
 
     const updateSuccess = await Contract.updateOne({_id:contractID},updateContract)
 
-    if(updateSuccess){
+    
+    if(updateSuccess.modifiedCount > 0 ){
       return res.status(200).json({"status":"success"})
     }else{
       return res.status(200).json({"status":"failed"})
