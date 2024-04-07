@@ -32,6 +32,8 @@ const HireDashboard = () => {
         fetchHires();
     }, []);
 
+    
+
     if(error){
         return(
           <p>Can not Fetch Data</p>
@@ -61,7 +63,7 @@ const HireDashboard = () => {
                 </div>
 
                 <div>
-                    <HireList hireData={hireData} searchTerm={searchTerm} searchType={searchType} axiosFetch={axiosFetch}/>
+                    <HireList hireData={hireData.slice().reverse()} searchTerm={searchTerm} searchType={searchType} axiosFetch={axiosFetch}/>
                 </div>
                 
 
