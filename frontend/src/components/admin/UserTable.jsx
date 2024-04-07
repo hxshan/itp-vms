@@ -90,9 +90,17 @@ useEffect(()=>{
         </thead>
         <tbody>
           {(users!=null && users.length>0)  ?(users.filter((user)=>{
-            return search.toLowerCase === '' && statusFilter == '' ? 
-            user:
-            user.firstName.toLowerCase().includes(search) && user.status.includes(statusFilter);
+            
+            if (search.toLowerCase === '' && statusFilter === '' )
+              return user
+            if (statusFilter != '' && !search.toLowerCase === '')
+              return user.firstName.toLowerCase().includes(search) && user.status === statusFilter
+            if(statusFilter != '')
+              return user.status === statusFilter
+            if(search.toLowerCase != '')
+             return user.firstName.toLowerCase().includes(search) 
+          
+
           }).slice(startIdx,endIdx)
           .map((row) => {
             return (
@@ -101,7 +109,7 @@ useEffect(()=>{
                   <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{row.email}</td>
                   <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{row.role.name}</td>
                   <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">
-                    <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded -full ${row.status=='active'?'text-green-500 bg-green-100':'text-red-500 bg-red-100'}`}>
+                    <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded -full ${row.status=='active'?'text-green-500 bg-green-100': row.status=='inactive'?'text-red-600 bg-red-100':'text-orange-600 bg-orange-100'}`}>
                       {row.status.toUpperCase()}
                     </span>
                   </td>

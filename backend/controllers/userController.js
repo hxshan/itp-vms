@@ -25,6 +25,8 @@ const createUser = async (req, res) => {
       emergencyContacts,
     } = req.body.data;
 
+    console.log(emergencyContacts)
+
     if (!firstName || !lastName || !email || !password)
       return res.status(400).json({ msg: "Not all fields have been entered." });
   
@@ -50,6 +52,7 @@ const createUser = async (req, res) => {
       nicNumber,
       status,
       department,
+      emergencyContacts:[],
       employmentDate: empDate,
       baseSalary: baseSal,
       licenceNumber: licenceNum,
@@ -59,14 +62,17 @@ const createUser = async (req, res) => {
     });
 
     try {
-      emergencyContacts.forEach(async (contact) => {
+      const emergencyContactPromises = emergencyContacts.map(async (contact) => {
         const EmContact = new EmergencyContact({
           name: contact.emergencyName,
           number: contact.emergencyContact,
         });
         let newContact = await EmContact.save();
-        user.emergencyContacts.push(newContact._id);
+        return newContact._id
       });
+      const emergencyContactIds = await Promise.all(emergencyContactPromises);
+      user.emergencyContacts = emergencyContactIds;
+      
     } catch (err) {
       res.status(500).json({ message: err.message });
     }

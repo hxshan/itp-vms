@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 const CreateUserForm = () => {
   //Api Hooks
-  const [roleData,roleerror, loading, axiosFetch] = useAxios()
+  const [roleData,roleError, loading, axiosFetch] = useAxios()
   const [user,usererror, userloading, useraxiosFetch] = useAxios()
   const navigate = useNavigate()
 
@@ -97,7 +97,7 @@ const CreateUserForm = () => {
       nicDocument: nicDocument,
       licenceDoc: licenceDoc,
       emergencyContacts: emergencyContacts
-  };
+    };
 
     // Handle form submission here
     useraxiosFetch({
@@ -107,7 +107,8 @@ const CreateUserForm = () => {
       requestConfig:{
         data:{
           ...formData
-        }
+        },
+        nicDocument
       }
     })
     if(usererror){
