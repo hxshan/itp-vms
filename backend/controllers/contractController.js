@@ -152,4 +152,50 @@ const getallContract = async(req,res) =>{
   }
 }
 
-module.exports = {createContract,createClient,getContractbyID,getClientbyId,getallContract,getallClients}
+const updateContract = async(req,res) =>{
+  try{
+    
+    const contractID = req.params.id;
+
+    const contract = await Contract.findOne({_id:contractID})
+
+    if(!contract){
+      return res.status(301).json({"error":"no contract found"});
+    }
+
+    const updateContract = {
+      $set:{
+      Vehical:req.body.Vehical,
+      Vehical_Type:req.body.Vehical_Type,
+      contract_SD:req.body.contract_SD,
+      contract_ED:req.body.contract_ED,
+      Insurance_Source:req.body.Insurance_Source,
+      Insurace_provider:req.body.Insurace_provider,
+      Policy_Number:req.body.Policy_Number,
+      Coverage_Type:req.body.Coverage_Type,
+      Coverage_Amount:req.body.Coverage_Amount,
+      Deductible:req.body.Deductible,
+      Insurance_SD:req.body.Insurance_SD,
+      Insurance_ED:req.body.Insurance_ED,
+      Insurance_notes:req.body.Insurance_notes,
+      Payment_Amount:req.body.Payment_Amount,
+      Payment_Plan:req.body.Payment_Plan,
+      Payment_Date:req.body.Payment_Date,
+      Amount_Payed:req.body.Amount_Payed
+      }
+    };
+
+    const updateSuccess = await Contract.updateOne({_id:contractID},updateContract)
+
+    if(updateSuccess){
+      return res.status(200).json({"status":"success"})
+    }else{
+      return res.status(200).json({"status":"failed"})
+    }
+
+  }catch(error){
+    res.status(400).json({"error":"internal server error"})
+  }
+}
+
+module.exports = {createContract,createClient,getContractbyID,getClientbyId,getallContract,getallClients,updateContract}
