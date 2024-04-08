@@ -23,8 +23,8 @@ const LorryForm = ({ formState, setFormState }) => {
                <label className="block text-gray-700 text-md font-bold mb-2" htmlFor="vehicleType">Lorry Type:</label>
                <select className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="carType" name="vehicleType" value={formState.vehicleType} onChange={handleChange} >
                   <option value="lorry">Select</option>
-                  <option value="6wheels">6 Wheels</option> 
-                  <option value="10wheels">10 Wheels</option>     
+                  <option value="6 Wheels">6 Wheels</option> 
+                  <option value="10 Wheels">10 Wheels</option>     
                 </select>
                 </div>
 

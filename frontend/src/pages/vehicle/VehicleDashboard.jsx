@@ -132,6 +132,18 @@ const VehicleDashboard = () => {
   const { vehicles } = data;
 
 
+  const calculatePercentage = (numerator, denominator) => {
+    return (numerator / denominator) * 100;
+  }
+
+  const carPercentage = calculatePercentage(data.carCount, data.vehiclesCount);
+  const busPercentage = calculatePercentage(data.busCount, data.vehiclesCount);
+  const lorryPercentage = calculatePercentage(data.lorryCount, data.vehiclesCount);
+  const truckPercentage = calculatePercentage(data.truckCount, data.vehiclesCount);
+  const vanPercentage = calculatePercentage(data.vanCount, data.vehiclesCount);
+  
+
+
   return  (
     
     <div className="w-full place-content-center space-y-4 mt-8 bg-cover bg-center bg-white ">
@@ -150,23 +162,38 @@ const VehicleDashboard = () => {
              <div className='text-black text-xs font-bold mb-2'>Vehicle count summary</div>
 
              <div className='flex flex-col space-y-2'>
-             <div className=" m-0 p-2 pr-10 bg-gradient-to-r from-green-700 to-green-400 rounded-md pad">
+             <div className=" m-0 p-2  bg-gradient-to-r from-green-700 to-green-400 rounded-md pad">
                <div className="text-xs text-white font-semibold rounded-md pad">Totol vehicle count added in the system<h1 className='text-yellow-500 text-xl'>{data.vehiclesCount}</h1> </div>
              </div>
-             <div className=" m-0 p-2 pr-10 bg-gradient-to-r from-green-700 to-green-400 rounded-md pad">
-               <div className="text-xs text-white font-semibold rounded-md pad">Car<h1 className='text-white-500 text-xl'>{data.carCount}</h1> </div>
+             <div className=" m-0 p-2 bg-gradient-to-r from-green-700 to-green-400 rounded-md pad">
+              <div className='flex flex-reo justify-between m-2'>
+               <div className="text-xs text-white font-semibold rounded-md pad">Totol car count added in the system<h1 className='text-white-500 text-xl'>{data.carCount}</h1></div>
+                    <div className='ml-2 text-2xl place-content-center text-yellow-400 font-bold'>{carPercentage.toFixed(2)}% </div> 
+              </div>
              </div>
-             <div className=" m-0 p-2 pr-10 bg-gradient-to-r from-green-700 to-green-400 rounded-md pad">
-               <div className="text-xs text-white font-semibold rounded-md pad">Van<h1 className='text-white-500 text-xl'> {data.vanCount}</h1></div>
+             <div className=" m-0 p-2 bg-gradient-to-r from-green-700 to-green-400 rounded-md pad">
+             <div className='flex flex-reo justify-between m-2'>
+               <div className="text-xs text-white font-semibold rounded-md pad">Totol van count added in the system<h1 className='text-white-500 text-xl'> {data.vanCount}</h1></div>
+               <div className='ml-2 text-2xl place-content-center text-yellow-400 font-bold'>{vanPercentage.toFixed(2)}% </div> 
+              </div> 
              </div>
-             <div className=" m-0 p-2 pr-10 bg-gradient-to-r from-green-700 to-green-400 rounded-md pad">
-               <div className="text-xs text-white font-semibold rounded-md pad">Bus<h1 className='text-white-500 text-xl'>{data.busCount}</h1></div>
+             <div className=" m-0 p-2 bg-gradient-to-r from-green-700 to-green-400 rounded-md pad">
+              <div className='flex flex-reo justify-between m-2'>
+               <div className="text-xs text-white font-semibold rounded-md pad">Totol bus count added in the system<h1 className='text-white-500 text-xl'>{data.busCount}</h1></div>
+               <div className='ml-2 text-2xl place-content-center text-yellow-400 font-bold'>{busPercentage.toFixed(2)}% </div> 
+              </div> 
              </div>
-             <div className=" m-0 p-2 pr-10 bg-gradient-to-r from-green-700 to-green-400 rounded-md pad">
-               <div className="text-xs text-white font-semibold rounded-md pad">Lorry<h1 className='text-white-500 text-xl'>{data.lorryCount}</h1></div>
+             <div className=" m-0 p-2 bg-gradient-to-r from-green-700 to-green-400 rounded-md pad">
+             <div className='flex flex-reo justify-between m-2'>
+               <div className="text-xs text-white font-semibold rounded-md pad">Totol lorry count added in the system<h1 className='text-white-500 text-xl'>{data.lorryCount}</h1></div>
+               <div className='ml-2 text-2xl place-content-center text-yellow-400 font-bold'>{lorryPercentage.toFixed(2)}% </div> 
+              </div> 
              </div>
-             <div className=" m-0 p-2 pr-10 bg-gradient-to-r from-green-700 to-green-400 rounded-md pad">
-               <div className="text-xs text-white font-semibold rounded-md pad">Truck<h1 className='text-white-500 text-xl'>{data.truckCount}</h1></div>
+             <div className=" m-0 p-2  bg-gradient-to-r from-green-700 to-green-400 rounded-md pad">
+             <div className='flex flex-reo justify-between m-2'>
+               <div className="text-xs text-white font-semibold rounded-md pad">Totol truck count added in the system<h1 className='text-white-500 text-xl'>{data.truckCount}</h1></div>
+               <div className='ml-2 text-2xl place-content-center text-yellow-400 font-bold'>{truckPercentage.toFixed(2)}% </div> 
+              </div> 
              </div>
              </div>
              </div>
