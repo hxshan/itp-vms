@@ -4,10 +4,11 @@ import axios from "@/api/axios";
 
 import PropTypes from 'prop-types';
 
-const HireList = ({ hireData, searchTerm, searchType, axiosFetch }) => {
+const HireList = ({ hireData, searchTerm, searchType }) => {
     const [viewHire, setViewHire] = useState(false);
     const [viewHireData, setViewHireData] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
+    const [results, setResults] = useState([]);
     const [itemsPerPage] = useState(5); 
 
     const handleView = (hId) => {
@@ -17,6 +18,18 @@ const HireList = ({ hireData, searchTerm, searchType, axiosFetch }) => {
     };
 
     const deleteHire = async (id) => {
+         /*
+    const deleteHire = async (id) => {
+        try {
+            await axios.delete(`http://localhost:3000/api/hire/${id}`);
+            const updatedHireData = hireData.filter((hire) => hire._id !== id);
+            setHireData(updatedHireData);
+            setResults(updatedHireData); // Update the results with the new data
+            console.log('Hire deleted successfully');
+        } catch (error) {
+            console.error('Error deleting hire: ' + error);
+        }
+    };*/
         if (window.confirm("Are you sure you want to delete this record?")) {
             try {
                 await axios.delete(`/hire/${id}`);
@@ -27,14 +40,23 @@ const HireList = ({ hireData, searchTerm, searchType, axiosFetch }) => {
         }
     };
 
+    // Search function
     useEffect(() => {
-        setCurrentPage(1);
-    }, [searchTerm, searchType]);
+        const result = hireData.filter((hire) => {
+            if (searchType === 'vehicleNumber') {
+                return hire.vehicle.toLowerCase().includes(searchTerm.toLowerCase());
+            } else if (searchType === 'customerMobile') {
+                return hire.cusMobile.includes(searchTerm);
+            }
+            return false;
+        });
+        setResults(result);
+    }, [hireData, searchTerm, searchType]);
 
     // Get current items
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    const currentItems = hireData.slice(indexOfFirstItem, indexOfLastItem);
+    const currentItems = results.slice(indexOfFirstItem, indexOfLastItem);
 
     // Change page
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
@@ -43,6 +65,7 @@ const HireList = ({ hireData, searchTerm, searchType, axiosFetch }) => {
         <div className="w-full h-full bg-white">
             <div className="w-full h-full flex px-2 py-[20px] justify-center align-center xl:px-[60px] xl:py-[50px] ">
                 <table className="w-full text-center ">
+                    {/* Table header */}
                     <thead className="border-b-2 border-black">
                         <tr>
                             <th className="px-4 py-2">Vehicle No</th>
@@ -53,6 +76,7 @@ const HireList = ({ hireData, searchTerm, searchType, axiosFetch }) => {
                             <th className="px-4 py-2">Actions</th>
                         </tr>
                     </thead>
+                    {/* Table body */}
                     <tbody>
                         {currentItems.map((hire) => (
                             <tr key={hire._id} className="border-b-2 border-black">
@@ -70,6 +94,7 @@ const HireList = ({ hireData, searchTerm, searchType, axiosFetch }) => {
                     </tbody>
                 </table>
             </div>
+            
             {/* Pagination */}
             <div className="flex justify-center mt-4">
                 <ul className="flex list-none border border-gray-300 rounded-md">
@@ -78,6 +103,8 @@ const HireList = ({ hireData, searchTerm, searchType, axiosFetch }) => {
                     ))}
                 </ul>
             </div>
+            
+            {/* View Hire modal */}
             {viewHire && <ViewHire setViewHire={setViewHire} viewHireData={viewHireData} />}
         </div>
     );
@@ -87,7 +114,6 @@ HireList.propTypes = {
     hireData: PropTypes.array.isRequired,
     searchTerm: PropTypes.string.isRequired,
     searchType: PropTypes.string.isRequired,
-    axiosFetch: PropTypes.func.isRequired,
 };
 
 export default HireList;
