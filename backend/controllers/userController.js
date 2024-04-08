@@ -2,10 +2,14 @@ const bcrypt = require("bcrypt");
 const User = require("../models/userModel");
 const EmergencyContact = require("../models/emergencyContactModel");
 const Role = require("../models/roleModel");
+const upload = multer(); // Initialize multer without any configuration
+
+// Use the multer middleware to parse the request body
 
 //TODO:add validation use REGEX 
 const createUser = async (req, res) => {
   try {
+    
     const {
       firstName,
       middleName,
@@ -25,7 +29,6 @@ const createUser = async (req, res) => {
       emergencyContacts,
     } = req.body.data;
 
-    console.log(emergencyContacts)
 
     if (!firstName || !lastName || !email || !password)
       return res.status(400).json({ msg: "Not all fields have been entered." });

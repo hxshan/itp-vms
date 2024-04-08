@@ -92,12 +92,20 @@ const CreateUserForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const formData = {
+    /*const formData = {
       ...personalInfo,
       nicDocument: nicDocument,
       licenceDoc: licenceDoc,
       emergencyContacts: emergencyContacts
-    };
+    };*/
+    const formData = new FormData();
+    formData.append('nicDocument', nicDocument); // Append the file
+  
+    // Append the form data as a stringified JSON object
+    formData.append('data', JSON.stringify({
+      ...personalInfo,
+      emergencyContacts: emergencyContacts
+    }));
 
     // Handle form submission here
     useraxiosFetch({
@@ -105,10 +113,10 @@ const CreateUserForm = () => {
       method:'POST',
       url:'/user/',
       requestConfig:{
-        data:{
-          ...formData
-        },
-        nicDocument
+        data:formData,
+      },
+      headers:{
+        'Content-Type': 'multipart/form-data'
       }
     })
     if(usererror){
