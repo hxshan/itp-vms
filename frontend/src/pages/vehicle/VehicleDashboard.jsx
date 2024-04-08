@@ -13,8 +13,10 @@ const VehicleDashboard = () => {
 
   const navigate = useNavigate();
   const [data, error, loading, axiosFetch] = useAxios()
-  const [activeComponent, setActiveComponent] = useState('search');
+  const [reload, setReload] = useState(0);
+  const [activeComponent, setActiveComponent] = useState('');
   const { newAdded } = data;
+  const { vehicles } = data;
 
   const categories = Object.keys(data).filter(key => key !== 'vehiclesCount' && key !== 'availableCount' && key !== 'underMaintanceCount' && key !== 'underClientCount' && key !== 'underSpecialTaskCount');
   const counts = categories.map(category => data[category])
@@ -27,10 +29,25 @@ const VehicleDashboard = () => {
     })
   }
 
+  const deleteVehicle =async(e) => {
+    e.preventDefault()
+    if(confirm("Are you sure you want to Delete the following")){
+      try {
+        await axiosFetch({
+          axiosInstance: axios,
+          method: "DELETE",
+          url: `/vehicle/${e.target.id}`,
+        });
+        setReload(reload + 1);
+
+      } catch (error) {
+        console.error("Error deleting vehicle:", error);
+      }
+    }
+  };
+
   useEffect(()=>{
     getData()
-    console.log("Ranill")
-    
   },[])
 
   useEffect(() => {
@@ -41,19 +58,16 @@ const VehicleDashboard = () => {
 
 
   if(loading){
-      return(
-        <p className="flex flex-col items-center justify-center h-screen text-center text-lg font-bold text-black" >Loading...</p>
-      )
-    }
-    if(error){
-      return(
-        <p>Unexpected Error has occured!</p>
-      )
+    return(
+      <p className="flex flex-col items-center justify-center h-screen text-center text-lg font-bold text-black" >Loading...</p>
+    )
+  }
+  if(error){
+    return(
+      <p>Unexpected Error has occured!</p>
+    )
   }
 
-
-  
-  
   ChartJS.register(ArcElement, Tooltip, Legend);
 
 
@@ -89,7 +103,7 @@ const VehicleDashboard = () => {
       case 'search':
         return (
           <div>
-            <VehicleSearch />
+            <VehicleSearch vehicles={vehicles} deleteVehicle={deleteVehicle} reload={reload} setReload={setReload}/>
           </div>
         );
       case 'summary':
@@ -114,12 +128,10 @@ const VehicleDashboard = () => {
     }
   };
 
+
   if (!data || !data.newAdded) {
     return <p className='mt-3 p-3 font-medium text-sm text-white bg-red-500 rounded-md pad'>No data available or Server is offline.</p>;
   }
-
- 
- 
 
 
   const calculatePercentage = (numerator, denominator) => {

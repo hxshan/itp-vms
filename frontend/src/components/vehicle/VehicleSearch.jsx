@@ -1,78 +1,25 @@
 import React from 'react'
 import { useState,useEffect } from 'react';
-import useAxios from "@/hooks/useAxios";
-import axios from "@/api/axios";
 
 
-const VehicleSearch = () => {
 
-  const [data, error, loading, axiosFetch] = useAxios()
+const VehicleSearch = ({ vehicles, deleteVehicle, reload, setReload }) => {
   const [search, setSearch] = useState("");
-  const [reload, setReload] = useState(0);
- 
-
-  // const handleDeleteClick = async () => {
-  //   try {
-  //     await deleteVehicle(vehicle._id); 
-  //     setReload(reload + 1);
-  //   } catch (error) {
-  //     console.error("Error deleting data:", error);
-  //   }
-  // };
   
-  const getData = ()=>{
-    axiosFetch({
-      axiosInstance:axios,
-      method:'GET',
-      url:'/vehicle/'
-    })
+  const handleDeleteClick = async (e) => {
+    e.preventDefault();
+    try {
+      await deleteVehicle(e); 
+      setReload(reload + 1);
+    } catch (error) {
+      console.error("Error deleting data:", error);
+    }
   }
 
-  const deleteVehicle =async(e) => {
-    e.preventDefault()
-    if(confirm("Are you sure you want to Delete the following")){
-      try {
-        await axiosFetch({
-          axiosInstance: axios,
-          method: "DELETE",
-          url: `/vehicle/${e.target.id}`,
-        });
-        setReload(reload + 1);
-
-      } catch (error) {
-        console.error("Error deleting vehicle:", error);
-      }
-    }
-  };
-
-  useEffect(()=>{
-    getData()
-    
-  },[reload])
-
-  useEffect(() => {
-    if (data) {
-     
-      console.log('Backend Response:', data);
-    }
-  }, [data]);
-
-  if(loading){
-    return(
-      <p className="flex flex-col items-center justify-center h-screen text-center text-lg font-bold text-black" >Loading...</p>
-    )
-  }
-  if(error){
-    return(
-      <p>Unexpected Error has occured!</p>
-    )
-}
-
-  if (!data) {
+  if (vehicles.length === 0) {
     return <p className='mt-6 mb-10 p-3 font-medium text-sm text-white bg-red-500 rounded-md pad'>Vehicles not found. </p>;
   }
 
-  console.log(data)
 
   const filteredVehicles = vehicles.filter((vehicle) => {
     const searchTerm = search.toLowerCase().trim();
@@ -92,7 +39,6 @@ const VehicleSearch = () => {
       );
     }
   });
-
 
   return (
     <div className='w-full place-content-center space-y-4 mt-8 bg-cover bg-center bg-white mb-10'>
@@ -138,9 +84,9 @@ const VehicleSearch = () => {
                         <button
                           className="my-1 mx-1 bg-yellow-300 text-white py-1 px-4 rounded-md text-sm"
                           id={vehicle._id}
-              onClick={(e) => {
-                navigate(e.target.id);
-              }}
+                          onClick={(e) => {
+                          navigate(e.target.id);
+                        }}
                         >
                           Edit
                         </button>
@@ -152,7 +98,7 @@ const VehicleSearch = () => {
                         <button
                           className="my-1 mx-1 bg-red-700 text-white py-1 px-4 rounded-md text-sm"
                           id={vehicle._id}
-                          onClick={(e)=>{deleteVehicle(e)}}
+                          onClick={handleDeleteClick}
                         >
                           Delete
                         </button>
