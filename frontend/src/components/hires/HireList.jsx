@@ -8,7 +8,7 @@ const HireList = ({ hireData, searchTerm, searchType, axiosFetch }) => {
     const [viewHire, setViewHire] = useState(false);
     const [viewHireData, setViewHireData] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
-    const [itemsPerPage] = useState(5); // Number of items per page
+    const [itemsPerPage] = useState(5); 
 
     const handleView = (hId) => {
         const selected = hireData.find((hire) => hire._id === hId);
@@ -28,7 +28,7 @@ const HireList = ({ hireData, searchTerm, searchType, axiosFetch }) => {
     };
 
     useEffect(() => {
-        setCurrentPage(1); // Reset to the first page when search term or type changes
+        setCurrentPage(1);
     }, [searchTerm, searchType]);
 
     // Get current items

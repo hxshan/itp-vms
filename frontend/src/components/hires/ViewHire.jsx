@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom'
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef  } from 'react';
+import ReactToPrint from "react-to-print";
 
 
 const ViewHire = ({setViewHire , viewHireData}) => {
@@ -27,12 +28,14 @@ const ViewHire = ({setViewHire , viewHireData}) => {
       }
   }, [reload])
 
-      
+  const ref = useRef(null);
 
   return (
     <div>
         <div className=" absolute bg-white border-2 border-[#0E6300] w-[75%] mb-6 top-11 right-11 xl:top-5">
-         <div className=' xl:flex xl:flex-col justify-between mx-10 my-5'>
+         <div className=' xl:flex xl:flex-col justify-between mx-10 my-5' >
+
+          <div ref={ref} className='mx-10 my-5'>
               <div className='mr-[20px]'>
                 <h1 className="text-2xl underline font-bold text-center mb-5">Trip Details</h1>
 
@@ -84,11 +87,21 @@ const ViewHire = ({setViewHire , viewHireData}) => {
 
               </div>
 
+          </div>
+              
+
               <div className='mr-[20px] mt-10 flex justify-between items-baseline'>  
                 <button className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md mr-4 " onClick={cancel}>Cancel</button> 
                 <button className="px-7 py-2 bg-[#0E6300] text-white rounded-md mr-4" onClick={handleEdit}>Edit</button>
-                <button className="px-4 py-2 text-white bg-black hover:bg-gray-800 focus:outline-none rounded-md mr-4">Print</button>
+               
 
+                <ReactToPrint
+                    bodyClass="print-agreement"
+                    content={() => ref.current}
+                    trigger={() => (
+                      <button className="px-4 py-2 text-white bg-black hover:bg-gray-800 focus:outline-none rounded-md mr-4">Print</button>
+                    )}
+                  />
               </div>
               
           </div>
