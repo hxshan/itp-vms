@@ -66,9 +66,11 @@ const ClientDashboard = () => {
         <div className="flex items-center justify-center ">
             <h1 className=" text-[50px] font-bold ">Client Dashboard</h1>
         </div>
+        <div className='flex justify-end'>
+        <button className=" bg-red-500 px-5 py-2 rounded-xl " onClick={()=>{navigate(`/addClient`)}} >Add client</button>
+        </div>
 
-
-        <div className="flex items-center justify-center my-12">
+        <div className="flex items-center justify-center mb-10">
         <input
           type="text"
           className="bg-slate-400 px-4 py-3 rounded-l-md focus:outline-none w-[500px] placeholder-gray-950 text-[18px]"
@@ -82,7 +84,10 @@ const ClientDashboard = () => {
         >
           Search
         </button>
+
+        
       </div>
+     
 
       <div className="flex flex-col justify-center">
         <div className=" grid grid-cols-6 w-full ">

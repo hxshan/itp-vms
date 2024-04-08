@@ -18,6 +18,8 @@ import { VehicleServiceList } from "./components/VR/VehicleServiceList";
 import ClientDashboard from "./pages/contract/ClientDashboard";
 import ViewContract from "./pages/contract/ViewContract";
 import ContractEditForm from "./pages/contract/ContractEditForm";
+import AddClient from "./pages/contract/AddClient";
+
 
 function App() {
   const { user, loading } = useAuthContext();
@@ -72,12 +74,12 @@ function App() {
               element={<EditMaintainceOrder />}
             />
             <Route path="/Contract/Dashbored" element={<ContractDasboard />} />
-            <Route path="/Contract/Dashboard" element={<ContractDasboard/>}/>
-            <Route path="/Client/Dashboard" element={<ClientDashboard/>}/>
+            <Route path="/client" element={<ClientDashboard/>}/>
             <Route path="/viewContract/:id" element={<ViewContract/>}/>
             <Route path="/EditContract/:id" element={<ContractEditForm/>}/>
+            <Route path="/addClient" element={<AddClient/>}/>
             <Route path="/finance" element={<FinanaceDashboard />} />
-            <Route path="/client" element={<ClientDashboard/>}/>
+            
             <Route
               path="/VehicleServiceList"
               element={<VehicleServiceList />}
