@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import ViewHire from "./ViewHire";
 import axios from "@/api/axios";
+import { useNavigate } from 'react-router-dom';
 
 import PropTypes from 'prop-types';
 
@@ -16,6 +17,9 @@ const HireList = ({ hireData, searchTerm, searchType }) => {
         setViewHireData(selected);
         setViewHire(true);
     };
+
+
+    const navigate = useNavigate();
 
     const deleteHire = async (id) => {
          /*
@@ -33,6 +37,7 @@ const HireList = ({ hireData, searchTerm, searchType }) => {
         if (window.confirm("Are you sure you want to delete this record?")) {
             try {
                 await axios.delete(`/hire/${id}`);
+                navigate('/hires', { replace: true, state: { forceRefresh: true } });
                 console.log('Hire deleted successfully');
             } catch (error) {
                 console.error('Error deleting hire: ' + error);
@@ -48,7 +53,7 @@ const HireList = ({ hireData, searchTerm, searchType }) => {
             } else if (searchType === 'customerMobile') {
                 return hire.cusMobile.includes(searchTerm);
             }
-            return false;
+            return hireData;
         });
         setResults(result);
     }, [hireData, searchTerm, searchType]);
