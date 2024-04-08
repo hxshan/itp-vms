@@ -13,11 +13,8 @@ const VehicleDashboard = () => {
 
   const navigate = useNavigate();
   const [data, error, loading, axiosFetch] = useAxios()
-  
-  const [search, setSearch] = useState("");
-
-  const [activeComponent, setActiveComponent] = useState('');
-
+  const [activeComponent, setActiveComponent] = useState('search');
+  const { newAdded } = data;
 
   const categories = Object.keys(data).filter(key => key !== 'vehiclesCount' && key !== 'availableCount' && key !== 'underMaintanceCount' && key !== 'underClientCount' && key !== 'underSpecialTaskCount');
   const counts = categories.map(category => data[category])
@@ -32,6 +29,8 @@ const VehicleDashboard = () => {
 
   useEffect(()=>{
     getData()
+    console.log("Ranill")
+    
   },[])
 
   useEffect(() => {
@@ -39,6 +38,7 @@ const VehicleDashboard = () => {
       console.log('Backend Response:', data);
     }
   }, [data]);
+
 
   if(loading){
       return(
@@ -52,17 +52,7 @@ const VehicleDashboard = () => {
   }
 
 
-  const deleteVehicle = async (vehicleId) => {
-    if (window.confirm('Are you sure you want to delete this vehicle?')) {
-      try {
-        await axios.delete(`/vehicle/${vehicleId}`);
-       
-        setVehicles(vehicles.filter(vehicle => vehicle._id !== vehicleId));
-      } catch (error) {
-        console.error('Error deleting vehicle:', error);
-      }
-    }
-  };
+  
   
   ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -99,7 +89,7 @@ const VehicleDashboard = () => {
       case 'search':
         return (
           <div>
-            <VehicleSearch vehicles={vehicles} />
+            <VehicleSearch />
           </div>
         );
       case 'summary':
@@ -128,8 +118,8 @@ const VehicleDashboard = () => {
     return <p className='mt-3 p-3 font-medium text-sm text-white bg-red-500 rounded-md pad'>No data available or Server is offline.</p>;
   }
 
-  const { newAdded } = data;
-  const { vehicles } = data;
+ 
+ 
 
 
   const calculatePercentage = (numerator, denominator) => {
