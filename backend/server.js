@@ -20,7 +20,8 @@ const expenseRoutes = require('./routes/expenseRoutes')
 const authRoutes = require('./routes/authRoutes')
 const {notFound,errorHandler} = require('./middleware/errorMiddleware')
 const hireRoutes = require('./routes/hireRoutes')
-const CaseFileRoutes = require('./routes/caseFileRoutes')
+const { caseFileRouter } = require('./routes/caseFileRoutes')
+
 
 
 app.use('/api/auth',authRoutes)
@@ -31,7 +32,8 @@ app.use('/api/vehiclemaintain',vehicleMaintain)
 app.use('/api/contract',contractRoutes)
 app.use('/api/expense', expenseRoutes)
 app.use('/api/hire', hireRoutes)
-app.use('/api/casefile', CaseFileRoutes)
+app.use('/api/caseFiles', caseFileRouter)
+
 
 
 app.use(notFound)
