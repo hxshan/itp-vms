@@ -6,8 +6,8 @@ import { useNavigate } from "react-router-dom";
 
 const CreateUserForm = () => {
   //Api Hooks
-  const [roleData,roleError, loading, axiosFetch] = useAxios()
-  const [user,usererror, userloading, useraxiosFetch] = useAxios()
+  const [roleData,roleError, roleloading, axiosFetch] = useAxios()
+  const [user,usererror, userloading, useraxiosFetch,axiosupdatedFetch] = useAxios()
   const navigate = useNavigate()
 
   const getRoleData =()=>{
@@ -62,6 +62,9 @@ const CreateUserForm = () => {
 
   const[nicDocument,setNicDocument]=useState(null);
   const[licenceDoc,setLicenceDocument]=useState(null);
+  const [loading, setLoading] = useState(false);
+  const [response, setResponse] = useState(null);
+  const [error, setError] = useState(null);
 
   const [currentForm, setCurrentForm] = useState(0);
   const [emergencyContacts, setEmergencyContacts] = useState([emptyContact]);
@@ -92,41 +95,67 @@ const CreateUserForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    /*const formData = {
-      ...personalInfo,
-      nicDocument: nicDocument,
-      licenceDoc: licenceDoc,
-      emergencyContacts: emergencyContacts
-    };*/
-    const formData = new FormData();
-    formData.append('nicDocument', nicDocument); // Append the file
-  
-    // Append the form data as a stringified JSON object
-    formData.append('data', JSON.stringify({
-      ...personalInfo,
-      emergencyContacts: emergencyContacts
-    }));
 
-    // Handle form submission here
-    useraxiosFetch({
-      axiosInstance:axios,
-      method:'POST',
-      url:'/user/',
-      requestConfig:{
-        data:formData,
+    const formDataToSend = new FormData();
+    formDataToSend.append('firstName', personalInfo.firstName);
+    formDataToSend.append('middleName', personalInfo.middleName);
+    formDataToSend.append('lastName', personalInfo.lastName);
+    formDataToSend.append('gender', personalInfo.gender);
+    formDataToSend.append('dob', personalInfo.dob);
+    formDataToSend.append('phoneNumber', personalInfo.phoneNumber);
+    formDataToSend.append('nicNumber', personalInfo.nicNumber);
+    formDataToSend.append('role', personalInfo.role);
+    formDataToSend.append('empDate', personalInfo.empDate);
+    formDataToSend.append('baseSal', personalInfo.baseSal);
+    formDataToSend.append('licenceNum', personalInfo.licenceNum);
+    formDataToSend.append('status', personalInfo.status);
+    formDataToSend.append('email', personalInfo.email);
+    formDataToSend.append('password', personalInfo.password);
+    formDataToSend.append('emergencyContacts',JSON.stringify(emergencyContacts))
+    formDataToSend.append('nicDocument', nicDocument);
+
+    axiosupdatedFetch({
+      axiosInstance: axios,
+      method: 'POST',
+      url: '/user/',
+      data: formDataToSend,
+      headers: {
+        'Content-Type': 'multipart/form-data',
       },
-      headers:{
-        'Content-Type': 'multipart/form-data'
-      }
-    })
-    if(usererror){
-      alert(usererror)
-    }
-    if(user){
-      alert("user created succesfully")
-      navigate('/admin')
-    }
-  };
+    });
+    
+    // try {
+    //   const response = await axios.post('/user', formDataToSend, {
+    //     headers: {
+    //       'Content-Type': 'multipart/form-data',
+    //     },
+    //   });
+    //   console.log(response.data);
+    //   // Handle success response
+    // } catch (error) {
+    //   console.error(error);
+    //   // Handle error
+    // }
+
+    // const formData = {
+    //   ...personalInfo,
+    //   nicDocument: nicDocument,
+    //   licenceDoc: licenceDoc,
+    //   emergencyContacts: emergencyContacts
+    // };
+    // Handle form submission here
+    // useraxiosFetch({
+    //   axiosInstance:axios,
+    //   method:'POST',
+    //   url:'/user/',
+    //   requestConfig:{
+    //     formDataToSend
+    //   },
+    //   headers:{
+    //     'Content-Type': 'multipart/form-data'
+    //   }
+    // })
+  }
 
   const AddContact = () => {
     let contactsArr = [...emergencyContacts];

@@ -2,9 +2,6 @@ const bcrypt = require("bcrypt");
 const User = require("../models/userModel");
 const EmergencyContact = require("../models/emergencyContactModel");
 const Role = require("../models/roleModel");
-const upload = multer(); // Initialize multer without any configuration
-
-// Use the multer middleware to parse the request body
 
 //TODO:add validation use REGEX 
 const createUser = async (req, res) => {
@@ -27,9 +24,9 @@ const createUser = async (req, res) => {
       email,
       password,
       emergencyContacts,
-    } = req.body.data;
+    } = req.body;
 
-
+    console.log(req.body)
     if (!firstName || !lastName || !email || !password)
       return res.status(400).json({ msg: "Not all fields have been entered." });
   
@@ -44,6 +41,13 @@ const createUser = async (req, res) => {
     const salt = await bcrypt.genSalt();
     const passwordHash = await bcrypt.hash(password, salt);
 
+    if (!req.file) {
+      console.log('nofile')
+      return res.status(400).json({ message: 'NIC document is required' });
+    }
+
+    const nicDocumentPath = req.file.path||null;
+
     //match front and back names
     const user = new User({
       firstName,
@@ -53,6 +57,7 @@ const createUser = async (req, res) => {
       dob,
       phoneNumber,
       nicNumber,
+      nicDocument:nicDocumentPath,
       status,
       department,
       emergencyContacts:[],
@@ -63,9 +68,9 @@ const createUser = async (req, res) => {
       password: passwordHash,
       role,
     });
-
+    const parsedEmergencyContacts = JSON.parse(emergencyContacts);
     try {
-      const emergencyContactPromises = emergencyContacts.map(async (contact) => {
+      const emergencyContactPromises = parsedEmergencyContacts.map(async (contact) => {
         const EmContact = new EmergencyContact({
           name: contact.emergencyName,
           number: contact.emergencyContact,
@@ -77,10 +82,12 @@ const createUser = async (req, res) => {
       user.emergencyContacts = emergencyContactIds;
       
     } catch (err) {
-      res.status(500).json({ message: err.message });
+      return res.status(500).json({ message: err.message });
     }
-
+    console.log(user)
     await user.save();
+    console.log('saved')
+
 
     return res.status(200).json({ message: "User created succesfully" });
   } catch (err) {
