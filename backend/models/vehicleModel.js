@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 
+
 const VehicleSchema = new mongoose.Schema({
     category : {type:String},
     vehicleType : {type:String},
@@ -27,8 +28,9 @@ const VehicleSchema = new mongoose.Schema({
     vehicleLicenceImage : {type:String},
     vehicleInsuImage : {type:String},
     statusVehicle:{type:String}
-    
+
 },{timestamps: { currentTime: () => Date.now() + 5.5 * 60 * 60 * 1000 }})
+
 
 
 const Vehicles = mongoose.model('Vehicles',VehicleSchema)

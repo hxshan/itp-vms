@@ -3,13 +3,19 @@ import { useEffect, useState } from "react";
 import useAxios from "@/hooks/useAxios";
 import axios from "@/api/axios";
 import { ToastContainer, toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 const VehicleSearch = () => {
   const [data, error, loading, axiosFetch] = useAxios()
   const [reload, setReload] = useState(0);
   const [search, setSearch] = useState("");
+  const navigate = useNavigate();
 
   const { vehicles = [] } = data;
+
+  const handleEditClick = (id) => {
+    navigate(`edit/${id}`);
+  };
 
   const getData = ()=>{
     axiosFetch({
@@ -19,40 +25,10 @@ const VehicleSearch = () => {
     })
   }
 
-  // const deleteVehicle =async(e) => {
-  //   e.preventDefault()
-  //   if(confirm("Are you sure you want to Delete the following")){
-  //     await axiosFetch({
-  //       axiosInstance: axios,
-  //       method: "PATCH",
-  //       url: `/vehicle/delete/${e.target.id}`,
-  //     });
-  //     if(!error){
-        
-  //       setReload(reload + 1);
-  //       toast.success('Vehicle deleted successfully!');
-  //     } 
-  //   }
-  // };
-
-  // const deleteVehicle = async (e) => {
-  //   e.preventDefault();
-  
-  //     // Make an HTTP PATCH request to delete the vehicle
-  //     await axios.patch(`http://localhost:3000/api/vehicle/deleteVehicle/${e.target.id}`);
-  
-  //     // Display a success toast message
-  //     toast.success('Vehicle deleted successfully!');
-  
-  //     // Reset the form or perform any other necessary actions
-  //     setReload(reload + 1);
-   
-  // };
 
   const deactiveVehicle = async (e) => {
     e.preventDefault();
 
-    console.log('Vehicle ID:', e.target.id);
 
     if (confirm("Are you sure you want to delete the following vehicle?")) {
       try {
@@ -150,9 +126,7 @@ const VehicleSearch = () => {
                         <button
                           className="my-1 mx-1 bg-yellow-300 text-white py-1 px-4 rounded-md text-sm"
                           id={vehicle._id}
-                          onClick={(e) => {
-                          navigate(e.target.id);
-                        }}
+                          onClick={() => handleEditClick(vehicle._id)} 
                         >
                           Edit
                         </button>

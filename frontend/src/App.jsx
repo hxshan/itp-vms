@@ -9,6 +9,7 @@ import CaseFileForm from "./components/EAM/CaseFileForm";
 import { CreateMaintainceForm } from "./components/VR/CreateMaintainceForm";
 
 import AddVehicle from "./pages/vehicle/AddVehicle";
+import VehicleDetailsControl from "./pages/vehicle/VehicleDetailsControl";
 import VehReport from "./pages/vehicle/VehReport";
 import VehicleDashboard from "./pages/vehicle/VehicleDashboard";
 
@@ -66,6 +67,7 @@ function App() {
             <Route path="vehicle">
               <Route index={true} element={<VehicleDashboard />} />
               <Route path="add" element={<AddVehicle />} />
+              <Route path="edit/:id" element={<VehicleDetailsControl />} />
               <Route path="report" element={<VehReport />} />
             </Route>
             <Route path="/Contract/:id" element={<AddContract />}/>

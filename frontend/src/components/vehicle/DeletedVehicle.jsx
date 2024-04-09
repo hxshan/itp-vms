@@ -38,7 +38,6 @@ const DeletedVehicle = () => {
   const RecoverVehicle = async (e) => {
     e.preventDefault();
 
-    console.log('Vehicle ID:', e.target.id);
 
     if (confirm("Are you sure you want to delete the following vehicle?")) {
       try {
