@@ -26,8 +26,11 @@ const TopBar = () => {
   //
   return (
     <div className='w-screen h-[80px] text-sm fixed z-20 top-0 left-0 shadow-md bg-white flex items-center justify-end'>
-      {user && 
+      {user?.accessToken? (
         <div className='relative flex w-fit gap-4 mr-8 items-center'>
+          {
+            !user?.accessToken &&  <button className='relative text-black w-full px-4 py-2' onClick={()=>navigate('/login')}>Login</button>
+          }
           <p>{user?.email.split('@')[0]}</p>
            <button className='w-10 h-10' onClick={()=>setMenuOpen(!menuOpen)}>
               <img src={user_profile} alt="profile image" />
@@ -36,7 +39,13 @@ const TopBar = () => {
             <button className='relative text-black w-full px-4 py-2 border-b-2 border-gray-200' onClick={()=>navigate(`/user/${id}`)}>View Profile</button>
             <button className='relative text-black w-full px-4 py-2' onClick={()=>logout()}>Logout</button>
           </div>
-        </div>
+        </div>)
+        :(
+          <div className='relative flex w-fit gap-4 mr-8 items-center'>
+           <button className='relative bg-actionBlue rounded-md text-white font-bold w-full px-4 py-2' onClick={()=>navigate('/login')}>Login</button>           
+          </div>
+        )
+        
       }
     </div>
   )

@@ -3,6 +3,7 @@ import useAxios from "@/hooks/useAxios";
 import axios from "@/api/axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from 'react-toastify';
 
 const CreateUserForm = () => {
   //Api Hooks
@@ -62,22 +63,22 @@ const CreateUserForm = () => {
 
   const[nicDocument,setNicDocument]=useState(null);
   const[licenceDoc,setLicenceDocument]=useState(null);
-  const [loading, setLoading] = useState(false);
-  const [response, setResponse] = useState(null);
-  const [error, setError] = useState(null);
-
   const [currentForm, setCurrentForm] = useState(0);
   const [emergencyContacts, setEmergencyContacts] = useState([emptyContact]);
 
 
 
   const formPageIncrement=()=>{
+    if((emergencyContacts[0].emergencyContact||emergencyContacts[0].emergencyName)===''){
+      toast.error("Add Atleast one Emergency Contact")
+      return
+    }
     if((personalInfo.firstName||personalInfo.lastName||personalInfo.gender||personalInfo.dob||personalInfo.phoneNumber||personalInfo.nicNumber) ==''){
-      alert("All feilds should be filled")
+      toast.error("All Personal details should be filled")
       return
     }
     if(nicDocument == null){
-      alert("Please upload Nic Document")
+      toast.error("Please upload Nic Document")
       return
     }
 
@@ -94,7 +95,16 @@ const CreateUserForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    let emailReg=/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/
+    if(!personalInfo.email.match(emailReg)){
+      toast.error("Invalid Email Address")
+      return
+    }
+    if((personalInfo.role||personalInfo.department||personalInfo.empDate||personalInfo.baseSal||personalInfo.status)){
+      toast.error("All Employee details should be filled")
+      return
+    }
+    
 
     const formDataToSend = new FormData();
     formDataToSend.append('firstName', personalInfo.firstName);
@@ -108,6 +118,7 @@ const CreateUserForm = () => {
     formDataToSend.append('empDate', personalInfo.empDate);
     formDataToSend.append('baseSal', personalInfo.baseSal);
     formDataToSend.append('licenceNum', personalInfo.licenceNum);
+    formDataToSend.append('licenceDoc', licenceDoc);
     formDataToSend.append('status', personalInfo.status);
     formDataToSend.append('email', personalInfo.email);
     formDataToSend.append('password', personalInfo.password);
@@ -123,38 +134,6 @@ const CreateUserForm = () => {
         'Content-Type': 'multipart/form-data',
       },
     });
-    
-    // try {
-    //   const response = await axios.post('/user', formDataToSend, {
-    //     headers: {
-    //       'Content-Type': 'multipart/form-data',
-    //     },
-    //   });
-    //   console.log(response.data);
-    //   // Handle success response
-    // } catch (error) {
-    //   console.error(error);
-    //   // Handle error
-    // }
-
-    // const formData = {
-    //   ...personalInfo,
-    //   nicDocument: nicDocument,
-    //   licenceDoc: licenceDoc,
-    //   emergencyContacts: emergencyContacts
-    // };
-    // Handle form submission here
-    // useraxiosFetch({
-    //   axiosInstance:axios,
-    //   method:'POST',
-    //   url:'/user/',
-    //   requestConfig:{
-    //     formDataToSend
-    //   },
-    //   headers:{
-    //     'Content-Type': 'multipart/form-data'
-    //   }
-    // })
   }
 
   const AddContact = () => {
@@ -178,7 +157,7 @@ const CreateUserForm = () => {
   return (
     <div className="shadow-xl bg-white rounded flex flex-col items-center">
       <h2 className="font-bold text-3xl w-fit mt-10">Add New User</h2>
-
+      <ToastContainer/>
       <form onSubmit={handleSubmit} className="mt-6 px-8 pt-6 pb-8 mb-4 w-full">
         <div id="formPage-1" className={currentForm == 0 ? "" : "hidden"}>
           <h2 className="font-bold text-2xl w-fit mt-5 mb-8">
