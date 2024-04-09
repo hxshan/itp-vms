@@ -4,19 +4,19 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Pie } from 'react-chartjs-2';
 import useAxios from "@/hooks/useAxios";
 import axios from "@/api/axios";
-import SummaryTable from '../../components/vehicle/SummaryTable';
 import NewlyAddedTable from '../../components/vehicle/NewlyAddedTable';
 import UnavailableTable from '../../components/vehicle/UnavailableTable';
-import VehicleSearch from '../../components/vehicle/VehicleSearch';
+import VehicleSearch from "../../components/vehicle/VehicleSearch"
+import SummaryTable from "../../components/vehicle/SummaryTable"
+import DeletedTable from "../../components/vehicle/DeletedVehicle"
 
 const VehicleDashboard = () => {
 
   const navigate = useNavigate();
   const [data, error, loading, axiosFetch] = useAxios()
-  const [reload, setReload] = useState(0);
-  const [activeComponent, setActiveComponent] = useState('');
+  const [activeComponent, setActiveComponent] = useState('search');
   const { newAdded } = data;
-  const { vehicles } = data;
+  
 
   const categories = Object.keys(data).filter(key => key !== 'vehiclesCount' && key !== 'availableCount' && key !== 'underMaintanceCount' && key !== 'underClientCount' && key !== 'underSpecialTaskCount');
   const counts = categories.map(category => data[category])
@@ -29,22 +29,6 @@ const VehicleDashboard = () => {
     })
   }
 
-  const deleteVehicle =async(e) => {
-    e.preventDefault()
-    if(confirm("Are you sure you want to Delete the following")){
-      try {
-        await axiosFetch({
-          axiosInstance: axios,
-          method: "DELETE",
-          url: `/vehicle/${e.target.id}`,
-        });
-        setReload(reload + 1);
-
-      } catch (error) {
-        console.error("Error deleting vehicle:", error);
-      }
-    }
-  };
 
   useEffect(()=>{
     getData()
@@ -103,7 +87,7 @@ const VehicleDashboard = () => {
       case 'search':
         return (
           <div>
-            <VehicleSearch vehicles={vehicles} deleteVehicle={deleteVehicle} reload={reload} setReload={setReload}/>
+            <VehicleSearch />
           </div>
         );
       case 'summary':
@@ -125,6 +109,13 @@ const VehicleDashboard = () => {
         return <UnavailableTable />;
       default:
         return null;
+      
+      case 'deleted':
+        return (
+          <div>
+            <DeletedTable />
+          </div>
+        );
     }
   };
 
@@ -132,10 +123,18 @@ const VehicleDashboard = () => {
   if (!data || !data.newAdded) {
     return <p className='mt-3 p-3 font-medium text-sm text-white bg-red-500 rounded-md pad'>No data available or Server is offline.</p>;
   }
-
+  
 
   const calculatePercentage = (numerator, denominator) => {
-    return (numerator / denominator) * 100;
+    const res = (numerator / denominator) * 100;
+
+    if(isNaN(res)){
+          return 0;
+    }
+
+    else{
+      return res
+    }
   }
 
   const carPercentage = calculatePercentage(data.carCount, data.vehiclesCount);
@@ -143,7 +142,6 @@ const VehicleDashboard = () => {
   const lorryPercentage = calculatePercentage(data.lorryCount, data.vehiclesCount);
   const truckPercentage = calculatePercentage(data.truckCount, data.vehiclesCount);
   const vanPercentage = calculatePercentage(data.vanCount, data.vehiclesCount);
-  
 
 
   return  (
@@ -168,31 +166,31 @@ const VehicleDashboard = () => {
                <div className="text-xs text-white font-semibold rounded-md pad">Totol vehicle count added in the system<h1 className='text-yellow-500 text-xl'>{data.vehiclesCount}</h1> </div>
              </div>
              <div className=" m-0 p-2 bg-gradient-to-r from-green-700 to-green-400 rounded-md pad">
-              <div className='flex flex-reo justify-between m-2'>
+              <div className='flex flex-reo justify-between '>
                <div className="text-xs text-white font-semibold rounded-md pad">Totol car count added in the system<h1 className='text-white-500 text-xl'>{data.carCount}</h1></div>
                     <div className='ml-2 text-2xl place-content-center text-yellow-400 font-bold'>{carPercentage.toFixed(2)}% </div> 
               </div>
              </div>
              <div className=" m-0 p-2 bg-gradient-to-r from-green-700 to-green-400 rounded-md pad">
-             <div className='flex flex-reo justify-between m-2'>
+             <div className='flex flex-reo justify-between'>
                <div className="text-xs text-white font-semibold rounded-md pad">Totol van count added in the system<h1 className='text-white-500 text-xl'> {data.vanCount}</h1></div>
                <div className='ml-2 text-2xl place-content-center text-yellow-400 font-bold'>{vanPercentage.toFixed(2)}% </div> 
               </div> 
              </div>
              <div className=" m-0 p-2 bg-gradient-to-r from-green-700 to-green-400 rounded-md pad">
-              <div className='flex flex-reo justify-between m-2'>
+              <div className='flex flex-reo justify-between'>
                <div className="text-xs text-white font-semibold rounded-md pad">Totol bus count added in the system<h1 className='text-white-500 text-xl'>{data.busCount}</h1></div>
                <div className='ml-2 text-2xl place-content-center text-yellow-400 font-bold'>{busPercentage.toFixed(2)}% </div> 
               </div> 
              </div>
              <div className=" m-0 p-2 bg-gradient-to-r from-green-700 to-green-400 rounded-md pad">
-             <div className='flex flex-reo justify-between m-2'>
+             <div className='flex flex-reo justify-between '>
                <div className="text-xs text-white font-semibold rounded-md pad">Totol lorry count added in the system<h1 className='text-white-500 text-xl'>{data.lorryCount}</h1></div>
                <div className='ml-2 text-2xl place-content-center text-yellow-400 font-bold'>{lorryPercentage.toFixed(2)}% </div> 
               </div> 
              </div>
              <div className=" m-0 p-2  bg-gradient-to-r from-green-700 to-green-400 rounded-md pad">
-             <div className='flex flex-reo justify-between m-2'>
+             <div className='flex flex-reo justify-between'>
                <div className="text-xs text-white font-semibold rounded-md pad">Totol truck count added in the system<h1 className='text-white-500 text-xl'>{data.truckCount}</h1></div>
                <div className='ml-2 text-2xl place-content-center text-yellow-400 font-bold'>{truckPercentage.toFixed(2)}% </div> 
               </div> 
@@ -210,17 +208,18 @@ const VehicleDashboard = () => {
              </div> 
             </div>
 
-            <div className='w-full ml-5 flex flex-col justify-start  bg-white rounded-md pad'>
-             <div className='m-4 flex flex-row'>
-             <button className= "m-1 p-2 bg-blue-500 text-zinc-50 rounded-md text-s font-semibold  hover:bg-slate-500 ease-in-out duration-300" onClick={() => navigate('add')}>Add vehicle</button>
-             <button className= "m-1 p-2 bg-blue-500 text-zinc-50 rounded-md text-s font-semibold  hover:bg-lime-500 ease-in-out duration-300" onClick={() => setActiveComponent('search')}>Search vehicle</button>
-             <button className= "m-1 p-2 bg-blue-500 text-zinc-50 rounded-md text-s font-semibold  hover:bg-red-500 ease-in-out duration-300" onClick={() => navigate()}>Report Generate</button>
-             <button className= "m-1 p-2 bg-blue-500 text-zinc-50 rounded-md text-s font-semibold  hover:bg-slate-500 ease-in-out duration-300" onClick={() => setActiveComponent('summary')}>Vehicle Summary</button>
-             <button className= "m-1 p-2 bg-blue-500 text-zinc-50 rounded-md text-s font-semibold  hover:bg-slate-500 ease-in-out duration-300" onClick={() => setActiveComponent('newAdded')}>Newly added</button>
-             <button className= "m-1 p-2 bg-blue-500 text-zinc-50 rounded-md text-s font-semibold  hover:bg-slate-500 ease-in-out duration-300" onClick={() => setActiveComponent('unavalable')}>Unavailable vehicles</button>
+            
+             <div className='mt-8 flex flex-row'>
+             <button className= "m-1 px-2 py-2 bg-blue-500 text-zinc-50 rounded-md text-sm font-semibold  hover:bg-slate-500 ease-in-out duration-300" onClick={() => navigate('add')}>Add vehicle</button>
+             <button className= "m-1 p-2 bg-blue-500 text-zinc-50 rounded-md text-sm font-semibold  hover:bg-slate-500 ease-in-out duration-300" onClick={() => setActiveComponent('search')}>Search vehicle</button>
+             <button className= "m-1 p-2 bg-blue-500 text-zinc-50 rounded-md text-sm font-semibold  hover:bg-red-500 ease-in-out duration-300" onClick={() => navigate()}>Report Generate</button>
+             <button className= "m-1 p-2 bg-blue-500 text-zinc-50 rounded-md text-sm font-semibold  hover:bg-slate-500 ease-in-out duration-300" onClick={() => setActiveComponent('summary')}>Vehicle Summary</button>
+             <button className= "m-1 p-2 bg-blue-500 text-zinc-50 rounded-md text-sm font-semibold  hover:bg-slate-500 ease-in-out duration-300" onClick={() => setActiveComponent('newAdded')}>Newly added</button>
+             <button className= "m-1 p-2 bg-blue-500 text-zinc-50 rounded-md text-sm font-semibold  hover:bg-slate-500 ease-in-out duration-300" onClick={() => setActiveComponent('unavalable')}>Unavailable vehicles</button>
+             <button className= "m-1 p-2 bg-blue-500 text-zinc-50 rounded-md text-sm font-semibold  hover:bg-slate-500 ease-in-out duration-300" onClick={() => setActiveComponent('deleted')}>Inactive vehicle</button>
              </div>
 
-            </div>
+            
           </div>
         </div>
         <div>
@@ -228,11 +227,12 @@ const VehicleDashboard = () => {
         
       </div>
       </div>
-    
+      
+      <div>
         {renderComponent()}
-
-    
-  </div>
+        
+      </div>
+   </div>   
  )
 };
 

@@ -4,12 +4,11 @@ import useAxios from "@/hooks/useAxios";
 import axios from "@/api/axios";
 import { ToastContainer, toast } from 'react-toastify';
 
-const VehicleSearch = () => {
+const DeletedVehicle = () => {
   const [data, error, loading, axiosFetch] = useAxios()
   const [reload, setReload] = useState(0);
+  const { vehiclesRecover = [] } = data;
   const [search, setSearch] = useState("");
-
-  const { vehicles = [] } = data;
 
   const getData = ()=>{
     axiosFetch({
@@ -19,47 +18,34 @@ const VehicleSearch = () => {
     })
   }
 
-  // const deleteVehicle =async(e) => {
+  // const RecoverVehicle =async(e) => {
   //   e.preventDefault()
   //   if(confirm("Are you sure you want to Delete the following")){
   //     await axiosFetch({
   //       axiosInstance: axios,
   //       method: "PATCH",
-  //       url: `/vehicle/delete/${e.target.id}`,
+  //       url: `/vehicle/recover/${e.target.id}`,
   //     });
   //     if(!error){
         
   //       setReload(reload + 1);
-  //       toast.success('Vehicle deleted successfully!');
+  //       toast.success('Vehicle recoved successfully!');
   //     } 
   //   }
   // };
 
-  // const deleteVehicle = async (e) => {
-  //   e.preventDefault();
-  
-  //     // Make an HTTP PATCH request to delete the vehicle
-  //     await axios.patch(`http://localhost:3000/api/vehicle/deleteVehicle/${e.target.id}`);
-  
-  //     // Display a success toast message
-  //     toast.success('Vehicle deleted successfully!');
-  
-  //     // Reset the form or perform any other necessary actions
-  //     setReload(reload + 1);
-   
-  // };
 
-  const deactiveVehicle = async (e) => {
+  const RecoverVehicle = async (e) => {
     e.preventDefault();
 
     console.log('Vehicle ID:', e.target.id);
 
     if (confirm("Are you sure you want to delete the following vehicle?")) {
       try {
-        await axios.patch(`/vehicle/delete/${e.target.id}`);
+        await axios.patch(`/vehicle/recover/${e.target.id}`);
         setReload(reload + 1);
 
-        alert('Vehicle deactive successfully!');
+        alert('Vehicle recover successfully!');
 
       } catch (error) {
         console.error('Error deleting vehicle:', error);
@@ -83,7 +69,7 @@ const VehicleSearch = () => {
     )
   }
 
-  const filteredVehicles = vehicles.filter((vehicle) => {
+  const filteredVehicles = vehiclesRecover.filter((vehicle) => {
     const searchTerm = search.toLowerCase().trim();
     if (searchTerm === "") {
       return true; 
@@ -108,7 +94,7 @@ const VehicleSearch = () => {
     <div className='w-full place-content-center space-y-4 mt-8 bg-cover bg-center bg-white mb-10'>
       
         <div className="border-b-4 border-black w-full"></div>
-        <div className='text-2xl font-bold text-black mt-4'>Search Vehicle</div>
+        <div className='text-2xl font-bold text-black mt-4'>Inactive Vehicle</div>
 
         <ToastContainer />
         
@@ -143,30 +129,21 @@ const VehicleSearch = () => {
                 <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{vehicle.vehicleModel}</td>
                 <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{vehicle.vehicleRegister}</td>
                 <td className="px-2 py-2 whitespace-nowrap border-r border-gray-200 flex justify-center">
-                        <button className="my-1 mx-1 bg-blue-700 text-white py-1 px-4 rounded-md text-sm">
-                          View
-                        </button>
-
+                        
                         <button
-                          className="my-1 mx-1 bg-yellow-300 text-white py-1 px-4 rounded-md text-sm"
+                          className="my-1 mx-1 bg-green-700 text-white py-1 px-4 rounded-md text-sm"
                           id={vehicle._id}
-                          onClick={(e) => {
-                          navigate(e.target.id);
-                        }}
+                          onClick={(e)=>{RecoverVehicle(e)}}
                         >
-                          Edit
-                        </button>
-
-                        <button className="my-1 mx-1 bg-green-700 text-white py-1 px-4 rounded-md text-sm">
-                          Avalability
+                          Recover
                         </button>
 
                         <button
                           className="my-1 mx-1 bg-red-700 text-white py-1 px-4 rounded-md text-sm"
                           id={vehicle._id}
-                          onClick={(e)=>{deactiveVehicle(e)}}
+                          
                         >
-                          Deactive
+                          Delete
                         </button>
           
                 </td>
@@ -185,4 +162,4 @@ const VehicleSearch = () => {
   );
 }
 
-export default VehicleSearch
+export default DeletedVehicle

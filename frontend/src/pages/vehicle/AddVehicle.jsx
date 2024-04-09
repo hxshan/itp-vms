@@ -38,8 +38,8 @@ const AddVehicle = () => {
         passengerCabin: '',
         vehicleBookImage: null,
         vehicleLicenceImage: null,
-        vehicleInsuImage: null,
-        
+        vehicleInsuImage: null, 
+        statusVehicle:'Active'   
     }
     
     const [formState, setFormState] = useState(initialFormState);
@@ -93,6 +93,8 @@ const AddVehicle = () => {
            setError(err.response.data.message)
         }
      }
+
+     
 
 
     return (

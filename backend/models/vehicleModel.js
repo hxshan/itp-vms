@@ -26,8 +26,8 @@ const VehicleSchema = new mongoose.Schema({
     vehicleBookImage : {type:String},
     vehicleLicenceImage : {type:String},
     vehicleInsuImage : {type:String},
-    availability : {type:String},
-    status:{type:String}
+    statusVehicle:{type:String}
+    
 },{timestamps: { currentTime: () => Date.now() + 5.5 * 60 * 60 * 1000 }})
 
 

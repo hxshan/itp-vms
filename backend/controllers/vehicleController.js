@@ -11,7 +11,7 @@ const addVehicle = async (req, res, next) => {
         let { category } = req.body;
 
         if (category === 'car' || category === 'van' || category === 'bus' ) {
-         const { vehicleType, vehicleRegister,vehicleModel,vehicleManuYear,engineCap,lastMileage,vehicleColour,vehicleGearSys,airCon,numOfSeats,lugSpace,gps,fridge,tv,licEndDate,insEndDate} = req.body;
+         const { vehicleType, vehicleRegister,vehicleModel,vehicleManuYear,engineCap,lastMileage,vehicleColour,vehicleGearSys,airCon,numOfSeats,lugSpace,gps,fridge,tv,licEndDate,insEndDate,statusVehicle} = req.body;
             
             if(!vehicleRegister || !vehicleModel || !vehicleManuYear || !engineCap || !lastMileage || !vehicleGearSys){
                 return next(new HttpError("Please fill all feiled under Performance.", 400))
@@ -36,7 +36,7 @@ const addVehicle = async (req, res, next) => {
                 return next(new HttpError("Vehicle with the same model already exists.", 400));
             }
     
-            const newVehicle = await Vehicles.create({ category,vehicleType, vehicleRegister,vehicleModel,vehicleManuYear,engineCap,lastMileage,vehicleColour,vehicleGearSys,airCon,numOfSeats,lugSpace,gps,fridge,tv,licEndDate,insEndDate});
+            const newVehicle = await Vehicles.create({ category,vehicleType, vehicleRegister,vehicleModel,vehicleManuYear,engineCap,lastMileage,vehicleColour,vehicleGearSys,airCon,numOfSeats,lugSpace,gps,fridge,tv,licEndDate,insEndDate,statusVehicle});
             if (!newVehicle) {
                 return next(new HttpError("Vehicle couldn't be created.", 422));
             }
@@ -44,7 +44,7 @@ const addVehicle = async (req, res, next) => {
     
 
         } else if (category === 'lorry') {
-            const { vehicleType, vehicleRegister,vehicleModel,vehicleManuYear,engineCap,lastMileage,vehicleWeight,cargoCapacity,cargoArea,vehicleGearSys,airCon,numOfSeats,gps,licEndDate,insEndDate } = req.body;
+            const { vehicleType, vehicleRegister,vehicleModel,vehicleManuYear,engineCap,lastMileage,vehicleWeight,cargoCapacity,cargoArea,vehicleGearSys,airCon,numOfSeats,gps,licEndDate,insEndDate,statusVehicle } = req.body;
 
             if(!vehicleType || !vehicleRegister || !vehicleModel || !vehicleManuYear || !engineCap || !lastMileage || !vehicleGearSys ||!vehicleWeight || !cargoArea || !cargoArea){
                 return next(new HttpError("Please fill all feiled under Performance.", 400))
@@ -57,8 +57,19 @@ const addVehicle = async (req, res, next) => {
             if(!licEndDate || !insEndDate){
                 return next(new HttpError("Please fill all feiled under Documentary.", 400))
             }
+
+            const existingVehicleByRegister = await Vehicles.findOne({ vehicleRegister });
+            const existingVehicleByModel = await Vehicles.findOne({ vehicleModel });
+
+            if (existingVehicleByRegister) {
+                return next(new HttpError("Vehicle with the same registration number already exists.", 400));
+            }
+
+            if (existingVehicleByModel) {
+                return next(new HttpError("Vehicle with the same model already exists.", 400));
+            }
         
-            const newVehicle = await Vehicles.create({ category,vehicleType, vehicleRegister,vehicleModel,vehicleManuYear,engineCap,lastMileage,vehicleWeight,cargoCapacity,cargoArea,vehicleGearSys,airCon,numOfSeats,gps,licEndDate,insEndDate});
+            const newVehicle = await Vehicles.create({ category,vehicleType, vehicleRegister,vehicleModel,vehicleManuYear,engineCap,lastMileage,vehicleWeight,cargoCapacity,cargoArea,vehicleGearSys,airCon,numOfSeats,gps,licEndDate,insEndDate,statusVehicle});
             if (!newVehicle) {
                 return next(new HttpError("Vehicle couldn't be created.", 422));
             }
@@ -69,7 +80,7 @@ const addVehicle = async (req, res, next) => {
 
         } else if (category === 'truck') {
 
-            const {  vehicleType, vehicleRegister,vehicleModel,vehicleManuYear,engineCap,lastMileage,vehicleWeight,cargoCapacity,trailerLength,passengerCabin,vehicleGearSys,airCon,numOfSeats,gps,fridge,tv,licEndDate,insEndDate } = req.body;
+            const {  vehicleType, vehicleRegister,vehicleModel,vehicleManuYear,engineCap,lastMileage,vehicleWeight,cargoCapacity,trailerLength,passengerCabin,vehicleGearSys,airCon,numOfSeats,gps,fridge,tv,licEndDate,insEndDate,statusVehicle} = req.body;
 
             if(!vehicleType || !vehicleRegister || !vehicleModel || !vehicleManuYear || !engineCap || !lastMileage || !vehicleGearSys ||!vehicleWeight || !trailerLength || !cargoCapacity){
                 return next(new HttpError("Please fill all feiled under Performance.", 400))
@@ -82,9 +93,19 @@ const addVehicle = async (req, res, next) => {
             if(!licEndDate || !insEndDate){
                 return next(new HttpError("Please fill all feiled under Documentary.", 400))
             }
+            
+            const existingVehicleByRegister = await Vehicles.findOne({ vehicleRegister });
+            const existingVehicleByModel = await Vehicles.findOne({ vehicleModel });
 
+            if (existingVehicleByRegister) {
+                return next(new HttpError("Vehicle with the same registration number already exists.", 400));
+            }
 
-            const newVehicle = await Vehicles.create({ category,vehicleType, vehicleRegister,vehicleModel,vehicleManuYear,engineCap,lastMileage,vehicleWeight,cargoCapacity,trailerLength,passengerCabin,vehicleGearSys,airCon,numOfSeats,gps,fridge,tv,licEndDate,insEndDate });
+            if (existingVehicleByModel) {
+                return next(new HttpError("Vehicle with the same model already exists.", 400));
+            }
+
+            const newVehicle = await Vehicles.create({ category,vehicleType, vehicleRegister,vehicleModel,vehicleManuYear,engineCap,lastMileage,vehicleWeight,cargoCapacity,trailerLength,passengerCabin,vehicleGearSys,airCon,numOfSeats,gps,fridge,tv,licEndDate,insEndDate,statusVehicle});
             if (!newVehicle) {
 
                 return next(new HttpError("Vehicle couldn't be created.", 422));
@@ -114,7 +135,7 @@ const editVehicle = async (req,res,next) => {
             let{vehicleType, vehicleRegister,vehicleModel,vehicleManuYear,engineCap,lastMileage,vehicleColour,vehicleGearSys,airCon,numOfSeats,lugSpace,gps,fridge,tv,licEndDate,insEndDate} = req.body
 
 
-            updatedVehicle = await Vehicles.findByIdAndUpdate(vehicleId,{category,vehicleType, vehicleRegister,vehicleModel,vehicleManuYear,engineCap,lastMileage,vehicleColour,vehicleGearSys,airCon,numOfSeats,lugSpace,gps,fridge,tv,licEndDate,insEndDate}, {new: true})
+            updatedVehicle = await Vehicles.findByIdAndUpdate(vehicleId,{category,vehicleType, vehicleRegister,vehicleModel,vehicleManuYear,engineCap,lastMileage,vehicleColour,vehicleGearSys,airCon,numOfSeats,lugSpace,gps,fridge,tv,licEndDate,insEndDate,statusVehicle}, {new: true})
             if(!updatedVehicle){
                 return next(new HttpError("Couldn;t update Vehicle.",400))
             }
@@ -123,10 +144,10 @@ const editVehicle = async (req,res,next) => {
         }
 
         if(category === 'lorry' ){
-            let{vehicleType, vehicleRegister,vehicleModel,vehicleManuYear,engineCap,lastMileage,vehicleWeight,cargoCapacity,cargoArea,vehicleGearSys,airCon,numOfSeats,gps,licEndDate,insEndDate} = req.body
+            let{vehicleType, vehicleRegister,vehicleModel,vehicleManuYear,engineCap,lastMileage,vehicleWeight,cargoCapacity,cargoArea,vehicleGearSys,airCon,numOfSeats,gps,licEndDate,insEndDate,statusVehicle} = req.body
 
 
-            updatedVehicle = await Vehicles.findByIdAndUpdate(vehicleId,{category,vehicleType, vehicleRegister,vehicleModel,vehicleManuYear,engineCap,lastMileage,vehicleWeight,cargoCapacity,cargoArea,vehicleGearSys,airCon,numOfSeats,gps,licEndDate,insEndDate}, {new: true})
+            updatedVehicle = await Vehicles.findByIdAndUpdate(vehicleId,{category,vehicleType, vehicleRegister,vehicleModel,vehicleManuYear,engineCap,lastMileage,vehicleWeight,cargoCapacity,cargoArea,vehicleGearSys,airCon,numOfSeats,gps,licEndDate,insEndDate,statusVehicle}, {new: true})
             if(!updatedVehicle){
                 return next(new HttpError("Couldn;t update Vehicle.",400))
             }
@@ -135,11 +156,11 @@ const editVehicle = async (req,res,next) => {
         }
 
         if (category === 'truck' ){
-            let{vehicleType, vehicleRegister,vehicleModel,vehicleManuYear,engineCap,lastMileage,vehicleWeight,cargoCapacity,trailerLength,passengerCabin,vehicleGearSys,airCon,numOfSeats,gps,fridge,tv,licEndDate,insEndDate} = req.body
+            let{vehicleType, vehicleRegister,vehicleModel,vehicleManuYear,engineCap,lastMileage,vehicleWeight,cargoCapacity,trailerLength,passengerCabin,vehicleGearSys,airCon,numOfSeats,gps,fridge,tv,licEndDate,insEndDate,statusVehicle} = req.body
 
             
 
-            updatedVehicle = await Vehicles.findByIdAndUpdate(vehicleId,{category,vehicleType, vehicleRegister,vehicleModel,vehicleManuYear,engineCap,lastMileage,vehicleWeight,cargoCapacity,trailerLength,passengerCabin,vehicleGearSys,airCon,numOfSeats,gps,fridge,tv,licEndDate,insEndDate}, {new: true})
+            updatedVehicle = await Vehicles.findByIdAndUpdate(vehicleId,{category,vehicleType, vehicleRegister,vehicleModel,vehicleManuYear,engineCap,lastMileage,vehicleWeight,cargoCapacity,trailerLength,passengerCabin,vehicleGearSys,airCon,numOfSeats,gps,fridge,tv,licEndDate,insEndDate,statusVehicle}, {new: true})
             if(!updatedVehicle){
                 return next(new HttpError("Couldn;t update Vehicle.",400))
             }
@@ -152,24 +173,52 @@ const editVehicle = async (req,res,next) => {
     }
 }
 
-//DELETE:api/vehicle
-const deleteVehicle = async (req,res,next) => {
+//PATCH:api/vehicle
+const changeStatusVehicle = async (req, res, next) => {
     try {
         const vehicleId = req.params.id;
-        if(!vehicleId){
-            return next(new HttpError("Vehicle unavailable.",400))
+        if (!vehicleId) {
+            return next(new HttpError("Vehicle ID is missing.", 400));
         }
         
+        // Update the status of the vehicle to 'Deleted'
+        const updatedVehicle = await Vehicles.findByIdAndUpdate(vehicleId, { statusVehicle: 'Deactive' });
 
-       await Vehicles.findByIdAndDelete(vehicleId);    
- 
-        
-        res.json(`Vehicle ${vehicleId} deleted successfully.`)
+        if (!updatedVehicle) {
+            return next(new HttpError("Vehicle not found.", 404));
+        }
 
+        res.status(200).json({ message: `Vehicle with ID ${vehicleId} deactive successfully.` });
     } catch (error) {
-        return next (new HttpError(error)) 
+        return next(new HttpError(error.message, 500));
     }
 }
+
+
+
+//PATCH:api/vehicle
+const recoverVehicle = async (req, res, next) => {
+    try {
+        const vehicleId = req.params.id;
+        if (!vehicleId) {
+            return next(new HttpError("Vehicle ID is missing.", 400));
+        }
+        
+        // Update the status of the vehicle to 'Deleted'
+        const updatedVehicle = await Vehicles.findByIdAndUpdate(vehicleId, { statusVehicle: 'Active' });
+
+        if (!updatedVehicle) {
+            return next(new HttpError("Vehicle not found.", 404));
+        }
+
+        res.status(200).json({ message: `Vehicle with ID ${vehicleId} active successfully.` });
+    } catch (error) {
+        return next(new HttpError(error.message, 500));
+    }
+}
+
+
+
 
 
 const getVehicle = async (req, res, next) => {
@@ -231,7 +280,8 @@ const getVehicles = async (req, res, next) => {
         };  
 
         
-        const vehicles = await Vehicles.find().sort({updatedAt: -1});
+        const vehicles = await Vehicles.find({statusVehicle: 'Active'}).sort({updatedAt: -1});
+        const vehiclesRecover = await Vehicles.find({statusVehicle: 'Deactive'}).sort({updatedAt: -1});
         const car = await Vehicles.find({category: 'car'}).sort({ updatedAt: -1 });
         const van = await Vehicles.find({category: 'van'}).sort({ updatedAt: -1 });
         const bus = await Vehicles.find({category: 'bus'}).sort({ updatedAt: -1 });
@@ -239,7 +289,7 @@ const getVehicles = async (req, res, next) => {
         const truck = await Vehicles.find({category: 'truck'}).sort({ updatedAt: -1 });
         const newAdded = await Vehicles.find(query).sort({ updatedAt: -1 });
 
-        res.status(200).json({vehiclesCount,carCount, vanCount, busCount, lorryCount, truckCount ,availableCount,underMaintanceCount,underClientCount,underSpecialTaskCount,underInactiveCount, vehicles , car , van , bus , lorry , truck , newAdded});
+        res.status(200).json({vehiclesCount,carCount, vanCount, busCount, lorryCount, truckCount ,availableCount,underMaintanceCount,underClientCount,underSpecialTaskCount,underInactiveCount, vehicles ,vehiclesRecover, car , van , bus , lorry , truck , newAdded});
 
     } catch (error) {
         return next (new HttpError(error))
@@ -247,5 +297,5 @@ const getVehicles = async (req, res, next) => {
 }
 
 
-module.exports = {addVehicle,editVehicle,deleteVehicle,getVehicle,getVehicles}
+module.exports = {addVehicle,editVehicle,changeStatusVehicle,getVehicle,getVehicles,recoverVehicle}
 
