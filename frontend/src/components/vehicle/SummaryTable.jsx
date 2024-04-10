@@ -1,9 +1,11 @@
 import React from 'react'
 
 const SummaryTable = ({ category, filteredData }) => {
+
+  
   
   if (filteredData.length === 0) {
-    return <p className='mt- mb-10 p-3 font-medium text-sm text-white bg-red-500 rounded-md pad'>Vehicles not found. </p>;
+    return <p className='mt- mb-10 p-3 font-medium text-sm text-white bg-red-500 rounded-md pad'>{category.charAt(0).toUpperCase() + category.slice(1)} not found. </p>;
   }
 
   return (
