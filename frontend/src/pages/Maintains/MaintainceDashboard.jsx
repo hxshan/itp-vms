@@ -9,7 +9,7 @@ export const MaintainceDashboard = () => {
 
 
   return (
-    <main className='bg-slate-100  flex flex-col items-center'>
+    <main className='  flex flex-col items-center rounded-2xl shadow-xl h-full'>
       <h1 className='font-bold text-3xl'>Maintenance Dashboard</h1>
       <div className="flex items-center flex-row gap-10">
 

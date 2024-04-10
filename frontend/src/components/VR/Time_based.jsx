@@ -73,7 +73,10 @@ rangeStart.setMonth(rangeStart.getMonth() - 1);
                 </thead>
                 <tbody>
                     {data && data.length > 0 ? (data.filter((item) => {
-                        return serach.toLowerCase() === '' ? item : item.vrtype.toLowerCase().includes(serach) || serach.toLowerCase() === '' ? item : item.vrid.toLowerCase().includes(serach) ||serach.toUpperCase()=== '' ? item : item.vrtype.toUpperCase().includes(serach)
+                        return serach.toLowerCase() === '' ? item : item.category.toLowerCase().includes(serach) 
+                            ||serach.toLowerCase() === '' ? item : item.vehicleRegister.toLowerCase().includes(serach) 
+                            ||serach.toUpperCase()=== '' ? item : item.category.toUpperCase().includes(serach)
+                            ||serach.toUpperCase() === '' ? item : item.vehicleRegister.toUpperCase().includes(serach) 
 
                     }).map((item, index) => {
                         // Filter data only if applyFilter is true
@@ -86,10 +89,10 @@ rangeStart.setMonth(rangeStart.getMonth() - 1);
                                     {index + 1}
                                 </td>
                                 <td className='border border-slate-700 rounded-md text-center'>
-                                    {item.vrtype}
+                                    {item.category}
                                 </td>
                                 <td className='border border-slate-700 rounded-md text-center'>
-                                    {item.vrid}
+                                    {item.vehicleRegister}
                                 </td>
                                 <td className='border border-slate-700 rounded-md text-center'>
                                     {item.vredate}

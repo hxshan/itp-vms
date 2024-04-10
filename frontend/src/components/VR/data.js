@@ -1,121 +1,121 @@
 export const data = [{
   "_id": 1,
-  "vrtype": "Sonoma Club Coupe",
-  "vrid": "GMC",
+  "category": "Sonoma Club Coupe",
+  "vehicleRegister": "GMC",
   "vrcost": "46",
    "vredate": "2024-01-02"
 }, {
   "_id": 2,
-  "vrtype": "CX-7",
-  "vrid": "Mazda",
+  "category": "CX-7",
+  "vehicleRegister": "Mazda",
   "vrcost": "60",
  "vredate": "2024-02-14"
 }, {
   "_id": 3,
-  "vrtype": "Trans Sport",
-  "vrid": "Pontiac",
+  "category": "Trans Sport",
+  "vehicleRegister": "Pontiac",
   "vrcost": "89",
  "vredate": "2024-03-14"
 }, {
   "_id": 4,
-  "vrtype": "Sierra Denali",
-  "vrid": "GMC",
+  "category": "Sierra Denali",
+  "vehicleRegister": "GMC",
   "vrcost": "53",
    "vredate": "2024-04-14"
 }, {
   "_id": 5,
-  "vrtype": "S-Series",
-  "vrid": "Saturn",
+  "category": "S-Series",
+  "vehicleRegister": "Saturn",
   "vrcost": "302",
   "vredate": "2024-05-14"
 }, {
   "_id": 6,
-  "vrtype": "Corsica",
-  "vrid": "Chevrolet",
+  "category": "Corsica",
+  "vehicleRegister": "Chevrolet",
   "vrcost": "5",
  "vredate": "2024-06-14"
 }, {
   "_id": 7,
-  "vrtype": "Fiesta",
-  "vrid": "Ford",
+  "category": "Fiesta",
+  "vehicleRegister": "Ford",
   "vrcost": "4",
    "vredate": "2024-07-14"
 }, {
   "_id": 8,
-  "vrtype": "F350",
-  "vrid": "Ford",
+  "category": "F350",
+  "vehicleRegister": "Ford",
   "vrcost": "6",
    "vredate": "2024-08-14"
 }, {
   "_id": 9,
-  "vrtype": "E-Class",
-  "vrid": "Mercedes-Benz",
+  "category": "E-Class",
+  "vehicleRegister": "Mercedes-Benz",
   "vrcost": "38",
    "vredate": "2024-09-14"
 }, {
   "_id": 10,
-  "vrtype": "Santa Fe",
-  "vrid": "Hyundai",
+  "category": "Santa Fe",
+  "vehicleRegister": "Hyundai",
   "vrcost": "81216",
    "vredate": "2024-10-14"
 }, {
   "_id": 11,
-  "vrtype": "Ram 3500",
-  "vrid": "Dodge",
+  "category": "Ram 3500",
+  "vehicleRegister": "Dodge",
   "vrcost": "5",
  "vredate": "2024-11-14"
 }, {
   "_id": 12,
-  "vrtype": "Murano",
-  "vrid": "Nissan",
+  "category": "Murano",
+  "vehicleRegister": "Nissan",
   "vrcost": "000",
    "vredate": "2024-12-14"
 }, {
   "_id": 13,
-  "vrtype": "Versa",
-  "vrid": "Nissan",
+  "category": "Versa",
+  "vehicleRegister": "Nissan",
   "vrcost": "227",
  "vredate": "2024-07-14"
 }, {
   "_id": 14,
-  "vrtype": "Sable",
-  "vrid": "Mercury",
+  "category": "Sable",
+  "vehicleRegister": "Mercury",
   "vrcost": "752",
   "vredate": "2024-08-14"
 }, {
   "_id": 15,
-  "vrtype": "Tahoe",
-  "vrid": "Chevrolet",
+  "category": "Tahoe",
+  "vehicleRegister": "Chevrolet",
   "vrcost": "3",
    "vredate": "2024-09-14"
 }, {
   "_id": 16,
-  "vrtype": "LS",
-  "vrid": "Lincoln",
+  "category": "LS",
+  "vehicleRegister": "Lincoln",
   "vrcost": "457",
  "vredate": "2024-10-14"
 }, {
   "_id": 17,
-  "vrtype": "H3",
-  "vrid": "Hummer",
+  "category": "H3",
+  "vehicleRegister": "Hummer",
   "vrcost": "166",
   "vredate": "2024-11-14"
 }, {
   "_id": 18,
-  "vrtype": "Passport",
-  "vrid": "Honda",
+  "category": "Passport",
+  "vehicleRegister": "Honda",
   "vrcost": "644",
    "vredate": "2024-12-14"
 }, {
   "_id": 19,
-  "vrtype": "Daewoo Lacetti",
-  "vrid": "Suzuki",
+  "category": "Daewoo Lacetti",
+  "vehicleRegister": "Suzuki",
   "vrcost": "62",
    "vredate": "2024-01-14"
 }, {
   "_id": 20,
-  "vrtype": "Echo",
-  "vrid": "Toyota",
+  "category": "Echo",
+  "vehicleRegister": "Toyota",
   "vrcost": "9983",
  "vredate": "2024-05-14"
 }]

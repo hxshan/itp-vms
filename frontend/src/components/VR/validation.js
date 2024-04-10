@@ -1,9 +1,9 @@
 // validation.js
 
 // Function to validate vehicle type
-export const validateVehicleType = (vrtype) => {
+export const validateVehicleType = (category) => {
     
-    if (!vrtype) {
+    if (!category) {
         alert('Please select the vehicle type.');
         return false;
     }
@@ -12,8 +12,8 @@ export const validateVehicleType = (vrtype) => {
 };
 
 // Function to validate vehicle ID
-export const validateVehicleId = (vrid) => {
-    if (vrid.length < 7) {
+export const validateVehicleId = (vehicleRegister) => {
+    if (vehicleRegister.length < 7) {
         alert('Enter the valid vehicle number ');
         return false;
     }

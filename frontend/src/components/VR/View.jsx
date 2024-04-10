@@ -22,11 +22,11 @@ export const View = () => {
             <div className="flex flex-col border-2 md:w-[350px] shadow-2xl rounded-xl lg:w-[400px] w-full h-full p-5 items-center">
                 <div className="my-4 text-center">
                     <span className='text-xl mr-4 text-gray-900 font-semibold'>Vehicle Type :</span>
-                    <span className='text-lg mr-4 text-gray-900 font-semibold'>{order.vrtype}</span>
+                    <span className='text-lg mr-4 text-gray-900 font-semibold'>{}</span>
                 </div>
                 <div className="my-4 text-center">
                     <span className='text-xl mr-4 text-gray-900 font-semibold'>Vehicle Number :</span>
-                    <span className='text-lg mr-4 text-gray-900 font-semibold'>{order.vrid}</span>
+                    <span className='text-lg mr-4 text-gray-900 font-semibold'>{order.vrvehicleRegister}</span>
                 </div>
                 <div className="my-4 text-center">
                     <span className='text-xl mr-4 text-gray-900 font-semibold'>Vehicle Issue :</span>
@@ -55,6 +55,10 @@ export const View = () => {
                   month: '2-digit',
                   day: '2-digit'
                 })}</span>
+                </div>
+                <div className="my-4 text-center">
+                    <span className='text-xl mr-4 text-gray-900 font-semibold'>Availability : </span>
+                    <span className='text-lg mr-4 text-gray-900 font-semibold'>{order.availability}</span>
                 </div>
 
                 <Link to={`/Mdashboard`}>
