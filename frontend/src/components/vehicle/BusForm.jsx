@@ -12,39 +12,61 @@ const BusForm = ({ formState, setFormState }) => {
         setFormState({ ...formState, [name]: file });
     };
 
+
     return (
       <div className='space-y-8'>
-                        <h1 className="text-lg font-bold">Add Bus Details</h1>
+            <h1 className="text-xl font-bold">Add Bus Details</h1>
                         
                         <div className='flex flex-row'>
                         <h3 className='text-s font-bold'>Performance</h3>
                         <div className="border-b-2 ml-2 border-black w-full"></div>
                         </div>
 
-                        <div className='flex flex-row'>
+                        <div className="col-span-1 w-full flex flex-col mb-4 ">     
+                        <label className="block text-gray-700 text-md font-bold mb-2" htmlFor="vehicleType">Bus type:</label>
+                        <select className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="vanType" name="vehicleType" value={formState.vehicleType} onChange={handleChange} >
+                          <option value="van">Select</option>
+                            <option value="bus">Bus</option> 
+                    
+                         </select>
+                        </div>
+                      
+                    
+                    <div className="grid grid-cols-2 gap-x-4"> 
+                        <div className="col-span-1 w-full flex flex-col mb-4 ">     
                         <label className='ml-2 mr-1 font-semibold text-base' htmlFor="vehicleRegister">Register Number:</label>
-                        <input className='mr-8 pl-2 pr-2 ' type="text" id="vehicleRegister" name="vehicleRegister" value={formState.vehicleRegister} onChange={handleChange} />
-
+                        <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" id="vehicleRegister" name="vehicleRegister" value={formState.vehicleRegister} onChange={handleChange} />
+                        </div> 
+                        <div className="col-span-1 w-full flex flex-col mb-4 ">
                         <label className='ml-2 mr-1 font-semibold text-base' htmlFor="vehicleModel">Model Number:</label>
-                        <input className='mr-8 pl-2 pr-2 ' type="text" id="vehicleModel" name="vehicleModel" value={formState.vehicleModel} onChange={handleChange} />
+                        <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" id="vehicleModel" name="vehicleModel" value={formState.vehicleModel} onChange={handleChange} />
+                        </div>
+                        </div> 
 
+                        <div className="grid grid-cols-2 gap-x-4">
+                        <div className="col-span-1 w-full flex flex-col mb-4 ">   
                         <label className='ml-2 mr-1 font-semibold text-base' htmlFor="vehicleManuYear">Year of Manufactured:</label>
-                        <input className='mr-8 pl-2 pr-2' type="text" id="vehicleManuYear" name="vehicleManuYear" value={formState.vehicleManuYear} onChange={handleChange} />
-                        </div>  
-
-                        <div>
+                        <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" id="vehicleManuYear" name="vehicleManuYear" value={formState.vehicleManuYear} onChange={handleChange} />
+                        </div> 
+                        <div className="col-span-1 w-full flex flex-col mb-4 ">
                         <label className='ml-2 mr-2 font-semibold text-base' htmlFor="engineCap">Engine Capacity:</label>
-                        <input className='mr-12 pl-2 pr-2' type="number" id="engineCap" name="engineCap" value={formState.engineCap} onChange={handleChange}  placeholder='0cc' />
+                        <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="number" id="engineCap" name="engineCap" value={formState.engineCap} onChange={handleChange}  placeholder='0cc' />
+                        </div>
+                        </div>
 
+                        <div className="grid grid-cols-2 gap-x-4">
+                        <div className="col-span-1 w-full flex flex-col mb-4 ">
                         <label className='ml-2 mr-2 font-semibold text-base' htmlFor="lastMileage">Last Mileage:</label>
-                        <input className='mr-12 pl-2 pr-2' type="number" id="lastMileage" name="lastMileage" value={formState.lastMileage} onChange={handleChange} />
-
+                        <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="number" id="lastMileage" name="lastMileage" value={formState.lastMileage} onChange={handleChange} />
+                        </div>
+                        <div className="col-span-1 w-full flex flex-col mb-4 ">
                         <label className='ml-2 mr-2 font-semibold text-base' htmlFor="vehicleGearSys">Vehicle Transmisstion:</label>
-                        <select className='mr-12 pl-2 pr-2' id="vehicleGearSys" name="vehicleGearSys" value={formState.vehicleGearSys} onChange={handleChange} >
+                        <select className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="vehicleGearSys" name="vehicleGearSys" value={formState.vehicleGearSys} onChange={handleChange} >
                                     <option value="">Select</option>
                                     <option value="auto">Auto</option> 
                                     <option value="manual">Manual</option>                
                         </select>
+                        </div>
                         </div>
                         
                         <div className='flex flex-row'>
@@ -52,76 +74,100 @@ const BusForm = ({ formState, setFormState }) => {
                         <div className="border-b-2 ml-2 border-black w-full"></div>
                         </div>
     
-                        <div>
+                        <div className="grid grid-cols-2 gap-x-4">
+                        <div className="col-span-1 w-full flex flex-col mb-4 ">     
                         <label className='ml-2 mr-2 font-semibold text-base' htmlFor="vehicleColour">Colour of Vehicle:</label>
-                        <input className='mr-12 pl-2 pr-2' type="text" id="vehicleColour" name="vehicleColour" value={formState.vehicleColour} onChange={handleChange} />
-                       
+                        <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" id="vehicleColour" name="vehicleColour" value={formState.vehicleColour} onChange={handleChange} />
+                        </div> 
+                        <div className="col-span-1 w-full flex flex-col mb-4 ">
                         <label className='ml-2 mr-2 font-semibold text-base' htmlFor="airCon">Air Condition:</label>
-                        <select className='mr-12 pl-2 pr-2' id="airCon" name="airCon" value={formState.airCon} onChange={handleChange} >
+                        <select className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="airCon" name="airCon" value={formState.airCon} onChange={handleChange} >
                                     <option value="">Select</option>
                                     <option value="yes">Yes</option> 
                                     <option value="no">No</option>                
                         </select>
                         </div>
-
-                        <div>
-                        <label className='ml-2 mr-2 font-semibold text-base' htmlFor="numOfSeats">Number of Seats without Driver:</label>
-                        <input className='mr-12 pl-2 pr-2' type="number" id="numOfSeats" name="numOfSeats" value={formState.numOfSeats} onChange={handleChange} />
-
-                        <label className='ml-2 mr-2 font-semibold text-base' htmlFor="lugSpace">Vehicle Luggage Space:</label>
-                        <input className='mr-12 pl-2 pr-2' type="number" id="lugSpace" name="lugSpace" value={formState.lugSpace} onChange={handleChange} />
                         </div>
 
-                        <div>
+                        <div className="grid grid-cols-2 gap-x-4">
+                        <div className="col-span-1 w-full flex flex-col mb-4 ">    
+                        <label className='ml-2 mr-2 font-semibold text-base' htmlFor="numOfSeats">Number of Seats without Driver:</label>
+                        <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="number" id="numOfSeats" name="numOfSeats" value={formState.numOfSeats} onChange={handleChange} />
+                        </div>
+                        <div className="col-span-1 w-full flex flex-col mb-4 ">
+                        <label className='ml-2 mr-2 font-semibold text-base' htmlFor="lugSpace">Vehicle Luggage Space:</label>
+                        <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="number" id="lugSpace" name="lugSpace" value={formState.lugSpace} onChange={handleChange} />
+                        </div>
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-x-4">
+                        <div className="col-span-1 w-full flex flex-col mb-4 ">    
                         <label className='ml-2 mr-2 font-semibold text-base' htmlFor="gps">GPS :</label>
-                        <select className='mr-12 pl-2 pr-2' id="gps" name="gps" value={formState.gps} onChange={handleChange} >
+                        <select className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="gps" name="gps" value={formState.gps} onChange={handleChange} >
                                     <option value="">Select</option>
                                     <option value="available">Available</option> 
                                     <option value="no">No</option>                
                         </select>
+                        </div>
+                        <div className="col-span-1 w-full flex flex-col mb-4 ">
                         <label className='ml-2 mr-2 font-semibold text-base' htmlFor="fridge">Mini fridge :</label>
-                        <select className='mr-12 pl-2 pr-2' id="fridge" name="fridge" value={formState.fridge} onChange={handleChange} >
+                        <select className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="fridge" name="fridge" value={formState.fridge} onChange={handleChange} >
                                     <option value="">Select</option>
                                     <option value="available">Available</option> 
                                     <option value="no">No</option>                
                         </select>
+                        </div>
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-x-4">
+                        <div className="col-span-1 w-full flex flex-col mb-4 ">    
                         <label className='ml-2 mr-2 font-semibold text-base' htmlFor="tv">TV :</label>
-                        <select className='mr-12 pl-2 pr-2' id="tv" name="tv" value={formState.tv} onChange={handleChange} >
+                        <select className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="tv" name="tv" value={formState.tv} onChange={handleChange} >
                                     <option value="">Select</option>
                                     <option value="available">Available</option> 
                                     <option value="no">No</option>                
                         </select>
+                        </div>
                         </div>
 
                         <div className='flex flex-row'>
-                        <h3 className='text-s font-bold'>Documentary</h3>
-                        <div className="border-b-2 ml-2 border-black w-full"></div>
-                        </div>
+                          <h3 className='text-s font-bold'>Documentary</h3>
+                         <div className="border-b-2 ml-2 border-black w-full"></div>
+                         </div>
+
+                            <div className="grid grid-cols-2 gap-x-4">
+                            <div className="col-span-1 w-full flex flex-col mb-4 ">    
+                           <label className="block text-gray-700 text-md font-bold mb-2" htmlFor="licEndDate">Vehicle Licence End Date:</label>
+                            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="date" id="licEndDate" name="licEndDate" value={formState.licEndDate} onChange={handleChange} />
+                            </div>
+                           <div className="col-span-1 w-full flex flex-col mb-4 ">
+                           <label className="block text-gray-700 text-md font-bold mb-2" htmlFor="insEndDate">Vehicle Insurance End Date:</label>
+                           <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="date" id="insEndDate" name="insEndDate" value={formState.insEndDate} onChange={handleChange} />
+                           </div>
+                           </div>
     
-                        <div>
-                        <label className='ml-2 mr-2 font-semibold text-base' htmlFor="licEndDate">Vehicle Licence End Date:</label>
-                        <input className='mr-12 pl-2 pr-2' type="date" id="licEndDate" name="licEndDate" value={formState.licEndDate} onChange={handleChange} />
+                          <div className="grid grid-cols-2 gap-x-4">
+                           <div className="col-span-1 w-full flex flex-col mb-4 "> 
+                           <label className="block text-gray-700 text-md font-bold mb-2" htmlFor="vehicleBookImage">Vehicle Book Image:</label>
+                           <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="file" id="vehicleBookImage" name="vehicleBookImage" accept="image/*" onChange={handleFileChange} />
+                          </div>
 
-                        <label className='ml-2 mr-2 font-semibold text-base' htmlFor="insEndDate">Vehicle Insurance End Date:</label>
-                        <input className='mr-12 pl-2 pr-2' type="date" id="insEndDate" name="insEndDate" value={formState.insEndDate} onChange={handleChange} />
-                        </div>
-                         
-                        <div> 
-                        <label className='ml-2 mr-2 font-semibold text-base' htmlFor="vehicleBookImage">Vehicle Book Image:</label>
-                        <input className='mr-12' type="file" id="vehicleBookImage" name="vehicleBookImage" accept="image/*" onChange={handleFileChange} />
-                        </div>
+                           <div className="col-span-1 w-full flex flex-col mb-4 ">
+                             <label className="block text-gray-700 text-md font-bold mb-2" htmlFor="vehicleLicenceImage">Updated Licence Image:</label>
+                             <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="file" id="vehicleLicenceImage" name="vehicleLicenceImage" accept="image/*" onChange={handleFileChange} />
+                              </div>
+                           </div>
 
-                        <div>
-                        <label className='ml-2 mr-2 font-semibold text-base' htmlFor="vehicleLicenceImage">Updated Licence Image:</label>
-                        <input className='mr-12' type="file" id="vehicleLicenceImage" name="vehicleLicenceImage" accept="image/*" onChange={handleFileChange} />
-                        </div>
+                          <div className="grid grid-cols-2 gap-x-4">
+                          <div className="col-span-1 w-full flex flex-col mb-4 ">
+                          <label className="block text-gray-700 text-md font-bold mb-2" htmlFor="vehicleInsuImage">Updated Insurance Image:</label>
+                          <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="file" id="vehicleInsuImage" name="vehicleInsuImage" accept="image/*" onChange={handleFileChange} />
+                         </div>
 
-                        <div>
-                        <label className='ml-2 mr-2 font-semibold text-base' htmlFor="vehicleInsuImage">Updated Insurance Image:</label>
-                        <input className='mr-12' type="file" id="vehicleInsuImage" name="vehicleInsuImage" accept="image/*" onChange={handleFileChange} />
-                        </div>
-
-                    </div>
+                   </div>
+                   
+        </div>           
+                
     
     );
 };
