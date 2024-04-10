@@ -53,8 +53,9 @@ const Navbar = () => {
                       <div className="ml-0">
                           <button className="w-full py-2 px-4 text-start hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => navigate('/vehicle')}>Vehicle Dashboard</button>
                           <button className="w-full py-2 px-4 text-start hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => navigate('/vehicle/add')}>Add Vehicle</button>
-                          <button className="w-full py-2 px-4 text-start hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => handleItemClick('Vehicle Management', 'Vehicle Reports')}>Vehicle Reports</button>
+                          <button className="w-full py-2 px-4 text-start hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => navigate('/vehicle/report')}, 'Vehicle Reports')}>Vehicle Reports</button>
                           <button className="w-full py-2 px-4 text-start hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => handleItemClick('Vehicle Management', 'View Vehicles')}>Alers</button>  
+
                       </div>
                   )}
               </div>
@@ -66,8 +67,8 @@ const Navbar = () => {
                   </button>
                   {isOpen.maintenance && (
                       <div className="ml-6">
-                          <button className="w-full py-2 px-4 text-start hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => handleItemClick('Maintenance Management', 'Schedule Maintenance')}>Schedule Maintenance</button>
-                          <button className="w-full py-2 px-4 text-start hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => handleItemClick('Maintenance Management', 'Record Maintenance')}>Record Maintenance</button>
+                          <button className="w-full py-2 px-4 text-start hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() =>navigate('/Mdashboard')}>Schedule Maintenance</button>
+                          <button className="w-full py-2 px-4 text-start hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => navigate('/VehicleserviceList')}>Record Maintenance</button>
                           <button className="w-full py-2 px-4 text-start hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => handleItemClick('Maintenance Management', 'View Maintenance Logs')}>View Maintenance Logs</button>
                       </div>
                   )}
@@ -81,8 +82,8 @@ const Navbar = () => {
                   {isOpen.hire && (
                       <div className="ml-6">
                           <button className="w-full py-2 px-4 text-start hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => navigate('/hires')}>Dashboard</button>
-                          <button className="w-full py-2 px-4 text-start hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => handleItemClick('Hire Management', 'Sub Fun')}>Sub Fun</button>
-                          <button className="w-full py-2 px-4 text-start hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => handleItemClick('Hire Management', 'Sub Fun')}>Sub Fun</button>
+                          <button className="w-full py-2 px-4 text-start hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => navigate('/hires/add')}>Add Hire</button>
+                          <button className="w-full py-2 px-4 text-start hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => navigate('/hires/rates')}>Hire Rates</button>
                       </div>
                   )}
               </div>

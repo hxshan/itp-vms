@@ -1,18 +1,13 @@
 import { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
-
 import {validateFormFirstPage, validateFormSecondPage} from './Validation';
 import axios from '@/api/axios';
 import useAxios from '@/hooks/useAxios'
+import {useNavigate} from "react-router-dom";
 
-const Form = ({setShowForm }) => { 
+const Form = () => { 
   const [step, setStep] = useState(1);
 
-  Form.propTypes = {
-    showForm: PropTypes.bool.isRequired,
-    setShowForm: PropTypes.func.isRequired,
-  };
-
+  const navigate = useNavigate();
 
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
@@ -54,6 +49,7 @@ const Form = ({setShowForm }) => {
     advancedPayment,
     hireStatus: "Pending"
   }
+  
 
   //Handle Submit
   const submit =async (e) => {
@@ -62,7 +58,7 @@ const Form = ({setShowForm }) => {
   
     const confirm = window.confirm("Are you sure")
     if(confirm){
-      setShowForm(false)
+      navigate('/hires', { replace: true, state: { forceRefresh: true } });
 
       
       await axiosFetch({
@@ -85,10 +81,53 @@ const Form = ({setShowForm }) => {
     
   }
 
- 
+  if (loading) {
+    return <p>Loading...</p>;
+  }
 
+  //Fetch Vehicle Data
+  const [vehiclesData, vehiclesError, vehiclesLoading, axiosFetchVehicles] = useAxios()
+
+  const [vehcleTypes, setVehcleTypes] = useState(["Car", "Van" , "Bus", "Plane"])
+  const [vehcleSubTypes, setVehcleSubTypes] = useState(["Maruti" , "C200"])
+  const [availableDrivers, setavailableDrivers] = useState(["Chamara" , "Jonny", "Danny", "Chanchala"])
+
+  const fetchVehicleDetails = async () => {
+    axiosFetchVehicles({
+          axiosInstance: axios,
+          method: "GET",
+          url: "/vehicle/",
+      });
+  };
+
+  if(vehiclesError){
+    return(
+      <p>Can not Fetch Data</p>
+    )
+  }
+
+  //Filter Vehicles
+  const [filteredVehicles, setFilteredVehicles] = useState([]);
+  
+  const filterVehicles = () => {
+    console.log("Filter Vehicles")
+
+    console.log("Selected Vehicle : " + vehicleType)
+    const selectedVehicles = vehiclesData.vehicles.filter((vehicle) => vehicle.category.toLowerCase() === vehicleType.toLowerCase());
+    console.log(selectedVehicles)
+
+    setFilteredVehicles(selectedVehicles); 
+    if(selectedVehicles.length === 0 ){
+      console.log("No vehicles Available")
+      alert("No vehicles Available")
+    }
+
+
+  }
+
+  
   const cancel = () => {
-    setShowForm(false)
+    navigate('/hires')
   }
   
   const handleNextStep = (e) => {
@@ -119,15 +158,8 @@ const Form = ({setShowForm }) => {
     setStep(step - 1);
   };
 
-/*
-//Retreve data
-useEffect(() => {
 
-  fetchVehicleData();
-}, [])
-*/
-const [vehcleTypes, setVehcleTypes] = useState(["Car", "Van", "Lorry" , "Bus"])
-const [vehcleSubTypes, setVehcleSubTypes] = useState(["Maruti" , "C200"])
+
 
 /*
 const fetchVehicleData = async () => {
@@ -148,63 +180,130 @@ const fetchVehicleData = async () => {
 */
 
 //Calculate total
-const vehicleRates = {
-  Car: { baseRate: 8000, additionalRate: 100 },
-  Van: { baseRate: 10000, additionalRate: 110 },
-  Bus: { baseRate: 15000, additionalRate: 150 },
-  Lorry: { baseRate: 15000, additionalRate: 180 }
-};
 
-const calculateEstimatedFare= () => {
-  let estimatedFare = 0
-  let advancedPay = 0
+const [vehicleRates, Verror, Vloading, VaxiosFetch] = useAxios();
 
-  if (!vehicleType || !distence) {
-    console.log("Vehicle type or distance not selected");
-    return { estimatedFare: 0, advancedPay: 0 };
-  }
 
-  console.log("Calculating estimated fare...");
-  const { baseRate, additionalRate } = vehicleRates[vehicleType];
-  let estimatedDistence = distence
-
-  if(tripType === true) {
-    estimatedDistence = estimatedDistence * 2
+  const fetchVehicleRates = async () => {
+    VaxiosFetch({
+          axiosInstance: axios,
+          method: "GET",
+          url: "/hire/rates",
+      });
+  };
     
+  if(Verror){
+    return(
+      <p>Can not Fetch Data</p>
+    )
   }
+    
 
-  const baseDistance = 100;
-  const additionalDistance = Math.max(estimatedDistence - baseDistance, 0);
+/*
+    useEffect(() => {
+        const fetchVehicleRates = async () => {
+            try {
+                const response = await axios.get('http://localhost:3000/api/hire/rates');
+                setVehicleRates(response.data);
+            } catch (error) {
+                console.error('Error fetching vehicle rates:', error);
+            }
+        };
 
-  estimatedFare = baseRate + additionalDistance * additionalRate;
-  advancedPay = estimatedFare * 0.1;
+        fetchVehicleRates();
+    }, []);*/
 
-  estimatedFare = parseFloat(estimatedFare.toFixed(2))
-  advancedPay = Math.round(advancedPay)
+    const calculateEstimatedFare = async () => {
+      try {
+          if (!vehicleType || !distence) {
+              console.log("Vehicle type or distance not selected");
+              return { estimatedFare: 0, advancedPay: 0 };
+          }
+  
+          console.log("Calculating estimated fare...");
+  
+          // Fetch vehicle rates from the backend
+          //const response = await axios.get('http://localhost:3000/api/hire/rates');
+          //const vehicleRates = response.data;
 
-  return { estimatedFare, advancedPay };
+          
+  
+          // Find the rate for the selected vehicle type
+          console.log("Selected Vehicle : " + vehicleType)
+          const selectedVehicleRate = vehicleRates.find(rate => rate.vehicleCatagory.toLowerCase() === vehicleType.toLowerCase());
+          console.log(selectedVehicleRate)
+  
+          if (!selectedVehicleRate) {
+              console.log("Rate not found for the selected vehicle type");
+              return { estimatedFare: 0, advancedPay: 0 };
+          }
+  
+          const { baseRate, baseDistence, additionalRate } = selectedVehicleRate;
+          let estimatedFare = baseRate;
+          let advancedPay = 0;
+  
+          let estimatedDistence = distence;
+  
+          if (tripType) {
+              estimatedDistence *= 2;
+          }
+  
+          const baseDistance = baseDistence;
+          const additionalDistance = Math.max(estimatedDistence - baseDistance, 0);
+  
+          estimatedFare += additionalDistance * additionalRate;
+          advancedPay = estimatedFare * 0.1;
+  
+          estimatedFare = parseFloat(estimatedFare.toFixed(2));
+          advancedPay = Math.round(advancedPay);
 
-}
+          console.log("Catogory : " + selectedVehicleRate.vehicleCatagory)
+          console.log("Estimated Fare : " + estimatedFare)
+          console.log("Advanced Payment: " + advancedPay)
+          console.log("Base Distence : " +  baseDistance)
+  
+          return { estimatedFare, advancedPay, additionalRate };
+      } catch (error) {
+          console.error('Error calculating estimated fare:', error);
+          return { estimatedFare: 0, advancedPay: 0 };
+      }
+  };
+  
 
-useEffect(() => {
-  if (step === 4) {
-    const { estimatedFare, advancedPay } = calculateEstimatedFare();
-    setEstimatedTotal(estimatedFare);
-    setAdvancedPayment(advancedPay);
-  }
-}, [step, vehicleType, distence, tripType]);
+  useEffect(() => {
+    if (step === 4) {
+      const calculateFare = async () => {
+        const { estimatedFare, advancedPay } = await calculateEstimatedFare();
+        setEstimatedTotal(estimatedFare);
+        setAdvancedPayment(advancedPay);
+      };
+      calculateFare();
+    }
+  }, [step, vehicleType, distence, tripType]);
 
+  useEffect(() => {
+      fetchVehicleRates();
+
+      console.log("Vehicle Rates")
+      console.log(vehicleRates)
+    },[])
+
+    useEffect(() => {
+      fetchVehicleDetails()
+      console.log('vehiclesData')
+      console.log(vehiclesData)
+    }, [])
+
+    useEffect(() => {
+      if(step === 2) {
+        filterVehicles()
+      }
+    }, [step, vehicleType])
+  
 
   return (
     <div className="w-full h-full flex bg-gray-200 px-2 py-[20px] justify-center align-center xl:px-[60px] xl:py-[50px]">
-
-      <div className="w-full h-full bg-white px-3 py-5 xl:px-10">
-        {/*Titile*/}
-        <div className="text-center pt-[10px] pb-8 border-b-2 border-[#37A000] ">
-          <h1 className="text-2xl font-semibold xl:text-4xl">Add Hire</h1>
-        </div>
-
-        <form>
+        <form className="w-full h-full bg-white px-3 py-5 xl:px-10">
           {/* Form */}
           {step === 1 && (
             <div className="mt-10  w-full border-2 border-black pt-5 px-4 xl:px-12 xl:py-10">
@@ -347,9 +446,9 @@ useEffect(() => {
                       required
                       >
                         <option value="">Select Vehicle</option>
-                        <option value={"CHJ-2233"}>CHJ-2233</option>
-                        <option value={"CHJ-2233"}>CHJ-2233</option>
-
+                        {filteredVehicles.map((vehicle) => (
+                          <option key={vehicle.id} value={vehicle._id}>{vehicle.vehicleRegister}</option>
+                        ))}
                     </select>
 
                   </div>
@@ -366,10 +465,9 @@ useEffect(() => {
                       required
                       >
                         <option value="">Select Driver</option>
-                        <option value={"Chamara"}>Chamara</option>
-                        <option value={"Chanchala"}>Chanchala</option>
-                        <option value={"Danny"}>Danny</option>
-                        <option value={"Jonny"}>Jonny</option>
+                          {availableDrivers.map((type) => (
+                            <option key={type.id} value={type}>{type}</option>
+                          ))}
                     </select>
                   </div>
 
@@ -628,7 +726,7 @@ useEffect(() => {
 
         </form>
         
-      </div>
+      
     </div>
   );
 };

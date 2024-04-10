@@ -1,9 +1,9 @@
 // validation.js
 
 // Function to validate vehicle type
-export const validateVehicleType = (vrtype) => {
+export const validateVehicleType = (category) => {
     
-    if (!vrtype) {
+    if (!category) {
         alert('Please select the vehicle type.');
         return false;
     }
@@ -12,8 +12,8 @@ export const validateVehicleType = (vrtype) => {
 };
 
 // Function to validate vehicle ID
-export const validateVehicleId = (vrid) => {
-    if (vrid.length < 7) {
+export const validateVehicleId = (vehicleRegister) => {
+    if (vehicleRegister.length < 7) {
         alert('Enter the valid vehicle number ');
         return false;
     }
@@ -45,6 +45,22 @@ export const validateVehicleCost = (vrcost) => {
 export const validateAdditionalInfo = (vraddit) => {
     if (!vraddit) {
         alert('Please Note');
+        return false;
+    }
+    return true;
+};
+
+export const validateSDate = (vrsdate) => {
+    if (!(new Date(vrsdate) >= new Date())) {
+        alert('Start date must be a future date');
+        return false;
+    }
+    return true;
+};
+
+export const validateEDate = (vrsdate,vredate) => {
+    if (!(new Date(vrsdate) <= new Date(vredate))) {
+        alert('End date must be greater than start date');
         return false;
     }
     return true;

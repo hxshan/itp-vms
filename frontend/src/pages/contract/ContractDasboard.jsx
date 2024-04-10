@@ -1,20 +1,24 @@
 import React from "react";
-import useAxiosGet from "@/hooks/useAxiosGet";
+import useAxios from "@/hooks/useAxios";
 import { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom'
+import axios from "@/api/axios";
 
 const ContractDasboard = () => {
 
 
   const navigate = useNavigate();
 
+  const [data, error, loading, axiosFetch] = useAxios()
 
-  const {
-    data: Contracts,
-    error,
-    isLoading,
-    refetch,
-  } = useAxiosGet("/contract/getAllContracts");
+  const getContracts =()=>{
+    axiosFetch({
+     axiosInstance: axios,
+     method: "GET",
+     url: `/contract/getAllContracts`,
+   });
+ }
+  
 
 
   const [allContracts, SetallContracts] = useState([]);
@@ -33,10 +37,17 @@ const ContractDasboard = () => {
   };
 
   useEffect(() => {
-    if (Contracts) {
-      SetallContracts(Contracts);
+    if(error){
+      alert(error)
     }
-  }, [Contracts]);
+    else if (data) {
+      SetallContracts(data);
+    }
+  }, [data]);
+
+  useEffect(()=>{
+    getContracts()
+  },[])
 
   const titles = [
     { name: "Client NIC", width: "w-[200px]" },
@@ -46,6 +57,13 @@ const ContractDasboard = () => {
     { name: "Status", width: "w-[200px]" },
     { name: "Options", width: "w-[200px]" },
   ];
+
+
+  if(loading){
+    return(
+      <h1>Loading ...</h1>
+    )
+  }
 
   return (
     <div className="w-full h-full py-5">
