@@ -49,6 +49,7 @@ const Form = () => {
     advancedPayment,
     hireStatus: "Pending"
   }
+  
 
   //Handle Submit
   const submit =async (e) => {
@@ -87,7 +88,7 @@ const Form = () => {
   //Fetch Vehicle Data
   const [vehiclesData, vehiclesError, vehiclesLoading, axiosFetchVehicles] = useAxios()
 
-  const [vehcleTypes, setVehcleTypes] = useState(["Car", "Van" , "Bus"])
+  const [vehcleTypes, setVehcleTypes] = useState(["Car", "Van" , "Bus", "Plane"])
   const [vehcleSubTypes, setVehcleSubTypes] = useState(["Maruti" , "C200"])
   const [availableDrivers, setavailableDrivers] = useState(["Chamara" , "Jonny", "Danny", "Chanchala"])
 
@@ -118,6 +119,7 @@ const Form = () => {
     setFilteredVehicles(selectedVehicles); 
     if(selectedVehicles.length === 0 ){
       console.log("No vehicles Available")
+      alert("No vehicles Available")
     }
 
 
