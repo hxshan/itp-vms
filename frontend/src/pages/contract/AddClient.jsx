@@ -1,227 +1,421 @@
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom';
-
-
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import useAxios from "@/hooks/useAxios";
+import axios from "@/api/axios";
+import { ToastContainer, toast } from 'react-toastify';
 
 const AddClient = () => {
+  const navigate = useNavigate();
 
-    const navigate = useNavigate();
+  const [openComp, setopenComp] = useState(false);
 
-    const [openComp,setopenComp] = useState(false);
-    
-    const [clientData,setclientData] = useState({
-        firstName:'',
-        lastName:'',
-        gender:'',
-        dob:'',
-        phoneNumber:'',
-        nicNumber:'',
-        email:'',
-        licenceNumber:'',
-        address:'',
-        Comp_status:false,
-        companyName:'',
-        Reg_num:'',
-        TAX_num:'',
-        legal_struc:'',
-        companyEmail:'',
-        companyPhone:'',
-        companyAddress:'',
-    })
+  const [clientData, setclientData] = useState({
+    firstName: "",
+    lastName: "",
+    gender: "",
+    dob: "",
+    phoneNumber: "",
+    nicNumber: "",
+    email: "",
+    licenceNumber: "",
+    Address: "",
+    Comp_Available: "",
+    Comp_Name: "",
+    Reg_Num: "",
+    Tax_Num: "",
+    Legal_struc: "",
+    Comp_Email: "",
+    Comp_Phone: "",
+    Comp_Address: "",
+  });
 
-    
 
-    const handleInput = (e) =>{
-        const {name,value} = e.target;
+  const [client, error, isLoading, FetchClient] = useAxios();
 
-        if(name === "Comp_status"){
-            const isCompanyAvailable = value === "true";
-    
-            if(!isCompanyAvailable){
-                setclientData({
-                    ...clientData,
-                    Comp_status: isCompanyAvailable,
-                    companyName: '',
-                    Reg_num: '',
-                    TAX_num: '',
-                    legal_struc: '',
-                    companyEmail: '',
-                    companyPhone: '',
-                    companyAddress: ''
-                });
-                setopenComp(false)
-            } else {
-                setopenComp(true);
-                setclientData({
-                    ...clientData,
-                    Comp_status: isCompanyAvailable
-                });
-            }
-        } else {
-            setclientData({
-                ...clientData,
-                [name]: value
-            });
+  const handleInput = (e) => {
+    const { name, value } = e.target;
+
+    if (name === "Comp_Available") {
+      const isCompanyAvailable = value === "true";
+
+      if (!isCompanyAvailable) {
+        setclientData({
+          ...clientData,
+          Comp_Available: "false",
+          Comp_Name: "",
+          Reg_Num: "",
+          Tax_Num: "",
+          Legal_struc: "",
+          Comp_Email: "",
+          Comp_Phone: "",
+          Comp_Address: "",
+        });
+        setopenComp(false);
+      } else {
+        setopenComp(true);
+        setclientData({
+          ...clientData,
+          Comp_Available: "true",
+        });
+      }
+    } else {
+      setclientData({
+        ...clientData,
+        [name]: value,
+      });
+    }
+  };
+
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const emailReg=/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
+    const nameReg = /^[a-zA-Z]+$/;
+    const phoneReg = /^\d{10}$/;
+    const nicReg = /^\d{12}$/;
+    const licenseReg = /^[a-zA-Z0-9]+$/;
+    const regNumReg = /^[a-zA-Z0-9]+$/;
+    const taxNumReg = /^[a-zA-Z0-9]+$/;
+
+    if (!clientData.firstName || !clientData.firstName.match(nameReg)) {
+        toast.error("Invalid First Name");
+        return;
+    } else if (!clientData.lastName || !clientData.lastName.match(nameReg)) {
+        toast.error("Invalid Last Name");
+        return;
+    } else if (!clientData.gender) {
+        toast.error("Invalid Gender");
+        return;
+    } else if (!clientData.dob) {
+        toast.error("Enter Date of Birth");
+        return;
+    } else {
+        const birthDate = new Date(clientData.dob);
+        const today = new Date();
+        let age = today.getFullYear() - birthDate.getFullYear();
+        const monthDiff = today.getMonth() - birthDate.getMonth();
+        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
         }
+        if (age < 18) {
+            toast.error("Age should be greater than 18");
+            return;
         }
-
-    
-
-    const handleSubmit = ()=>{
-        console.log(clientData)
+    }
+    if (!clientData.phoneNumber || !clientData.phoneNumber.match(phoneReg)) {
+        toast.error("Invalid Phone number");
+        return;
+    } else if (!clientData.nicNumber || !clientData.nicNumber.match(nicReg)) {
+        toast.error("Invalid NIC number");
+        return;
+    } else if (!clientData.email || !clientData.email.match(emailReg)) {
+        toast.error("Invalid Email Address");
+        return;
+    } else if (clientData.licenceNumber && !clientData.licenceNumber.match(licenseReg)) {
+        toast.error("Invalid license number");
+        return;
+    } else if (!clientData.Address) {
+        toast.error("Enter Address");
+        return;
+    } else if (!clientData.Comp_Available) {
+        toast.error("Choose Company Availability");
+        return;
+    } else if (clientData.Comp_Available) {
+        if (!clientData.Comp_Name) {
+            toast.error("Enter Company Name");
+            return;
+        } else if (!clientData.Reg_Num || !clientData.Reg_Num.match(regNumReg)) {
+            toast.error("Invalid Registration number");
+            return;
+        } else if (!clientData.Tax_Num || !clientData.Tax_Num.match(taxNumReg)) {
+            toast.error("Invalid Tax number");
+            return;
+        } else if (!clientData.Legal_struc) {
+            toast.error("Please select Legal Structure");
+            return;
+        } else if (!clientData.Comp_Email || !clientData.Comp_Email.match(emailReg)) {
+            toast.error("Invalid Company email");
+            return;
+        } else if (!clientData.Comp_Phone || !clientData.Comp_Phone.match(phoneReg)) {
+            toast.error("Invalid Company Phone number");
+            return;
+        } else if (!clientData.Comp_Address) {
+            toast.error("Enter Company Address");
+            return;
+        }
     }
 
+
+    
+
+         await FetchClient({
+          axiosInstance: axios,
+          method: "POST",
+          url: `/contract/createClient`,
+          requestConfig: {
+            data: { ...clientData },
+          },
+        });
+
+  };
+
+  
+
+
+
   return (
-    <div className='w-full flex flex-col justify-center items-center py-5' >
+    <div className="w-full flex flex-col justify-center items-center py-5">
+      <div className="flex items-center justify-center mb-4">
+        <p className=" text-[50px] font-bold ">ADD CLIENT</p>
+        <ToastContainer/>
+      </div>
+      <p>{error}</p>
+      <div className="bg-[#D9D9D9] w-[90%] h-fit rounded-lg py-8 flex justify-evenly ">
+        <div>
+          <div className="flex gap-4 mb-3">
+            <div className="flex flex-col gap-1">
+              <label>First Name</label>
+              <input
+                type="text"
+                className="w-[220px]  rounded-lg  bg-white border-none p-2"
+                name="firstName"
+                onChange={handleInput}
+              />
+            </div>
 
+            <div className="flex flex-col gap-1">
+              <label>Last Name</label>
+              <input
+                type="text"
+                className="w-[220px]  rounded-lg  bg-white border-none p-2"
+                name="lastName"
+                onChange={handleInput}
+              />
+            </div>
+          </div>
 
-        <div className='flex items-center justify-center mb-4'>
-            <p className=' text-[50px] font-bold '>ADD CLIENT</p>
+          <div className="flex gap-4 mb-3">
+            <div className="flex flex-col gap-1">
+              <label>Gender</label>
+              <select
+                className="w-[220px]  rounded-lg  bg-white border-none p-2"
+                name="gender"
+                onChange={handleInput}
+              >
+                <option className="hidden">please select</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+              </select>
+            </div>
+
+            <div className="flex flex-col gap-1">
+              <label>Date of Birth</label>
+              <input
+                type="date"
+                className="w-[150px] h-10 rounded-lg  bg-white border-none px-2"
+                name="dob"
+                onChange={handleInput}
+              />
+            </div>
+          </div>
+
+          <div className="flex gap-4 mb-3">
+            <div className="flex flex-col gap-1">
+              <label>Phone number</label>
+              <input
+                type="text"
+                className="w-[220px]  rounded-lg  bg-white border-none p-2"
+                name="phoneNumber"
+                onChange={handleInput}
+              />
+            </div>
+
+            <div className="flex flex-col gap-1">
+              <label>NIC number</label>
+              <input
+                type="text"
+                className="w-[220px]  rounded-lg  bg-white border-none p-2"
+                name="nicNumber"
+                onChange={handleInput}
+              />
+            </div>
+          </div>
+
+          <div className="flex gap-4 mb-3">
+            <div className="flex flex-col gap-1">
+              <label>Email</label>
+              <input
+                type="text"
+                className="w-[220px]  rounded-lg  bg-white border-none p-2"
+                name="email"
+                onChange={handleInput}
+              />
+            </div>
+            <div className="flex flex-col gap-1">
+              <label>licence number</label>
+              <input
+                type="text"
+                className="w-[220px]  rounded-lg  bg-white border-none p-2"
+                placeholder="optional"
+                name="licenceNumber"
+                onChange={handleInput}
+              />
+            </div>
+          </div>
+
+          <div className="flex flex-col mb-4">
+            <label>Address</label>
+            <textarea
+              className="h-[200px] w-[456px]  border-none rounded-lg mt-1"
+              name="Address"
+              onChange={handleInput}
+            ></textarea>
+          </div>
+
+          <div className="flex flex-col gap-1 mb-4">
+            <label>Upload NIC</label>
+            <input type="file" />
+          </div>
         </div>
-        <div className='bg-[#D9D9D9] w-[90%] h-fit rounded-lg py-8 flex justify-evenly '>
 
+        <div className="flex flex-col justify-between">
+          <div>
             <div>
-                <div className='flex gap-4 mb-3'>
-            <div className='flex flex-col gap-1'>
-                <label>First Name</label>
-                <input type='text' className='w-[220px]  rounded-lg  bg-white border-none p-2' name='firstName' onChange={handleInput}/>
-            </div>
-
-            <div className='flex flex-col gap-1'>
-                <label>Last Name</label>
-                <input type='text' className='w-[220px]  rounded-lg  bg-white border-none p-2' name='lastName' onChange={handleInput}/>
-            </div>
-            </div>
-
-            <div className='flex gap-4 mb-3'>
-            <div className='flex flex-col gap-1'>
-                <label>Gender</label>
-                <select className='w-[220px]  rounded-lg  bg-white border-none p-2' name='gender' onChange={handleInput}>
-                    <option className='hidden'>please select</option>
-                    <option value="Male" >Male</option>
-                    <option value="Female" >Female</option>
-                </select>
-            </div>
-
-            <div className='flex flex-col gap-1'>
-                <label>Date of Birth</label>
-                <input type='date'className='w-[150px] h-10 rounded-lg  bg-white border-none px-2' name='dob' onChange={handleInput}/>
-            </div>
-            </div>
-
-            <div className='flex gap-4 mb-3'>
-            <div className='flex flex-col gap-1'>
-                <label>Phone number</label>
-                <input type='text' className='w-[220px]  rounded-lg  bg-white border-none p-2' name='phoneNumber' onChange={handleInput}/>
-            </div>
-
-            <div className='flex flex-col gap-1'>
-                <label>NIC number</label>
-                <input type='text' className='w-[220px]  rounded-lg  bg-white border-none p-2' name='nicNumber' onChange={handleInput}/>
-            </div>
-            </div>
-
-            <div className='flex gap-4 mb-3'>
-            <div className='flex flex-col gap-1'>
-                <label>Email</label>
-                <input type='text' className='w-[220px]  rounded-lg  bg-white border-none p-2' name='email' onChange={handleInput}/>
-            </div>
-            <div className='flex flex-col gap-1'>
-                <label>licence number</label>
-                <input type='text' className='w-[220px]  rounded-lg  bg-white border-none p-2' placeholder='optional' name='licenceNumber' onChange={handleInput}/>
-            </div>
-            </div>
-
-            <div className='flex flex-col mb-4'>
-                <label>Address</label>
-                <textarea className='h-[200px] w-[456px]  border-none rounded-lg mt-1' name='address' onChange={handleInput}></textarea>
-            </div>
-
-            
-
-            <div className='flex flex-col gap-1 mb-4'>
-                <label>Upload NIC</label>
-                <input type='file'/>
-            </div>
-            </div>
-
-            <div className='flex flex-col justify-between'>
-            <div >
-            <div >
-            <div className='flex flex-col gap-1 mb-3'>
+              <div className="flex flex-col gap-1 mb-3">
                 <label>Company Available</label>
-                <select className='w-[120px]  rounded-lg  bg-white border-none p-2' name='Comp_status' onChange={handleInput}>
-                    <option className='hidden'>please select</option>
-                    <option value="true">Yes</option>
-                    <option value="false">No</option>
+                <select
+                  className="w-[120px]  rounded-lg  bg-white border-none p-2"
+                  name="Comp_Available"
+                  onChange={handleInput}
+                >
+                  <option className="hidden">please select</option>
+                  <option value="true">Yes</option>
+                  <option value="false">No</option>
                 </select>
-            </div>
+              </div>
 
-            <div className={`${openComp?'':' invisible'}`}>
-            <div className='flex gap-4 mb-3'>
-            <div className='flex flex-col gap-1 '>
-                <label>Company name</label>
-                <input type='text' className='w-[220px]  rounded-lg  bg-white border-none p-2' name='companyName' onChange={handleInput}/>
-            </div>
+              <div className={`${openComp ? "" : " invisible"}`}>
+                <div className="flex gap-4 mb-3">
+                  <div className="flex flex-col gap-1 ">
+                    <label>Company name</label>
+                    <input
+                      type="text"
+                      className="w-[220px]  rounded-lg  bg-white border-none p-2"
+                      name="Comp_Name"
+                      onChange={handleInput}
+                    />
+                  </div>
 
-            <div className='flex flex-col gap-1'>
-                <label>Registration number</label>
-                <input type='text' className='w-[220px]  rounded-lg  bg-white border-none p-2' name='Reg_num' onChange={handleInput}/>
-            </div>
-            </div>
+                  <div className="flex flex-col gap-1">
+                    <label>Registration number</label>
+                    <input
+                      type="text"
+                      className="w-[220px]  rounded-lg  bg-white border-none p-2"
+                      name="Reg_Num"
+                      onChange={handleInput}
+                    />
+                  </div>
+                </div>
 
-            <div className='flex gap-4 mb-3'>
-            <div className='flex flex-col gap-1'>
-                <label>Tax number</label>
-                <input type='text' className='w-[220px]  rounded-lg  bg-white border-none p-2' name='TAX_num' onChange={handleInput}/>
-            </div>
-            <div className='flex flex-col gap-1'>
-                <label>Legal structure</label>
-                <select className='w-[220px]  rounded-lg  bg-white border-none p-2' name='legal_struc' onChange={handleInput}>
-                    <option className='hidden' value="">please select</option>
-                    <option value="Sole Proprietorship" >Sole Proprietorship</option>
-                    <option value="Partnership">Partnership</option>
-                    <option value="Limited Liability Company" >Limited Liability Company (LLC)</option>
-                    <option value="Corporation" >Corporation</option>
-                    <option value="Nonprofit Organization">Nonprofit Organization</option>
-                    <option value="Professional Corporation">Professional Corporation (PC)</option>
-                    <option value="Professional Limited Liability Company">Professional Limited Liability Company (PLLC)</option>
-                    <option value="Benefit Corporation">Benefit Corporation (B Corp)</option>
-                    <option value="Joint Venture">Joint Venture</option>
-                </select>
-            </div>
-            </div>
-            
-            <div className='flex gap-4 mb-3'>
-            <div className='flex flex-col gap-1'>
-                <label>Company email</label>
-                <input type='text' className='w-[220px]  rounded-lg  bg-white border-none p-2' name='companyEmail' onChange={handleInput}/>
-            </div>
+                <div className="flex gap-4 mb-3">
+                  <div className="flex flex-col gap-1">
+                    <label>Tax number</label>
+                    <input
+                      type="text"
+                      className="w-[220px]  rounded-lg  bg-white border-none p-2"
+                      name="Tax_Num"
+                      onChange={handleInput}
+                    />
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <label>Legal structure</label>
+                    <select
+                      className="w-[220px]  rounded-lg  bg-white border-none p-2"
+                      name="Legal_struc"
+                      onChange={handleInput}
+                    >
+                      <option className="hidden" value="">
+                        please select
+                      </option>
+                      <option value="Sole Proprietorship">
+                        Sole Proprietorship
+                      </option>
+                      <option value="Partnership">Partnership</option>
+                      <option value="Limited Liability Company">
+                        Limited Liability Company (LLC)
+                      </option>
+                      <option value="Corporation">Corporation</option>
+                      <option value="Nonprofit Organization">
+                        Nonprofit Organization
+                      </option>
+                      <option value="Professional Corporation">
+                        Professional Corporation (PC)
+                      </option>
+                      <option value="Professional Limited Liability Company">
+                        Professional Limited Liability Company (PLLC)
+                      </option>
+                      <option value="Benefit Corporation">
+                        Benefit Corporation (B Corp)
+                      </option>
+                      <option value="Joint Venture">Joint Venture</option>
+                    </select>
+                  </div>
+                </div>
 
-            <div className='flex flex-col gap-1'>
-                <label>Company phone</label>
-                <input type='text' className='w-[220px]  rounded-lg  bg-white border-none p-2' name='companyPhone' onChange={handleInput}/>
-            </div>
-            </div>
+                <div className="flex gap-4 mb-3">
+                  <div className="flex flex-col gap-1">
+                    <label>Company email</label>
+                    <input
+                      type="text"
+                      className="w-[220px]  rounded-lg  bg-white border-none p-2"
+                      name="Comp_Email"
+                      onChange={handleInput}
+                    />
+                  </div>
 
-            <div className='flex flex-col mb-4'>
-                <label>Address</label>
-                <textarea className='h-[200px] w-[456px]  border-none rounded-lg mt-1' name='companyAddress' onChange={handleInput}></textarea>
-            </div>
-            </div>
-            
-            </div>
-            
-            </div>
-            <div className='flex justify-end gap-4'>
-                <button className=" bg-green-600 px-5 py-2 rounded-xl w-[120px] " onClick={handleSubmit}>Add</button>
-                <button className=" bg-orange-600 px-5 py-2 rounded-xl w-[120px] " onClick={()=>{navigate(`/client`)}}>Cancel</button>
-            </div>
-            </div>
+                  <div className="flex flex-col gap-1">
+                    <label>Company phone</label>
+                    <input
+                      type="text"
+                      className="w-[220px]  rounded-lg  bg-white border-none p-2"
+                      name="Comp_Phone"
+                      onChange={handleInput}
+                    />
+                  </div>
+                </div>
 
+                <div className="flex flex-col mb-4">
+                  <label>Address</label>
+                  <textarea
+                    className="h-[200px] w-[456px]  border-none rounded-lg mt-1"
+                    name="Comp_Address"
+                    onChange={handleInput}
+                  ></textarea>
+                </div>
+              </div>
             </div>
-            </div>
-  )
-}
+          </div>
+          <div className="flex justify-end gap-4">
+            <button
+              className=" bg-green-600 px-5 py-2 rounded-xl w-[120px] "
+              onClick={handleSubmit}
+            >
+              Add
+            </button>
+            <button
+              className=" bg-orange-600 px-5 py-2 rounded-xl w-[120px] "
+              onClick={() => {
+                navigate(`/client`);
+              }}
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
-export default AddClient
+export default AddClient;

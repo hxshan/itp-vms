@@ -25,22 +25,46 @@ const clientSchema =new Schema({
     },
     nicNumber:{
         type:String,
-        required:true
+        required:false
     },
     email:{
         type:String,
         required: true,
     },
-    password:{
+    Address:{
         type:String,
-        required:true
+        required: true,
     },
     status:{
         type:String,
-        required:true
+        required:false
     },  
     licenceNumber:{
         type:String
+    },
+    Comp_Available:{
+        type:Boolean
+    },
+    Comp_Name:{
+        type:String,
+    },
+    Reg_Num:{
+        type:String,
+    },
+    Tax_Num:{
+        type:String,
+    },
+    Legal_struc:{
+        type:String,
+    },
+    Comp_Email:{
+        type:String,
+    },
+    Comp_Phone:{
+        type:String,
+    },
+    Comp_Address:{
+        type:String,
     },
     contractID:{
         type:mongoose.Schema.Types.ObjectId,
