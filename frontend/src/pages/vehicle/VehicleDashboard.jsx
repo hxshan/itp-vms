@@ -36,7 +36,7 @@ const VehicleDashboard = () => {
 
   useEffect(() => {
     if (data) {
-      console.log('Backend Response:', data);
+      
     }
   }, [data]);
 
@@ -105,17 +105,19 @@ const VehicleDashboard = () => {
           </div>
         );
         
-      case 'unavalable':
-        return <UnavailableTable />;
-      default:
-        return null;
+      // case 'unavalable':
+      //   return <UnavailableTable />;
+      //   <button className= "m-1 p-2 bg-blue-500 text-zinc-50 rounded-md text-sm font-semibold  hover:bg-slate-500 ease-in-out duration-300" onClick={() => setActiveComponent('unavalable')}>Unavailable vehicles</button>
+      // default:
+      //   return null;
       
-      case 'deleted':
-        return (
-          <div>
-            <DeletedTable />
-          </div>
-        );
+      // case 'deleted':
+      //   return (
+      //     <div>
+      //       <DeletedTable />
+      //       <button className= "m-1 p-2 bg-blue-500 text-zinc-50 rounded-md text-sm font-semibold  hover:bg-slate-500 ease-in-out duration-300" onClick={() => setActiveComponent('deleted')}>Deleted vehicle</button>
+      //     </div>
+      //   );
     }
   };
 
@@ -197,15 +199,6 @@ const VehicleDashboard = () => {
              </div>
              </div>
              </div>
-            
-
-             <div className="space-y-2 p-3 pl-10 bg-white rounded-md pad">  
-               <div className="text-sm p-2 bg-slate-200 text-black font-semibold rounded-md pad">Available Vehicle <h1 className='text-lime-600 text-xl'>{data.availableCount}</h1> </div>
-               <div className="text-sm p-2 bg-slate-200 text-black font-semibold rounded-md pad">Under Maintance Vehicle<h1 className='text-red-500 text-lg'>{data.underMaintanceCount}</h1></div>
-               <div className="text-sm p-2 bg-slate-200 text-black font-semibold rounded-md pad">Under Client Vehicle<h1 className='text-black text-lg'> {data.underClientCount}</h1> </div>
-               <div className="text-sm p-2 bg-slate-200 text-black font-semibold rounded-md pad">Under Special Task Vehicle<h1 className='text-black text-lg'>{data.underSpecialTaskCount}</h1></div>
-               <div className="text-sm p-2 bg-slate-200 text-black font-semibold rounded-md pad">Under Inactive Vehicle<h1 className='text-black text-lg'>{data.underInactiveCount}</h1></div>
-             </div> 
             </div>
 
             
@@ -215,8 +208,8 @@ const VehicleDashboard = () => {
              <button className= "m-1 p-2 bg-blue-500 text-zinc-50 rounded-md text-sm font-semibold  hover:bg-red-500 ease-in-out duration-300" onClick={() => navigate()}>Report Generate</button>
              <button className= "m-1 p-2 bg-blue-500 text-zinc-50 rounded-md text-sm font-semibold  hover:bg-slate-500 ease-in-out duration-300" onClick={() => setActiveComponent('summary')}>Vehicle Summary</button>
              <button className= "m-1 p-2 bg-blue-500 text-zinc-50 rounded-md text-sm font-semibold  hover:bg-slate-500 ease-in-out duration-300" onClick={() => setActiveComponent('newAdded')}>Newly added</button>
-             <button className= "m-1 p-2 bg-blue-500 text-zinc-50 rounded-md text-sm font-semibold  hover:bg-slate-500 ease-in-out duration-300" onClick={() => setActiveComponent('unavalable')}>Unavailable vehicles</button>
-             <button className= "m-1 p-2 bg-blue-500 text-zinc-50 rounded-md text-sm font-semibold  hover:bg-slate-500 ease-in-out duration-300" onClick={() => setActiveComponent('deleted')}>Deactive vehicle</button>
+             
+             
              </div>
 
             

@@ -139,16 +139,12 @@ const VehicleSearch = () => {
                           Edit
                         </button>
 
-                        <button className="my-1 mx-1 bg-green-700 text-white py-1 px-4 rounded-md text-sm">
-                          Avalability
-                        </button>
-
                         <button
                           className="my-1 mx-1 bg-red-700 text-white py-1 px-4 rounded-md text-sm"
                           id={vehicle._id}
                           onClick={(e)=>{deactiveVehicle(e)}}
                         >
-                          Deactive
+                          Delete
                         </button>
           
                 </td>

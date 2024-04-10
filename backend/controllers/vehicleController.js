@@ -14,7 +14,7 @@ const addVehicle = async (req, res, next) => {
         if (category === 'car' || category === 'van' || category === 'bus' ) {
          const { vehicleType, vehicleRegister,vehicleModel,vehicleManuYear,engineCap,lastMileage,vehicleColour,vehicleGearSys,airCon,numOfSeats,lugSpace,gps,fridge,tv,licEndDate,insEndDate,statusVehicle} = req.body;
             
-            if(!vehicleRegister || !vehicleModel || !vehicleManuYear || !engineCap || !lastMileage || !vehicleGearSys){
+            if(!vehicleType || !vehicleRegister || !vehicleModel || !vehicleManuYear || !engineCap || !lastMileage || !vehicleGearSys){
                 return next(new HttpError("Please fill all feiled under Performance.", 400))
             }
 
@@ -36,30 +36,15 @@ const addVehicle = async (req, res, next) => {
             if (existingVehicleByModel) {
                 return next(new HttpError("Vehicle with the same model already exists.", 400));
             }
+
     
-            const newVehicle = await Vehicles.create({ category,vehicleType, vehicleRegister,vehicleModel,vehicleManuYear,engineCap,lastMileage,vehicleColour,vehicleGearSys,airCon,numOfSeats,lugSpace,gps,fridge,tv,licEndDate,insEndDate,statusVehicle});
+            const newVehicle = await Vehicles.create({ category,vehicleType, vehicleRegister,vehicleModel,vehicleManuYear,engineCap,lastMileage,vehicleColour,vehicleGearSys,airCon,numOfSeats,lugSpace,gps,fridge,tv,licEndDate,insEndDate,statusVehicle,availability:[]});
             
             if (!newVehicle) {
                 return next(new HttpError("Vehicle couldn't be created.", 422));
             }
 
-            const vehicleId = await Vehicles.findOne({ vehicleRegister: req.body.vehicleRegister });
-
-            try {
-                const newAvailability = await Availability.create({
-                    vehicle: vehicleId,
-                    status: 'Just added',
-                    unavailableStartDate: '',
-                    unavailableEndDate: '',
-                });
-
-                res.status(201).json(newAvailability);
-
-            } catch (error) {
-                console.error('Error creating availability:', error);
-
-            }
-  
+            
              res.status(201).json(newVehicle);
     
 
@@ -326,7 +311,7 @@ const getVehicles = async (req, res, next) => {
         const busCount = await Vehicles.countDocuments({ category: 'bus' });
         const lorryCount = await Vehicles.countDocuments({ category: 'lorry' });
         const truckCount = await Vehicles.countDocuments({ category: 'truck' });
-        const availableCount = await Vehicles.countDocuments({ availability: 'available' });
+       // const availableCount = await Vehicles.countDocuments({ availability: 'available' });
         const underMaintanceCount = await Vehicles.countDocuments({ status: 'maintance' });
         const underClientCount = await Vehicles.countDocuments({ status: 'clinetBase' });
         const underSpecialTaskCount = await Vehicles.countDocuments({ status: 'specialTask' });
@@ -361,7 +346,7 @@ const getVehicles = async (req, res, next) => {
         const truck = await Vehicles.find({category: 'truck'}).sort({ updatedAt: -1 });
         const newAdded = await Vehicles.find(query).sort({ updatedAt: -1 });
 
-        res.status(200).json({vehiclesCount,carCount, vanCount, busCount, lorryCount, truckCount ,availableCount,underMaintanceCount,underClientCount,underSpecialTaskCount,underInactiveCount, vehicles ,vehiclesRecover, car , van , bus , lorry , truck , newAdded});
+        res.status(200).json({vehiclesCount,carCount, vanCount, busCount, lorryCount, truckCount ,underMaintanceCount,underClientCount,underSpecialTaskCount,underInactiveCount, vehicles ,vehiclesRecover, car , van , bus , lorry , truck , newAdded});
 
     } catch (error) {
         return next (new HttpError(error))

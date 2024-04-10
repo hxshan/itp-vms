@@ -12,6 +12,7 @@ const BusForm = ({ formState, setFormState }) => {
         setFormState({ ...formState, [name]: file });
     };
 
+
     return (
       <div className='space-y-8'>
             <h1 className="text-xl font-bold">Add Bus Details</h1>
@@ -19,6 +20,15 @@ const BusForm = ({ formState, setFormState }) => {
                         <div className='flex flex-row'>
                         <h3 className='text-s font-bold'>Performance</h3>
                         <div className="border-b-2 ml-2 border-black w-full"></div>
+                        </div>
+
+                        <div className="col-span-1 w-full flex flex-col mb-4 ">     
+                        <label className="block text-gray-700 text-md font-bold mb-2" htmlFor="vehicleType">Bus type:</label>
+                        <select className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="vanType" name="vehicleType" value={formState.vehicleType} onChange={handleChange} >
+                          <option value="van">Select</option>
+                            <option value="bus">Bus</option> 
+                    
+                         </select>
                         </div>
                       
                     

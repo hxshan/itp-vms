@@ -55,7 +55,7 @@ const AddVehicle = () => {
         window.addEventListener('online', handleOnlineStatus);
         window.addEventListener('offline', handleOnlineStatus);
     
-        // Cleanup event listeners on component unmount
+        
         return () => {
           window.removeEventListener('online', handleOnlineStatus);
           window.removeEventListener('offline', handleOnlineStatus);
