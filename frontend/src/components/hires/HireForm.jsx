@@ -89,7 +89,6 @@ const Form = () => {
 
   const [vehcleTypes, setVehcleTypes] = useState(["Car", "Van" , "Bus"])
   const [vehcleSubTypes, setVehcleSubTypes] = useState(["Maruti" , "C200"])
-  const [availableVehicles, setAvailableVehicles] = useState(["CHJ-2233", "CGF-5568"])
   const [availableDrivers, setavailableDrivers] = useState(["Chamara" , "Jonny", "Danny", "Chanchala"])
 
   const fetchVehicleDetails = async () => {
