@@ -1,26 +1,40 @@
 import React from 'react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import useAxios from '@/hooks/useAxios';
+
 import {
     validateVehicleType,
     validateVehicleId,
     validateVehicleIssue,
     validateVehicleCost,
-    validateAdditionalInfo
+    validateAdditionalInfo,
+    validateSDate,
+    validateEDate
+
 } from './validation';
 
 
 export const CreateMaintainceForm = () => {
     const [files, setFiles] = useState([]);
+    const [searchinput, setSearchinput] = useState('');
+    const [data, error, loading, axiosFetch] = useAxios()
+    const currentDate = new Date().toISOString().split('T')[0];
+
+
     const [formdata, setFormdata] = useState({
-        //type change into vrtype
-        vrtype: '',
-        vrid: '',
+        //type change into category
+        
+        vehicleRegister: '',
         vrissue: '',
         vrcost: '',
         vraddit: '',
+        vrsdate: currentDate,
+        vredate: '',
+        availability: 'Unavailable'
     });
+
     const navigate = useNavigate();
     const handleSubmit = () => {
         if (!validateForm()) {
@@ -34,11 +48,14 @@ export const CreateMaintainceForm = () => {
                 console.log('Submission successful:', response);
                 // Optionally, you can reset the form after successful submission
                 setFormdata({
-                    vrtype: '',
-                    vrid: '',
+                   
+                    vehicleRegister: '',
                     vrissue: '',
                     vrcost: '',
                     vraddit: '',
+                    vrsdate: '',
+                    vredate: '',
+                    availability: 'Unavailable'
                 });
 
                 navigate('/Mdashboard');
@@ -49,27 +66,31 @@ export const CreateMaintainceForm = () => {
             });
     };
 
+
     const validateForm = () => {
         return (
-            validateVehicleType(formdata.vrtype) &&
-            validateVehicleId(formdata.vrid) &&
+           
+            validateVehicleId(formdata.vehicleRegister) &&
             validateVehicleIssue(formdata.vrissue) &&
             validateVehicleCost(formdata.vrcost) &&
-            validateAdditionalInfo(formdata.vraddit)
+            validateAdditionalInfo(formdata.vraddit)&&
+            // validateSDate(formdata.vrsdate)&&
+            validateEDate(formdata.vrsdate,formdata.vredate)
         );
     };
     const handlechange = (e) => {
-        if (e.target.id === 'Car' || e.target.id === 'Van' || e.target.id === 'Bus' || e.target.id === 'Mover' || e.target.id === 'Lorry') {
-            setFormdata({
-                ...formdata,
-                vrtype: e.target.id
-            })
-        }
-        if (e.target.id === 'vrid' || e.target.id === 'vrissue' || e.target.id === 'vrcost' || e.target.id === 'vraddit') {
+       
+        if (e.target.id === 'vehicleRegister' || e.target.id === 'vrissue' || e.target.id === 'vrcost' || e.target.id === 'vraddit' || e.target.id === 'vrsdate' || e.target.id === 'vredate') {
             setFormdata({
                 ...formdata,
                 [e.target.id]: e.target.value
             })
+        }
+        if (e.target.id === 'availability') {
+            setFormdata({
+                ...formdata,
+                availability: e.target.value
+            });
         }
     }
 
@@ -88,52 +109,18 @@ export const CreateMaintainceForm = () => {
                 <form className='flex flex-col gap-4 md:flex-row' onSubmit={handleSubmit}>
                     <div className="w-full">
 
-                        <label className=' text-lg font-semibold  '>Vehicle type</label>
-                        <div className="flex justify-evenly my-2 ">
-
-                            <div className="flex ">
-
-                                <input type="checkbox" id="Car" className='w-5'
-                                    onChange={handlechange}
-                                    checked={formdata.vrtype === 'Car'} />
-                                <span className='font-semibold ml-2'>Car</span>
-                            </div>
-                            <div className="flex ">
-                                <input type="checkbox" id="Van" className='w-5'
-                                    onChange={handlechange}
-                                    checked={formdata.vrtype === 'Van'} />
-                                <span className='font-semibold ml-2'>Van</span>
-                            </div>
-                            <div className="flex ">
-                                <input type="checkbox" id="Bus" className='w-5'
-                                    onChange={handlechange}
-                                    checked={formdata.vrtype === 'Bus'} />
-                                <span className='font-semibold ml-2'>Bus</span>
-                            </div>
-                            <div className="flex ">
-                                <input type="checkbox" id="Mover" className='w-5'
-                                    onChange={handlechange}
-                                    checked={formdata.vrtype === 'Mover'} />
-                                <span className='font-semibold ml-2'>Prime Mover</span>
-                            </div>
-                            <div className="flex ">
-                                <input type="checkbox" id="Lorry" className='w-5'
-                                    onChange={handlechange}
-                                    checked={formdata.vrtype === 'Lorry'} />
-                                <span className='font-semibold ml-2'>Lorry</span>
-                            </div>
-                        </div>
+                       
                         <div className='flex flex-col gap-5 mt-9'>
                             <label className='  font-semibold  '>Vehicle Number</label>
                             <input
                                 type="text"
-                                id='vrid'
+                                id='vehicleRegister'
                                 placeholder='AAA1234 OR AA-1234 OR 12-1234'
                                 className='border p-2 rounded-lg'
                                 maxLength='7'
                                 required
                                 onChange={handlechange}
-                                value={formdata.vrid} />
+                                value={formdata.vehicleRegister} />
                             <label className='  font-semibold  '>Fault of the Vehicle</label>
                             <textarea
                                 type="text"
@@ -166,6 +153,36 @@ export const CreateMaintainceForm = () => {
                         </div>
                     </div>
                     <div className="mt-5 flex flex-col justify-center items-center w-full">
+
+                        <div className="flex flex-col gap-5 mb-5 items-center">
+                            <div className="flex items-center gap-4">
+                                <label className='  font-semibold' >Start Date :</label>
+                                <input type='date'
+                                    id='vrsdate'
+                                    className='rounded-lg p-2'
+                                    onChange={handlechange}
+                                    value={formdata.vrsdate} />
+                            </div>
+                            <div className="flex  items-center gap-4">
+                                <label className='  font-semibold'>End Date :</label>
+                                <input type='date'
+                                    className='rounded-lg p-2'
+                                    id='vredate'
+                                    onChange={handlechange}
+                                    value={formdata.vredate } />
+                            </div>
+                            <div className='flex gap-4 justify-between items-center'>
+                            <label className='  font-semibold'>Availability :</label>
+                            <select
+                                id='availability'
+                                className='rounded-lg p-2'
+                                onChange={handlechange}
+                                value={formdata.availability}>
+                                <option value='available'>Available</option>
+                                <option value='Unavailable'>Unavailable</option>
+                            </select>
+                        </div>
+                        </div>
                         <p className='font-medium'>
                             Format Images :
                             <span
