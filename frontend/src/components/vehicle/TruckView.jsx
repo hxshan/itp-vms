@@ -1,6 +1,6 @@
 import React from 'react'
 
-const TruckView = () => {
+const TruckView = ({formData}) => {
   return (
     <div className='space-y-8'>
                         <h1 className="text-xl font-bold">View Truck Details</h1>
@@ -26,40 +26,40 @@ const TruckView = () => {
 
                         <div className="grid grid-cols-2 gap-x-4">
                         <div className="col-span-1 w-full flex flex-col mb-4 ">
-                        <label className='ml-2 mr-1 font-semibold text-base' htmlFor="vehicleManuYear">Year of Manufactured:</label>
+                        <label className="block text-gray-700 text-md font-bold mb-2" htmlFor="vehicleManuYear">Year of Manufactured:</label>
                         <p>{formData.vehicleManuYear}</p>
                         </div>  
                         <div className="col-span-1 w-full flex flex-col mb-4 ">
-                        <label className='ml-2 mr-2 font-semibold text-base' htmlFor="engineCap">Engine Capacity:</label>
+                        <label className="block text-gray-700 text-md font-bold mb-2" htmlFor="engineCap">Engine Capacity:</label>
                         <p>{formData.engineCap}</p>
                         </div>
                         </div>   
 
                         <div className="grid grid-cols-2 gap-x-4">
                         <div className="col-span-1 w-full flex flex-col mb-4 ">  
-                        <label className='ml-2 mr-2 font-semibold text-base' htmlFor="vehicleGearSys">Vehicle Transmisstion:</label>
+                        <label className="block text-gray-700 text-md font-bold mb-2" htmlFor="vehicleGearSys">Vehicle Transmisstion:</label>
                         <p>{formData.vehicleGearSys}</p>
                         </div>
                         <div className="col-span-1 w-full flex flex-col mb-4 ">
-                        <label className='ml-2 mr-2 font-semibold text-base' htmlFor="lastMileage">Last Mileage:</label>
+                        <label className="block text-gray-700 text-md font-bold mb-2" htmlFor="lastMileage">Last Mileage:</label>
                         <p>{formData.lastMileage}</p>
                         </div>
                         </div>
 
                         <div className="grid grid-cols-2 gap-x-4">
                         <div className="col-span-1 w-full flex flex-col mb-4 ">
-                        <label className='ml-2 mr-2 font-semibold text-base' htmlFor="vehicleWeight">Vehicle Weight:</label>
+                        <label className="block text-gray-700 text-md font-bold mb-2" htmlFor="vehicleWeight">Vehicle Weight:</label>
                         <p>{formData.vehicleWeight}</p>
                         </div>
                         <div className="col-span-1 w-full flex flex-col mb-4 ">
-                        <label className='ml-2 mr-2 font-semibold text-base' htmlFor="trailerLength">Max trailer length:</label>
+                        <label className="block text-gray-700 text-md font-bold mb-2" htmlFor="trailerLength">Max trailer length:</label>
                         <p>{formData.trailerLength}</p>
                         </div>
                         </div>
 
                         <div className="grid grid-cols-2 gap-x-4">
                         <div className="col-span-1 w-full flex flex-col mb-4 ">
-                        <label className='ml-2 mr-2 font-semibold text-base' htmlFor="cargoCapacity">Cargo Capacity:</label>
+                        <label className="block text-gray-700 text-md font-bold mb-2" htmlFor="cargoCapacity">Cargo Capacity:</label>
                         <p>{formData.cargoCapacity}</p>
                         </div>
                         </div>  
@@ -71,34 +71,34 @@ const TruckView = () => {
 
                         <div className="grid grid-cols-2 gap-x-4">    
                         <div className="col-span-1 w-full flex flex-col mb-4 ">          
-                        <label className='ml-2 mr-2 font-semibold text-base' htmlFor="airCon">Air Condition:</label>
+                        <label className="block text-gray-700 text-md font-bold mb-2" htmlFor="airCon">Air Condition:</label>
                         <p>{formData.airCon}</p>
                         </div>   
                         <div className="col-span-1 w-full flex flex-col mb-4 ">
-                        <label className='ml-2 mr-2 font-semibold text-base' htmlFor="numOfSeats">Number of Seats without Driver:</label>
+                        <label className="block text-gray-700 text-md font-bold mb-2" htmlFor="numOfSeats">Number of Seats without Driver:</label>
                         <p>{formData.numOfSeats}</p>
                         </div>
                         </div>
                         
                         <div className="grid grid-cols-2 gap-x-4">
                         <div className="col-span-1 w-full flex flex-col mb-4 ">
-                        <label className='ml-2 mr-2 font-semibold text-base' htmlFor="gps">GPS :</label>
+                        <label className="block text-gray-700 text-md font-bold mb-2" htmlFor="gps">GPS :</label>
                         <p>{formData.gps}</p>
                         </div>
                         <div className="col-span-1 w-full flex flex-col mb-4 ">   
-                        <label className='ml-2 mr-2 font-semibold text-base' htmlFor="passengerCabin">Passenger Cabin:</label>
+                        <label className="block text-gray-700 text-md font-bold mb-2" htmlFor="passengerCabin">Passenger Cabin:</label>
                         <p>{formData.passengerCabin}</p>
                         </div>
                         </div>
 
                         <div className="grid grid-cols-2 gap-x-4">
                         <div className="col-span-1 w-full flex flex-col mb-4 ">
-                        <label className='ml-2 mr-2 font-semibold text-base' htmlFor="fridge">Mini fridge :</label>
-                        <p>{formState.fridge}</p>
+                        <label className="block text-gray-700 text-md font-bold mb-2" htmlFor="fridge">Mini fridge :</label>
+                        <p>{formData.fridge}</p>
                         </div>  
                         <div className="col-span-1 w-full flex flex-col mb-4 ">
-                        <label className='ml-2 mr-2 font-semibold text-base' htmlFor="tv">TV :</label>
-                        <p>{formState.tv}</p>
+                        <label className="block text-gray-700 text-md font-bold mb-2" htmlFor="tv">TV :</label>
+                        <p>{formData.tv}</p>
                         </div>
                         </div>
                         

@@ -18,22 +18,6 @@ const DeletedVehicle = () => {
     })
   }
 
-  // const RecoverVehicle =async(e) => {
-  //   e.preventDefault()
-  //   if(confirm("Are you sure you want to Delete the following")){
-  //     await axiosFetch({
-  //       axiosInstance: axios,
-  //       method: "PATCH",
-  //       url: `/vehicle/recover/${e.target.id}`,
-  //     });
-  //     if(!error){
-        
-  //       setReload(reload + 1);
-  //       toast.success('Vehicle recoved successfully!');
-  //     } 
-  //   }
-  // };
-
 
   const RecoverVehicle = async (e) => {
     e.preventDefault();
@@ -93,7 +77,7 @@ const DeletedVehicle = () => {
     <div className='w-full place-content-center space-y-4 mt-8 bg-cover bg-center bg-white mb-10'>
       
         <div className="border-b-4 border-black w-full"></div>
-        <div className='text-2xl font-bold text-black mt-4'>Inactive Vehicle</div>
+        <div className='text-2xl font-bold text-black mt-4'>Deactive Vehicle</div>
 
         <ToastContainer />
         

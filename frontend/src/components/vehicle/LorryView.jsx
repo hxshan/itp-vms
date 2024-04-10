@@ -11,55 +11,55 @@ const LorryView = ({formData}) => {
                <div className="col-span-1 w-full flex flex-col mb-4 ">
                <label className="block text-gray-700 text-md font-bold mb-2" htmlFor="vehicleType">Lorry Type:</label>
                <p>{formData.vehicleType}</p>
-                </div>
+        </div>
 
       <div className="grid grid-cols-2 gap-x-4">
       <div className="col-span-1 w-full flex flex-col mb-4 ">  
-      <label className='ml-2 mr-2 font-semibold text-base' htmlFor="vehicleRegister">Register Number:</label>
+      <label className="block text-gray-700 text-md font-bold mb-2" htmlFor="vehicleRegister">Register Number:</label>
       <p>{formData.vehicleRegister}</p>
       </div>
       <div className="col-span-1 w-full flex flex-col mb-4 ">
-      <label className='ml-2 mr-1 font-semibold text-base' htmlFor="vehicleModel">Model Number:</label>
+      <label className="block text-gray-700 text-md font-bold mb-2" htmlFor="vehicleModel">Model Number:</label>
       <p>{formData.vehicleModel}</p>
       </div>
       </div>
 
       <div className="grid grid-cols-2 gap-x-4">  
       <div className="col-span-1 w-full flex flex-col mb-4 ">
-      <label className='ml-2 mr-1 font-semibold text-base' htmlFor="vehicleManuYear">Year of Manufactured:</label>
+      <label className="block text-gray-700 text-md font-bold mb-2" htmlFor="vehicleManuYear">Year of Manufactured:</label>
       <p>{formData.vehicleManuYear}</p>
       </div> 
       <div className="col-span-1 w-full flex flex-col mb-4 ">
-      <label className='ml-2 mr-2 font-semibold text-base' htmlFor="engineCap">Engine Capacity:</label>
+      <label className="block text-gray-700 text-md font-bold mb-2" htmlFor="engineCap">Engine Capacity:</label>
       <p>{formData.engineCap}</p>
       </div>
       </div>
 
       <div className="grid grid-cols-2 gap-x-4">
       <div>
-      <label className='ml-2 mr-2 font-semibold text-base' htmlFor="lastMileage">Last Mileage:</label>
+      <label className="block text-gray-700 text-md font-bold mb-2" htmlFor="lastMileage">Last Mileage:</label>
       <p>{formData.lastMileage}</p>
       </div>
       <div className="col-span-1 w-full flex flex-col mb-4 ">
-      <label className='ml-2 mr-2 font-semibold text-base' htmlFor="vehicleGearSys">Vehicle Transmisstion:</label>
+      <label className="block text-gray-700 text-md font-bold mb-2" htmlFor="vehicleGearSys">Vehicle Transmisstion:</label>
       <p>{formData.vehicleGearSys}</p>
       </div>
       </div>
 
       <div className="grid grid-cols-2 gap-x-4">
       <div className="col-span-1 w-full flex flex-col mb-4 ">
-      <label className='ml-2 mr-2 font-semibold text-base' htmlFor="vehicleWeight">Vehicle Weight:</label>
+      <label className="block text-gray-700 text-md font-bold mb-2" htmlFor="vehicleWeight">Vehicle Weight:</label>
       <p>{formData.vehicleWeight}</p>
       </div>
       <div className="col-span-1 w-full flex flex-col mb-4 ">   
-      <label className='ml-2 mr-2 font-semibold text-base' htmlFor="cargoCapacity">Cargo Capacity:</label>
+      <label className="block text-gray-700 text-md font-bold mb-2" htmlFor="cargoCapacity">Cargo Capacity:</label>
       <p>{formData.cargoCapacity}</p>
       </div>
       </div>
       
       <div className="grid grid-cols-2 gap-x-4">
       <div className="col-span-1 w-full flex flex-col mb-4 ">
-      <label className='ml-2 mr-2 font-semibold text-base' htmlFor="cargoArea">Cargo Area:</label>
+      <label className="block text-gray-700 text-md font-bold mb-2" htmlFor="cargoArea">Cargo Area:</label>
       <p>{formData.cargoArea}</p>
       </div>
       </div>
@@ -72,19 +72,19 @@ const LorryView = ({formData}) => {
       
       <div className="grid grid-cols-2 gap-x-4">
       <div>
-      <label className='ml-2 mr-2 font-semibold text-base' htmlFor="airCon">Air Condition:</label>
+      <label className="block text-gray-700 text-md font-bold mb-2" htmlFor="airCon">Air Condition:</label>
       <p>{formData.airCon}</p>
       </div>
       
       <div className="col-span-1 w-full flex flex-col mb-4 ">
-      <label className='ml-2 mr-2 font-semibold text-base' htmlFor="numOfSeats">Number of Seats without Driver:</label>
+      <label className="block text-gray-700 text-md font-bold mb-2" htmlFor="numOfSeats">Number of Seats without Driver:</label>
       <p>{formData.numOfSeats}</p>
       </div>
       </div>
 
       <div className="grid grid-cols-2 gap-x-4">
       <div className="col-span-1 w-full flex flex-col mb-4 ">  
-      <label className='ml-2 mr-2 font-semibold text-base' htmlFor="gps">GPS :</label>
+      <label className="block text-gray-700 text-md font-bold mb-2" htmlFor="gps">GPS :</label>
       <p>{formData.gps}</p>
       </div>
       </div>

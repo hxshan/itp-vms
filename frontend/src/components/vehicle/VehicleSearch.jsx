@@ -42,7 +42,7 @@ const VehicleSearch = () => {
         alert('Vehicle deactive successfully!');
 
       } catch (error) {
-        
+
         toast.error('Failed to delete vehicle. Please try again later.');
       }
     }
@@ -108,6 +108,7 @@ const VehicleSearch = () => {
       <table className='w-full border-collapse border-spacing-2 border-black rounded-md pad shadow-xl p-5'>
         <thead className='bg-gray-800 text-white'>
           <tr>
+          <th className='border border-white p-2'>Vehicle Catagory</th>
             <th className='border border-white p-2'>Vehicle Type</th>
             <th className='border border-white p-2'>Vehicle Model</th>
             <th className='border border-white p-2'>Vehicle Register</th>
@@ -119,6 +120,7 @@ const VehicleSearch = () => {
         {filteredVehicles.length > 0 ? (
             filteredVehicles.map(vehicle => (
               <tr className="bg-white border-t border-gray-200" key={vehicle._id}>
+                <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{vehicle.category}</td>
                 <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{vehicle.vehicleType}</td>
                 <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{vehicle.vehicleModel}</td>
                 <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{vehicle.vehicleRegister}</td>

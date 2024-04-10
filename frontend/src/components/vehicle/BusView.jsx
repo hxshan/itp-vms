@@ -9,11 +9,7 @@ const BusView = ({formData}) => {
             <h3 className='text-s font-bold'>Performance</h3>
             <div className="border-b-2 ml-2 border-black w-full"></div>
             </div>
-            
-            <div className="col-span-1 w-full flex flex-col mb-4 ">
-            <label className="block text-gray-700 text-md font-bold mb-2" htmlFor="vehicleType">Bus Type:</label>
-            <p>{formData.vehicleType}</p>
-            </div>
+       
 
     <div className="grid grid-cols-2 gap-x-4">
     <div className="col-span-1 w-full flex flex-col mb-4 ">    
@@ -81,15 +77,15 @@ const BusView = ({formData}) => {
     <p>{formData.gps}</p>
     </div>
     <div className="col-span-1 w-full flex flex-col mb-4 ">
-    <label className='ml-2 mr-2 font-semibold text-base' htmlFor="fridge">Mini fridge :</label>
-    <p>{formState.fridge}</p>
+    <label className="block text-gray-700 text-md font-bold mb-2" htmlFor="fridge">Mini fridge :</label>
+    <p>{formData.fridge}</p>
     </div>
     </div> 
     
     <div className="grid grid-cols-2 gap-x-4">
         <div className="col-span-1 w-full flex flex-col mb-4 ">    
-        <label className='ml-2 mr-2 font-semibold text-base' htmlFor="tv">TV :</label>
-        <p>{formState.tv}</p>
+        <label className="block text-gray-700 text-md font-bold mb-2" htmlFor="tv">TV :</label>
+        <p>{formData.tv}</p>
     </div>
     </div>
 

@@ -84,7 +84,7 @@ fetchData();
       try {
         await axios.patch(`/vehicle/${id}`, formData);
 
-        toast.success('Vehicle updated successfully!');
+        alert('Vehicle updated successfully!');
         
         navigate('/vehicle')
 
