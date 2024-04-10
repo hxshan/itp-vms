@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import useAxiosGet from "@/hooks/useAxiosGet";
+import useAxios from "@/hooks/useAxios";
 import { useNavigate, useParams } from "react-router-dom";
+import axios from "@/api/axios";
 
 
 const ViewContract = () => {
@@ -13,6 +14,7 @@ const ViewContract = () => {
   const [contractData, setContractData] = useState({
     _id: "",
     Vehical: "",
+    Vehical_Type:"loading",
     contract_SD: "loading",
     contract_ED: "loading",
     Insurance_Source: "loading",
@@ -39,45 +41,58 @@ const ViewContract = () => {
     email: "loading",
   });
 
-  const {
-    data: Contract,
-    error,
-    isLoading,
-    refetch,
-  } = useAxiosGet(`/contract/getContract/${contractID}`);
+  const [data, error, loading, axiosFetch] = useAxios()
 
-  useEffect(() => {
-    if (Contract) {
+  const getContract =()=>{
+    axiosFetch({
+     axiosInstance: axios,
+     method: "GET",
+     url: `/contract/getContract/${contractID}`,
+   });
+ }
+
+ console.log(data)
+ 
+ useEffect(() => {
+
+if (data) {
       setContractData({
-        _id: Contract._id,
-        Vehical: Contract.Vehical,
-        contract_SD: Contract.contract_SD,
-        contract_ED: Contract.contract_ED,
-        Insurance_Source: Contract.Insurance_Source,
-        Insurace_provider: Contract.Insurace_provider,
-        Policy_Number: Contract.Policy_Number,
-        Coverage_Type: Contract.Coverage_Type,
-        Coverage_Amount: Contract.Coverage_Amount,
-        Deductible: Contract.Deductible,
-        Insurance_SD: Contract.Insurance_SD,
-        Insurance_ED: Contract.Insurance_ED,
-        Insurance_notes: Contract.Insurance_notes,
-        Payment_Amount: Contract.Payment_Amount,
-        Payment_Plan: Contract.Payment_Plan,
-        Payment_Date: Contract.Payment_Date,
-        Amount_Payed: Contract.Amount_Payed,
+        _id: data._id,
+        Vehical_Type:data.Vehical_Type,
+        Vehical: data.Vehical,
+        contract_SD: data.contract_SD,
+        contract_ED: data.contract_ED,
+        Insurance_Source: data.Insurance_Source,
+        Insurace_provider: data.Insurace_provider,
+        Policy_Number: data.Policy_Number,
+        Coverage_Type: data.Coverage_Type,
+        Coverage_Amount: data.Coverage_Amount,
+        Deductible: data.Deductible,
+        Insurance_SD: data.Insurance_SD,
+        Insurance_ED: data.Insurance_ED,
+        Insurance_notes: data.Insurance_notes,
+        Payment_Amount: data.Payment_Amount,
+        Payment_Plan: data.Payment_Plan,
+        Payment_Date: data.Payment_Date,
+        Amount_Payed: data.Amount_Payed,
       });
 
-      setclientData({
-        _id: Contract.clientID._id,
-        firstName: Contract.clientID.firstName,
-        lastName: Contract.clientID.lastName,
-        phoneNumber: Contract.clientID.phoneNumber,
-        nicNumber: Contract.clientID.nicNumber,
-        email: Contract.clientID.email,
-      });
+      if (data.clientID) {
+        setclientData({
+          _id: data.clientID._id,
+          firstName: data.clientID.firstName,
+          lastName: data.clientID.lastName,
+          phoneNumber: data.clientID.phoneNumber,
+          nicNumber: data.clientID.nicNumber,
+          email: data.clientID.email,
+        });
+      }
     }
-  }, [Contract]);
+  }, [data]);
+
+  useEffect(()=>{
+    getContract();
+  },[])
 
   return (
     <div>
@@ -100,7 +115,7 @@ const ViewContract = () => {
               <div>
                 <p>Client name</p>
                 <p className=" text-[#000ac2] font-semibold">
-                  {clientData.firstName} {clientData.lastName}
+                {clientData.firstName} {clientData.lastName}
                 </p>
               </div>
             </div>
@@ -133,6 +148,13 @@ const ViewContract = () => {
           <div className="  w-fit h-fit  pb-8 rounded-xl ">
             <div>
               <p className="text-[25px] font-bold">Rental Info</p>
+            </div>
+
+            <div>
+              <p>Vehical Type</p>
+              <p className=" text-[#000ac2] font-semibold">
+                {contractData.Vehical_Type}
+              </p>
             </div>
 
             <div>
