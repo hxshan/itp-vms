@@ -10,6 +10,7 @@ const app = express();
 
 
 app.use(express.json());
+app.use(express.static('uploads'))
 app.use(cors(corsOptions));
 app.use(coookieParser())
 const PORT = process.env.PORT || 3000;

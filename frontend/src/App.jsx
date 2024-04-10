@@ -28,6 +28,7 @@ import { UserProfile } from "./pages/admin";
 import {HireDashboard, CreateHire, EditHire, HireRates} from "./pages/hires/hires"
 import AddClient from "./pages/contract/AddClient";
 import { View } from '../src/components/VR/View';
+import UserReport from "./components/admin/UserReport";
 
 function App() {
   const { user, loading } = useAuthContext();
@@ -66,6 +67,7 @@ function App() {
                 )
               }
             />
+            <Route path="/admin/userreport/:id" element={<UserReport/>}/>
             <Route path="/admin/roles" element={<Roles />} />
             <Route path="/admin/roles/:id" element={<EditRoles />} />
 

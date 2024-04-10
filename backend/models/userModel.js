@@ -67,6 +67,9 @@ const userShema = new Schema({
     },
     licenceNumber:{
         type:String
+    },
+    empPhoto:{
+        type:String
     }
 })
 

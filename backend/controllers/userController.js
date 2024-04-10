@@ -26,7 +26,7 @@ const createUser = async (req, res) => {
       emergencyContacts,
     } = req.body;
 
-    console.log(req.body)
+ 
     if (!firstName || !lastName || !email || !password)
       return res.status(400).json({ msg: "Not all fields have been entered." });
   
@@ -45,8 +45,11 @@ const createUser = async (req, res) => {
       return res.status(400).json({ message: 'NIC document is required' });
     }
 
-    const nicDocumentPath = req.files.nicDocument.path||null;
-
+    const nicDocumentPath = req.files.nicDocument[0].path||null;
+    
+    const empPhotoName=req.files.empPhoto[0].filename;
+    console.log(req.files.empPhoto[0].filename)
+    console.log(empPhotoName)
     //match front and back names
     const user = new User({
       firstName,
@@ -66,6 +69,7 @@ const createUser = async (req, res) => {
       email:email.toLowerCase(),
       password: passwordHash,
       role,
+      empPhoto:empPhotoName
     });
     const parsedEmergencyContacts = JSON.parse(emergencyContacts);
 
