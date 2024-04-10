@@ -53,7 +53,7 @@ const Navbar = () => {
                       <div className="ml-0">
                           <button className="w-full py-2 px-4 text-start hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => navigate('/vehicle')}>Vehicle Dashboard</button>
                           <button className="w-full py-2 px-4 text-start hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => navigate('/vehicle/add')}>Add Vehicle</button>
-                          <button className="w-full py-2 px-4 text-start hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => navigate('/vehicle/report')}, 'Vehicle Reports')}>Vehicle Reports</button>
+                          <button className="w-full py-2 px-4 text-start hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => navigate('/vehicle/report')}>Vehicle Reports</button>
                           <button className="w-full py-2 px-4 text-start hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => handleItemClick('Vehicle Management', 'View Vehicles')}>Alers</button>  
 
                       </div>
