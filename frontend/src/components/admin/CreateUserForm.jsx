@@ -63,6 +63,7 @@ const CreateUserForm = () => {
 
   const[nicDocument,setNicDocument]=useState(null);
   const[licenceDoc,setLicenceDocument]=useState(null);
+  const[empPhoto,setEmpPhoto]=useState(null);
   const [currentForm, setCurrentForm] = useState(0);
   const [emergencyContacts, setEmergencyContacts] = useState([emptyContact]);
 
@@ -95,12 +96,13 @@ const CreateUserForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log(personalInfo)
     let emailReg=/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/
     if(!personalInfo.email.match(emailReg)){
       toast.error("Invalid Email Address")
       return
     }
-    if((personalInfo.role||personalInfo.department||personalInfo.empDate||personalInfo.baseSal||personalInfo.status)){
+    if((personalInfo.role||personalInfo.department||personalInfo.empDate||personalInfo.baseSal||personalInfo.status)===''){
       toast.error("All Employee details should be filled")
       return
     }
@@ -124,7 +126,8 @@ const CreateUserForm = () => {
     formDataToSend.append('password', personalInfo.password);
     formDataToSend.append('emergencyContacts',JSON.stringify(emergencyContacts))
     formDataToSend.append('nicDocument', nicDocument);
-
+    formDataToSend.append('empPhoto', empPhoto);
+    
     axiosupdatedFetch({
       axiosInstance: axios,
       method: 'POST',
@@ -297,6 +300,23 @@ const CreateUserForm = () => {
                 name="nicDocument"
                 id="nicDocument"
                 onChange={(e)=>{setNicDocument(e.target.files[0])}}
+                required
+              />
+            </div>
+            <div className="col-span-1 w-full flex flex-col mb-4 ">
+              <label
+                className="block text-gray-700 text-md font-bold mb-2"
+                htmlFor="nicDocument"
+              >
+                Employee Photogragh <span className="font-normal">(.png .jpg .jpeg are only accepted)</span>
+              </label>
+              <input
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                type="file"
+                accept=".png .jpg .jpeg"
+                name="empPhoto"
+                id="empPhoto"
+                onChange={(e)=>{setEmpPhoto(e.target.files[0])}}
                 required
               />
             </div>

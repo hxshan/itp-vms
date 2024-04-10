@@ -30,7 +30,7 @@ const Navbar = () => {
       <div className="h-screen fixed z-10 top-0 left-0 flex w-20 lg:w-60">
           <div className=" bg-secondary text-white w-64 h-full flex flex-col items-start text-sm">
           <div className="relative w-full px-4 mt-[90px]">
-                  <button className={`${isOpen.user?'bg-navGreen font-bold shadow-green-800 shadow-md':' '} w-full flex flex-row py-4 px-4 text-nowrap rounded-md hover:bg-navHoverGreen hover:shadow-green-800 hover:shadow-md focus:outline-none`} onClick={() => toggleMenu('user')}>
+                  <button className={`${isOpen.user?'bg-navGreen font-bold shadow-teal-900 shadow-md':' '} w-full flex flex-row py-4 px-4 text-nowrap rounded-md hover:bg-navHoverGreen hover:shadow-teal-900 hover:shadow-md focus:outline-none`} onClick={() => toggleMenu('user')}>
                       User Management
                   </button>
                   {isOpen.user && (

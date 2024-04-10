@@ -41,12 +41,11 @@ const createUser = async (req, res) => {
     const salt = await bcrypt.genSalt();
     const passwordHash = await bcrypt.hash(password, salt);
 
-    if (!req.file) {
-      console.log('nofile')
+    if (!req.files.nicDocument) {
       return res.status(400).json({ message: 'NIC document is required' });
     }
 
-    const nicDocumentPath = req.file.path||null;
+    const nicDocumentPath = req.files.nicDocument.path||null;
 
     //match front and back names
     const user = new User({
@@ -69,7 +68,8 @@ const createUser = async (req, res) => {
       role,
     });
     const parsedEmergencyContacts = JSON.parse(emergencyContacts);
-    try {
+
+    try {//create the emergency contact first then the user
       const emergencyContactPromises = parsedEmergencyContacts.map(async (contact) => {
         const EmContact = new EmergencyContact({
           name: contact.emergencyName,
@@ -84,6 +84,7 @@ const createUser = async (req, res) => {
     } catch (err) {
       return res.status(500).json({ message: err.message });
     }
+
     console.log(user)
     await user.save();
     console.log('saved')

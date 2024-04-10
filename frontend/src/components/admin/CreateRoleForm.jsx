@@ -82,7 +82,6 @@ const CreateRoleForm = () => {
 
   const handleSubmit =async (e) => {
     e.preventDefault()
-
         await axiosFetch({
           axiosInstance:axios,
           method:'POST',
@@ -93,9 +92,7 @@ const CreateRoleForm = () => {
             }
           }
         })
-        if(error){
-          alert(error)
-        }
+       
   };
 
   if(loading){
@@ -153,6 +150,9 @@ const CreateRoleForm = () => {
               }}
               placeholder="Role name"
             />
+            {
+              error && <p className="text-red-500">{error}</p>
+            }
           </div>
         </div>
 

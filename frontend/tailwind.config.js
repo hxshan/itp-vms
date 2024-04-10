@@ -7,11 +7,11 @@ export default {
   theme: {
     extend: {
       colors: {
-        'actionBlue': '#4D49FF',
-        'actionGreen':'#10971D',
-        'actionRed':'#FF1212',
-        'navGreen':'#37A000',
-        'navHoverGreen':'#3AA701',
+        'actionBlue': '#2962ff',
+        'actionGreen':'#00c853',
+        'actionRed':'#D50000',
+        'navGreen':'#00bfa5',
+        'navHoverGreen':'#00bfa5',
         'secondary':'#212529',
       },
     },

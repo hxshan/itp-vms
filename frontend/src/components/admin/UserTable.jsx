@@ -78,10 +78,10 @@ useEffect(()=>{
       
     <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
     <table className="min-w-full divide-y divide-gray-200">
-        <thead className="bg-gray-500">
+        <thead className="bg-secondary">
           <tr>
             {columns.map((col,index) => {
-              return <th className="px-6 py-3 text-left text-xs font-bold text-white uppercase tracking-wider" key={index}>{col}</th>
+              return <th className="px-6 py-3 border-r border-white text-left text-xs font-bold text-white uppercase tracking-wider" key={index}>{col}</th>
             })}
             <th className="relative px-6 py-3">
               <span className="text-center text-xs font-bold text-white uppercase tracking-wider">Action</span>

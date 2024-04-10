@@ -6,12 +6,18 @@ const Auth =require('../middleware/Auth')
 const router = express.Router()
 
 const multer = require('multer');
-const path = require('path');
-
 // Set up Multer storage configuration
 const storage = multer.diskStorage({
+
   destination: (req, file, cb) => {
-    cb(null, 'uploads/nic_documents'); // Specify the upload directory
+    let path='';
+    if(file.fieldname =='nicDocument')
+      path='uploads/nic_documents'
+    else if(file.fieldname == 'licenceDoc')
+      path='uploads/licence_documents'
+    else
+      path='uploads/employee_picture'
+    cb(null, path);
   },
   filename: (req, file, cb) => {
     cb(null, `${Date.now()}-${file.originalname}`); // Generate a unique filename
@@ -29,8 +35,10 @@ router.get('/drivers',getDrivers)
 router.get('/:id',getUserById)
 router.patch('/password/:id',resetPassword)
 
-router.post('/',upload.single('nicDocument'),createUser)
+router.post('/',upload.fields([{name:'nicDocument',maxCount:1},{name:'licenceDoc',maxCount:1},{name:'empPhoto',maxCount:1}]),createUser)
 //router.delete('/',deleteUser)
+
+
 
 
 
