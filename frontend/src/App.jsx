@@ -69,6 +69,7 @@ function App() {
             <Route path="/driver" element={<DriverDashboard />} />
             <Route path="/Mdashboard" element={<MaintainceDashboard />} />
             <Route path="/view/:id" element={<View />} />
+            <Route path="/addnote" element={<servicenote />} />
             <Route
               path="/vehiclemaintain/edit/:id"
               element={<EditMaintainceOrder />}

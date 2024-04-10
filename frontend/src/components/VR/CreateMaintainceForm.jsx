@@ -169,7 +169,7 @@ export const CreateMaintainceForm = () => {
                                     className='rounded-lg p-2'
                                     id='vredate'
                                     onChange={handlechange}
-                                    value={formdata.vredate} />
+                                    value={formdata.vredate } />
                             </div>
                             <div className='flex gap-4 justify-between items-center'>
                             <label className='  font-semibold'>Availability :</label>

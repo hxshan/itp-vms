@@ -2,13 +2,13 @@ export const data = [{
   "_id": 1,
   "category": "Sonoma Club Coupe",
   "vehicleRegister": "GMC",
-  "vrcost": "46",
+  "vrcost": "4645",
    "vredate": "2024-01-02"
 }, {
   "_id": 2,
   "category": "CX-7",
   "vehicleRegister": "Mazda",
-  "vrcost": "60",
+  "vrcost": "6056",
  "vredate": "2024-02-14"
 }, {
   "_id": 3,
@@ -20,7 +20,7 @@ export const data = [{
   "_id": 4,
   "category": "Sierra Denali",
   "vehicleRegister": "GMC",
-  "vrcost": "53",
+  "vrcost": "53000",
    "vredate": "2024-04-14"
 }, {
   "_id": 5,
