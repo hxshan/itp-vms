@@ -1,9 +1,8 @@
-import React, { useState , useEffect } from 'react';
+import { useState , useEffect } from 'react';
 import { useNavigate} from 'react-router-dom'
 import axios from 'axios'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
 import { CarForm } from '../../components/vehicle/';
 import { VanForm } from '../../components/vehicle/';
 import { BusForm } from '../../components/vehicle/';
@@ -12,7 +11,6 @@ import { TruckForm } from '../../components/vehicle/';
 
 const AddVehicle = () => {
      
-
     const initialFormState= {
         category: '',
         vehicleType: '',
@@ -160,7 +158,7 @@ const AddVehicle = () => {
                 </form>      
             )}
 
-                       <ToastContainer />
+                <ToastContainer />
 
         </div>
         )}

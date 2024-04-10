@@ -31,6 +31,10 @@ const userShema = new Schema({
         type:String,
         required:true
     },
+    nicDocument:{
+        type:String,
+        required:false
+    },
     emergencyContacts: [{
         type:mongoose.Schema.Types.ObjectId,
         ref:'EmergencyContact'

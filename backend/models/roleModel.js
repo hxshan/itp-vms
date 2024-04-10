@@ -74,7 +74,7 @@ const roleSchema = new Schema({
             required:true
         }
     },
-    HirePermissions:{
+    hirePermissions:{
         Create:{
             type:Boolean,
             default:false,
@@ -96,7 +96,7 @@ const roleSchema = new Schema({
             required:true
         }
     },
-    ContractPermissions:{
+    contractPermissions:{
         Create:{
             type:Boolean,
             default:false,
@@ -118,7 +118,7 @@ const roleSchema = new Schema({
             required:true
         }
     },
-    EmergencyPermissions:{
+    emergencyPermissions:{
         Create:{
             type:Boolean,
             default:false,
@@ -140,7 +140,7 @@ const roleSchema = new Schema({
             required:true
         }
     },
-    FinancePermissions:{
+    financePermissions:{
         Create:{
             type:Boolean,
             default:false,
@@ -162,7 +162,15 @@ const roleSchema = new Schema({
             required:true
         }
     },
-    
+    isDriver:{
+        type:Boolean,
+        default:false,
+        required:true
+    },
+    isSystemRole:{
+        type:Boolean,
+        default:false
+    }
 })
 
 module.exports = mongoose.model('Role',roleSchema)

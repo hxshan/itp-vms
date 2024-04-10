@@ -25,11 +25,10 @@ import { VehicleServiceList } from "./components/VR/VehicleServiceList";
 import ClientDashboard from "./pages/contract/ClientDashboard";
 import ViewContract from "./pages/contract/ViewContract";
 import ContractEditForm from "./pages/contract/ContractEditForm";
+import { UserProfile } from "./pages/admin";
 import {HireDashboard, CreateHire, EditHire, HireRates} from "./pages/hires/hires"
-
 import AddClient from "./pages/contract/AddClient";
 import { View } from '../src/components/VR/View';
-
 
 function App() {
   const { user, loading } = useAuthContext();
@@ -51,10 +50,11 @@ function App() {
       <Routes>
         <Route path="/userauth/failed" element={<UnAuthorized />} />
       </Routes>
-      <main className="flex w-full">
-        <Navbar />
+      <main className="flex w-full bg-slate-100 min-h-screen">
         <TopBar />
+        <Navbar />
         <div className={"ml-32 w-full mr-14 mt-[90px] lg:ml-80"}>
+          
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route
@@ -70,13 +70,15 @@ function App() {
             <Route path="/admin/roles" element={<Roles />} />
             <Route path="/admin/roles/:id" element={<EditRoles />} />
 
+            <Route path="/user/:id" element={<UserProfile/>}/>
+
+
             <Route path="/hires">
               <Route index={true} element={<HireDashboard />} />
               <Route path="add" element={<CreateHire />}/>
               <Route path="edit/:id" element={<EditHire />}/>
               <Route path="rates" element={<HireRates />}/>
             </Route>
-            
             <Route path="/emergency" element={<CaseFileForm />} />
             <Route path="vehicle">
               <Route index={true} element={<VehicleDashboard />} />
@@ -96,6 +98,8 @@ function App() {
               element={<EditMaintainceOrder />}
             />
             <Route path="/Contract/Dashbored" element={<ContractDasboard />} />
+
+
             <Route path="/client" element={<ClientDashboard/>}/>
             <Route path="/viewContract/:id" element={<ViewContract/>}/>
             <Route path="/EditContract/:id" element={<ContractEditForm/>}/>

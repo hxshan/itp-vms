@@ -5,7 +5,17 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        'actionBlue': '#2962ff',
+        'actionGreen':'#00c853',
+        'actionRed':'#D50000',
+        'navGreen':'#00bfa5',
+        'navHoverGreen':'#00bfa5',
+        'secondary':'#212529',
+      },
+    },
+    
   },
   plugins: [],
 }
