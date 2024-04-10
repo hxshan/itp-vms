@@ -84,8 +84,47 @@ const Form = () => {
     return <p>Loading...</p>;
   }
 
- 
+  //Fetch Vehicle Data
+  const [vehiclesData, vehiclesError, vehiclesLoading, axiosFetchVehicles] = useAxios()
 
+  const [vehcleTypes, setVehcleTypes] = useState(["Car", "Van" , "Bus"])
+  const [vehcleSubTypes, setVehcleSubTypes] = useState(["Maruti" , "C200"])
+  const [availableVehicles, setAvailableVehicles] = useState(["CHJ-2233", "CGF-5568"])
+  const [availableDrivers, setavailableDrivers] = useState(["Chamara" , "Jonny", "Danny", "Chanchala"])
+
+  const fetchVehicleDetails = async () => {
+    axiosFetchVehicles({
+          axiosInstance: axios,
+          method: "GET",
+          url: "/vehicle/",
+      });
+  };
+
+  if(vehiclesError){
+    return(
+      <p>Can not Fetch Data</p>
+    )
+  }
+
+  //Filter Vehicles
+  const [filteredVehicles, setFilteredVehicles] = useState([]);
+  
+  const filterVehicles = () => {
+    console.log("Filter Vehicles")
+
+    console.log("Selected Vehicle : " + vehicleType)
+    const selectedVehicles = vehiclesData.vehicles.filter((vehicle) => vehicle.category.toLowerCase() === vehicleType.toLowerCase());
+    console.log(selectedVehicles)
+
+    setFilteredVehicles(selectedVehicles); 
+    if(selectedVehicles.length === 0 ){
+      console.log("No vehicles Available")
+    }
+
+
+  }
+
+  
   const cancel = () => {
     navigate('/hires')
   }
@@ -118,17 +157,8 @@ const Form = () => {
     setStep(step - 1);
   };
 
-/*
-//Retreve data
-useEffect(() => {
 
-  fetchVehicleData();
-}, [])
-*/
-const [vehcleTypes, setVehcleTypes] = useState(["Car", "Van" , "Bus"])
-const [vehcleSubTypes, setVehcleSubTypes] = useState(["Maruti" , "C200"])
-const [availableVehicles, setAvailableVehicles] = useState(["CHJ-2233", "CGF-5568"])
-const [availableDrivers, setavailableDrivers] = useState(["Chamara" , "Jonny", "Danny", "Chanchala"])
+
 
 /*
 const fetchVehicleData = async () => {
@@ -160,19 +190,12 @@ const [vehicleRates, Verror, Vloading, VaxiosFetch] = useAxios();
           url: "/hire/rates",
       });
   };
-
-    useEffect(() => {
-      fetchVehicleRates();
-
-      console.log("Vehicle Rates")
-      console.log(vehicleRates)
-    },[])
     
-        if(Verror){
-            return(
-              <p>Can not Fetch Data</p>
-            )
-          }
+  if(Verror){
+    return(
+      <p>Can not Fetch Data</p>
+    )
+  }
     
 
 /*
@@ -238,7 +261,7 @@ const [vehicleRates, Verror, Vloading, VaxiosFetch] = useAxios();
           console.log("Advanced Payment: " + advancedPay)
           console.log("Base Distence : " +  baseDistance)
   
-          return { estimatedFare, advancedPay };
+          return { estimatedFare, advancedPay, additionalRate };
       } catch (error) {
           console.error('Error calculating estimated fare:', error);
           return { estimatedFare: 0, advancedPay: 0 };
@@ -256,8 +279,26 @@ const [vehicleRates, Verror, Vloading, VaxiosFetch] = useAxios();
       calculateFare();
     }
   }, [step, vehicleType, distence, tripType]);
-  
 
+  useEffect(() => {
+      fetchVehicleRates();
+
+      console.log("Vehicle Rates")
+      console.log(vehicleRates)
+    },[])
+
+    useEffect(() => {
+      fetchVehicleDetails()
+      console.log('vehiclesData')
+      console.log(vehiclesData)
+    }, [])
+
+    useEffect(() => {
+      if(step === 2) {
+        filterVehicles()
+      }
+    }, [step, vehicleType])
+  
 
   return (
     <div className="w-full h-full flex bg-gray-200 px-2 py-[20px] justify-center align-center xl:px-[60px] xl:py-[50px]">
@@ -404,8 +445,8 @@ const [vehicleRates, Verror, Vloading, VaxiosFetch] = useAxios();
                       required
                       >
                         <option value="">Select Vehicle</option>
-                        {availableVehicles.map((type) => (
-                          <option key={type.id} value={type}>{type}</option>
+                        {filteredVehicles.map((vehicle) => (
+                          <option key={vehicle.id} value={vehicle._id}>{vehicle.vehicleRegister}</option>
                         ))}
                     </select>
 
