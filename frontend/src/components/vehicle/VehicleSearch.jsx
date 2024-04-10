@@ -13,6 +13,10 @@ const VehicleSearch = () => {
 
   const { vehicles = [] } = data;
 
+  const handleViewClick = (id) => {
+    navigate(`view/${id}`);
+  };
+
   const handleEditClick = (id) => {
     navigate(`edit/${id}`);
   };
@@ -38,7 +42,7 @@ const VehicleSearch = () => {
         alert('Vehicle deactive successfully!');
 
       } catch (error) {
-        console.error('Error deleting vehicle:', error);
+        
         toast.error('Failed to delete vehicle. Please try again later.');
       }
     }
@@ -119,7 +123,9 @@ const VehicleSearch = () => {
                 <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{vehicle.vehicleModel}</td>
                 <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{vehicle.vehicleRegister}</td>
                 <td className="px-2 py-2 whitespace-nowrap border-r border-gray-200 flex justify-center">
-                        <button className="my-1 mx-1 bg-blue-700 text-white py-1 px-4 rounded-md text-sm">
+                        <button className="my-1 mx-1 bg-blue-700 text-white py-1 px-4 rounded-md text-sm"
+                        id={vehicle._id}
+                        onClick={() => handleViewClick(vehicle._id)}>
                           View
                         </button>
 

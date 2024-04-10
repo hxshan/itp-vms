@@ -21,7 +21,7 @@ const VanForm = ({ formState, setFormState }) => {
             </div>
     <div className="col-span-1 w-full flex flex-col mb-4 ">     
       <label className="block text-gray-700 text-md font-bold mb-2" htmlFor="vehicleType">Van type:</label>
-      <select className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="carType" name="vehicleType" value={formState.vehicleType} onChange={handleChange} >
+      <select className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="vanType" name="vehicleType" value={formState.vehicleType} onChange={handleChange} >
                   <option value="van">Select</option>
                   <option value="miniBusVan">Mini Bus Van</option> 
                   <option value="miniVan">Mini Van</option> 

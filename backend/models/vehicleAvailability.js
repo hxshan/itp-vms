@@ -1,13 +1,11 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const Vehicles = require('../models/vehicleModel').Vehicles; 
 
 const availabilitySchema = new Schema({
-    vehicleRegister: {
+    vehicle: {
         type: Schema.Types.ObjectId,
-        ref: 'Vehicles',
+        ref: 'Vehicle',
         required: true,
-        cascade: 'remove'
     },
     status: {
         type: String,
@@ -23,7 +21,7 @@ const availabilitySchema = new Schema({
         type: Boolean,
         default: true
     }
-}, { timestamps: { currentTime: () => Date.now() + 5.5 * 60 * 60 * 1000 }});
+}, { timestamps: true });
 
 const Availability = mongoose.model('Availability', availabilitySchema);
 

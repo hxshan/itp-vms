@@ -1,6 +1,6 @@
 
 const {Vehicles} = require('../models/vehicleModel')
-const {Availability} = require('../models/vehicleAvailability')
+const Availability = require('../models/vehicleAvailability')
 const path = require('path')
 const fs = require('fs')
 const HttpError = require ('../models/errorModel')
@@ -38,18 +38,28 @@ const addVehicle = async (req, res, next) => {
             }
     
             const newVehicle = await Vehicles.create({ category,vehicleType, vehicleRegister,vehicleModel,vehicleManuYear,engineCap,lastMileage,vehicleColour,vehicleGearSys,airCon,numOfSeats,lugSpace,gps,fridge,tv,licEndDate,insEndDate,statusVehicle});
-
+            
             if (!newVehicle) {
                 return next(new HttpError("Vehicle couldn't be created.", 422));
             }
 
+            const vehicleId = await Vehicles.findOne({ vehicleRegister: req.body.vehicleRegister });
+
             try {
-                const newAvailability = await Availability.create({ vehicleRegister: someVehicleId, status: 'available' });
-                console.log('New availability created:', newAvailability);
+                const newAvailability = await Availability.create({
+                    vehicle: vehicleId,
+                    status: 'Just added',
+                    unavailableStartDate: '',
+                    unavailableEndDate: '',
+                });
+
+                res.status(201).json(newAvailability);
+
             } catch (error) {
                 console.error('Error creating availability:', error);
-            }
 
+            }
+  
              res.status(201).json(newVehicle);
     
 
@@ -84,6 +94,23 @@ const addVehicle = async (req, res, next) => {
                 return next(new HttpError("Vehicle couldn't be created.", 422));
             }
 
+            const vehicleId = await Vehicles.findOne({ vehicleRegister: req.body.vehicleRegister });
+
+            try {
+                const newAvailability = await Availability.create({
+                    vehicle: vehicleId,
+                    status: 'Just added',
+                    unavailableStartDate: '',
+                    unavailableEndDate: '',
+                });
+
+                res.status(201).json(newAvailability);
+
+            } catch (error) {
+                console.error('Error creating availability:', error);
+
+            }
+
             res.status(201).json(newVehicle);
 
 
@@ -116,9 +143,27 @@ const addVehicle = async (req, res, next) => {
             }
 
             const newVehicle = await Vehicles.create({ category,vehicleType, vehicleRegister,vehicleModel,vehicleManuYear,engineCap,lastMileage,vehicleWeight,cargoCapacity,trailerLength,passengerCabin,vehicleGearSys,airCon,numOfSeats,gps,fridge,tv,licEndDate,insEndDate,statusVehicle});
+
             if (!newVehicle) {
 
                 return next(new HttpError("Vehicle couldn't be created.", 422));
+            }
+
+            const vehicleId = await Vehicles.findOne({ vehicleRegister: req.body.vehicleRegister });
+
+            try {
+                const newAvailability = await Availability.create({
+                    vehicle: vehicleId,
+                    status: 'Just added',
+                    unavailableStartDate: '',
+                    unavailableEndDate: '',
+                });
+
+                res.status(201).json(newAvailability);
+
+            } catch (error) {
+                console.error('Error creating availability:', error);
+
             }
 
             res.status(201).json(newVehicle);
@@ -144,7 +189,7 @@ const editVehicle = async (req,res,next) => {
 
             let{vehicleType, vehicleRegister,vehicleModel,vehicleManuYear,engineCap,lastMileage,vehicleColour,vehicleGearSys,airCon,numOfSeats,lugSpace,gps,fridge,tv,licEndDate,insEndDate} = req.body
 
-
+            
             updatedVehicle = await Vehicles.findByIdAndUpdate(vehicleId,{category,vehicleType, vehicleRegister,vehicleModel,vehicleManuYear,engineCap,lastMileage,vehicleColour,vehicleGearSys,airCon,numOfSeats,lugSpace,gps,fridge,tv,licEndDate,insEndDate}, {new: true})
             if(!updatedVehicle){
                 return next(new HttpError("Couldn;t update Vehicle.",400))
@@ -168,7 +213,6 @@ const editVehicle = async (req,res,next) => {
         if (category === 'truck' ){
             let{vehicleType, vehicleRegister,vehicleModel,vehicleManuYear,engineCap,lastMileage,vehicleWeight,cargoCapacity,trailerLength,passengerCabin,vehicleGearSys,airCon,numOfSeats,gps,fridge,tv,licEndDate,insEndDate} = req.body
 
-            
 
             updatedVehicle = await Vehicles.findByIdAndUpdate(vehicleId,{category,vehicleType, vehicleRegister,vehicleModel,vehicleManuYear,engineCap,lastMileage,vehicleWeight,cargoCapacity,trailerLength,passengerCabin,vehicleGearSys,airCon,numOfSeats,gps,fridge,tv,licEndDate,insEndDate}, {new: true})
             if(!updatedVehicle){
@@ -228,6 +272,24 @@ const recoverVehicle = async (req, res, next) => {
 }
 
 
+
+//DELETE:api/vehicle
+const deletePost = async(req,res,next) => {
+    try {
+        const vehicleId = req.params.id;
+
+        if(!vehicleId){
+            return next(new HttpError("Post unavailable.",400))
+        }
+        
+        await Vehicles.findByIdAndDelete(vehicleId);
+
+        res.json(`Post ${vehicleId} deleted successfully.`)
+
+    } catch (error) {
+        return next (new HttpError(error)) 
+    }
+}
 
 
 
@@ -307,5 +369,5 @@ const getVehicles = async (req, res, next) => {
 }
 
 
-module.exports = {addVehicle,editVehicle,changeStatusVehicle,getVehicle,getVehicles,recoverVehicle}
+module.exports = {addVehicle,editVehicle,changeStatusVehicle,getVehicle,getVehicles,recoverVehicle,deletePost}
 

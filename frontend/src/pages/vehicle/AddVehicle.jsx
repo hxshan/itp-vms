@@ -78,7 +78,6 @@ const AddVehicle = () => {
         try {
           const response = await axios.post(`http://localhost:3000/api/vehicle/`, formState)
           const newVehicle = await response.data;
-          console.log(newVehicle);
           
           if(!newVehicle){
            setError("Couldn't add Vehicle.Please try again.")

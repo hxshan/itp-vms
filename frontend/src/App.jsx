@@ -10,6 +10,7 @@ import { CreateMaintainceForm } from "./components/VR/CreateMaintainceForm";
 
 import AddVehicle from "./pages/vehicle/AddVehicle";
 import VehicleDetailsControl from "./pages/vehicle/VehicleDetailsControl";
+import VehicleViewControl from "./pages/vehicle/VehicleViewControl";
 import VehReport from "./pages/vehicle/VehReport";
 import VehicleDashboard from "./pages/vehicle/VehicleDashboard";
 
@@ -68,6 +69,7 @@ function App() {
               <Route index={true} element={<VehicleDashboard />} />
               <Route path="add" element={<AddVehicle />} />
               <Route path="edit/:id" element={<VehicleDetailsControl />} />
+              <Route path="view/:id" element={<VehicleViewControl />} />
               <Route path="report" element={<VehReport />} />
             </Route>
             <Route path="/Contract/:id" element={<AddContract />}/>
