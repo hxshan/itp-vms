@@ -53,6 +53,7 @@ const CreateUserForm = () => {
     nicNumber: "",
     role: "",
     department: "",
+    jobTitle:"",
     empDate: "",
     baseSal: "",
     licenceNum: "",
@@ -324,7 +325,7 @@ const CreateUserForm = () => {
               <div className="col-span-2 mt -10 flex justify-between mb-8 items-center">
                 <h2 className="font-bold text-2xl w-fit ">Emergency Contact</h2>
                 <button
-                className="bg-blue-600 py-2 px-6 rounded-md text-white font-bold mt-2"
+                className="bg-actionBlue py-2 px-6 rounded-md text-white font-bold mt-2"
                   onClick={() => {
                     AddContact();
                   }}
@@ -374,7 +375,7 @@ const CreateUserForm = () => {
                           required
                         />
                         <button
-                          className={index > 0 ? "bg-red-600 py-2 px-4 ml-2 rounded-md text-white font-bold " : "hidden"}
+                          className={index > 0 ? "bg-actionRed py-2 px-4 ml-2 rounded-md text-white font-bold " : "hidden"}
                           onClick={() => {
                             removeContact(index);
                           }}
@@ -420,6 +421,17 @@ const CreateUserForm = () => {
                 name="department"
                 id="department"
                 value={personalInfo.department}
+                onChange={handlePersonalChange}
+              />
+            </div>
+            <div className="col-span-1 w-full flex flex-col mb-4">
+              <label className="block text-gray-700 text-md font-bold mb-2" htmlFor="jobTitle">Job Title</label>
+              <input
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                type="text"
+                name="jobTitle"
+                id="jobTitle"
+                value={personalInfo.jobTitle}
                 onChange={handlePersonalChange}
               />
             </div>
@@ -527,7 +539,7 @@ const CreateUserForm = () => {
             onClick={formPageIncrement}
             className={
               currentForm < 1
-                ? "bg-blue-600 py-2 px-6 rounded-md text-white font-bold "
+                ? "bg-actionBlue py-2 px-6 rounded-md text-white font-bold "
                 : "hidden"
             }
           >
@@ -547,7 +559,7 @@ const CreateUserForm = () => {
 
           <button
             type="submit"
-            className={currentForm == 1 ? "bg-green-600 py-2 px-6 rounded-md text-white font-bold " : "hidden"}
+            className={currentForm == 1 ? "bg-actionGreen py-2 px-6 rounded-md text-white font-bold " : "hidden"}
           >
             Create
           </button>

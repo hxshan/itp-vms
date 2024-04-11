@@ -17,6 +17,7 @@ const createUser = async (req, res) => {
       nicNumber,
       role,
       department,
+      jobTitle,
       empDate,
       baseSal,
       licenceNum,
@@ -62,6 +63,7 @@ const createUser = async (req, res) => {
       nicDocument:nicDocumentPath,
       status,
       department,
+      jobTitle,
       emergencyContacts:[],
       employmentDate: empDate,
       baseSalary: baseSal,
@@ -103,18 +105,30 @@ const createUser = async (req, res) => {
 
 const getAllUsers = async (req, res) => {
   try {
-    const users = await User.find().populate("role");
+    let users = await User.find().populate("role");
 
     if (!users) {
       return res.json([{}]);
     }
-
+    users=users.filter(user=>user.status !='deleted')
     res.status(200).json(users);
   } catch (error) {
     console.error("Error fetching users:", error);
     res.status(500).json({ message: "Internal server error" });
   }
 };
+
+const setUserAsDeleted=async (req,res)=>{
+  const {id}=req.params
+  console.log(id)
+  try{
+    const updateduser= await User.findByIdAndUpdate(id,{status:'deleted'})
+    if(!updateduser) return res.status(500).json({ message: "Update Failed" });
+    res.status(200).json(updateduser);
+  }catch(err){
+    return res.status(500).json({message:"Internal Sever Error"})
+  }
+}
 
 const getDrivers= async (req,res)=>{
   try{
@@ -140,7 +154,7 @@ const getUserById = async (req,res)=>{
   try{
     const {id} = req.params;
   
-    const user = await User.findById(id).exec()
+    const user = await User.findById(id).populate('emergencyContacts').exec()
     if(!user) return res.status(404).json({message:'User Not Found'})
     return res.status(200).json(user)
   }catch(error){
@@ -179,4 +193,4 @@ const resetPassword = async(req,res)=>{
   }
 }
 
-module.exports = { createUser, getAllUsers,getUserById,resetPassword,getDrivers};
+module.exports = { createUser, getAllUsers,getUserById,resetPassword,getDrivers,setUserAsDeleted};

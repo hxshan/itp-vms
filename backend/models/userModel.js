@@ -10,7 +10,6 @@ const userShema = new Schema({
     middleName:{
         type:String,
     },
-   
     lastName:{
         type:String,
         required: true
@@ -56,6 +55,9 @@ const userShema = new Schema({
         ref:'Role'
     },
     department:{
+        type:String,
+    },
+    jobTitle:{
         type:String,
     },
     employmentDate:{

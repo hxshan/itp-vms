@@ -46,9 +46,9 @@ const RolesTable = () => {
       <div className="w-full flex justify-between mb-4">
         <h2 className="font-bold text-xl underline mb-4">Role List</h2>
         <div className="flex gap-4 w-fit">
-          <button className="w-[130px] bg-blue-600 p-1 px-1 rounded-lg shadow-md text-sm text-white font-bold">
+          {/* <button className="w-[130px] bg-actionBlue p-1 px-1 rounded-lg shadow-md text-sm text-white font-bold">
             Add Role
-          </button>
+          </button> */}
           <input
             type="text"
             name="Search"
@@ -62,11 +62,11 @@ const RolesTable = () => {
         </div>
       </div>
 
-      <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+      <div className="shadow overflow-hidden border-b border-gray-200 rounded-lg">
         <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-500">
+          <thead className="bg-secondary">
             <tr>
-              <th className="relative px-6 py-3">
+              <th className="relative px-6 py-3 border-r border-white">
                 <span className="text-center text-xs font-bold text-white uppercase tracking-wider">
                   Role
                 </span>
@@ -97,13 +97,13 @@ const RolesTable = () => {
                         {row.name}
                       </td>
                       {row?.isSystemRole ? (
-                        <td>
+                        <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">
                           <p>System Role cannot be changed</p>
                         </td>
                       ) : (
                         <td className="px-6 py-2 whitespace-nowrap justify-evenly flex">
                           <button
-                            className="bg-blue-600 text-white py-1 px-6 rounded-md"
+                            className="bg-actionBlue text-white py-1 px-6 rounded-md"
                             id={row._id}
                             onClick={(e) => {
                               navigate(e.target.id);
@@ -112,7 +112,7 @@ const RolesTable = () => {
                             View
                           </button>
                           <button
-                            className="bg-yellow-300 text-white py-1 px-6 rounded-md"
+                            className="bg-actionGreen text-white py-1 px-6 rounded-md"
                             id={row._id}
                             onClick={(e) => {
                               navigate(e.target.id);
@@ -121,7 +121,7 @@ const RolesTable = () => {
                             Edit
                           </button>
                           <button
-                            className="bg-red-700 text-white py-1 px-6 rounded-md"
+                            className="bg-actionRed text-white py-1 px-6 rounded-md"
                             id={row._id}
                             onClick={(e) => {
                               deleteData(e);
@@ -135,7 +135,7 @@ const RolesTable = () => {
                   );
                 })
             ) : (
-              <tr>
+              <tr className="bg-white border-t border-gray-200">
                 <td colSpan={roles.length}>No data available</td>
               </tr>
             )}
