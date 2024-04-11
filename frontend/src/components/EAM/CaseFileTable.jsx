@@ -1,33 +1,49 @@
-import React, {useState, useEffect} from "react";
+import {useState, useEffect} from "react";
+import viewCaseFile from "./viewCaseFile";
 import axios from "@/api/axios";
-import { useHistory } from "react-router-dom";
-import { error } from "console";
+import useAxios from "@/hooks/useAxios";
+
+import { useNavigate } from "react-router-dom";
+import { url } from "inspector";
 
 const CaseFileTable = () => {
     const [caseFiles, setCaseFiles] = useState([]);
+    const [caseFileData , error, loading, axiosFetch] = useAxios();
+    const [reload, setReload] = useState(0);
 
-    const history = useHistory();
+    
 
     useEffect(() => {
+         
+        const fetchCaseFiles = async () => {
+
+            axiosFetch({
+                axiosInstance: axios,
+                method: "GET",
+                url: "/casefile",
+            });
+        };
         //fetch data from backend
 
-        axios.get('/api/casefile')
+       /* axios.get('/api/casefile')
         .then(Response => {
             setCaseFiles(Response.data)
         })
 
         .catch(error =>{
             console.error('Error fetching data:', error);
-        });
+        }); */
+
+        fetchCaseFiles();
         
     }, []);
 
-    const handleEdit = (id) => {
+    const[viewCaseFile, setViewCaseFile] = useState(false);
+    const[viewCaseFileData, setViewCaseFileData] = useState(null);
+    
 
-        history.push('/');//redirect to edit page need to create edit page first 
-        console.log('Edit:', id);
-    };
-
+ 
+/*
     const handleDelete = (id) => {
         if(window.confirm("Are you sure you want to delete this case file?")){
             axios.delete(`/api/casefile/${id}`)
@@ -40,41 +56,63 @@ const CaseFileTable = () => {
             });
         }
     };
+*/
+
+    const deleteCaseFile = async(id) => {
+        if(window.confirm("Are you sure you want to delete this case file?")){
+            await axiosFetch({
+                axiosInstance: axios,
+                method: "DELETE",
+                url: `/casefile/${id}`,
+            });
+            if(!error){
+                setReload(reload + 1);
+            }
+    }
+};
 
     const handleView = (id) => {
-        history.push();//redirect to view page need to create view page first
-        console.log('View:', id);
+       const selected = caseFiles.find((caseFile) => caseFile._id === id);
+         setViewCaseFileData(selected);
+         setViewCaseFile(true);
     };
+
+    if (loading) {
+        return <p>Loading...</p>;
+    }
     
     return (
-        <div className="w-full flex items-center">
-            <table className='w-full border-separate border-spacing-2'>
-                <thead>
+        <div className="w-full h-full flex px-2 py-[20px] justify-center align-center xl:px-[60px] xl:py-[50px]">
+            <table className='w-full text-center'>
+                <thead className="border-b-2 border-black">
                     <tr>
-                        <th className='border border-slate-700 rounded-md'>No</th>
-                        <th className='border border-slate-700 rounded-md'>Case Name</th>
-                        <th className='border border-slate-700 rounded-md'>Case Type</th>
-                        <th className='border border-slate-700 rounded-md'>Options</th>
+                        <th className='px-4 py-2'>Title</th>
+                        <th className='px-4 py-2'>Description</th>
+                        <th className='px-4 py-2'>Priority</th>
+                        <th className='px-4 py-2'>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {caseFiles && caseFiles.length > 0 ?
+                    {caseFiles != null && caseFiles.length > 0 ?
                         (caseFiles.map((caseFile ,index) => (
                             <tr key={caseFile._id} className='h-8 '>
                                 <td className='border border-slate-700 rounded-md text-center'>
                                     {index+1}
                                 </td>
                                 <td className='border border-slate-700 rounded-md text-center'>
-                                    {caseFile.name}
+                                    {caseFile.caseTitle}
                                 </td>
                                 <td className='border border-slate-700 rounded-md text-center'>
-                                    {caseFile.type}
+                                    {caseFile.caseDesc}
+                                </td>
+                                <td className='border border-slate-700 rounded-md text-center'>
+                                    {caseFile.casePriority}
                                 </td>
                                 <td className='border border-slate-700 rounded-md text-center'>
                                     <div className="flex justify-center gap-x-4">
                                         <button onClick={() => handleView(caseFile._id)} className='border bg-blue-500 text-zinc-50 rounded-lg pr-3 pl-3 p-2'>View </button>
-                                        <button onClick={() => handleEdit(caseFile._id)} className='border bg-green-500 text-zinc-50 rounded-lg pr-3 pl-3 p-2'>Edit </button>
-                                        <button onClick={() => handleDelete(caseFile._id)} className='border bg-red-500 text-zinc-50 rounded-lg pr-3 pl-3 p-2'>Delete </button>
+                                        
+                                        <button onClick={() => deleteCaseFile(caseFile._id)} className='border bg-red-500 text-zinc-50 rounded-lg pr-3 pl-3 p-2'>Delete </button>
                                     </div>
                                 </td>
                             </tr>
@@ -87,6 +125,8 @@ const CaseFileTable = () => {
                         )}
                 </tbody>
             </table>
+
+            {viewCaseFile && <viewCaseFile setViewCaseFile={setViewCaseFile} viewCaseFileData={viewCaseFileData} />}
         </div>
 
     );

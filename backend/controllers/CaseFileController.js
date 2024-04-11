@@ -7,16 +7,62 @@ const CaseFile = require("../models/caseFileModel");
         try{
             if(
                 !req.body.caseTitle ||
-                !req.body.caseDesc ||
-                !req.body.casePriority
+                !req.body.location ||
+                !req.body.timeOfIncident ||
+                !req.body.Vehicle.vin ||
+                !req.body.Vehicle.licencePlate ||
+                !req.body.Vehicle.currentCondition ||
+                !req.body.passengerCount ||
+                !req.body.incident.description ||
+                !req.body.incident.severity ||
+                !req.body.incident.injuries 
+
+
             ){
                 return res.status(400).send("Missing required fields");
             }
     
             const newCaseFile = {
                 caseTitle: req.body.caseTitle,
-                caseDesc: req.body.caseDesc,
-                casePriority: req.body.casePriority
+                location: req.body.location,
+                Vehicle : {
+                    vin: req.body.Vehicle.vin,
+                    licencePlate: req.body.Vehicle.licencePlate,
+                    currentCondition: req.body.Vehicle.currentCondition
+                },
+
+                passengerCount: req.body.passengerCount,
+
+                incident: {
+                    description: req.body.incident.description,
+                    severity: req.body.incident.severity,
+                    injuries: req.body.incident.injuries
+                },
+
+                status : req.body.status || "incomplete",
+
+                witnesses: {
+                    contactInformation: req.body.witnesses.contactInformation,
+                    statement: req.body.witnesses.statement
+                },
+
+                emergencyServices: {
+                    contacted: req.body.emergencyServices.contacted || false,
+                    responseTime: req.body.emergencyServices.responseTime,
+                    actionsTaken: req.body.emergencyServices.actionsTaken
+                },
+
+                photographicEvidence: req.body.photographicEvidence || [],
+
+                insuranceInformation: {
+                    driverInsuranceDetails: req.body.insuranceInformation.driverInsuranceDetails,
+                    insuranceCompaniesContactInfo: req.body.insuranceInformation.insuranceCompaniesContactInfo,
+                    insuranceStatus : req.body.insuranceInformation.insuranceStatus || "pending"
+                },
+
+                policeReport : req.body.policeReport
+
+
             };
     
             const createdCaseFile = await CaseFile.create(newCaseFile);
@@ -64,18 +110,16 @@ const getCaseFiles = async (req, res) => {
 
  const updateCaseFileById = async (req, res) => {
     
+
+        const { id } = req.params;
+        const  { caseTitle, location, Vehicle, passengerCount, incident, status, witnesses, emergencyServices, photographicEvidence, insuranceInformation, policeReport } = req.body;
+        
         try{
-            if(
-                !req.body.caseTitle ||
-                !req.body.caseDesc ||
-                !req.body.casePriority
-            ){
-                return res.status(400).send("Missing required fields");
-            }
+            
         
-            const { id } = req.params;
+           
         
-            const updatedCaseFile = await CaseFile.findByIdAndUpdate(id, req.body);
+            const updatedCaseFile = await CaseFile.findByIdAndUpdate(id, { caseTitle, location, Vehicle, passengerCount, incident, status, witnesses, emergencyServices, photographicEvidence, insuranceInformation, policeReport }, { new: true });
         
             if(!updatedCaseFile){
                 return res.status(404).send("Case file not found");
