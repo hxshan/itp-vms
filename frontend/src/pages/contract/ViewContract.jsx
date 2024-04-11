@@ -60,20 +60,20 @@ if (data) {
         _id: data._id,
         Vehical_Type:data.Vehical_Type,
         Vehical: data.Vehical,
-        contract_SD: data.contract_SD,
-        contract_ED: data.contract_ED,
+        contract_SD:new Date(data.contract_SD).toLocaleDateString(),
+        contract_ED:new Date(data.contract_ED).toLocaleDateString(),
         Insurance_Source: data.Insurance_Source,
         Insurace_provider: data.Insurace_provider,
         Policy_Number: data.Policy_Number,
         Coverage_Type: data.Coverage_Type,
         Coverage_Amount: data.Coverage_Amount,
         Deductible: data.Deductible,
-        Insurance_SD: data.Insurance_SD,
-        Insurance_ED: data.Insurance_ED,
+        Insurance_SD:new Date(data.Insurance_SD).toLocaleDateString(),
+        Insurance_ED:new Date(data.Insurance_ED).toLocaleDateString(),
         Insurance_notes: data.Insurance_notes,
         Payment_Amount: data.Payment_Amount,
         Payment_Plan: data.Payment_Plan,
-        Payment_Date: data.Payment_Date,
+        Payment_Date:new Date(data.Payment_Date).toLocaleDateString(),
         Amount_Payed: data.Amount_Payed,
       });
 
@@ -101,7 +101,13 @@ if (data) {
       </div>
 
       <div className="bg-[#D9D9D9] h-fit rounded-lg py-4 flex flex-col justify-evenly my-4 w-full">
-        <div className="flex w-full justify-end pr-5">
+        <div className="flex w-full justify-between px-5 mb-5">
+        <button
+              className=" bg-yellow-600 px-5 py-2 rounded-xl w-[120px] "
+              onClick={()=>{navigate('/Contract/Dashbored')}}
+            >
+              Go Back
+            </button>
         <button className=" bg-green-600 px-5 py-2 rounded-xl" onClick={()=> navigate(`/EditContract/${contractData._id}`)}>Edit</button>
         </div>
         <div className="flex justify-evenly">
@@ -121,7 +127,7 @@ if (data) {
             </div>
 
             <div className="flex flex-col gap-3">
-              <div className="flex gap-28 mt-3">
+              <div className="flex gap-12 mt-3">
                 <div>
                   <p>Client email</p>
                   <p className=" text-[#000ac2] font-semibold">
@@ -166,7 +172,7 @@ if (data) {
             <div>
               <p>Contract End Date</p>
               <p className=" text-[#000ac2] font-semibold">
-                {contractData.contract_SD}
+                {contractData.contract_ED}
               </p>
             </div>
           </div>
@@ -271,6 +277,13 @@ if (data) {
           </div>
         </div>
       </div>
+      <div className="flex justify-end mr-5 gap-4">
+            <button
+              className=" bg-blue-600 px-5 py-2 rounded-xl w-[120px] "
+            >
+              Print
+            </button>
+          </div>
       </div>
     </div>
   );

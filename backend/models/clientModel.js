@@ -66,10 +66,6 @@ const clientSchema =new Schema({
     Comp_Address:{
         type:String,
     },
-    contractID:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:'contract' 
-    }
 })
 
 module.exports = mongoose.model('Client',clientSchema)

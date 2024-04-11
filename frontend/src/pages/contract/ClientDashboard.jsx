@@ -130,10 +130,10 @@ const ClientDashboard = () => {
               <p className="w-[200px]">null</p>
 
               <div className="flex justify-center items-center w-[200px] gap-3  ">
-                <button className=" bg-yellow-300 px-5 py-2 rounded-xl" >
+                <button className=" bg-yellow-300 px-5 py-2 rounded-xl" onClick={()=>{navigate(`/viewClient/${item._id}`)}} >
                   View
                 </button>
-                <button className=" bg-green-600 px-5 py-2 rounded-xl">
+                <button className=" bg-green-600 px-5 py-2 rounded-xl" onClick={()=>{navigate(`/EditClient/${item._id}`)}}>
                   Edit
                 </button>
               </div>

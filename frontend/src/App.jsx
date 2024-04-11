@@ -28,6 +28,9 @@ import { UserProfile } from "./pages/admin";
 import {HireDashboard, CreateHire, EditHire, HireRates} from "./pages/hires/hires"
 import AddClient from "./pages/contract/AddClient";
 import { View } from '../src/components/VR/View';
+import ViewClient from "./pages/contract/ViewClient";
+import ClientEditForm from "./pages/contract/ClientEditForm";
+
 
 function App() {
   const { user, loading } = useAuthContext();
@@ -102,7 +105,11 @@ function App() {
             <Route path="/client" element={<ClientDashboard/>}/>
             <Route path="/viewContract/:id" element={<ViewContract/>}/>
             <Route path="/EditContract/:id" element={<ContractEditForm/>}/>
+            <Route path="/EditClient/:id" element={<ClientEditForm/>}/>
             <Route path="/addClient" element={<AddClient/>}/>
+            <Route path="/viewClient/:id" element={<ViewClient/>}/>
+
+
             <Route path="/finance" element={<FinanaceDashboard />} />
             
             <Route

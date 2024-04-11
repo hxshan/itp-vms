@@ -73,6 +73,7 @@ const getClientbyId = async(req,res) =>{
   }
 }
 
+
 const getallClients = async(req,res) =>{
   try{
      const clients = await Client.find({});
@@ -88,21 +89,114 @@ const getallClients = async(req,res) =>{
   }
 }
 
+const updateClient = async(req,res)  =>{
+  try{
+
+    const clientID = req.params.id;
+
+    const clientExist = await Client.findOne({_id:clientID})
+
+    if(!clientExist){
+      return res.status(400).json({message:"there is no client"})
+    }
+
+    
+
+    const {firstName,
+    lastName,
+    gender,
+    dob,
+    phoneNumber,
+    nicNumber,
+    email,
+    licenceNumber,
+    Address,
+    Comp_Available,
+    Comp_Name,
+    Reg_Num,
+    Tax_Num,
+    Legal_struc,
+    Comp_Email,
+    Comp_Phone,
+    Comp_Address,
+} = req.body.data
+
+console.log(req.body.data)
+
+
+if(!firstName || !lastName || !email || !gender || !dob || !phoneNumber || !nicNumber || !Address || Comp_Available === ""){
+  return res.status(400).json({message:"client fields are not filled"});
+  
+}
+
+if(Comp_Available){
+  if(Comp_Available){
+    if( !Comp_Name || !Reg_Num || !Tax_Num || !Legal_struc || !Comp_Email || !Comp_Phone || !Comp_Address){
+      return res.status(400).json({message:"company fields are not filled"})
+    }
+  }
+}
+
+
+
+
+const updateclientData = {
+  $set:{
+    firstName:firstName,
+    lastName:lastName,
+    gender:gender,
+    dob:dob,
+    phoneNumber:phoneNumber,
+    nicNumber:nicNumber,
+    email:email,
+    licenceNumber:licenceNumber,
+    Address:Address,
+    Comp_Available:Comp_Available,
+    Comp_Name:Comp_Name,
+    Reg_Num:Reg_Num,
+    Tax_Num:Tax_Num,
+    Legal_struc:Legal_struc,
+    Comp_Email:Comp_Email,
+    Comp_Phone:Comp_Phone,
+    Comp_Address:Comp_Address,
+  }
+};
+
+const updateSuccess = await Client.updateOne({_id:clientID},updateclientData)
+
+if(updateSuccess.modifiedCount > 0 ){
+  return res.status(200).json({messag:" update successful"})
+}else{
+  return res.status(200).json({message:" failed to update"})
+}
+
+
+  }catch(error){
+    res.status(500).json({"error":"internal server error"})
+  }
+}
+
 
 const createContract = async(req,res)=>{
     try{
         const clientID = req.params.id;
-      const {Insurance_Source,Vehical_Type,Vehical,contract_SD,contract_ED,Insurace_provider,Policy_Number,Coverage_Type,Coverage_Amount,Deductible,Insurance_SD,Insurance_ED,Insurance_notes,Payment_Amount,Payment_Plan,Payment_Date,Amount_Payed} = req.body; 
+      const {Insurance_Source,Vehical_Type,Vehical,contract_SD,contract_ED,Insurace_provider,Policy_Number,Coverage_Type,Coverage_Amount,Deductible,Insurance_SD,Insurance_ED,Insurance_notes,Payment_Amount,Payment_Plan,Payment_Date,Amount_Payed} = req.body.data; 
       
       const clientExist = await  Client.findOne({_id:clientID})
 
       if(!clientExist){
-        return res.status(400).json({"error":"client dosent exist"})
+        return res.status(400).json({message:"client dosent exist"})
+      }
+
+      const existContract = await Contract.findOne({clientID:clientID})
+
+      if(existContract){
+        return res.status(400).json({message:"A contract exist for this client"})
       }
 
 
       if(!Vehical_Type ||!Vehical || !contract_SD|| !contract_ED|| !Insurance_Source || !Insurace_provider || !Policy_Number || !Coverage_Type || !Coverage_Amount || !Deductible || !Insurance_SD || !Insurance_ED || !Insurance_notes || !Payment_Amount || !Payment_Plan || !Payment_Date || !Amount_Payed){
-        return res.status(400).json({"error":"fields are not filled"})
+        return res.status(400).json({message:"fields are not filled"})
       }
 
       const contract = new Contract({
@@ -128,10 +222,8 @@ const createContract = async(req,res)=>{
 
       await contract.save()
 
-      await Client.updateOne({ _id: clientID }, { $push: { contractID: contract._id } });
 
-
-      res.status(200).json({"status":"success"})
+      res.status(200).json({message:"contract created successfully"})
     }catch(error){
         res.status(500).json({error:error.message})
     }
@@ -233,4 +325,4 @@ const updateContract = async(req,res) =>{
   }
 }
 
-module.exports = {createContract,createClient,getContractbyID,getClientbyId,getallContract,getallClients,updateContract}
+module.exports = {createContract,createClient,getContractbyID,getClientbyId,getallContract,getallClients,updateContract,updateClient}
