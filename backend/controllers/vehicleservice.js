@@ -41,7 +41,8 @@ const addservice = async (req, res) => {
 //Get all Services from system
 const getallservices = async (req, res) => {
     try {
-        const Services = await vehicle_service.find({});
+        const Services = await vehicle_service.find().populate("vehicleRegister");
+        console.log(Services)
         return res.status(201).json(Services);
 
     } catch (error) {
@@ -49,4 +50,19 @@ const getallservices = async (req, res) => {
         res.status(500).send({ message: error.message })
     }
 };
-module.exports = { addservice, getallservices }
+
+const getservicesbytype = async (req, res) => {
+    try {
+        const {id} = req.params;
+        const Services = await vehicle_service.find({ vehicleRegister: id }).populate("vehicleRegister");
+
+
+        console.log(Services)
+        return res.status(201).json(Services);
+
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).send({ message: error.message })
+    }
+};
+module.exports = { addservice, getallservices, getservicesbytype }

@@ -20,7 +20,7 @@ import { MaintainceDashboard } from "./pages/Maintains/MaintainceDashboard";
 import { EditMaintainceOrder } from "./components/VR/EditMaintainceOrder";
 import ContractDasboard from "./pages/contract/ContractDasboard";
 import FinanaceDashboard from "./pages/finance/FinanaceDashboard";
-import { VehicleServiceList } from "./components/VR/VehicleServiceList";
+import  VehicleService  from "./components/VR/VehicleService";
 import ClientDashboard from "./pages/contract/ClientDashboard";
 import ViewContract from "./pages/contract/ViewContract";
 import ContractEditForm from "./pages/contract/ContractEditForm";
@@ -28,6 +28,7 @@ import { UserProfile } from "./pages/admin";
 import {HireDashboard, CreateHire, EditHire, HireRates} from "./pages/hires/hires"
 import AddClient from "./pages/contract/AddClient";
 import { View } from '../src/components/VR/View';
+import {Servicenote} from '../src/components/VR/Servicenote';
 
 function App() {
   const { user, loading } = useAuthContext();
@@ -91,7 +92,7 @@ function App() {
             <Route path="/driver" element={<DriverDashboard />} />
             <Route path="/Mdashboard" element={<MaintainceDashboard />} />
             <Route path="/view/:id" element={<View />} />
-            <Route path="/addnote" element={<servicenote />} />
+            <Route path="/addnote/:id" element={<Servicenote />} />
             <Route
               path="/vehiclemaintain/edit/:id"
               element={<EditMaintainceOrder />}
@@ -106,8 +107,8 @@ function App() {
             <Route path="/finance" element={<FinanaceDashboard />} />
             
             <Route
-              path="/VehicleServiceList"
-              element={<VehicleServiceList />}
+              path="/VehicleService"
+              element={<VehicleService />}
             />
           </Routes>
         </div>
