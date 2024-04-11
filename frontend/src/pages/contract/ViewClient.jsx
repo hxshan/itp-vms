@@ -123,7 +123,7 @@ const ViewClient = () => {
               className=" bg-yellow-600 px-5 py-2 rounded-xl w-[120px] "
               onClick={()=>{navigate('/client')}}
             >
-              Go Back
+              Dashboard
             </button>
       <button className=" bg-green-600 px-5 py-2 rounded-xl" onClick={()=>{navigate(`/EditClient/${clientID}`)}}>Edit</button>
       </div>

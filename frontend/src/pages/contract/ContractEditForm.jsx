@@ -2,6 +2,7 @@ import useAxios from '@/hooks/useAxios';
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from "@/api/axios";
+import { ToastContainer, toast } from 'react-toastify';
 
 
 const ContractEditForm = () => {
@@ -18,6 +19,8 @@ const ContractEditForm = () => {
   const [InsuranceED,setInsuranceED] = useState('');
   const [paymentDate,setpaymentDate] = useState('');
 
+  
+    const [EstimatedTime,setEstimatedTime] = useState('');
 
   const [contractData, setContractData] = useState({
     Vehical_Type:"",
@@ -52,11 +55,76 @@ const ContractEditForm = () => {
   const HandleInput = (e)=>{
     const {name,value} = e.target;
 
+    if(name === "contract_SD" || name === "contract_ED"){
+      if(name === "contract_SD" && contractData.contract_ED){
+          const result = inRange(value,contractData.contract_ED)
+          if(result === 'INRANGE'){
+              setEstimatedTime(calculateDateDiff(new Date(value),new Date(contractData.contract_ED)))
+          }else{
+              setEstimatedTime(result)
+          }
+      }else if(name === "contract_ED" && contractData.contract_SD){
+          const result = inRange(contractData.contract_SD,value)
+          if(result === 'INRANGE'){
+              setEstimatedTime(calculateDateDiff(new Date(contractData.contract_SD),new Date(value)))
+          }else{
+              setEstimatedTime(result)
+          }
+      }
+  }
+
+
     setContractData({
         ...contractData,
         [name]:value
     })
   }
+
+  const calculateDateDiff = (startDate,endDate)=>{
+
+    const diffTime = Math.abs(endDate.getTime() - startDate.getTime())
+    var diffDays = Math.ceil(diffTime/(1000 * 60 * 60 * 24));
+
+    let output = [];
+
+    
+    if (diffDays >= 365) {
+        const diffYears = Math.floor(diffDays / 365);
+        output.push(`${diffYears} year${diffYears !== 1 ? 's' : ''}`);
+        diffDays -= diffYears * 365;
+    }
+
+    if (diffDays >= 30) {
+        const diffMonths = Math.floor(diffDays / 30);
+        output.push(`${diffMonths} month${diffMonths !== 1 ? 's' : ''}`);
+        diffDays -= diffMonths * 30;
+    }
+
+    if (diffDays > 0) {
+        output.push(`${diffDays} day${diffDays !== 1 ? 's' : ''}`);
+    }
+    
+    return output.join(' and ');
+}
+
+const inRange = (startDate,endDate) =>{
+  const tommorow = new Date();
+  tommorow.setDate(tommorow.getDate() + 1);
+  const minstartDate = tommorow.toISOString().split('T')[0];
+
+  if(startDate < minstartDate){
+      return "Contract start date cannot be current date or past dates"
+  }else if(endDate < minstartDate){
+      return "Contract end date connot be lower than contract start date"
+  }else if(startDate > endDate){
+      return "contract start date cannot be greater than contract end date"
+  }else if(startDate === endDate){
+      return "contract end date should be one day after Contract start date"
+  }else{
+      return "INRANGE"
+  }
+}
+
 
   
   const [Contract, error, loading, axiosFetch] = useAxios()
@@ -81,7 +149,88 @@ const ContractEditForm = () => {
   })
  }
  const HandleSubmit = async(e)=>{
-  e.preventDefault()
+
+  const tommorow = new Date();
+    tommorow.setDate(tommorow.getDate() + 1);
+    const minstartDate = tommorow.toISOString().split('T')[0];
+
+    const Insu_pov = /^[a-zA-Z]+(?: [a-zA-Z]+)*$/
+    const pol_num = /^[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*$/
+    const cov_num = /^\d+(\.\d+)?$/
+
+    e.preventDefault();
+    
+
+    if (!contractData.Vehical_Type) {
+        toast.error("Please select vehical type");
+        return;
+    }else if(!contractData.contract_SD){
+        toast.error("Invalid contract start date")
+        return;
+    }else if(!contractData.contract_ED){
+        toast.error("Invalid contract end date")
+        return;
+    }else if(contractData.contract_SD < minstartDate){
+        toast.error("Contract start date cannot be current date or past dates ")
+        return;
+    }else if(contractData.contract_ED < minstartDate){
+        toast.error("Contract end date connot be lower than contract start date")
+        return;
+    }else if(contractData.contract_SD > contractData.contract_ED ){
+        toast.error("contract start date cannot be greater than contract end date")
+        return
+    }else if(contractData.contract_SD === contractData.contract_ED ){
+        toast.error("contract end date should be one day after Contract start date")
+        return
+    }else if(!contractData.Vehical){
+        toast.error("please select vehical")
+        return;
+    }else if(!contractData.Insurance_Source){
+        toast.error("please select Insurance source")
+        return;
+    }else if(!contractData.Insurace_provider || !contractData.Insurace_provider.match(Insu_pov)){
+        toast.error("Invalid insurance provider")
+        return;
+    }else if(!contractData.Policy_Number  || !contractData.Policy_Number.match(pol_num)){
+        toast.error("Invalid policy number")
+        return;
+    }else if(!contractData.Coverage_Type){
+        toast.error("please select coverage type")
+        return;
+    }else if(!contractData.Coverage_Amount  || !contractData.Coverage_Amount.match(cov_num)){
+        toast.error("Invalid coverage amount")
+        return;
+    }else if(!contractData.Deductible  || !contractData.Deductible.match(cov_num)){
+        toast.error("Invalid detuctible amount")
+        return;
+    }else if(!contractData.Insurance_SD){
+        toast.error("Enter isurance start date")
+        return;
+    }else if(!contractData.Insurance_ED){
+        toast.error("Enter insurance end date")
+        return;
+    }else if(contractData.Insurance_ED < minstartDate){
+        toast.error("Insurance end date connot be lower than Insurance start date")
+        return;
+    }else if(contractData.Insurance_SD > contractData.Insurance_ED ){
+        toast.error("Insurance start date cannot be greater than Insurance end date")
+        return
+    }else if(contractData.contract_SD === contractData.Insurance_ED ){
+        toast.error("Insurance end date should be one day after Insurance start date")
+        return
+    }else if(!contractData.Payment_Amount  || !contractData.Payment_Amount.match(cov_num)){
+        toast.error("Invalid payment amount")
+        return;
+    }else if(!contractData.Payment_Plan){
+        toast.error("please select payment plan")
+        return;
+    }else if(!contractData.Payment_Date){
+        toast.error("please enter payment date")
+        return;
+    }else if(!contractData.Amount_Payed || !contractData.Amount_Payed.match(cov_num)){
+        toast.error("Invalid amount payed")
+        return;
+    }
   await updateContract()
   navigate(`/viewContract/${contractID}`)
 }
@@ -190,6 +339,7 @@ const ContractEditForm = () => {
     <div className='flex items-center justify-center mb-4'>
         <p className=' text-[50px] font-bold '>EDIT CONTRACT</p>
     </div>
+    <ToastContainer/>
     <div className='bg-[#D9D9D9] w-[90%] h-fit rounded-lg py-8 flex justify-evenly'>
     
     <div>
@@ -209,7 +359,7 @@ const ContractEditForm = () => {
 
 
     <div className='flex flex-col gap-3'>
-    <div className='flex gap-28 mt-3'>
+    <div className='flex gap-12 mt-3'>
     <div>
         <p>Client email</p>
         <p className=' text-[#000ac2] font-semibold'>{clientData.email}</p>
