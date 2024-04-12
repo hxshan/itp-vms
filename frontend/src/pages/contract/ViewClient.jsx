@@ -14,6 +14,37 @@ const ViewClient = () => {
 
     const [ConExist,setConExist] = useState();
 
+    
+
+    const [deleClient,delError,delLoading,fetchDel] = useAxios()
+
+    const DeleteClient = async ()=>{
+
+      await fetchDel({
+        axiosInstance: axios,
+        method: "DELETE",
+        url: `/contract/deleteClient/${clientID}`,  
+      })
+    }
+
+    const HandleDelete =() => {
+      
+      const confirm = window.confirm("This client will be deleted")
+
+      if(confirm){
+    
+         DeleteClient().then(function (res){
+          console.log(res)
+          
+         })
+
+        
+      }else{
+        return;
+      }
+      
+    }
+
     const [clientData,setclientData] = useState({
     firstName: "loading",
     lastName: "loading",
@@ -38,7 +69,7 @@ const ViewClient = () => {
     })
 
     const [client,clientError,clientLoading,clientFetch] = useAxios();
-    const [allContracts,contractError,contError,contFetch] = useAxios();
+    const [allContracts,contractError,contLoading,contFetch] = useAxios();
 
     const getallContracts = ()=>{
         contFetch({
@@ -55,8 +86,23 @@ const ViewClient = () => {
             url: `/contract/getClient/${clientID}`,
         })
     }
+    useEffect(()=>{
+      if(!delLoading){
+        if(delError){
+          alert(delError)
+        }else if(deleClient.message === "Client and contrat deleted successfully" ){
+          alert("Client and contrat deleted successfully")
+          navigate('/client')
+        }else if(deleClient.message === "Theres a ongoing contract" ){
+          alert("Theres a ongoing contract")
+        }else if(deleClient.message === "Client deleted successfully"){
+          alert("Client deleted successfully")
+          navigate('/client')
+        }
+      }
+    },[delLoading])
 
-    console.log(ConExist)
+    
     useEffect(()=>{
         if(client){
             setclientData({
@@ -109,7 +155,11 @@ const ViewClient = () => {
         getallContracts();
     },[])
 
-
+if(contLoading){
+  return(
+    <div>Loading</div>
+  )
+}
 
   return (
     <div className='flex flex-col   items-center'>
@@ -125,7 +175,10 @@ const ViewClient = () => {
             >
               Dashboard
             </button>
+      <div className='flex gap-4'>
+      <button className=" bg-red-600 px-5 py-2 rounded-xl" onClick={HandleDelete}>Delete</button>
       <button className=" bg-green-600 px-5 py-2 rounded-xl" onClick={()=>{navigate(`/EditClient/${clientID}`)}}>Edit</button>
+      </div>
       </div>
       <div className='flex justify-evenly'>
         <div>

@@ -59,6 +59,9 @@ const contractSchema = new Schema({
     Amount_Payed:{
         type:String,
     },
+    Status:{
+        type:String,
+    }
 })
 
 module.exports = mongoose.model('Contract',contractSchema)

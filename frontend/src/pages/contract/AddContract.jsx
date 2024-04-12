@@ -59,7 +59,7 @@ const [ContractData,setContractData] = useState({
     Payment_Date:"",
     Amount_Payed:"",
 })
-
+console.log(ContractData)
 const [client,clientError,clientLoading,clientFetch] = useAxios();
 const [contract,conError,conLoading,conFetch] = useAxios();
 
@@ -226,7 +226,7 @@ const HandleSubmit = async (e)=>{
     }else if(!ContractData.Payment_Date){
         toast.error("please enter payment date")
         return;
-    }else if(!ContractData.Amount_Payed || ContractData.Amount_Payed.match(cov_num)){
+    }else if(!ContractData.Amount_Payed || !ContractData.Amount_Payed.match(cov_num)){
         toast.error("Invalid amount payed")
         return;
     }
@@ -240,10 +240,23 @@ const HandleSubmit = async (e)=>{
           },
     });
 
-    navigate(`/viewClient/${clientID}`);
-    
 
 }
+
+useEffect(()=>{
+    if(!conLoading){
+      if(conError){
+        alert(conError)
+      }else if(contract.message === "client dosent exist" ){
+        alert("Client does not exist")
+      }else if(contract.message === "A contract exist for this client"){
+        alert("A contract exist for this client")
+      }else if(contract.message === "contract created successfully"){
+        alert("Contract created successfully")
+        navigate(`/viewClient/${clientID}`)
+      }
+    }
+  },[conLoading])
 
 useEffect(()=>{
     if(client){

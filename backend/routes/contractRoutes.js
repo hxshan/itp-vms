@@ -1,6 +1,6 @@
 const express = require('express')  
 const Auth = require('../middleware/Auth')
-const {createContract, createClient, getContractbyID, getClientbyId,getallContract,getallClients,updateContract,updateClient} = require('../controllers/contractController')
+const {createContract, createClient, getContractbyID, getClientbyId,getallContract,getallClients,updateContract,updateClient,deleteClient,deleteContract} = require('../controllers/contractController')
 
 const router = express.Router()
 
@@ -12,5 +12,7 @@ router.get('/getAllContracts',getallContract)
 router.get('/getClients',getallClients)
 router.patch('/updateContract/:id',updateContract)
 router.patch('/updateClient/:id',updateClient)
+router.delete('/deleteClient/:id',deleteClient)
+router.delete('/deleteContract/:id',deleteContract)
 
 module.exports = router;

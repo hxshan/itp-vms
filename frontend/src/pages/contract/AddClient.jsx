@@ -35,6 +35,18 @@ const AddClient = () => {
 
   const [client, error, isLoading, FetchClient] = useAxios();
 
+  useEffect(()=>{
+    if(!isLoading){
+      if(error){
+        alert(error)
+      }else if(client.message === "client created succesfully" ){
+        navigate('/client')
+      }else{
+        console.log(client)
+      }
+    }
+  },[isLoading])
+
   const handleInput = (e) => {
     const { name, value } = e.target;
 
@@ -118,7 +130,7 @@ const AddClient = () => {
     } else if (!clientData.Comp_Available) {
         toast.error("Choose Company Availability");
         return;
-    } else if (clientData.Comp_Available) {
+    } else if (!clientData.Comp_Available) {
         if (!clientData.Comp_Name) {
             toast.error("Enter Company Name");
             return;
@@ -145,7 +157,7 @@ const AddClient = () => {
 
 
     
-
+      
          await FetchClient({
           axiosInstance: axios,
           method: "POST",
@@ -153,7 +165,11 @@ const AddClient = () => {
           requestConfig: {
             data: { ...clientData },
           },
-        });
+        })
+
+        
+
+        
 
   };
 

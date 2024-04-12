@@ -165,16 +165,45 @@ const updateclientData = {
 const updateSuccess = await Client.updateOne({_id:clientID},updateclientData)
 
 if(updateSuccess.modifiedCount > 0 ){
-  return res.status(200).json({messag:" update successful"})
+  return res.status(200).json({message:"successful"})
 }else{
-  return res.status(200).json({message:" failed to update"})
+  return res.status(200).json({message:"failed"})
 }
 
 
   }catch(error){
-    res.status(500).json({"error":"internal server error"})
+    res.status(500).json({error:"internal server error"})
   }
 }
+
+const deleteClient = async (req, res) => {
+  try {
+    const clientId = req.params.id;
+
+    const clientExist = await Client.findOne({_id: clientId});
+
+    if (!clientExist) {
+      return res.status(400).json({message: "Client doesn't exist"});
+    }
+
+    const contractExist = await Contract.findOne({clientID:clientId});
+
+    if(contractExist){
+      if(contractExist.Status === "Terminated"){
+        await Contract.deleteOne({clientID: clientId})
+        await Client.deleteOne({_id:clientId})
+        return res.status(200).json({message:"Client and contrat deleted successfully"})
+      }else{
+        return res.status(400).json({message:"Theres a ongoing contract"})
+      }
+    }
+      await Client.deleteOne({_id:clientId})
+
+    return res.status(200).json({message: "Client deleted successfully"});
+  } catch (error) {
+    return res.status(500).json({error: "Internal server error"});
+  }
+};
 
 
 const createContract = async(req,res)=>{
@@ -195,7 +224,7 @@ const createContract = async(req,res)=>{
       }
 
 
-      if(!Vehical_Type ||!Vehical || !contract_SD|| !contract_ED|| !Insurance_Source || !Insurace_provider || !Policy_Number || !Coverage_Type || !Coverage_Amount || !Deductible || !Insurance_SD || !Insurance_ED || !Insurance_notes || !Payment_Amount || !Payment_Plan || !Payment_Date || !Amount_Payed){
+      if(!Vehical_Type ||!Vehical || !contract_SD|| !contract_ED|| !Insurance_Source || !Insurace_provider || !Policy_Number || !Coverage_Type || !Coverage_Amount || !Deductible || !Insurance_SD || !Insurance_ED || !Payment_Amount || !Payment_Plan || !Payment_Date || !Amount_Payed){
         return res.status(400).json({message:"fields are not filled"})
       }
 
@@ -217,7 +246,8 @@ const createContract = async(req,res)=>{
         Payment_Amount,
         Payment_Plan,
         Payment_Date,
-        Amount_Payed
+        Amount_Payed,
+        Status:"Newly Added"
       });
 
       await contract.save()
@@ -233,11 +263,14 @@ const getContractbyID = async(req,res) =>{
   try{
     const contractID  = req.params.id;
 
-    const contractExist = await Contract.findOne({_id:contractID}).populate({path:'clientID',select:'-password'});
+    const contractExist = await Contract.findOne({_id:contractID}).populate('clientID');
 
     if(!contractExist){
       return res.status(400).json({"error":"contract dosent exist"})
     }
+
+
+    //const newCont = await Contract.findOne({_id:contractID}).populate('clientID')
 
     return res.status(200).json(contractExist)
   }catch(error){
@@ -248,11 +281,24 @@ const getContractbyID = async(req,res) =>{
 const getallContract = async(req,res) =>{
   try{
     const Contracts = await Contract.find({})
-    .populate({path:'clientID',select:'-password'});
+    .populate('clientID');
 
     if(!Contracts){
       return res.status(400).json({"error":"No contracts available"});
     }
+
+    const currentDate = new Date();
+    Contracts.forEach(async (contract) => {
+      if(contract.Status === "Terminated"){
+        await Contract.updateOne({ _id: contract._id }, { $set: { Status: "Terminated" } });
+      }else if (contract.contract_ED < currentDate) {
+        await Contract.updateOne({ _id: contract._id }, { $set: { Status: "waiting for termination" } });
+      } else if (contract.contract_SD <= currentDate) {
+        await Contract.updateOne({ _id: contract._id }, { $set: { Status: "ongoing" } });
+      } else if (contract.contract_SD > currentDate) {
+        await Contract.updateOne({ _id: contract._id }, { $set: { Status: "Newly Added" } });
+      }
+    });
 
     return res.status(200).json(Contracts)
   }catch(error){
@@ -268,7 +314,7 @@ const updateContract = async(req,res) =>{
     const contract = await Contract.findOne({_id:contractID})
 
     if(!contract){
-      return res.status(400).json({"error":"no contract found"});
+      return res.status(400).json({message:"no contract found"});
     }
 
     const {Vehical,
@@ -315,9 +361,9 @@ const updateContract = async(req,res) =>{
 
     
     if(updateSuccess.modifiedCount > 0 ){
-      return res.status(200).json({"status":"success"})
+      return res.status(200).json({message:"success"})
     }else{
-      return res.status(200).json({"status":"failed"})
+      return res.status(200).json({message:"failed"})
     }
 
   }catch(error){
@@ -325,4 +371,25 @@ const updateContract = async(req,res) =>{
   }
 }
 
-module.exports = {createContract,createClient,getContractbyID,getClientbyId,getallContract,getallClients,updateContract,updateClient}
+const deleteContract = async(req,res) =>{
+  try{
+    const contractID = req.params.id; 
+
+    const contractExist = await Contract.findOne({_id:contractID})
+
+    if(!contractExist){
+      return res.status(400).json({message:"contract does not exist"})
+    }
+
+    if(contractExist.Status === "waiting for termination"){
+      
+      await Contract.updateOne({_id:contractID},{$set:{Status:"Terminated"}})
+      return res.status(200).json({message:"contract succesfully set to terminated"})
+    }
+
+  }catch(error){
+    return res.status(400).json({error:"Internal server error "})
+  }
+}
+
+module.exports = {createContract,createClient,getContractbyID,getClientbyId,getallContract,getallClients,updateContract,updateClient,deleteClient,deleteContract}

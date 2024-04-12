@@ -35,6 +35,8 @@ const ClientEditForm = () => {
   const [client, clientError, clientLoading, ClientFetch] = useAxios();
   const [updateRES, updateError, updateLoading , UpdateFetch] = useAxios();
 
+  
+
   const [formatDOB, setformatDOB] = useState("");
   const [openComp, setopenComp] = useState(false);
 
@@ -126,10 +128,35 @@ const ClientEditForm = () => {
         }
     }
 
+    const confirm = window.confirm("Are u sure to update Client ?")
 
-    await updatClient()
-    navigate(`/viewClient/${clientID}`)
+    if(confirm){
+      await updatClient()
+    }else{
+      return;
+    }
+   
   }
+
+  useEffect(()=>{
+    if(!updateLoading){
+      if(updateError){
+        alert(updateError)
+      }else if(updateRES.message === "there is no client" ){
+        alert("Client does not exist")
+      }else if(updateRES.message === "client fields are not filled"){
+        alert("Client fields are not filled")
+      }else if(updateRES.message === "company fields are not filled"){
+        alert("Client fields are not filled")
+      }else if(updateRES.message === "successful"){
+        alert("Client updated successfull")
+        navigate(`/viewClient/${clientID}`)
+      }else if(updateRES.message === "failed"){
+        alert(`No values found changed "Redirecting to Client page" `)
+        navigate(`/viewClient/${clientID}`)
+      }
+    }
+  },[updateLoading])
 
   useEffect(() => {
     if (client) {

@@ -11,6 +11,13 @@ const ViewContract = () => {
 
   const contractID = params.id;
 
+  //const [timeDiff,setTimeDiff] = useState(null)
+  const [countdown, setCountdown] = useState(null);
+  const [EstimatedDays,setEstimatedDays] = useState('')
+  const [countError,setError] = useState('')
+  const [ContStatus,setContStatus] = useState('')
+
+
   const [contractData, setContractData] = useState({
     _id: "",
     Vehical: "",
@@ -30,6 +37,7 @@ const ViewContract = () => {
     Payment_Plan: "loading",
     Payment_Date: "loading",
     Amount_Payed: "loading",
+    Status:"loading",
   });
 
   const [clientData, setclientData] = useState({
@@ -51,8 +59,6 @@ const ViewContract = () => {
    });
  }
 
- console.log(data)
- 
  useEffect(() => {
 
 if (data) {
@@ -75,7 +81,16 @@ if (data) {
         Payment_Plan: data.Payment_Plan,
         Payment_Date:new Date(data.Payment_Date).toLocaleDateString(),
         Amount_Payed: data.Amount_Payed,
+        Status:data.Status,
       });
+
+      if(data.contract_ED && data.contract_SD){
+        calculateTimeDiff(new Date(data.contract_SD),new Date(contractData.contract_ED))
+        setEstimatedDays(calculateDateDiff(new Date(data.contract_SD),new Date(contractData.contract_ED)))
+      }
+      if(data.Status){
+        setContStatus(data.Status);
+      }
 
       if (data.clientID) {
         setclientData({
@@ -94,12 +109,70 @@ if (data) {
     getContract();
   },[])
 
+  const calculateDateDiff = (startDate,endDate)=>{
+
+    const diffTime = Math.abs(endDate.getTime() - startDate.getTime())
+    var diffDays = Math.ceil(diffTime/(1000 * 60 * 60 * 24));
+
+    let output = [];
+
+    
+    if (diffDays >= 365) {
+        const diffYears = Math.floor(diffDays / 365);
+        output.push(`${diffYears} year${diffYears !== 1 ? 's' : ''}`);
+        diffDays -= diffYears * 365;
+    }
+
+    if (diffDays >= 30) {
+        const diffMonths = Math.floor(diffDays / 30);
+        output.push(`${diffMonths} month${diffMonths !== 1 ? 's' : ''}`);
+        diffDays -= diffMonths * 30;
+    }
+
+    if (diffDays > 0) {
+        output.push(`${diffDays} day${diffDays !== 1 ? 's' : ''}`);
+    }
+    
+    return output.join(' and ');
+}
+
+  const calculateTimeDiff = (startDate,endDate) =>{
+    
+    const startDateTime = new Date(startDate);
+    const endDateTime = new Date(endDate);
+    const currentDateTime = new Date();
+
+    if(startDateTime > currentDateTime){
+      console.log("cant start cuz start date is yet to come")
+      setError("cant start cuz start date is yet to come")
+
+    }else {
+    const diffMilliseconds = endDateTime - currentDateTime;
+
+    if (diffMilliseconds >= 0) {
+      setCountdown(diffMilliseconds);
+
+      const intervalId = setInterval(() => {
+        setCountdown((prevCountdown) => prevCountdown - 1000);
+      }, 1000);
+
+      setTimeout(() => {
+        clearInterval(intervalId);
+        setCountdown(0);
+      }, diffMilliseconds);
+    }
+  }
+
+
+  }
+
   return (
     <div>
       <div className="flex items-center justify-center ">
         <h1 className=" text-[50px] font-bold ">Contract View</h1>
       </div>
-
+      
+     
       <div className="bg-[#D9D9D9] h-fit rounded-lg py-4 flex flex-col justify-evenly my-4 w-full">
         <div className="flex w-full justify-between px-5 mb-5">
         <button
@@ -108,7 +181,7 @@ if (data) {
             >
               Dashboard
             </button>
-        <button className=" bg-green-600 px-5 py-2 rounded-xl" onClick={()=> navigate(`/EditContract/${contractData._id}`)}>Edit</button>
+        <button className={`${contractData.Status === "Terminated"? "hidden" : "" } bg-green-600 px-5 py-2 rounded-xl`} onClick={()=> navigate(`/EditContract/${contractData._id}`)}>Edit</button>
         </div>
         <div className="flex justify-evenly">
         <div >
@@ -162,8 +235,8 @@ if (data) {
                 {contractData.Vehical_Type}
               </p>
             </div>
-
-            <div>
+            <div className="flex gap-20">
+            <div >
               <p>Contract Start Date</p>
               <p className=" text-[#000ac2] font-semibold">
                 {contractData.contract_SD}
@@ -173,6 +246,26 @@ if (data) {
               <p>Contract End Date</p>
               <p className=" text-[#000ac2] font-semibold">
                 {contractData.contract_ED}
+              </p>
+            </div>
+            </div>
+            <div>
+              <p>Contract Estimated duration</p>
+              <p className=" text-[#000ac2] font-semibold">
+                {EstimatedDays ? EstimatedDays : 'loading'}
+              </p>
+            </div>
+            <div>
+              <p>Contract Time remaining</p>
+              <p className=" text-[#000ac2] font-semibold">
+                {countdown ? <p>{Math.floor(countdown / (1000 * 60 * 60 * 24)) + ' days ' + Math.floor((countdown / (1000 * 60 * 60)) % 24) + ' hours ' + Math.floor((countdown / (1000 * 60)) % 60) + ' minutes ' + Math.floor((countdown / 1000) % 60) + ' seconds ' }</p> : countError  }
+              </p>
+            </div>
+
+            <div>
+              <p>Contract Status</p>
+              <p className=" text-[#000ac2] font-semibold">
+                {ContStatus}
               </p>
             </div>
           </div>

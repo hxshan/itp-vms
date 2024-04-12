@@ -127,7 +127,7 @@ const ClientDashboard = () => {
               </p>
               <p className="w-[200px]">{item.email}</p>
               <p className="w-[200px]">{item.phoneNumber}</p>
-              <p className="w-[200px]">null</p>
+              <p className="w-[200px] text-green-500 font-bold">{item.status === "active" ? "Active" : "Offline"}</p>
 
               <div className="flex justify-center items-center w-[200px] gap-3  ">
                 <button className=" bg-yellow-300 px-5 py-2 rounded-xl" onClick={()=>{navigate(`/viewClient/${item._id}`)}} >

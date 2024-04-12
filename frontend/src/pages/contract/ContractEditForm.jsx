@@ -19,8 +19,37 @@ const ContractEditForm = () => {
   const [InsuranceED,setInsuranceED] = useState('');
   const [paymentDate,setpaymentDate] = useState('');
 
+  const [openTemination,setOpenTermination] = useState(false);
+
+  const [delContract,ContError,ContLoading,delFetch] = useAxios()
+
+  const DeleteContract = async () => {
+    await delFetch({
+        axiosInstance: axios,
+        method: "DELETE",
+        url: `/contract/deleteContract/${contractID}`,  
+    })
+  }
+
+
+  const HandleTerminate = ()=>{
+    const confirm = window.confirm("This contract will be terminated")
+
+      if(confirm){
+    
+        DeleteContract().then(function (res){
+          console.log(res)
+          
+         })
+
+        
+      }else{
+        return;
+      }
+  }
+
   
-    const [EstimatedTime,setEstimatedTime] = useState('');
+    const [EstimatedDays,setEstimatedDays] = useState('');
 
   const [contractData, setContractData] = useState({
     Vehical_Type:"",
@@ -40,6 +69,7 @@ const ContractEditForm = () => {
     Payment_Plan: "",
     Payment_Date: "",
     Amount_Payed: "",
+    Status:"",
   });
 
   const [clientData, setclientData] = useState({
@@ -59,16 +89,16 @@ const ContractEditForm = () => {
       if(name === "contract_SD" && contractData.contract_ED){
           const result = inRange(value,contractData.contract_ED)
           if(result === 'INRANGE'){
-              setEstimatedTime(calculateDateDiff(new Date(value),new Date(contractData.contract_ED)))
+            setEstimatedDays(calculateDateDiff(new Date(value),new Date(contractData.contract_ED)))
           }else{
-              setEstimatedTime(result)
+            setEstimatedDays(result)
           }
       }else if(name === "contract_ED" && contractData.contract_SD){
           const result = inRange(contractData.contract_SD,value)
           if(result === 'INRANGE'){
-              setEstimatedTime(calculateDateDiff(new Date(contractData.contract_SD),new Date(value)))
+            setEstimatedDays(calculateDateDiff(new Date(contractData.contract_SD),new Date(value)))
           }else{
-              setEstimatedTime(result)
+            setEstimatedDays(result)
           }
       }
   }
@@ -112,9 +142,7 @@ const inRange = (startDate,endDate) =>{
   tommorow.setDate(tommorow.getDate() + 1);
   const minstartDate = tommorow.toISOString().split('T')[0];
 
-  if(startDate < minstartDate){
-      return "Contract start date cannot be current date or past dates"
-  }else if(endDate < minstartDate){
+if(endDate < minstartDate){
       return "Contract end date connot be lower than contract start date"
   }else if(startDate > endDate){
       return "contract start date cannot be greater than contract end date"
@@ -148,6 +176,20 @@ const inRange = (startDate,endDate) =>{
      }
   })
  }
+
+ useEffect(()=>{
+    if(!ContLoading){
+      if(ContError){
+        alert(ContError)
+      }else if(delContract.message === "contract succesfully set to terminated" ){
+        alert("Contract Terminated")
+        navigate('/Contract/Dashbored')
+      }else if(delContract.message === "contract does not exist" ){
+        alert("contract does not exist")
+      }
+    }
+  },[ContLoading])
+
  const HandleSubmit = async(e)=>{
 
   const tommorow = new Date();
@@ -164,24 +206,15 @@ const inRange = (startDate,endDate) =>{
     if (!contractData.Vehical_Type) {
         toast.error("Please select vehical type");
         return;
-    }else if(!contractData.contract_SD){
-        toast.error("Invalid contract start date")
-        return;
     }else if(!contractData.contract_ED){
         toast.error("Invalid contract end date")
-        return;
-    }else if(contractData.contract_SD < minstartDate){
-        toast.error("Contract start date cannot be current date or past dates ")
         return;
     }else if(contractData.contract_ED < minstartDate){
         toast.error("Contract end date connot be lower than contract start date")
         return;
-    }else if(contractData.contract_SD > contractData.contract_ED ){
-        toast.error("contract start date cannot be greater than contract end date")
-        return
-    }else if(contractData.contract_SD === contractData.contract_ED ){
+    }else if(new Date(contractData.contract_SD).toISOString().split('T')[0] === new Date(contractData.contract_ED ).toISOString().split('T')[0]){
         toast.error("contract end date should be one day after Contract start date")
-        return
+        return;
     }else if(!contractData.Vehical){
         toast.error("please select vehical")
         return;
@@ -258,6 +291,7 @@ const inRange = (startDate,endDate) =>{
         Payment_Plan: Contract.Payment_Plan,
         Payment_Date: Contract.Payment_Date,
         Amount_Payed: Contract.Amount_Payed,
+        Status:Contract.Status,
       });
       if(Contract.contract_SD){
         setformatSD(new Date(Contract.contract_SD).toISOString().split('T')[0]);
@@ -273,6 +307,18 @@ const inRange = (startDate,endDate) =>{
       }
       if(Contract.Payment_Date){
         setpaymentDate(new Date(Contract.Payment_Date).toISOString().split('T')[0])
+      }
+
+      if(Contract.contract_ED && Contract.contract_SD){
+        setEstimatedDays(calculateDateDiff(new Date(Contract.contract_SD),new Date(Contract.contract_ED)))
+      }
+
+      if(Contract.Status){
+        if(Contract.Status === "waiting for termination"){
+            setOpenTermination(true)
+        }else{
+            setOpenTermination(false)
+        }
       }
 
     if(Contract.clientID){
@@ -311,7 +357,6 @@ const inRange = (startDate,endDate) =>{
 
   
   
-  console.log(contractData);
 
   const vehicals = [
     {
@@ -340,8 +385,9 @@ const inRange = (startDate,endDate) =>{
         <p className=' text-[50px] font-bold '>EDIT CONTRACT</p>
     </div>
     <ToastContainer/>
-    <div className='bg-[#D9D9D9] w-[90%] h-fit rounded-lg py-8 flex justify-evenly'>
+    <div className='bg-[#D9D9D9] w-[90%] h-fit rounded-lg py-8 flex flex-col'>
     
+    <div className='flex justify-evenly'>
     <div>
     <div className=' w-fit h-fit  pb-8 rounded-xl'>
     <div>
@@ -396,8 +442,8 @@ const inRange = (startDate,endDate) =>{
         <div>
         <div className='flex mt-3 gap-12'>
         <div className='flex flex-col gap-1'>
-            <label>Start date</label>
-            <input type='date' className='w-[150px] h-10 rounded-lg  bg-white border-none px-2' name='contract_SD' value={formatSD}  onChange={HandleInput} />
+            <label className=' text-red-500'>* Start date</label>
+            <p>{formatSD}</p>
         </div>
 
         <div className='flex flex-col gap-1'>
@@ -408,6 +454,16 @@ const inRange = (startDate,endDate) =>{
         
         <div className='flex flex-col mt-3'>
         <p>Estimated duration</p>
+        <p className=' text-red-500 font-bold'>{EstimatedDays ? EstimatedDays : ''}</p>
+        </div>
+
+        <div className='flex flex-col gap-1'>
+            <label >Status</label>
+            <p>{contractData.Status}</p>
+        </div>
+
+        <div className={` ${openTemination ? "": "hidden" }`}>
+            <button onClick={HandleTerminate} className=" bg-red-600 px-5 py-2 rounded-xl">Terminate</button>
         </div>
         </div>
 
@@ -521,12 +577,25 @@ const inRange = (startDate,endDate) =>{
             <p>Loading</p>
         </div>
     </div>
-    <button onClick={HandleSubmit} className=" bg-yellow-600 px-5 py-2 rounded-xl w-[100px] mt-4" >Submit</button>
     </div>
+    </div>
+    <div className="flex justify-end gap-4 mx-12">
+            <button
+              className=" bg-green-600 px-5 py-2 rounded-xl w-[120px] "
+              onClick={HandleSubmit}
+            >
+              Add
+            </button>
+            <button
+              className=" bg-orange-600 px-5 py-2 rounded-xl w-[120px] "
+              onClick={() => {
+                navigate(`/viewContract/${contractID}`);
+              }}
+            >
+              Cancel
+            </button>
+          </div>
   
-
-
-    
     </div>
 </div>
   )

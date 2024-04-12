@@ -9,6 +9,9 @@ const ContractDasboard = () => {
 
   const navigate = useNavigate();
 
+  const [countdown, setCountdown] = useState(null);
+  const [countError,setError] = useState('')
+
   const [data, error, loading, axiosFetch] = useAxios()
 
   const getContracts =()=>{
@@ -53,10 +56,45 @@ const ContractDasboard = () => {
     { name: "Client NIC", width: "w-[200px]" },
     { name: "Client Name", width: "w-[200px]" },
     { name: "Email", width: "w-[200px]" },
-    { name: "Time", width: "w-[200px]" },
-    { name: "Status", width: "w-[200px]" },
+    { name: "Time", width: "w-[240px]" },
+    { name: "Status", width: "w-[240px]" },
     { name: "Options", width: "w-[200px]" },
   ];
+
+  const calculateTimeDiff = (startDate, endDate) => {
+    const startDateTime = new Date(startDate);
+    let endDateTime = new Date(endDate);
+    const currentDateTime = new Date();
+
+    endDateTime = new Date(endDateTime.getTime() - (5*60*60*1000) - (30*60*1000));
+
+    if (startDateTime > currentDateTime) {
+      return "Pending Start";
+    } else if (endDateTime < currentDateTime) {
+      return "Expired";
+    } else {
+      const diffMilliseconds = endDateTime - currentDateTime;
+      const days = Math.floor(diffMilliseconds / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diffMilliseconds % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((diffMilliseconds % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((diffMilliseconds % (1000 * 60)) / 1000);
+      return `${days} days ${hours} hours ${minutes} minutes ${seconds} seconds`;
+    }
+  };
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      SetallContracts((prevContracts) => {
+        return prevContracts.map((contract) => {
+          return {
+            ...contract,
+            timeLeft: calculateTimeDiff(contract.contract_SD, contract.contract_ED),
+          };
+        });
+      });
+    }, 1000);
+
+    return () => clearInterval(intervalId);
+  }, []);
 
 
   if(loading){
@@ -124,14 +162,14 @@ const ContractDasboard = () => {
                 {item.clientID.firstName} {item.clientID.lastName}
               </p>
               <p className="w-[200px]">{item.clientID.email}</p>
-              <p className="w-[200px]">null</p>
-              <p className="w-[200px]">null</p>
+              <p className="w-[200px] ml-6 text-red-500 font-semibold">{calculateTimeDiff(item.contract_SD, item.contract_ED)}</p>
+              <p className="w-[200px] ml-6 text-green-500 font-semibold">{item.Status}</p>
 
               <div className="flex justify-center items-center w-[200px] gap-3">
-                <button className=" bg-yellow-300 px-5 py-2 rounded-xl" onClick={()=> navigate(`/viewContract/${item._id}`)}>
+                <button className={` ${item.Status === "Terminated" ? " bg-orange-400 w-[140px] " : "bg-yellow-300"}  px-5 py-2 rounded-xl`} onClick={()=> navigate(`/viewContract/${item._id}`)}>
                   View
                 </button>
-                <button className=" bg-green-600 px-5 py-2 rounded-xl" onClick={()=> navigate(`/EditContract/${item._id}`)}>
+                <button className={` ${item.Status === "Terminated" ? "hidden": ""} bg-green-600 px-5 py-2 rounded-xl`} onClick={()=> navigate(`/EditContract/${item._id}`)}>
                   Edit
                 </button>
               </div>
