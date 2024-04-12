@@ -7,8 +7,8 @@ const EditUser = () => {
   return (
     <div className="container mx-auto pb-10 min-h-full">
       <EditUserForm/>
-      <EditUserDocuments/>
       <EditUserEmergencyForm/>
+      <EditUserDocuments/>
     </div>
   )
 }

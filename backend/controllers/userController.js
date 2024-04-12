@@ -49,7 +49,6 @@ const createUser = async (req, res) => {
     const nicDocumentPath = req.files.nicDocument[0].path||null;
     
     const empPhotoName=req.files.empPhoto[0].filename;
-    console.log(req.files.empPhoto[0].filename)
     console.log(empPhotoName)
     //match front and back names
     const user = new User({
@@ -103,7 +102,7 @@ const createUser = async (req, res) => {
   }
 };
 
-const updateUser = async(req,res) =>{
+const updateUserPersonal = async(req,res) =>{
   try {
     const {id} =req.params;
     const {
@@ -254,4 +253,4 @@ const resetPassword = async(req,res)=>{
   }
 }
 
-module.exports = { createUser, getAllUsers,getUserById,resetPassword,getDrivers,setUserAsDeleted};
+module.exports = { createUser, getAllUsers,getUserById,resetPassword,getDrivers,setUserAsDeleted,updateUserPersonal};

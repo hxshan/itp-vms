@@ -29,15 +29,19 @@ const upload = multer({ storage });
 
 
 
-
+//GET
 router.get('/',Auth,getAllUsers)
 router.get('/drivers',getDrivers)
 router.get('/:id',getUserById)
-router.patch('/:id',resetPassword)
+
+//POST
+router.post('/',upload.fields([{name:'nicDocument',maxCount:1},{name:'licenceDoc',maxCount:1},{name:'empPhoto',maxCount:1}]),createUser)
+
+//PATCH
 router.patch('/password/:id',resetPassword)
 router.patch('/delete/:id',setUserAsDeleted)
+router.patch('/personal/:id',)
 
-router.post('/',upload.fields([{name:'nicDocument',maxCount:1},{name:'licenceDoc',maxCount:1},{name:'empPhoto',maxCount:1}]),createUser)
 //router.delete('/',deleteUser)
 
 

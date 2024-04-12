@@ -36,6 +36,31 @@ const EditUserDocuments = () => {
     <div className="bg-white p-8 my-8 shadow-xl rounded ">
         <form>
         <h2 className="font-bold text-2xl w-fit mb-8">Edit User Documents</h2>
+
+
+        <div className="col-span-1 w-full flex flex-col mb-4 ">
+        <label
+          className="block text-gray-700 text-md font-bold mb-2"
+          htmlFor="empPhoto"
+        >
+          Employee Photogragh{" "}
+          <span className="font-normal">
+            (.png .jpg .jpeg are only accepted)
+          </span>
+        </label>
+        <input
+          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          type="file"
+          accept="image/*"
+          name="empPhoto"
+          id="empPhoto"
+          onChange={(e) => {
+            setEmpPhoto(e.target.files[0]);
+          }}
+          required
+        />
+      </div>
+      
       <div className="col-span-1 w-full flex flex-col mb-4 ">
         <label
           className="block text-gray-700 text-md font-bold mb-2"
@@ -55,28 +80,7 @@ const EditUserDocuments = () => {
         />
       </div>
 
-      <div className="col-span-1 w-full flex flex-col mb-4 ">
-        <label
-          className="block text-gray-700 text-md font-bold mb-2"
-          htmlFor="empPhoto"
-        >
-          Employee Photogragh{" "}
-          <span className="font-normal">
-            (.png .jpg .jpeg are only accepted)
-          </span>
-        </label>
-        <input
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          type="file"
-          accept=".png .jpg .jpeg"
-          name="empPhoto"
-          id="empPhoto"
-          onChange={(e) => {
-            setEmpPhoto(e.target.files[0]);
-          }}
-          required
-        />
-      </div>
+     
 
       <div className="col-span-1 w-full flex flex-col mb-4">
         <label

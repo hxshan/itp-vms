@@ -4,6 +4,7 @@ import axios from "@/api/axios";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
+import{ ClockLoader } from 'react-spinners'
 
 const EditUserForm = () => {
 
@@ -67,19 +68,21 @@ const getRoleData = async()=>{
       })
     }
     if(user && Object.keys(user).length !== 0){
+      console.log(user)
+        //let formatedDob=user.dob.toISOString().split('T')[0]
         setPersonalInfo({
             firstName:user.firstName,
             middleName: user.middleName,
             lastName: user.lastName,
             gender: user.gender ,
-            dob: user.dob,
+            dob:user.dob.split('T')[0],
             phoneNumber: user.phoneNumber ,
             nicNumber: user.nicNumber ,
             role:user.role,
             department: user.department,
             jobTitle: user.jobTitle,
-            empDate: user.empDate,
-            baseSal: user.baseSal,
+            empDate: user.employmentDate.split('T')[0],
+            baseSal: user.baseSalary,
             licenceNum: user.licenceNum,
             status: user.status,
             email: user.email,
@@ -146,12 +149,10 @@ const getRoleData = async()=>{
     formDataToSend.append('empDate', personalInfo.empDate);
     formDataToSend.append('baseSal', personalInfo.baseSal);
     formDataToSend.append('licenceNum', personalInfo.licenceNum);
-    formDataToSend.append('licenceDoc', licenceDoc);
     formDataToSend.append('status', personalInfo.status);
     formDataToSend.append('email', personalInfo.email);
     formDataToSend.append('password', personalInfo.password);
-    formDataToSend.append('empPhoto', empPhoto);
-    
+   
     axiosupdatedFetch({
       axiosInstance: axios,
       method: 'PATCH',
@@ -162,18 +163,25 @@ const getRoleData = async()=>{
       },
     });
   }
-
+  if(userloading){
+    <div className="shadow-xl bg-white rounded flex flex-col items-center w-full h-[300px]">
+          <ClockLoader
+            color="#36d7b7"
+            size={60}
+          />
+    </div>
+  }
 
 
   return (
-    <div className="shadow-xl bg-white rounded flex flex-col items-center">
-      <h2 className="font-bold text-3xl w-fit mt-10">Edit User Information</h2>
+    <div className="shadow-xl bg-white rounded flex flex-col items-center mt-4">
       <ToastContainer/>
       <form onSubmit={handleSubmit} className="mt-6 px-8 pt-6 pb-8 mb-4 w-full">
         <div id="formPage-1" className={currentForm == 0 ? "" : "hidden"}>
-          <h2 className="font-bold text-2xl w-fit mt-5 mb-8">
-            Personal Information
+          <h2 className="font-bold text-2xl w-fit">
+            Edit Personal Information
           </h2>
+          <hr className="mb-8 mt-2"></hr>
           <div className="grid grid-cols-2 gap-x-4">
             <div className="col-span-1 w-full flex flex-col mb-4 ">
               <label
@@ -300,9 +308,10 @@ const getRoleData = async()=>{
           </div>
         </div>
         <div id="formPage-2" className={currentForm == 1 ? "" : "hidden"}>
-          <h2 className="font-bold text-2xl w-fit mt-5 mb-8">
-            Employee Information
+          <h2 className="font-bold text-2xl w-fit mt-5">
+            Edit Employee Information
           </h2>
+          <hr className="mb-8 mt-2"></hr>
           <div className="grid grid-cols-2 gap-x-4">
             <div className="col-span-1 w-full flex flex-col mb-4">
               <label className="block text-gray-700 text-md font-bold mb-2" htmlFor="role">Role</label>

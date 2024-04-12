@@ -2,7 +2,7 @@ import useAxios from "@/hooks/useAxios";
 import axios from "@/api/axios";
 import { useEffect, useState} from "react"
 import { useAuthContext } from "@/hooks/useAuthContext";
-import{ClockLoader} from 'react-spinners'
+import { ClockLoader } from 'react-spinners'
 import { useNavigate } from "react-router-dom";
 
 

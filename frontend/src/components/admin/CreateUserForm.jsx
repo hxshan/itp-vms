@@ -118,6 +118,8 @@ const CreateUserForm = () => {
     formDataToSend.append('phoneNumber', personalInfo.phoneNumber);
     formDataToSend.append('nicNumber', personalInfo.nicNumber);
     formDataToSend.append('role', personalInfo.role);
+    formDataToSend.append('department', personalInfo.department);
+    formDataToSend.append('jobTitle', personalInfo.jobTitle);
     formDataToSend.append('empDate', personalInfo.empDate);
     formDataToSend.append('baseSal', personalInfo.baseSal);
     formDataToSend.append('licenceNum', personalInfo.licenceNum);
@@ -157,6 +159,8 @@ const CreateUserForm = () => {
     updated[name] = value;
     setEmergencyContacts(contactsArr);
   };
+
+
 
   return (
     <div className="shadow-xl bg-white rounded flex flex-col items-center">
