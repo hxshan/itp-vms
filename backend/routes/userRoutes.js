@@ -1,6 +1,6 @@
 const express = require('express')  
 //const Auth = require('../middleware/Auth')
-const {createUser,getAllUsers,getUserById,resetPassword,getDrivers,setUserAsDeleted} = require('../controllers/userController')
+const {createUser,getAllUsers,getUserById,resetPassword,getDrivers,setUserAsDeleted,updateUserPersonal} = require('../controllers/userController')
 //const verifyJWT = require("../middleware/verifyJWT")
 const Auth =require('../middleware/Auth')
 const router = express.Router()
@@ -40,7 +40,7 @@ router.post('/',upload.fields([{name:'nicDocument',maxCount:1},{name:'licenceDoc
 //PATCH
 router.patch('/password/:id',resetPassword)
 router.patch('/delete/:id',setUserAsDeleted)
-router.patch('/personal/:id',)
+router.patch('/personal/:id',updateUserPersonal)
 
 //router.delete('/',deleteUser)
 

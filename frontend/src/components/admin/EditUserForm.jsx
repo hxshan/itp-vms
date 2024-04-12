@@ -99,12 +99,6 @@ const getRoleData = async()=>{
     getRoleData()
   },[])
 
- 
-
-
-
-  
-
 
   const formPageIncrement=()=>{
     if((personalInfo.firstName||personalInfo.lastName||personalInfo.gender||personalInfo.dob||personalInfo.phoneNumber||personalInfo.nicNumber) ==''){
@@ -146,17 +140,17 @@ const getRoleData = async()=>{
     formDataToSend.append('phoneNumber', personalInfo.phoneNumber);
     formDataToSend.append('nicNumber', personalInfo.nicNumber);
     formDataToSend.append('role', personalInfo.role);
+    formDataToSend.append('department', personalInfo.department);
+    formDataToSend.append('jobTitle', personalInfo.jobTitle);
     formDataToSend.append('empDate', personalInfo.empDate);
     formDataToSend.append('baseSal', personalInfo.baseSal);
     formDataToSend.append('licenceNum', personalInfo.licenceNum);
     formDataToSend.append('status', personalInfo.status);
-    formDataToSend.append('email', personalInfo.email);
-    formDataToSend.append('password', personalInfo.password);
    
     axiosupdatedFetch({
       axiosInstance: axios,
       method: 'PATCH',
-      url: `/user/${id}`,
+      url: `/user/personal/${id}`,
       data: formDataToSend,
       headers: {
         'Content-Type': 'multipart/form-data',
@@ -171,8 +165,6 @@ const getRoleData = async()=>{
           />
     </div>
   }
-
-
   return (
     <div className="shadow-xl bg-white rounded flex flex-col items-center mt-4">
       <ToastContainer/>
