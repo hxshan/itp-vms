@@ -4,43 +4,39 @@ const caseFileSchema = new mongoose.Schema(
     {
         caseTitle : {
             type:String,
-            required:true
+            
         },
        
         location : {
             type:String,
-            required:true
+            
         },
 
         timeOfIncident:{
             type:Date,
-            required:true
+            
         },
 
         
 
-        Vehicle : {
-            vin: {
-                type: String,
-                required: true
-            },
+        
+           
             licencePlate : {
                 type: String,
-                required: true
+                
             },
             currentCondition : {
                 type: String,
-                required: true
-            }
+                
             },
-
-            driver : {
+    
+           
                 driverID: {
                     type: String,
                     
                 
                 },
-                name: {
+                 driverName: {
                     type: String,
                    
                 },
@@ -48,7 +44,7 @@ const caseFileSchema = new mongoose.Schema(
                     type: String,
                     
                 },
-            },
+           
 
            
                 passengerCount: {
@@ -64,54 +60,52 @@ const caseFileSchema = new mongoose.Schema(
                 default: "incomplete"
             },
 
-            incident: {
-                description: {
+           
+              incidentDescription: {
                     type: String,
-                    required: true
+                   
                 },
                 severity: {
                     type: String,
                     enum: ["minor", "moderate" , "severe"],
-                    required: true
-                },
-                injuries: [{
-                    inDiscription : {
-                        type: String,
-                        required: true
                     
-                    }
-                }],
-            },
-            witnesses: [{
-                contactInformation: { 
+                },
+               
+                    injuriesDiscription : {
+                        type: String,
+                        
+                    
+                    },
+               
+        
+          
+            witnessesContactInformation: { 
                     type: String 
                 },
-                statement: { 
+                witnessesStatement: { 
                     type: String 
-                }
-            }],
+                },
+          
 
-            emergencyServices: {
-                contacted: { 
+            
+                emergencyServicesContacted: { 
                     type: Boolean, 
                     default: false 
                 },
-                responseTime: { 
+                emergencyServicesResponseTime: { 
                     type: String 
                 },
-                actionsTaken: { 
+                emergencyServicesActionsTaken: { 
                     type: String 
-                }
+                },
+            
+
+            photographicEvidence: {
+                type: String,
             },
 
-            photographicEvidence: [{
-                type: String,
-            }],
-
-            insuranceInformation: {
-                driverInsuranceDetails: { 
-                    type: String 
-                },
+            
+               
                 insuranceCompaniesContactInfo: { 
                     type: String 
                 },
@@ -120,15 +114,15 @@ const caseFileSchema = new mongoose.Schema(
                     enum: ["pending", "completed"],
                     default: "pending"
                     
-                }
-            },
+                },
+        
 
             policeReport: {
                 type: String, // link to the document
             }
 
         },
-
+    
         
        
     

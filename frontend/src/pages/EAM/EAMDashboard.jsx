@@ -1,6 +1,6 @@
 import  { useEffect, useState} from "react";
 import  axios  from "@/api/axios";
-import Spinner from "./Spinner";
+import Spinner from "@/components/EAM/Spinner";
 import { Link } from "react-router-dom";
 import { AiOutlineEdit } from "react-icons/ai";
 import { BsInfoCircle } from "react-icons/bs";
@@ -30,7 +30,7 @@ const Home = () => {
         <div className="container mx-auto">
             <div className="flex justify-between items-center mt-5">
                 <h1 className="text-3xl">Case Files</h1>
-                <Link to="/caseFiles/create" className="btn btn-primary">
+                <Link to="/emergency/create" className="btn btn-primary">
                     <MdOutlineAddBox className="inline-block mr-2" /> Create Case File
                 </Link>
             </div>

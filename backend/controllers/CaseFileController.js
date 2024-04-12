@@ -9,13 +9,13 @@ const CaseFile = require("../models/caseFileModel");
                 !req.body.caseTitle ||
                 !req.body.location ||
                 !req.body.timeOfIncident ||
-                !req.body.Vehicle.vin ||
-                !req.body.Vehicle.licencePlate ||
-                !req.body.Vehicle.currentCondition ||
+                !req.body.licencePlate ||
+                !req.body.currentCondition ||
                 !req.body.passengerCount ||
-                !req.body.incident.description ||
-                !req.body.incident.severity ||
-                !req.body.incident.injuries 
+                !req.body.incidentDescription ||
+                !req.body.severity ||
+                !req.body.injuriesDiscription ||
+                !req.body.status
 
 
             ){
@@ -25,43 +25,24 @@ const CaseFile = require("../models/caseFileModel");
             const newCaseFile = {
                 caseTitle: req.body.caseTitle,
                 location: req.body.location,
-                Vehicle : {
-                    vin: req.body.Vehicle.vin,
-                    licencePlate: req.body.Vehicle.licencePlate,
-                    currentCondition: req.body.Vehicle.currentCondition
-                },
-
+                timeOfIncident: req.body.timeOfIncident,
+                licencePlate: req.body.licencePlate,
+                currentCondition: req.body.currentCondition,
                 passengerCount: req.body.passengerCount,
-
-                incident: {
-                    description: req.body.incident.description,
-                    severity: req.body.incident.severity,
-                    injuries: req.body.incident.injuries
-                },
-
+                incidentDescription: req.body.incidentDescription,
+                severity: req.body.severity,
+                injuriesDiscription: req.body.injuriesDiscription,
                 status : req.body.status || "incomplete",
-
-                witnesses: {
-                    contactInformation: req.body.witnesses.contactInformation,
-                    statement: req.body.witnesses.statement
-                },
-
-                emergencyServices: {
-                    contacted: req.body.emergencyServices.contacted || false,
-                    responseTime: req.body.emergencyServices.responseTime,
-                    actionsTaken: req.body.emergencyServices.actionsTaken
-                },
-
-                photographicEvidence: req.body.photographicEvidence || [],
-
-                insuranceInformation: {
-                    driverInsuranceDetails: req.body.insuranceInformation.driverInsuranceDetails,
-                    insuranceCompaniesContactInfo: req.body.insuranceInformation.insuranceCompaniesContactInfo,
-                    insuranceStatus : req.body.insuranceInformation.insuranceStatus || "pending"
-                },
-
+                witnessesContactInformation: req.body.witnessesContactInformation,
+                witnessesStatement: req.body.witnessesStatement,
+                emergencyServicesContacted: req.body.emergencyServicesContacted,
+                emergencyServicesResponseTime: req.body.emergencyServicesResponseTime,
+                emergencyServicesActionsTaken: req.body.emergencyServicesActionsTaken,
+                photographicEvidence: req.body.photographicEvidence,
+                insuranceCompaniesContactInfo: req.body.insuranceCompaniesContactInfo,
+                insuranceStatus: req.body.insuranceStatus,
                 policeReport : req.body.policeReport
-
+                
 
             };
     
@@ -112,14 +93,59 @@ const getCaseFiles = async (req, res) => {
     
 
         const { id } = req.params;
-        const  { caseTitle, location, Vehicle, passengerCount, incident, status, witnesses, emergencyServices, photographicEvidence, insuranceInformation, policeReport } = req.body;
+        const  { caseTitle, 
+                 location, 
+                 timeOfIncident, 
+                 passengerCount, 
+                 licencePlate, 
+                 currentCondition, 
+                 driverID, 
+                 driverName, 
+                 licenceNumber,  
+                 status, 
+                 incidentDescription , 
+                 severity,
+                 injuriesDiscription,
+                 witnessesContactInformation,
+                 witnessesStatement,
+                 emergencyServicesContacted,
+                 emergencyServicesResponseTime,
+                 emergencyServicesActionsTaken,
+                 photographicEvidence,
+                 insuranceCompaniesContactInfo,
+                 insuranceStatus,
+                 policeReport} = req.body;
         
         try{
             
         
            
         
-            const updatedCaseFile = await CaseFile.findByIdAndUpdate(id, { caseTitle, location, Vehicle, passengerCount, incident, status, witnesses, emergencyServices, photographicEvidence, insuranceInformation, policeReport }, { new: true });
+            const updatedCaseFile = await CaseFile.findByIdAndUpdate(id, { 
+                caseTitle,
+                location, 
+                 timeOfIncident, 
+                 passengerCount, 
+                 licencePlate, 
+                 currentCondition, 
+                 driverID, 
+                 driverName, 
+                 licenceNumber,  
+                 status, 
+                 incidentDescription , 
+                 severity,
+                 injuriesDiscription,
+                 witnessesContactInformation,
+                 witnessesStatement,
+                 emergencyServicesContacted,
+                 emergencyServicesResponseTime,
+                 emergencyServicesActionsTaken,
+                 photographicEvidence,
+                 insuranceCompaniesContactInfo,
+                 insuranceStatus,
+                 policeReport
+            
+        }, { new: true });
         
             if(!updatedCaseFile){
                 return res.status(404).send("Case file not found");
