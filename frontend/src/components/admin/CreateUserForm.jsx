@@ -307,7 +307,7 @@ const CreateUserForm = () => {
             <div className="col-span-1 w-full flex flex-col mb-4 ">
               <label
                 className="block text-gray-700 text-md font-bold mb-2"
-                htmlFor="nicDocument"
+                htmlFor="empPhoto"
               >
                 Employee Photogragh <span className="font-normal">(.png .jpg .jpeg are only accepted)</span>
               </label>

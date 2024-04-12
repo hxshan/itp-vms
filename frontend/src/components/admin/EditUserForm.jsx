@@ -14,11 +14,6 @@ const EditUserForm = () => {
   const {id} = useParams()
   
 
-  //constants
-  const emptyContact = {
-    emergencyName: "",
-    emergencyContact: "",
-  };
 
 
 //states
@@ -44,11 +39,8 @@ const [personalInfo, setPersonalInfo] = useState({
   password: "",
 });
 
-const[nicDocument,setNicDocument]=useState(null);
-const[licenceDoc,setLicenceDocument]=useState(null);
-const[empPhoto,setEmpPhoto]=useState(null);
+
 const [currentForm, setCurrentForm] = useState(0);
-const [emergencyContacts, setEmergencyContacts] = useState([emptyContact]);
 
 
 //functions
@@ -93,6 +85,8 @@ const getRoleData = async()=>{
             email: user.email,
             password:''
         })
+        console.log(user.emergencyContacts.length > 0)
+       
     }
     
   },[user,roleData])
@@ -110,18 +104,10 @@ const getRoleData = async()=>{
 
 
   const formPageIncrement=()=>{
-    if((emergencyContacts[0].emergencyContact||emergencyContacts[0].emergencyName)===''){
-      toast.error("Add Atleast one Emergency Contact")
-      return
-    }
     if((personalInfo.firstName||personalInfo.lastName||personalInfo.gender||personalInfo.dob||personalInfo.phoneNumber||personalInfo.nicNumber) ==''){
       toast.error("All Personal details should be filled")
       return
     }
-    // if(nicDocument == null){
-    //   toast.error("Please upload Nic Document")
-    //   return
-    // }
 
     setCurrentForm(currentForm+1)
      
@@ -164,8 +150,6 @@ const getRoleData = async()=>{
     formDataToSend.append('status', personalInfo.status);
     formDataToSend.append('email', personalInfo.email);
     formDataToSend.append('password', personalInfo.password);
-    formDataToSend.append('emergencyContacts',JSON.stringify(emergencyContacts))
-    formDataToSend.append('nicDocument', nicDocument);
     formDataToSend.append('empPhoto', empPhoto);
     
     axiosupdatedFetch({
@@ -179,23 +163,7 @@ const getRoleData = async()=>{
     });
   }
 
-  const AddContact = () => {
-    let contactsArr = [...emergencyContacts];
-    contactsArr.push(emptyContact);
-    setEmergencyContacts(contactsArr);
-  };
 
-  const removeContact = (index) => {
-    let contactsArr = [...emergencyContacts];
-    contactsArr.splice(index, 1);
-    setEmergencyContacts(contactsArr);
-  };
-  const handleContactChange = (index, name, value) => {
-    let contactsArr = [...emergencyContacts];
-    let updated = contactsArr[index];
-    updated[name] = value;
-    setEmergencyContacts(contactsArr);
-  };
 
   return (
     <div className="shadow-xl bg-white rounded flex flex-col items-center">
@@ -327,106 +295,8 @@ const getRoleData = async()=>{
                 required
               />
             </div>
-            <div className="col-span-1 w-full flex flex-col mb-4 ">
-              <label
-                className="block text-gray-700 text-md font-bold mb-2"
-                htmlFor="nicDocument"
-              >
-                Nic Document
-              </label>
-              <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                type="file"
-                name="nicDocument"
-                id="nicDocument"
-                onChange={(e)=>{setNicDocument(e.target.files[0])}}
-                required
-              />
-            </div>
-            <div className="col-span-1 w-full flex flex-col mb-4 ">
-              <label
-                className="block text-gray-700 text-md font-bold mb-2"
-                htmlFor="nicDocument"
-              >
-                Employee Photogragh <span className="font-normal">(.png .jpg .jpeg are only accepted)</span>
-              </label>
-              <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                type="file"
-                accept=".png .jpg .jpeg"
-                name="empPhoto"
-                id="empPhoto"
-                onChange={(e)=>{setEmpPhoto(e.target.files[0])}}
-                required
-              />
-            </div>
-            <div className="grid grid-cols-2 col-span-2 w-full ">
-              <div className="col-span-2 mt -10 flex justify-between mb-8 items-center">
-                <h2 className="font-bold text-2xl w-fit ">Emergency Contact</h2>
-                <button
-                className="bg-actionBlue py-2 px-6 rounded-md text-white font-bold mt-2"
-                  onClick={() => {
-                    AddContact();
-                  }}
-                >
-                  Add
-                </button>
-              </div>
-
-              {emergencyContacts.map((contact, index) => {
-                return (
-                  <div
-                    key={index}
-                    className="grid grid-cols-2 col-span-2 gap-x-4"
-                  >
-                    <div className="col-span-1 w-full flex flex-col">
-                      <label
-                        className="block text-gray-700 text-md font-bold mb-2"
-                        htmlFor="emergencyName"
-                      >
-                        Contact Name
-                      </label>
-                      <input
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        type="text"
-                        name="emergencyName"
-                        value={emergencyContacts[index].emergencyName}
-                        onChange={(e)=>{handleContactChange(index,e.target.name,e.target.value)}}
-                        id={`emergencyName${index}`}
-                        required
-                      />
-                    </div>
-                    <div className="col-span-1 w-full flex flex-col">
-                      <label
-                        className="block text-gray-700 text-md font-bold mb-2"
-                        htmlFor="emergencyContact"
-                      >
-                        Contact Number
-                      </label>
-                      <div className="flex w-full">
-                        <input
-                          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                          type="text"
-                          name="emergencyContact"
-                          id={`emergencyContact${index}`}
-                          value={emergencyContacts[index].emergencyContact}
-                          onChange={(e)=>{handleContactChange(index,e.target.name,e.target.value)}}
-                          required
-                        />
-                        <button
-                          className={index > 0 ? "bg-actionRed py-2 px-4 ml-2 rounded-md text-white font-bold " : "hidden"}
-                          onClick={() => {
-                            removeContact(index);
-                          }}
-                        >
-                          -
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
+            
+            
           </div>
         </div>
         <div id="formPage-2" className={currentForm == 1 ? "" : "hidden"}>
@@ -512,17 +382,7 @@ const getRoleData = async()=>{
                 required
               />
             </div>
-            <div className="col-span-1 w-full flex flex-col mb-4">
-              <label className="block text-gray-700 text-md font-bold mb-2" htmlFor="licenceDoc">Licence Document</label>
-              <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                type="file"
-                name="licenceDoc"
-                id="licenceDoc"
-                onChange={(e)=>{setLicenceDocument(e.target.files[0])}}
-                required
-              />
-            </div>
+         
                 </>
               ):(<></>)
             }

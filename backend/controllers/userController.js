@@ -103,6 +103,67 @@ const createUser = async (req, res) => {
   }
 };
 
+const updateUser = async(req,res) =>{
+  try {
+    const {id} =req.params;
+    const {
+      firstName,
+      middleName,
+      lastName,
+      gender,
+      dob,
+      phoneNumber,
+      nicNumber,
+      role,
+      department,
+      jobTitle,
+      empDate,
+      baseSal,
+      licenceNum,
+      status,
+    } = req.body;
+
+ 
+    if (!firstName || !lastName || !email || !password)
+      return res.status(400).json({ msg: "Not all fields have been entered." });
+  
+    try{
+      const updatedUser = await User.findByIdAndUpdate(id,{
+        firstName,
+        middleName,
+        lastName,
+        gender,
+        dob,
+        phoneNumber,
+        nicNumber,
+        role,
+        department,
+        jobTitle,
+        empDate,
+        baseSal,
+        licenceNum,
+        status,
+      })
+
+      if (!updatedUser) {
+        return res.status(500).json({ message: "Update Failed" });
+      }
+      res.status(200).json(updatedUser);
+
+    }catch(err){
+      res.status(500).json({ message: error.message });
+    }
+
+    return res.status(200).json({ message: "User Updated succesfully" });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ message: err.message });
+  }
+
+}
+
+
+
 const getAllUsers = async (req, res) => {
   try {
     let users = await User.find().populate("role");

@@ -1,5 +1,5 @@
-import { EditUserForm } from '@/components/admin'
-import React from 'react'
+import { EditUserDocuments, EditUserEmergencyForm, EditUserForm } from '@/components/admin'
+
 
 const EditUser = () => {
   
@@ -7,6 +7,8 @@ const EditUser = () => {
   return (
     <div className="container mx-auto pb-10 min-h-full">
       <EditUserForm/>
+      <EditUserDocuments/>
+      <EditUserEmergencyForm/>
     </div>
   )
 }
