@@ -11,15 +11,22 @@ const useAxios = () => {
     const { axiosInstance, method, url, requestConfig = {},headers={}} = configObj;
 
     try {
+   
       setLoading(true);
       const ctrl = new AbortController();
       setController(ctrl);
+      
+      console.log(requestConfig.data)
       const res = await axiosInstance[method.toLowerCase()](url, {
         ...requestConfig,
         headers,
         signal: ctrl.signal,
+       
       });
+      console.log(res)
       setResponse(res.data);
+    
+      console.log(res.data)
     } catch (error) {
       console.log(error);
       setResponse([])

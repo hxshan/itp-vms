@@ -50,6 +50,31 @@ const EditForm = ({ setShowEditForm, viewHireData }) => {
 
       axios.post(`http://localhost:3000/api/hire/edit/${viewHireData._id}`, editedData)
     }
+
+    if (hireStatus === "Active") {
+      // Create income object
+      console.log('cameeee Data:');
+      const incomeData = {
+        date: new Date(),
+        vehicle: viewHireData.vehicle, // Assuming viewHireData contains vehicle details
+        recordedBy: 'YourUserId', // Change to the actual recorded user ID
+        source: 'Hire',
+        hirePayment: {
+          customerName: viewHireData.cusName,
+          hirePaymentType: 'Advance', // Assuming it's an advance payment
+          hire: viewHireData._id,
+        },
+        description: 'Income generated from active hire',
+        amount: 10000,
+        paymentMethod: 'Cash', // Example payment method
+        status: 'Pending', // Income status
+        comments: 'Income generated automatically from active hire',
+      };
+
+      // Send the income data to create income object
+       axios.post('http://localhost:3000/api/income', incomeData);
+    }
+
   
   };
 
