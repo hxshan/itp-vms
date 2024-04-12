@@ -1,11 +1,15 @@
 import useAxios from "@/hooks/useAxios";
 import axios from "@/api/axios";
-import { useEffect, useState } from "react"
+import { useEffect, useState} from "react"
 import { useAuthContext } from "@/hooks/useAuthContext";
+import{ClockLoader} from 'react-spinners'
+import { useNavigate } from "react-router-dom";
+
 
 const UserTable = () => {
 const { user } = useAuthContext()
 const columns=["Name","Email","Role","Status"]
+const navigate=useNavigate()
 const [search,setSearch]=useState('')
 const [statusFilter,setStatusFilter]=useState('')
 const [usersdata, error, loading, axiosFetch] = useAxios()
@@ -51,7 +55,14 @@ useEffect(()=>{
 
   if(loading){
     return(
-      <p>Loading...</p>
+      <div className="w-full h-[300px] bg-white shadow-lg border border-gray-200 flex justify-center items-center">
+         
+        <ClockLoader
+          color="#36d7b7"
+          size={60}
+        />
+      </div>
+      
     )
   }
   if(error){
@@ -121,7 +132,7 @@ useEffect(()=>{
                   </td>
                   <td className="px-6 py-2 whitespace-nowrap justify-between flex">
                   <button className="bg-actionBlue text-white py-1 px-6 rounded-md">View</button>
-                    <button className="bg-actionGreen text-white py-1 px-6 rounded-md">Edit</button>
+                    <button className="bg-actionGreen text-white py-1 px-6 rounded-md" onClick={()=>navigate(`/admin/edituser/${row._id}`)}>Edit</button>
                     <button type="submit" id={row._id} onClick={(e)=>deleteData(e)} className="bg-actionRed text-white py-1 px-6 rounded-md">Delete</button>
                   </td>   
               </tr>

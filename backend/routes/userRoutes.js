@@ -33,6 +33,7 @@ const upload = multer({ storage });
 router.get('/',Auth,getAllUsers)
 router.get('/drivers',getDrivers)
 router.get('/:id',getUserById)
+router.patch('/:id',resetPassword)
 router.patch('/password/:id',resetPassword)
 router.patch('/delete/:id',setUserAsDeleted)
 

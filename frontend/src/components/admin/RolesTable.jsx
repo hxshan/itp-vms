@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import useAxios from "@/hooks/useAxios";
 import axios from "@/api/axios";
 import { useNavigate } from "react-router-dom";
+import { ScaleLoader } from "react-spinners";
 
 const RolesTable = () => {
   const navigate = useNavigate();
@@ -39,7 +40,15 @@ const RolesTable = () => {
   }, [reload]);
 
   if (loading) {
-    return <p>Loading...</p>;
+    return (
+      <div className="w-full flex justify-center">
+        <ScaleLoader
+            color="#36d7b7"
+            height={50}
+            width={10}
+          />
+      </div>
+    );
   }
   return (
     <div className="w-full">

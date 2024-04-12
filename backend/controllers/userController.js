@@ -161,7 +161,7 @@ const getUserById = async (req,res)=>{
     console.log(error);
     return res.status(404).json({message:JSON.stringify(error.message)})
   }
-  
+    
 }
 
 
