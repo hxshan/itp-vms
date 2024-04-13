@@ -198,7 +198,7 @@ const CaseFileForm = () => {
         </div>
 
         <div className="mb-4">
-          <label htmlFor="description" className="block text-lg font-semibold mb-2">Description</label>
+          <label htmlFor="description" className="block text-lg font-semibold mb-2"> Incident Description</label>
           <textarea
             id="description"
             name="description"
@@ -212,9 +212,9 @@ const CaseFileForm = () => {
           <label htmlFor="severity" className="block text-lg font-semibold mb-2">Severity</label>
           <select id="severity" value={severity} onChange={(e) => setSeverity(e.target.value)} required className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:border-blue-500">
             <option value="">Select Severity</option>
-            <option value="minor">Low</option>
-            <option value="moderate">Medium</option>
-            <option value="severe">High</option>
+            <option value="minor">minor</option>
+            <option value="moderate">moderate</option>
+            <option value="severe">severe</option>
           </select>
         </div>
 

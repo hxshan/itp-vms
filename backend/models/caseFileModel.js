@@ -40,7 +40,7 @@ const caseFileSchema = new mongoose.Schema(
                     type: String,
                    
                 },
-                licenceNumber: {
+                driverLicenceNumber: {
                     type: String,
                     
                 },
