@@ -238,8 +238,8 @@ const [vehicleRates, Verror, Vloading, VaxiosFetch] = useAxios();
               return { estimatedFare: 0, advancedPay: 0 };
           }
   
-          const { baseRate, baseDistence, additionalRate } = selectedVehicleRate;
-          let estimatedFare = baseRate;
+          const { baseDistence, baseRate, additionalRate,acBaseRate, acAdditionalRate } = selectedVehicleRate;
+          let estimatedFare = airCondition ? acBaseRate : baseRate
           let advancedPay = 0;
   
           let estimatedDistence = distence;
@@ -251,7 +251,7 @@ const [vehicleRates, Verror, Vloading, VaxiosFetch] = useAxios();
           const baseDistance = baseDistence;
           const additionalDistance = Math.max(estimatedDistence - baseDistance, 0);
   
-          estimatedFare += additionalDistance * additionalRate;
+          estimatedFare += additionalDistance * (airCondition ? acAdditionalRate : additionalRate);
           advancedPay = estimatedFare * 0.1;
   
           estimatedFare = parseFloat(estimatedFare.toFixed(2));
@@ -279,7 +279,7 @@ const [vehicleRates, Verror, Vloading, VaxiosFetch] = useAxios();
       };
       calculateFare();
     }
-  }, [step, vehicleType, distence, tripType]);
+  }, [step, vehicleType, distence, tripType, airCondition]);
 
   useEffect(() => {
       fetchVehicleRates();
