@@ -56,6 +56,7 @@ const ViewClient = () => {
     licenceNumber: "loading",
     Address: "loading",
     Comp_Available: "loading",
+    Contract_Available:"loading"
     }) 
 
     const [compData,setcompData] = useState({
@@ -115,7 +116,8 @@ const ViewClient = () => {
                 email:client.email,
                 licenceNumber:client.licenceNumber,
                 Address:client.Address,
-                Comp_Available:client.Comp_Available
+                Comp_Available:client.Comp_Available,
+                Contract_Available:client.Contract_Available
             })
             if(client.Comp_Available){
                 setcompData({
@@ -142,12 +144,12 @@ const ViewClient = () => {
     },[client])
 
     
-    useEffect(()=>{
-        if(allContracts){
-            const existContract = allContracts.some(contract => contract.clientID._id === clientID);
-            setConExist(existContract)
-        }
-    },[allContracts,clientID])
+    //useEffect(()=>{
+   //     if(allContracts){
+    //        const existContract = allContracts.some(contract => contract.clientID._id === clientID);
+     //       setConExist(existContract)
+    //    }
+   // },[allContracts,clientID])
 
 
     useEffect(()=>{
@@ -236,7 +238,7 @@ if(contLoading){
 
           <div className="flex flex-col mb-4">
             <label>Contract Available</label>
-            <p>{ConExist ? 'Available':'Not Available'}</p>
+            <p>{clientData.Contract_Available === "Available" ? 'Available':'Not Available'}</p>
           </div>
 
         </div>
@@ -297,7 +299,7 @@ if(contLoading){
         </div>
         <div className="flex justify-end mr-5 gap-4">
         <button
-              className={` ${ConExist ? ' hidden': ''} bg-red-600 px-5 py-2 rounded-xl w-[150px] `}
+              className={` ${clientData.Contract_Available === "Available" ? ' hidden': ''} bg-red-600 px-5 py-2 rounded-xl w-[150px] `}
               onClick={()=>{navigate(`/Contract/${clientID}`)}}
             >
               Add contract

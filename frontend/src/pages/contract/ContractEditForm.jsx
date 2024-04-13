@@ -190,7 +190,38 @@ if(endDate < minstartDate){
     }
   },[ContLoading])
 
+  console.log(contractData.contract_ED)
+  console.log(formatED)
+
+  useEffect(()=>{
+    if(!updLoading){
+      if(updateError){
+        alert(updateError)
+      }else if(updateData.message === "no contract found" ){
+        alert("No contract found")
+      }else if(updateData.message === "success" ){
+        if(openTemination){
+          alert("Contract succesfully Renewed")
+          navigate(`/viewContract/${contractID}`)
+        }else{
+        alert("Contract updated succesfully")
+        navigate(`/viewContract/${contractID}`)
+        }
+      }else if(updateData.message === "failed"){
+        alert(`No changes detected "Redirecting to contract page" `)
+      }
+    }
+  },[updLoading])
+
  const HandleSubmit = async(e)=>{
+
+  let compareED
+
+  if(contractData.contract_ED === formatED){
+    compareED = true
+  }else{
+    compareED = false
+  }
 
   const tommorow = new Date();
     tommorow.setDate(tommorow.getDate() + 1);
@@ -264,12 +295,25 @@ if(endDate < minstartDate){
         toast.error("Invalid amount payed")
         return;
     }
-  await updateContract()
-  navigate(`/viewContract/${contractID}`)
+
+    let confirmMsg 
+
+    if(openTemination){
+      confirmMsg = "Renew contract"
+    }else{
+      confirmMsg = "Update contract ?"
+    }
+
+    const confirm = window.confirm(confirmMsg)
+
+    if(confirm){
+      await updateContract()
+    }
+  
 }
 
 
- console.log(updateData)
+ 
 
   useEffect(() => {
     if (Contract) {
@@ -584,7 +628,7 @@ if(endDate < minstartDate){
               className=" bg-green-600 px-5 py-2 rounded-xl w-[120px] "
               onClick={HandleSubmit}
             >
-              Add
+              Submit
             </button>
             <button
               className=" bg-orange-600 px-5 py-2 rounded-xl w-[120px] "

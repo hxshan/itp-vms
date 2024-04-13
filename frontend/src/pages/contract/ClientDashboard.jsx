@@ -122,7 +122,7 @@ const ClientDashboard = () => {
       </div>
 
       <div className="flex flex-col items-center w-full ">
-        {allClients
+        {allClients && allClients.length > 0 ? allClients
           .filter((item) => {
             const searchLowerCase = Search.toLowerCase();
             const firstNameLowerCase = item.firstName.toLowerCase();
@@ -159,7 +159,9 @@ const ClientDashboard = () => {
                 </button>
               </div>
             </div>
-          ))}
+          )):(<div className='mt-10 text-red-500 font-bold'>
+            <p>No clients available</p>
+          </div>)}
       </div>
 
 

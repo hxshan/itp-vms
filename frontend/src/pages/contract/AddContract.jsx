@@ -249,8 +249,8 @@ useEffect(()=>{
         alert(conError)
       }else if(contract.message === "client dosent exist" ){
         alert("Client does not exist")
-      }else if(contract.message === "A contract exist for this client"){
-        alert("A contract exist for this client")
+      }else if(contract.message === "An active contract exists for this client"){
+        alert("An active contract exists for this client")
       }else if(contract.message === "contract created successfully"){
         alert("Contract created successfully")
         navigate(`/viewClient/${clientID}`)

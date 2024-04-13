@@ -103,7 +103,9 @@ const ContractDasboard = () => {
     const currentDateTime = new Date();
 
     endDateTime = new Date(endDateTime.getTime() - (5*60*60*1000) - (30*60*1000));
-
+    startDateTime.setHours(startDateTime.getHours() - 5);
+    startDateTime.setMinutes(startDateTime.getMinutes() - 30);
+    
     if (startDateTime > currentDateTime) {
       return "Pending Start";
     } else if (endDateTime < currentDateTime) {
@@ -190,7 +192,7 @@ const ContractDasboard = () => {
       </div>
 
       <div className="flex flex-col items-center ">
-        {allContracts
+        {allContracts && allContracts.length > 0  ? allContracts
           .filter((item) => {
             const searchLowerCase = Search.toLowerCase();
             const firstNameLowerCase = item.clientID.firstName.toLowerCase();
@@ -227,7 +229,9 @@ const ContractDasboard = () => {
                 </button>
               </div>
             </div>
-          ))}
+          )):(<div className="mt-10 font-bold text-red-500">
+            <p>No contracts available</p>
+            </div>)}
       </div>
     </div>
     </div>

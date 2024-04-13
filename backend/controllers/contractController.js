@@ -218,11 +218,16 @@ const createContract = async(req,res)=>{
         return res.status(400).json({message:"client dosent exist"})
       }
 
-      const existContract = await Contract.findOne({clientID:clientID})
+      const activeContracts = await Contract.findOne({
+        clientID: clientID,
+        Status: { $ne: "Terminated" }
+    });
 
-      if(existContract){
-        return res.status(400).json({message:"A contract exist for this client"})
-      }
+    if (activeContracts) {
+        return res.status(400).json({
+            message: "An active contract exists for this client"
+        });
+    }
 
 
       if(!Vehical_Type ||!Vehical || !contract_SD|| !contract_ED|| !Insurance_Source || !Insurace_provider || !Policy_Number || !Coverage_Type || !Coverage_Amount || !Deductible || !Insurance_SD || !Insurance_ED || !Payment_Amount || !Payment_Plan || !Payment_Date || !Amount_Payed){
@@ -271,8 +276,26 @@ const getContractbyID = async(req,res) =>{
       return res.status(400).json({"error":"contract dosent exist"})
     }
 
+    const currentDate = new Date();
 
-    //const newCont = await Contract.findOne({_id:contractID}).populate('clientID')
+    currentDate.setHours(currentDate.getHours() + 5); // Add 5 hours
+    currentDate.setMinutes(currentDate.getMinutes() + 30); // Add 30 minutes
+    
+      let newStatus;
+      if (contractExist.Status === "Terminated") {
+          newStatus = "Terminated";
+      } else if (contractExist.contract_ED <= currentDate) {
+          newStatus = "waiting for termination";
+      } else if (contractExist.contract_SD <= currentDate) {
+          newStatus = "ongoing";
+      } else {
+          newStatus = "Newly Added";
+      }
+    
+      await Contract.updateOne({ _id: contractExist._id }, { $set: { Status: newStatus } });
+      contractExist.Status = newStatus; 
+
+
 
     return res.status(200).json(contractExist)
   }catch(error){
@@ -291,21 +314,24 @@ const getallContract = async(req,res) =>{
 
  const currentDate = new Date();
 
-  for (const contract of Contracts) {
-    let newStatus;
-    if (contract.Status === "Terminated") {
-      newStatus = "Terminated";
-    } else if (contract.contract_ED < currentDate) {
-      newStatus = "waiting for termination";
-    } else if (contract.contract_SD <= currentDate) {
-      newStatus = "ongoing";
-    } else {
-      newStatus = "Newly Added";
-    }
+currentDate.setHours(currentDate.getHours() + 5); // Add 5 hours
+currentDate.setMinutes(currentDate.getMinutes() + 30); // Add 30 minutes
 
-    await Contract.updateOne({ _id: contract._id }, { $set: { Status: newStatus } });
-    contract.Status = newStatus; 
+ for (const contract of Contracts) {
+  let newStatus;
+  if (contract.Status === "Terminated") {
+      newStatus = "Terminated";
+  } else if (contract.contract_ED <= currentDate) {
+      newStatus = "waiting for termination";
+  } else if (contract.contract_SD <= currentDate) {
+      newStatus = "ongoing";
+  } else {
+      newStatus = "Newly Added";
   }
+
+  await Contract.updateOne({ _id: contract._id }, { $set: { Status: newStatus } });
+  contract.Status = newStatus; 
+}
 
     return res.status(200).json(Contracts)
   }catch(error){
@@ -374,7 +400,7 @@ const updateContract = async(req,res) =>{
     }
 
   }catch(error){
-    res.status(500).json({"error":"internal server error"})
+    res.status(500).json({error:"internal server error"})
   }
 }
 
@@ -391,7 +417,7 @@ const deleteContract = async(req,res) =>{
     if(contractExist.Status === "waiting for termination"){
       
       await Contract.updateOne({_id:contractID},{$set:{Status:"Terminated"}})
-      await Client.updateOne({_id:contractExist.clientID},{$set:{Contract_Available:"Available"}})
+      await Client.updateOne({_id:contractExist.clientID},{$set:{Contract_Available:"unAvailable"}})
       return res.status(200).json({message:"contract succesfully set to terminated"})
     }
 

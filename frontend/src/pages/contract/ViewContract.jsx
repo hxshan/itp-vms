@@ -142,8 +142,10 @@ if (data) {
     const endDateTime = new Date(endDate);
     const currentDateTime = new Date();
 
+    startDateTime.setHours(startDateTime.getHours() - 5);
+    startDateTime.setMinutes(startDateTime.getMinutes() - 30);
+
     if(startDateTime > currentDateTime){
-      console.log("cant start cuz start date is yet to come")
       setError("cant start cuz start date is yet to come")
 
     }else {
