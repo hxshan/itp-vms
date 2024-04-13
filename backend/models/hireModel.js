@@ -34,8 +34,18 @@ const hireSchema = new mongoose.Schema({
     ref: 'User', 
 },
   startPoint: { 
-    type: String, 
-    required: true 
+    no: {
+      type: String,
+      required: true
+    },
+    street: {
+      type: String,
+      required: true
+    },
+    city: {
+      type: String,
+      required: true
+    }
 },
   endPoint: { 
     type: String, 

@@ -16,7 +16,9 @@ const Form = () => {
   const [airCondition, setAirCondition] = useState(false);
   const [vehicle, setVehicle] = useState('')
   const [driver, setDriver] = useState('')
-  const [startPoint, setStartPoint] = useState('')
+  const [startPointNo, setStartPointNo] = useState('')
+  const [startPointStreet, setStartPointSteet] = useState('')
+  const [startPointCity, setStartPointCity] = useState('')
   const [endPoint, setEndPoint] = useState('')
   const [startTime, setStartTime] = useState('')
   const [tripType, setTripType] = useState(false)
@@ -38,7 +40,9 @@ const Form = () => {
     passengerCount,
     vehicle,
     driver,
-    startPoint,
+    startPointNo,
+    startPointStreet,
+    startPointCity,
     endPoint,
     startTime,
     tripType,
@@ -472,7 +476,7 @@ const [vehicleRates, Verror, Vloading, VaxiosFetch] = useAxios();
             
             <div className="mt-5 px-2">
               {/* Vehicle and driver section */}
-              <div className='flex justify-between align-baseline mb-5 '>
+              <div className='flex justify-between align-baseline mb-8 '>
                   <div className=" flex flex-col justify-between align-baseline xl:flex-1 xl:mr-14 xl:flex-row">
 
                     <label htmlFor="AssignVehicle" 
@@ -515,26 +519,73 @@ const [vehicleRates, Verror, Vloading, VaxiosFetch] = useAxios();
 
               {/* Trip details */}
               <div className='xl:flex xl:flex-col xl:justify-between xl:align-baseline'>
+                
+                <div>
+                  <div className='mb-2'><h2 className='font-medium text-black  text-base'>Start Point : </h2></div>
+                  
+                  <div>
+                    <div className='flex justify-between align-baseline mb-7'>
+                      <div className=" flex flex-col justify-between align-baseline mr-2 xl:flex-row xl:flex-1 xl:mr-14">
 
-                <div className='flex justify-between align-baseline mb-5'>
-                  <div className=" flex flex-col justify-between align-baseline mr-2 xl:flex-row xl:flex-1 xl:mr-14">
+                        <label htmlFor="startPointNo" 
+                        className="block font-medium text-black  text-base xl:mr-7">
+                          No
+                        </label>
 
-                    <label htmlFor="startPoint" 
-                    className="block font-medium text-black  text-base xl:mr-7">
-                      Starting Point
-                    </label>
+                        <input type="text" id="startPointNo" name="startPointNo" 
+                        value={startPointNo}
+                        onChange={(e) => setStartPointNo(e.target.value)} 
+                        placeholder='House Number'
+                        className='border-2 rounded border-black px-4'
+                        required
+                        />
 
-                    <input type="text" id="startPoint" name="startPoint" 
-                    value={startPoint}
-                    onChange={(e) => setStartPoint(e.target.value)} 
-                    placeholder='From'
-                    className='border-2 rounded border-black px-4'
-                    required
-                    />
+                      </div> 
+                      
 
-                  </div> 
+                      <div className=" flex flex-1 flex-col justify-between align-baseline xl:flex-row xl:flex-1">
 
-                  <div className=" flex flex-col justify-between align-baseline xl:flex-row xl:flex-1">
+                        <label htmlFor="startPointStreet" 
+                        className="block font-medium text-black mr-[5px] text-base xl:mr-7">
+                          Street
+                        </label>
+
+                        <input type="text" id="startPointStreet" name="startPointStreet" 
+                        value={startPointStreet}
+                        onChange={(e) => setStartPointSteet(e.target.value)} 
+                        placeholder='Street'
+                        className='border-2 rounded border-black px-4'
+                        required
+                        />
+
+                      </div>
+                      
+                    </div>
+
+                    <div className='flex justify-between align-baseline mb-7'>
+                      <div className=" flex  flex-col align-baseline xl:flex-row xl:flex-1">
+
+                        <label htmlFor="startPointCity" 
+                        className="block font-medium text-black mr-[5px] text-base xl:mr-7">
+                          City
+                        </label>
+
+                        <input type="text" id="startPointCity" name="startPointCity" 
+                        value={startPointCity}
+                        onChange={(e) => setStartPointCity(e.target.value)} 
+                        placeholder='City'
+                        className='border-2 rounded border-black px-4 ml-10'
+                        required
+                        />
+
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+
+                <div className='flex justify-between align-baseline mb-7'>
+                  <div className=" flex flex-col align-baseline xl:flex-row xl:flex-1">
 
                     <label htmlFor="endPoint" 
                     className="block font-medium text-black mr-[5px] text-base xl:mr-7">
@@ -544,7 +595,7 @@ const [vehicleRates, Verror, Vloading, VaxiosFetch] = useAxios();
                     <input type="text" id="endPoint" name="endPoint" 
                     value={endPoint}
                     onChange={(e) => setEndPoint(e.target.value)} 
-                    placeholder='To'
+                    placeholder='Destination'
                     className='border-2 rounded border-black px-4'
                     required
                     />
@@ -555,7 +606,7 @@ const [vehicleRates, Verror, Vloading, VaxiosFetch] = useAxios();
 
                 <div className='flex justify-between'>
 
-                  <div className="mb-5  flex flex-col align-baseline xl:flex-row xl:flex-1 xl:mr-14">
+                  <div className="mb-7  flex flex-col align-baseline xl:flex-row xl:flex-1 xl:mr-14">
 
                     <label htmlFor="startTime" 
                     className="block font-medium text-black mr-[5px] text-base xl:mr-7">
@@ -656,7 +707,7 @@ const [vehicleRates, Verror, Vloading, VaxiosFetch] = useAxios();
             </div>
 
             <div className='flex justify-between'>
-                <div className="mb-5 flex flex-col justify-between align-baseline xl:flex-row xl:flex-1 xl:mr-14">
+                <div className="mb-7 flex flex-col justify-between align-baseline xl:flex-row xl:flex-1 xl:mr-14">
                     <label htmlFor="cusMobile" className="block font-medium text-black mr-[5px] text-base xl:mr-7">
                         Mobile
                     </label>
@@ -672,7 +723,7 @@ const [vehicleRates, Verror, Vloading, VaxiosFetch] = useAxios();
                     />
                 </div>
 
-                <div className="mb-5 flex flex-col justify-between align-baseline xl:flex-row xl:flex-1">
+                <div className="mb-7 flex flex-col justify-between align-baseline xl:flex-row xl:flex-1">
                     <label htmlFor="cusNic" className="block font-medium text-black mr-[5px] text-base xl:mr-7">
                         Nic
                     </label>
@@ -716,7 +767,7 @@ const [vehicleRates, Verror, Vloading, VaxiosFetch] = useAxios();
 
                 <div className='mr-[20px]'>
 
-                  <p className='text-lg font-semibold leading-8'>Start Point :&nbsp;&nbsp;{startPoint}</p>
+                  <p className='text-lg font-semibold leading-8'>Start Point :&nbsp;&nbsp;{startPointNo} {startPointStreet} {startPointCity}</p>
                   <p className=' text-lg font-semibold leading-8'>End Point : &nbsp;&nbsp; {endPoint}</p>
                   <p className=' text-lg font-semibold leading-8'>Start Time : &nbsp;&nbsp; {startTime}</p>
                   <p className=' text-lg font-semibold leading-8'>Round Trip : &nbsp;&nbsp; {tripType ? 'Yes' : 'No'}</p>

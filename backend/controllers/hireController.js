@@ -27,7 +27,9 @@ const addHire = async (req, res) => {
       airCondition,
       vehicle,
       driver,
-      startPoint,
+      startPointNo,
+      startPointStreet,
+      startPointCity,
       endPoint,
       startTime,
       tripType,
@@ -51,7 +53,11 @@ const addHire = async (req, res) => {
       airCondition,
       vehicle,
       driver,
-      startPoint,
+      startPoint : {
+        no: startPointNo,
+        street: startPointStreet,
+        city: startPointCity
+      },
       endPoint,
       startTime,
       tripType,
