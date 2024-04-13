@@ -8,6 +8,7 @@ import axios from '@/api/axios';
 
 const EditUserEmergencyForm = () => {
     const [user,usererror, userloading, useraxiosFetch,axiosupdatedFetch] = useAxios()
+    const [reload,setReload]=useState(0)
     const {id}=useParams()
   //constants
   const emptyContact = {
@@ -38,7 +39,7 @@ const EditUserEmergencyForm = () => {
 
   useEffect(()=>{
     getUserData()
-  },[])
+  },[reload])
 
 
     const AddContact = () => {
@@ -51,6 +52,7 @@ const EditUserEmergencyForm = () => {
         let contactsArr = [...emergencyContacts];
         contactsArr.splice(index, 1);
         setEmergencyContacts(contactsArr);
+        setReload(reload+1)
       };
 
       const DeleteContact = async(index,contactId)=>{
