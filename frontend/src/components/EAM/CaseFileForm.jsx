@@ -1,6 +1,7 @@
 import  { useState } from "react";
 import axios from "@/api/axios";
-import useAxios from "@/hooks/useAxios";
+
+
 import { useNavigate } from "react-router-dom";
 
 
@@ -22,10 +23,13 @@ const CaseFileForm = () => {
   const [injuriesDiscription, setInjuriesDiscription] = useState("");
   const [status, setStatus] = useState("incomplete");
 
-  const [response , error, loading, axiosFetch] = useAxios();
+
+ 
   const navigate = useNavigate();
 
-  const  setformData = {
+  const [error, setError] = useState(null);
+
+  const  formData = {
     caseTitle,
     location,
     timeOfIncident,
@@ -40,7 +44,7 @@ const CaseFileForm = () => {
   };
 
 
-
+  /*
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -72,40 +76,50 @@ const CaseFileForm = () => {
   }
 }
 
-  /*const handleChange = (e) => {
+  const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-  };
+  };*/
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+    const confirm = window.confirm("Are you sure you want to submit this form?");
    
-    
-    axios.post("http://localhost:3000/api/casefile", formData)
+    if(confirm)
+    axios.post("http://localhost:3000/api/caseFiles/create", formData)
       .then(Response => {
-        console.log('Form submitted successfully:', Response.data);
-        handleReset();
+
+
+        console.log('Form submitted successfully:', Response);
+
+        
+        navigate("/emergency") ;
       
       })
       
       .catch(error =>{
         console.error('Error submitting form:', error);
+        setError("Failed to submit form. Please try again.");
+        
       });
   };
 
+ 
+
   const handleReset = () => {
-    // Reset form data
-    setFormData({
-      caseType: "",
-      date: "",
-      time: "",
-      location: "",
-      driverID: "",
-      vehicleNo: "",
-      description: "",
-    });
-  };*/
+    setCaseTitle("");
+    setLocation("");
+    setTimeOfIncident("");
+    setLicencePlate("");
+    setCurrentCondition("");
+    setPassengerCount(1);
+    setincidentDescription("");
+    setSeverity("");
+    setInjuriesDiscription("");
+    setStatus("incomplete");
+  };
+
+ 
 
   return (
     <div className="w-full h-full flex justify-center items-center bg-gray-200 px-4 py-8 xl:px-10 xl:py-20">
@@ -138,7 +152,7 @@ const CaseFileForm = () => {
         <div className="mb-4">
           <label htmlFor="timeOfIncident" className="block text-lg font-semibold mb-2">Time of Incident</label>
           <input
-            type="time"
+            type="datetime-local"
             id="timeOfIncident"
             name="timeOfIncident"
             value={timeOfIncident}
@@ -226,12 +240,21 @@ const CaseFileForm = () => {
         </div>
 
         {/* Repeat similar structure for other input fields */}
+        <div className="mb-4"> 
         <button
           type="submit"
           onClick={handleSubmit}
           className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300"
         >
           Submit
+        </button>
+        </div>
+        <button
+          type="button"
+          onClick={handleReset}
+          className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300"
+        >
+          Reset
         </button>
       </form>
     </div>

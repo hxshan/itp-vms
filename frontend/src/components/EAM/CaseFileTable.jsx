@@ -2,11 +2,10 @@ import React, { useEffect, useState} from "react";
 import  axios  from "axios";
 import Spinner from "./Spinner";
 import { Link } from "react-router-dom";
-import { AiOutlineEdit } from "react-icons/ai";
-import { BsInfoCircle } from "react-icons/bs";
-import { MdOutlineAddBox , MdOutlineDelete} from "react-icons/md";
 
-const Home = () => {
+
+
+const CaseFileTable = () => {
     const [caseFiles, setCaseFiles] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -14,7 +13,7 @@ const Home = () => {
     useEffect(() => {
         setLoading(true);
         axios
-            .get('http://localhost:5555/caseFiles')
+            .get('http://localhost:3000/api/caseFiles')
             .then((response) => {
                 setCaseFiles(response.data);
                 setLoading(false);
@@ -28,22 +27,20 @@ const Home = () => {
 
     return (
         <div className="container mx-auto">
-            <div className="flex justify-between items-center mt-5">
-                <h1 className="text-3xl">Case Files</h1>
-                <Link to="/caseFiles/create" className="btn btn-primary">
-                    <MdOutlineAddBox className="inline-block mr-2" /> Create Case File
-                </Link>
-            </div>
+          
             {loading ? (
                 <Spinner />
             ) : (
-                <div className="mt-5">
-                    <table className="min-w-full divide-y divide-gray-200">
+                <div className="mt- 10" >
+                    <table className="min-w-full divide-y divide-gray-200" >
                         <thead className="bg-gray-50">
                             <tr>
                                 <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Title</th>
-                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
-                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Priority</th>
+                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Location</th>
+                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Time Of Incident</th>
+                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Passenger Count</th>
+                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Severity</th>
+                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
                                 <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                             </tr>
                         </thead>
@@ -51,17 +48,23 @@ const Home = () => {
                             {caseFiles.map((caseFile) => (
                                 <tr key={caseFile._id}>
                                     <td className="px-6 py-4 whitespace-nowrap">{caseFile.caseTitle}</td>
-                                    <td className="px-6 py-4 whitespace-nowrap">{caseFile.caseDesc}</td>
-                                    <td className="px-6 py-4 whitespace-nowrap">{caseFile.casePriority}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap">{caseFile.location}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap">{caseFile.timeOfIncident}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-center">{caseFile.passengerCount}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap">{caseFile.severity}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap">{caseFile.status}</td>
+
                                     <td className="px-6 py-4 whitespace-nowrap">
-                                        <Link to={`/caseFiles/edit/${caseFile._id}`} className="text-indigo-600 hover:text-indigo-900 mr-2">
-                                            <AiOutlineEdit className="inline-block" />
-                                        </Link>
+                                       
                                         <Link to={`/caseFiles/details/${caseFile._id}`} className="text-indigo-600 hover:text-indigo-900 mr-2">
-                                            <BsInfoCircle className="inline-block" />
+                                            <button className="px-2 py-1 bg-[#D4D800] text-white rounded-md mr-2">
+                                                View
+                                            </button>
                                         </Link>
                                         <Link to={`/caseFiles/delete/${caseFile._id}`} className="text-red-600 hover:text-red-900">
-                                            <MdOutlineDelete className="inline-block" />
+                                            <button className="hidden xl:grid px-2 py-1 bg-[#A90000] text-white rounded-md">
+                                                Delete
+                                            </button>
                                         </Link>
                                     </td>
                                 </tr>
@@ -75,4 +78,4 @@ const Home = () => {
     );
 }
 
-export default Home;
+export default CaseFileTable;
