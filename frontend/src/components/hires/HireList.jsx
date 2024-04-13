@@ -89,8 +89,8 @@ const HireList = ({ hireData, searchTerm, searchType }) => {
                                 <td className="px-4 py-2">{hire.cusMobile}</td>
                                 <td className="px-4 py-2">{hire.hireStatus}</td>
                                 <td className="px-4 py-4 flex justify-between items-baseline">
-                                    <button className="px-2 py-1 bg-[#D4D800] text-white rounded-md mr-2" onClick={() => handleView(hire._id)}>View</button>
-                                    <button className="hidden xl:grid px-2 py-1 bg-[#A90000] text-white rounded-md" onClick={() => deleteHire(hire._id)}>Delete</button>
+                                    <button className="px-2 py-1 bg-actionBlue text-white rounded-md mr-2" onClick={() => handleView(hire._id)}>View</button>
+                                    <button className="hidden xl:grid px-2 py-1 bg-actionRed text-white rounded-md" onClick={() => deleteHire(hire._id)}>Delete</button>
                                 </td>
                             </tr>
                         ))}

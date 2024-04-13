@@ -55,7 +55,7 @@ const HireDashboard = () => {
                     <SearchHire onSearch={handleSearch} />
 
                     <div className="pt-[10px]">
-                        <button className="px-4 py-2 text-white bg-black rounded-md hover:bg-gray-800 focus:outline-none" onClick={()=>{navigate('/hires/add')}}>
+                        <button className="px-4 py-2 text-white bg-actionBlue rounded-md hover:bg-gray-800 focus:outline-none" onClick={()=>{navigate('/hires/add')}}>
                             Add
                         </button>
                     </div>

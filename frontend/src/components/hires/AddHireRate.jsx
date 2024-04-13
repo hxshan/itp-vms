@@ -120,7 +120,7 @@ const AddHireRates = ({setShowAddForm, reload}) => {
                                 </button>
                             </div>
                             <div className="text-center">
-                                <button type="submit" className="bg-green-500 text-white px-4 py-2 rounded-md"
+                                <button type="submit" className="bg-actionGreen text-white px-4 py-2 rounded-md"
                                 >
                                     Save
                                 </button>

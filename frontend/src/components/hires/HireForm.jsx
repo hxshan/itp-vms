@@ -85,10 +85,6 @@ const Form = () => {
     
   }
 
-  if (loading) {
-    return <p>Loading...</p>;
-  }
-
   //Fetch Vehicle Data
   const [vehiclesData, vehiclesError, vehiclesLoading, axiosFetchVehicles] = useAxios()
 
@@ -359,6 +355,10 @@ const [vehicleRates, Verror, Vloading, VaxiosFetch] = useAxios();
         filterVehicles()
       }
     }, [step, vehicleType])
+
+    if (loading || vehiclesLoading|| DriversLoading || Vloading) {
+      return <p>Loading...</p>;
+    }
   
 
   return (
@@ -821,11 +821,11 @@ const [vehicleRates, Verror, Vloading, VaxiosFetch] = useAxios();
               </button>
             )}
             {step !== 5 ? (
-              <button type='button' className="px-4 py-2 text-white bg-black rounded-md hover:bg-gray-800 focus:outline-none" onClick={handleNextStep}>
+              <button type='button' className="px-4 py-2 text-white bg-actionBlue rounded-md hover:bg-gray-800 focus:outline-none" onClick={handleNextStep}>
                 Next
               </button>
             ) : (
-              <button type='submit' className="px-4 py-2 text-white bg-green-500 rounded-md hover:bg-green-600 focus:outline-none" onClick={submit}>
+              <button type='submit' className="px-4 py-2 text-white bg-actionGreen rounded-md hover:bg-green-600 focus:outline-none" onClick={submit}>
                 Submit
               </button>
             )}

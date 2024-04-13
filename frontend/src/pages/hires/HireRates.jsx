@@ -53,7 +53,7 @@ const HireRates = () => {
 
             <div className="flex justify-end my-5">
                 <button
-                className="px-2 py-1 bg-[#D4D800] text-white rounded-md mr-2"
+                className="px-2 py-1 bg-actionBlue text-white rounded-md mr-2"
                 onClick={handleAddForm}
                 >
                     Add
@@ -82,7 +82,7 @@ const HireRates = () => {
                                 <td className="px-4 py-2"> {rate.acAdditionalRate} </td>
                                 <td className="px-4 py-4 ">
                                     <button
-                                        className="px-2 py-1 bg-[#D4D800] text-white rounded-md mr-2"
+                                        className="px-2 py-1 bg-actionGreen text-white rounded-md mr-2"
                                         onClick={() => handleEdit(rate._id)}
                                     >
                                         Edit

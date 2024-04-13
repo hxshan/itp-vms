@@ -179,7 +179,7 @@ const EditHire = () => {
 
     if(loading || vehiclesLoading || DriversLoading) {
         return (
-            <div className="flex justify-center items-start min-h-screen pt-20">
+            <div className="flex justify-center items-center h-screen">
               <div className="sweet-loading">
                 <ClipLoader color="#10971D" loading={true}  size={50} />
               </div>
@@ -454,7 +454,7 @@ const EditHire = () => {
                         <button
                             type="button"
                             onClick={handleEdit}
-                            className="px-7 py-2 bg-[#0E6300] text-white rounded-md mr-4"
+                            className="px-7 py-2 bg-actionGreen text-white rounded-md mr-4"
                         >
                             Save
                         </button>
