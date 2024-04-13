@@ -672,77 +672,77 @@ const [vehicleRates, Verror, Vloading, VaxiosFetch] = useAxios();
             </div>
           )}
 
-{step === 3 && (
-    <div className='mt-7'> 
-        <div className=''> 
-            <div className="mb-7 flex justify-start align-baseline xl:justify-start">
-                <label htmlFor="cusName" className="block mr-7 font-medium text-black text-base ">
-                    Name
-                </label>
-                <input 
-                    type="text" 
-                    id="cusName" 
-                    name="cusName" 
-                    value={cusName}
-                    onChange={(e) => setCusName(e.target.value)} 
-                    placeholder='Customer Name'
-                    className='border-2 rounded border-black w-[100%] px-2 xl:px-4'
-                    required
-                />
-            </div>
+          {step === 3 && (
+              <div className='mt-7'> 
+                  <div className=''> 
+                      <div className="mb-7 flex justify-start align-baseline xl:justify-start">
+                          <label htmlFor="cusName" className="block mr-7 font-medium text-black text-base ">
+                              Name
+                          </label>
+                          <input 
+                              type="text" 
+                              id="cusName" 
+                              name="cusName" 
+                              value={cusName}
+                              onChange={(e) => setCusName(e.target.value)} 
+                              placeholder='Customer Name'
+                              className='border-2 rounded border-black w-[100%] px-2 xl:px-4'
+                              required
+                          />
+                      </div>
 
-            <div className="mb-7 flex justify-start align-baseline xl:justify-start">
-                <label htmlFor="cusEmail" className="block font-medium text-black mr-7 text-base xl:mr-7">
-                    Email
-                </label>
-                <input 
-                    type="email" 
-                    id="cusEmail" 
-                    name="cusEmail" 
-                    value={cusEmail}
-                    onChange={(e) => setCusEmail(e.target.value)} 
-                    placeholder='Customer Email'
-                    className='border-2 rounded border-black w-[100%] px-2 xl:px-4'
-                    required
-                />
-            </div>
+                      <div className="mb-7 flex justify-start align-baseline xl:justify-start">
+                          <label htmlFor="cusEmail" className="block font-medium text-black mr-7 text-base xl:mr-7">
+                              Email
+                          </label>
+                          <input 
+                              type="email" 
+                              id="cusEmail" 
+                              name="cusEmail" 
+                              value={cusEmail}
+                              onChange={(e) => setCusEmail(e.target.value)} 
+                              placeholder='Customer Email'
+                              className='border-2 rounded border-black w-[100%] px-2 xl:px-4'
+                              required
+                          />
+                      </div>
 
-            <div className='flex justify-between'>
-                <div className="mb-7 flex flex-col justify-between align-baseline xl:flex-row xl:flex-1 xl:mr-14">
-                    <label htmlFor="cusMobile" className="block font-medium text-black mr-[5px] text-base xl:mr-7">
-                        Mobile
-                    </label>
-                    <input 
-                        type="tel" 
-                        id="cusMobile" 
-                        name="cusMobile" 
-                        value={cusMobile}
-                        onChange={(e) => setCusMobile(e.target.value)} 
-                        placeholder='Customer Mobile No'
-                        className='border-2 px-2 rounded border-black xl:px-4'
-                        required
-                    />
-                </div>
+                      <div className='flex justify-between'>
+                          <div className="mb-7 flex flex-col justify-between align-baseline xl:flex-row xl:flex-1 xl:mr-14">
+                              <label htmlFor="cusMobile" className="block font-medium text-black mr-[5px] text-base xl:mr-7">
+                                  Mobile
+                              </label>
+                              <input 
+                                  type="tel" 
+                                  id="cusMobile" 
+                                  name="cusMobile" 
+                                  value={cusMobile}
+                                  onChange={(e) => setCusMobile(e.target.value)} 
+                                  placeholder='Customer Mobile No'
+                                  className='border-2 px-2 rounded border-black xl:px-4'
+                                  required
+                              />
+                          </div>
 
-                <div className="mb-7 flex flex-col justify-between align-baseline xl:flex-row xl:flex-1">
-                    <label htmlFor="cusNic" className="block font-medium text-black mr-[5px] text-base xl:mr-7">
-                        Nic
-                    </label>
-                    <input 
-                        type="text" 
-                        id="cusNic" 
-                        name="cusNic" 
-                        value={cusNic}
-                        onChange={(e) => setCusNic(e.target.value)} 
-                        placeholder='Customer NIC'
-                        className='border-2 px-2 rounded border-black xl:px-4'
-                        required
-                    />
-                </div> 
-            </div>
-        </div>
-    </div>
-)}
+                          <div className="mb-7 flex flex-col justify-between align-baseline xl:flex-row xl:flex-1">
+                              <label htmlFor="cusNic" className="block font-medium text-black mr-[5px] text-base xl:mr-7">
+                                  Nic
+                              </label>
+                              <input 
+                                  type="text" 
+                                  id="cusNic" 
+                                  name="cusNic" 
+                                  value={cusNic}
+                                  onChange={(e) => setCusNic(e.target.value)} 
+                                  placeholder='Customer NIC'
+                                  className='border-2 px-2 rounded border-black xl:px-4'
+                                  required
+                              />
+                          </div> 
+                      </div>
+                  </div>
+              </div>
+          )}
 
 
             {/* Confirmation */}

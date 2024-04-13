@@ -100,9 +100,57 @@ const addHire = async (req, res) => {
 //Edit Hire
 const editHire = async (req, res) => {
   const { id } = req.params;
-  const { startDate, endDate, vehicleType, vehicleSubcategory, passengerCount, airCondition, vehicle, driver, startPoint, endPoint, tripType, distance, cusName, cusEmail, cusMobile, cusNic, estimatedTotal, finalTotal, advancedPayment, hireStatus } = req.body.data;
+  const {
+    startDate,
+    endDate,
+    vehicleType,
+    vehicleSubcategory,
+    passengerCount,
+    airCondition,
+    vehicle,
+    driver,
+    startPointNo,
+    startPointStreet,
+    startPointCity,
+    endPoint,
+    startTime,
+    tripType,
+    distance,
+    cusName,
+    cusEmail,
+    cusMobile,
+    cusNic,
+    estimatedTotal,
+    finalTotal,
+    advancedPayment,
+    hireStatus
+  } = req.body.data;
   try {
-    const hire = await Hire.findByIdAndUpdate(id, { startDate, endDate, vehicleType, vehicleSubcategory, passengerCount, airCondition, vehicle, driver, startPoint, endPoint, tripType, distance, cusName, cusEmail, cusMobile, cusNic, estimatedTotal, finalTotal, advancedPayment, hireStatus }, { new: true });
+    const hire = await Hire.findByIdAndUpdate(id, { startDate,
+      endDate,
+      vehicleType,
+      vehicleSubcategory,
+      passengerCount,
+      airCondition,
+      vehicle,
+      driver,
+      startPoint : {
+        no: startPointNo,
+        street: startPointStreet,
+        city: startPointCity
+      },
+      endPoint,
+      startTime,
+      tripType,
+      distance,
+      cusName,
+      cusEmail,
+      cusMobile,
+      cusNic,
+      estimatedTotal,
+      finalTotal,
+      advancedPayment,
+      hireStatus }, { new: true });
     if (!hire) {
       return res.status(404).json({ message: 'Hire not found' });
     }
