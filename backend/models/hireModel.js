@@ -34,8 +34,8 @@ const hireSchema = new mongoose.Schema({
     ref: 'Vehicles',
 },
   driver: { 
-    type: String, 
-    required: true 
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: 'User', 
 },
   startPoint: { 
     type: String, 

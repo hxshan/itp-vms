@@ -7,8 +7,8 @@ const fetchHires = async (req, res) => {
   try {
     Hire.find()
         .populate('vehicle')
+        .populate('driver')
         .then(hires => res.json(hires))
-        .catch(err => res.status(400).json('Error: ' + err))
   } catch (error) {
     console.error('Error fetching hire:', error);
     res.status(500).json({ message: 'Internal server error' });

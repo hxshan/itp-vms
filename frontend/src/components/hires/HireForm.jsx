@@ -90,7 +90,7 @@ const Form = () => {
 
   const [vehcleTypes, setVehcleTypes] = useState(["Car", "Van" , "Bus", "Plane"])
   const [vehcleSubTypes, setVehcleSubTypes] = useState(["Maruti" , "C200"])
-  const [availableDrivers, setavailableDrivers] = useState(["Chamara" , "Jonny", "Danny", "Chanchala"])
+  
 
   const fetchVehicleDetails = async () => {
     axiosFetchVehicles({
@@ -102,7 +102,7 @@ const Form = () => {
 
   if(vehiclesError){
     return(
-      <p>Can not Fetch Data</p>
+      <p>Can not Vehicle Fetch Data</p>
     )
   }
 
@@ -122,10 +122,56 @@ const Form = () => {
       alert("No vehicles Available")
     }
 
+    if(vehiclesError){
+    return(
+      <p>Can not Fetch Data</p>
+    )
+  }
+
 
   }
 
-  
+  // Fetch user data
+  /*
+  const [RoleData, RoleError, RoleLoading, axiosFetchRoles] = useAxios()
+
+  const fetchRoleDetails = async () => {
+    console.log('Fetching Role data')
+    axiosFetchRoles({
+          axiosInstance: axios,
+          method: "GET",
+          url: "/role/",
+      });
+  };
+
+  if(RoleError){
+    return(
+      <p>Can not Fetch Role Data</p>
+    )
+  }
+  const driverRoleId = RoleData ?.find(role => role.name.toLowerCase() === 'driver')?._id
+  console.log(driverRoleId)
+*/
+  //Fetch Drivers
+  const [DriversData, DriversError, DriversLoading, axiosFetchDrivers] = useAxios()
+  //const [availableDrivers, setavailableDrivers] = useState(["Chamara" , "Jonny", "Danny", "Chanchala"])
+
+  const filterDrivers = () => {
+    console.log('Filter Drivers')
+    axiosFetchDrivers({
+      axiosInstance: axios,
+      method: "GET",
+      url: "/user/drivers",
+  });
+  }
+
+  if(DriversError) {
+    <p>Can not Fetch Driver Data</p>
+  }
+
+  console.log(DriversData)
+
+  // Handle Cancel button
   const cancel = () => {
     navigate('/hires')
   }
@@ -283,6 +329,8 @@ const [vehicleRates, Verror, Vloading, VaxiosFetch] = useAxios();
 
   useEffect(() => {
       fetchVehicleRates();
+      //fetchRoleDetails()
+      filterDrivers()
 
       console.log("Vehicle Rates")
       console.log(vehicleRates)
@@ -465,8 +513,8 @@ const [vehicleRates, Verror, Vloading, VaxiosFetch] = useAxios();
                       required
                       >
                         <option value="">Select Driver</option>
-                          {availableDrivers.map((type) => (
-                            <option key={type.id} value={type}>{type}</option>
+                          {DriversData.map((driver) => (
+                            <option key={driver.id} value={driver._id}>{driver.firstName} {driver.lastName}</option>
                           ))}
                     </select>
                   </div>
