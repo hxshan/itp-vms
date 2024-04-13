@@ -1,82 +1,65 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import useAxios from '@/hooks/useAxios';
+import axios from '@/api/axios';
 import { FaCalendarAlt } from 'react-icons/fa';
 import TripCard from './UpcomingTrip';
 import TripDetailCard from './TripDetailCard';
+import { useAuthContext } from "@/hooks/useAuthContext";
+import { jwtDecode } from 'jwt-decode';
 
 const Dashboard = () => {
-  const [upcomingTrips, setUpcomingTrips] = useState([
-    {
-      id: 101,
-      customerName: 'Alice',
-      contact: '987654321',
-      vehicleName: 'Ford Mustang',
-      vehicleNumber: 'DEF 456',
-      pickupLocation: 'Some Street',
-      destination: 'Mall',
-      startDate: '2024-03-17',
-      startTime: '17:30',
-    },
-    {
-      id: 101,
-      customerName: 'Alice',
-      contact: '987654321',
-      vehicleName: 'Ford Mustang',
-      vehicleNumber: 'DEF 456',
-      pickupLocation: 'Some Street',
-      destination: 'Mall',
-      startDate: '2024-03-15',
-      startTime: '10:30',
-    },
-    {
-      id: 101,
-      customerName: 'Alice',
-      contact: '987654321',
-      vehicleName: 'Ford Mustang',
-      vehicleNumber: 'DEF 456',
-      pickupLocation: 'Some Street',
-      destination: 'Mall',
-      startDate: '2024-03-15',
-      startTime: '10:30',
-    },
-  ]);
-  const [pastTrips, setPastTrips] = useState([
-    {
-      id: 101,
-      customerName: 'Alice',
-      contact: '987654321',
-      vehicleName: 'Ford Mustang',
-      vehicleNumber: 'DEF 456',
-      pickupLocation: 'Some Street',
-      destination: 'Mall',
-      startDate: '2024-03-15',
-      startTime: '10:30',
-    },
-    {
-      id: 101,
-      customerName: 'Alice',
-      contact: '987654321',
-      vehicleName: 'Ford Mustang',
-      vehicleNumber: 'DEF 456',
-      pickupLocation: 'Some Street',
-      destination: 'Mall',
-      startDate: '2024-03-15',
-      startTime: '10:30',
-    },
-    {
-      id: 101,
-      customerName: 'Alice',
-      contact: '987654321',
-      vehicleName: 'Ford Mustang',
-      vehicleNumber: 'DEF 456',
-      pickupLocation: 'Some Street',
-      destination: 'Mall',
-      startDate: '2024-03-15',
-      startTime: '10:30',
-    },
-  ]);
+  const [upcomingTrips, setUpcomingTrips] = useState([]);
+  const [pastTrips, setPastTrips] = useState([]);
+  const { user } = useAuthContext()
 
+  const [tripData,tripError, tripLoading, tripAxiosFetch] = useAxios();
+
+
+  const [userID,setUserID]=useState('')
+ 
+  useEffect(() => {
+    const decodedToken = jwtDecode(user?.accessToken);
+    setUserID(decodedToken?.UserInfo?.id);
+  }, [user]);
+  
+console.log(userID)
+  
+useEffect(() => {
+  if(userID) {
+    tripAxiosFetch({
+      axiosInstance: axios,
+      method: "GET",
+      url: `/hire/${userID}`, // Use userID variable dynamically
+    });
+  }
+}, [userID]);
+
+
+
+  useEffect(() => {
+    if (tripData && tripData.length > 0) {
+      // Filter trips into past and upcoming based on current date
+      const currentDate = new Date();
+      const past = [];
+      const upcoming = [];
+
+      tripData.forEach(trip => {
+        const tripDate = new Date(trip.startDate); // Assuming trip object has a startDate property
+        if (tripDate < currentDate) {
+          past.push(trip);
+        } else {
+          upcoming.push(trip);
+        }
+      });
+
+      setPastTrips(past);
+      setUpcomingTrips(upcoming);
+    }
+  }, [tripData]);
   // Select the very next trip
   const nextTrip = upcomingTrips.length > 0 ? upcomingTrips[0] : null;
+
+  console.log(nextTrip)
 
   return (
     <div className="container mx-auto">
@@ -85,7 +68,7 @@ const Dashboard = () => {
       <div className="flex flex-col items-start ml-10 mt-4 ">
           <div>
             {nextTrip ? (
-              <TripCard key={nextTrip.id} {...nextTrip} />
+              <TripCard key={nextTrip._id} trip={nextTrip} /> 
             ) : (
               <p>No upcoming trips</p>
             )}
@@ -101,7 +84,7 @@ const Dashboard = () => {
       </div>
       <div className="max-h-96 overflow-y-auto scrollbar-thin scrollbar-thumb-blue-400 scrollbar-track-gray-200 mt-2">
         {upcomingTrips.map((trip) => (
-          <TripDetailCard key={trip.id} trip={trip} />
+          <TripDetailCard key={trip._id} trip={trip} />
         ))}
       </div>
     </div>
@@ -115,7 +98,7 @@ const Dashboard = () => {
       </div>
       <div className="max-h-96 overflow-y-auto scrollbar-thin scrollbar-thumb-blue-400 scrollbar-track-gray-200 mt-2">
         {pastTrips.map((trip) => (
-          <TripDetailCard key={trip.id} trip={trip} />
+          <TripDetailCard trip={trip} />
         ))}
       </div>
     </div>

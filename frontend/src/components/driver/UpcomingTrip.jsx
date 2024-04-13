@@ -3,16 +3,7 @@ import { FaPhone, FaCar, FaClock, FaTimes } from 'react-icons/fa'; // Import ico
 
 import StartTripForm from './StartTripForm';
 
-const TripCard = ({
-  customerName,
-  contact,
-  vehicleName,
-  vehicleNumber,
-  pickupLocation,
-  destination,
-  startDate,
-  startTime,
-}) => {
+const TripCard = ({trip}) => {
   const [showStartTripForm, setShowStartTripForm] = useState(false);
   const [currentDateTime, setCurrentDateTime] = useState(new Date());
 
@@ -24,8 +15,23 @@ const TripCard = ({
     return () => clearInterval(intervalId);
   }, []);
 
-  const calculateTimeUntilStart = (startDate, startTime) => {
+ 
+  
+  
+
+  const calculateTimeUntilStart = (Date4, Time) => {
+   
+
+    const dateString = '2024-04-12T00:00:00.000Z';
+const formattedDate = dateString.split('T')[0];
+ 
+   const  startDate= '2024-04-11'
+    const startTime = '10:00'
+
+   
     const tripStartDateTime = new Date(`${startDate}T${startTime}`);
+
+    
     
     // Check if tripStartDateTime is a valid date
     if (isNaN(tripStartDateTime.getTime())) {
@@ -47,7 +53,7 @@ const TripCard = ({
   };
 
   const handleStartTrip = () => {
-    const timeUntilStart = calculateTimeUntilStart(startDate, startTime);
+    const timeUntilStart = calculateTimeUntilStart(trip.startDate, trip.startTime);
   
     // Check if time until start is less than or equal to 30 minutes
     if (timeUntilStart && timeUntilStart.includes('minute')) {
@@ -62,11 +68,11 @@ const TripCard = ({
   return (
     <div className="trip-card-container p-8 bg-gray-200 rounded-lg shadow-lg">
       <div className="flex justify-between items-center mb-6">
-        <p className="text-gray-500 font-semibold mr-15">Trip Starts in {calculateTimeUntilStart(startDate, startTime)}</p>
+        <p className="text-gray-500 font-semibold mr-15">Trip Starts in {calculateTimeUntilStart((trip.startDate, trip.startTime))}</p>
         {!showStartTripForm && (
           <button 
             onClick={handleStartTrip} 
-            className={`bg-blue-500 text-white py-2 px-6 rounded-lg ml-20 hover:bg-blue-600 ${calculateTimeUntilStart(startDate, startTime).includes('minute') ? '' : 'opacity-50'}`}
+            className={`bg-blue-500 text-white py-2 px-6 rounded-lg ml-20 hover:bg-blue-600 ${calculateTimeUntilStart(trip.startDate, trip.startTime).includes('minute') ? '' : 'opacity-50'}`}
           >
             Start Trip
           </button>
@@ -74,34 +80,34 @@ const TripCard = ({
       </div>
       <hr className="border-t border-gray-400 mb-6" />
       <div className="flex items-center mb-6">
-        <p className="text-lg font-semibold mr-4">{customerName}</p>
+        <p className="text-lg font-semibold mr-4">{trip.cusName}</p>
         <div className="flex items-center">
           <FaPhone className="text-gray-500 mr-2" />
-          <p>{contact}</p>
+          <p>{trip.cusMobile}</p>
         </div>
       </div>
       <div className="mb-6">
         <div className="flex items-center mb-2">
           <FaCar className="text-gray-500 mr-2" />
-          <p>{vehicleName} - {vehicleNumber}</p>
+          <p>{trip.vehicle.vehicleRegister}</p>
         </div>
       </div>
       <div className="mb-6">
         <p className="text-gray-500 font-semibold">Pickup Location</p>
-        <p className="text-lg">{pickupLocation}</p>
+        <p className="text-lg">{trip.startPoint}</p>
       </div>
       <div className="mb-6">
         <p className="text-gray-500 font-semibold">Destination</p>
-        <p className="text-lg">{destination}</p>
+        <p className="text-lg">{trip.endPoint}</p>
       </div>
       <div className="flex items-center mb-6">
         <FaClock className="text-gray-500 mr-2" />
-        <p>{startTime}</p>
+        <p>{trip.startTime}</p>
       </div>
       {showStartTripForm && (
         <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
           <div className="bg-white p-8 rounded-lg shadow-lg relative">
-            <StartTripForm trip={{ vehicleName, vehicleNumber, pickupLocation, destination }} />
+            <StartTripForm trip={trip } />
             <button onClick={() => setShowStartTripForm(false)} className="absolute top-2 right-2 text-gray-500 hover:text-gray-800">
               <FaTimes />
             </button>

@@ -2,7 +2,7 @@
 import { useAuthContext } from "./hooks/useAuthContext";
 import {Routes, Route, Navigate } from "react-router-dom";
 import { Login, Navbar, TopBar, UnAuthorized } from "./pages/shared";
-import DriverDashboard from "./pages/driver/DriverDashboard";
+import {DriverDashboard, TripPage} from "./pages/driver";
 import VehicleDashboard from "./pages/vehicle/VehicleDashboard";
 
 
@@ -19,7 +19,7 @@ import { AdminDashboard, Roles, EditRoles } from "./pages/admin";
 import { MaintainceDashboard } from "./pages/Maintains/MaintainceDashboard";
 import { EditMaintainceOrder } from "./components/VR/EditMaintainceOrder";
 import ContractDasboard from "./pages/contract/ContractDasboard";
-import FinanaceDashboard from "./pages/finance/FinanaceDashboard";
+import {FinanceDashboard,ExpenseTracking, IncomeTracking }from "./pages/finance";
 import { VehicleServiceList } from "./components/VR/VehicleServiceList";
 import ClientDashboard from "./pages/contract/ClientDashboard";
 import ViewContract from "./pages/contract/ViewContract";
@@ -89,6 +89,7 @@ function App() {
             <Route path="/Contract/:id" element={<AddContract />}/>
             <Route path="/Vrform" element={<CreateMaintainceForm />}/>
             <Route path="/driver" element={<DriverDashboard />} />
+            <Route path="/driver/TripPage" element={<TripPage />} />
             <Route path="/Mdashboard" element={<MaintainceDashboard />} />
             <Route path="/view/:id" element={<View />} />
             <Route path="/addnote" element={<servicenote />} />
@@ -102,9 +103,12 @@ function App() {
             <Route path="/client" element={<ClientDashboard/>}/>
             <Route path="/viewContract/:id" element={<ViewContract/>}/>
             <Route path="/EditContract/:id" element={<ContractEditForm/>}/>
+            <Route path="/Finance/ Finance Dashboard" element={<FinanceDashboard />} />
+            <Route path="/Finance/Expense Tracking" element={<ExpenseTracking />} />
+            <Route path="/Finance/Income Tracking" element={<IncomeTracking  />} />       
+
             <Route path="/addClient" element={<AddClient/>}/>
-            <Route path="/finance" element={<FinanaceDashboard />} />
-            
+
             <Route
               path="/VehicleServiceList"
               element={<VehicleServiceList />}
