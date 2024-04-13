@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const fetchHires = async (req, res) => {
   try {
     Hire.find()
+        .populate('vehicle')
         .then(hires => res.json(hires))
         .catch(err => res.status(400).json('Error: ' + err))
   } catch (error) {
@@ -64,7 +65,7 @@ const addHire = async (req, res) => {
     });
 
     await newHire.save();
-    sendmail(transporter, {
+    /*sendmail(transporter, {
       startDate,
       endDate,
       airCondition,
@@ -79,7 +80,7 @@ const addHire = async (req, res) => {
       cusNic,
       estimatedTotal,
       advancedPayment
-    });
+    });*/
 
     res.status(201).json({ message: 'Hire added successfully' });
   } catch (error) {
@@ -88,6 +89,7 @@ const addHire = async (req, res) => {
   }
 }
 
+//Edit Hire
 const editHire = async (req, res) => {
   const { id } = req.params;
   const { startDate, endDate, vehicleType, vehicleSubcategory, passengerCount, airCondition, vehicle, driver, startPoint, endPoint, tripType, distance, cusName, cusEmail, cusMobile, cusNic, estimatedTotal, finalTotal, advancedPayment, hireStatus } = req.body.data;
@@ -103,6 +105,7 @@ const editHire = async (req, res) => {
   }
 };
 
+//Delete Hire
 const deleteHire = async (req, res) => {
   try {
     const hireId = req.params.id;
@@ -142,21 +145,25 @@ const sendmail = async (transporter, hireData) => {
     to: hireData.cusEmail, // receivers
     subject: "Hire Confirmation eka hutto", // Subject line
     html: `
-        <h1>New Form Submission</h1>
-        <p>Start Date: ${hireData.startDate}</p>
-        <p>End Date: ${hireData.endDate}</p>
-        <p>Air Condition: ${hireData.airCondition ? 'Yes' : 'No'}</p>
-        <p>Vehicle: ${hireData.vehicle}</p>
-        <p>Driver: ${hireData.driver}</p>
-        <p>Start Point: ${hireData.startPoint}</p>
-        <p>End Point: ${hireData.endPoint}</p>
-        <p>Distance: ${hireData.distence}</p>
-        <p>Customer Name: ${hireData.cusName}</p>
-        <p>Customer Email: ${hireData.cusEmail}</p>
-        <p>Customer Mobile: ${hireData.cusMobile}</p>
-        <p>Customer NIC: ${hireData.cusNic}</p>
-        <p>Estimated Total: ${hireData.estimatedTotal}</p>
-        <p>Advanced Payment: ${hireData.advancedPayment}</p>
+      <h1>Thank You for Choosing Us!</h1>
+      <h4>Dear ${hireData.cusName},</h4>
+      <p>We are thrilled to confirm your booking with us. Your trust in our services means a lot to us.</p>
+      <p>Below are the details of your booking:</p>
+      <p>Start Date: ${hireData.startDate}</p>
+      <p>End Date: ${hireData.endDate}</p>
+      <p>Air Condition: ${hireData.airCondition ? 'Yes' : 'No'}</p>
+      <p>Vehicle: ${hireData.vehicle.vehicleRegister}</p>
+      <p>Driver: ${hireData.driver}</p>
+      <p>Start Point: ${hireData.startPoint}</p>
+      <p>End Point: ${hireData.endPoint}</p>
+      <p>Distance: ${hireData.distence}</p>
+      <p>Customer Name: ${hireData.cusName}</p>
+      <p>Customer Email: ${hireData.cusEmail}</p>
+      <p>Customer Mobile: ${hireData.cusMobile}</p>
+      <p>Customer NIC: ${hireData.cusNic}</p>
+      <p>Estimated Total: ${hireData.estimatedTotal}</p>
+      <p>Advanced Payment: ${hireData.advancedPayment}</p>
+      <p>Safe journey and we look forward to serving you!</p>
       `,
   };
 

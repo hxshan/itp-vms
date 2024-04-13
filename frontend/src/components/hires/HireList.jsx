@@ -45,7 +45,8 @@ const HireList = ({ hireData, searchTerm, searchType }) => {
     useEffect(() => {
         const result = hireData.filter((hire) => {
             if (searchType === 'vehicleNumber') {
-                return hire.vehicle.toLowerCase().includes(searchTerm.toLowerCase());
+                return hire.vehicle?.vehicleRegister?.toLowerCase().includes(searchTerm.toLowerCase()) || false;
+                //return hire.vehicle.toLowerCase().includes(searchTerm.toLowerCase());
             } else if (searchType === 'customerMobile') {
                 return hire.cusMobile.includes(searchTerm);
             }
@@ -81,7 +82,8 @@ const HireList = ({ hireData, searchTerm, searchType }) => {
                     <tbody>
                         {currentItems.map((hire) => (
                             <tr key={hire._id} className="border-b-2 border-black">
-                                <td className="px-4 py-2">{hire.vehicle}</td>
+                                <td className="px-4 py-2"> {hire.vehicle?.vehicleRegister || 'N/A'}</td>
+
                                 <td className="px-4 py-2">{new Date(hire.startDate).toLocaleDateString()}</td>
                                 <td className="px-4 py-2">{new Date(hire.endDate).toLocaleDateString()}</td>
                                 <td className="px-4 py-2">{hire.cusMobile}</td>

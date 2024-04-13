@@ -30,8 +30,8 @@ const hireSchema = new mongoose.Schema({
     required: true 
 },
   vehicle: { 
-    type: String, 
-    required: true 
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: 'Vehicles',
 },
   driver: { 
     type: String, 
