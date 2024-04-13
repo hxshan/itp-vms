@@ -3,16 +3,29 @@ import useAxios from "@/hooks/useAxios";
 import { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom'
 import axios from "@/api/axios";
+import AddContractpopup from "./AddContractpopup";
+
 
 const ContractDasboard = () => {
 
 
   const navigate = useNavigate();
 
-  const [countdown, setCountdown] = useState(null);
-  const [countError,setError] = useState('')
+  
+  const [openAddcont,setopenAddcont] = useState(false);
+  const [AllClients,setAllClients] = useState([])
+  const [searchError,setSearchError] = useState('');
 
   const [data, error, loading, axiosFetch] = useAxios()
+  const [clients,clientError, clientLoading, clientsFetch] = useAxios();
+
+  const getallClients = ()=>{
+    clientsFetch({
+      axiosInstance: axios,
+      method: "GET",
+      url: `/contract/getClients`,
+    });
+  }
 
   const getContracts =()=>{
     axiosFetch({
@@ -21,6 +34,7 @@ const ContractDasboard = () => {
      url: `/contract/getAllContracts`,
    });
  }
+
   
 
 
@@ -36,7 +50,18 @@ const ContractDasboard = () => {
   };
 
   const handleSearch = () => {
-    console.log(Search);
+    const filteredContracts = allContracts.filter(contract =>
+      contract.clientID.nicNumber.toLowerCase().includes(Search.toLowerCase()) ||
+      contract.clientID.firstName.toLowerCase().includes(Search.toLowerCase()) ||
+      contract.clientID.lastName.toLowerCase().includes(Search.toLowerCase()) ||
+      contract.clientID.email.toLowerCase().includes(Search.toLowerCase())
+    );
+  
+    if (filteredContracts.length > 0) {
+      setSearchError(`${filteredContracts.length} items found.`);
+    } else {
+      setSearchError("No items found.");
+    }
   };
 
   useEffect(() => {
@@ -48,9 +73,20 @@ const ContractDasboard = () => {
     }
   }, [data]);
 
+  useEffect(() => {
+    if (clientError) {
+      alert(clientError);
+    } else if (clients) {
+      const availableClients = clients.filter(client => client.Contract_Available === "unAvailable");
+      setAllClients(availableClients);
+    }
+  }, [clients]);
+
   useEffect(()=>{
     getContracts()
+    getallClients()
   },[])
+
 
   const titles = [
     { name: "Client NIC", width: "w-[200px]" },
@@ -95,21 +131,32 @@ const ContractDasboard = () => {
 
     return () => clearInterval(intervalId);
   }, []);
+  
 
 
-  if(loading){
+  if(loading && clientLoading){
     return(
       <h1>Loading ...</h1>
     )
   }
 
+  
+
   return (
+    <div>
+      <AddContractpopup isOpen={openAddcont} TogleOpen={()=>{setopenAddcont(!openAddcont)}} clients={AllClients}/>
     <div className="w-full h-full py-5">
+      
       <div className="flex items-center justify-center ">
         <h1 className=" text-[50px] font-bold ">Contract Dashboard</h1>
       </div>
+      <div className='flex justify-end'>
+        <button className=" bg-red-500 px-5 py-2 rounded-xl " onClick={()=>{setopenAddcont(!openAddcont)}} >Add Contract</button>
+        </div>
 
-      <div className="flex items-center justify-center my-12">
+
+      
+      <div className="flex items-center justify-center mb-5">
         <input
           type="text"
           className="bg-slate-400 px-4 py-3 rounded-l-md focus:outline-none w-[500px] placeholder-gray-950 text-[18px]"
@@ -123,6 +170,10 @@ const ContractDasboard = () => {
         >
           Search
         </button>
+      </div>
+
+      <div className=" text-blue-500 font-semibold mb-5">
+        <p>{searchError ? searchError : "Search something"}</p>
       </div>
 
       <div className="flex flex-col justify-center">
@@ -143,11 +194,13 @@ const ContractDasboard = () => {
           .filter((item) => {
             const searchLowerCase = Search.toLowerCase();
             const firstNameLowerCase = item.clientID.firstName.toLowerCase();
+            const lastNameLowerCase = item.clientID.lastName.toLowerCase();
             const nicNumber = item.clientID.nicNumber.toString();
             const email = item.clientID.email.toLowerCase();
             return (
               searchLowerCase === "" ||
               firstNameLowerCase.includes(searchLowerCase) ||
+              lastNameLowerCase.includes(searchLowerCase) ||
               nicNumber.includes(searchLowerCase) ||
               email.includes(searchLowerCase)
             );
@@ -176,6 +229,7 @@ const ContractDasboard = () => {
             </div>
           ))}
       </div>
+    </div>
     </div>
   );
 };

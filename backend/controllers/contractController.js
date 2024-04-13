@@ -46,7 +46,8 @@ const createClient = async(req,res)=>{
       Comp_Email,
       Comp_Phone,
       Comp_Address,
-      status:'active'
+      status:'active',
+      Contract_Available:"unAvailable"
     })
 
     await client.save();
@@ -252,6 +253,7 @@ const createContract = async(req,res)=>{
 
       await contract.save()
 
+      await Client.updateOne({_id:clientID},{ $set:{Contract_Available:"Available"}})
 
       res.status(200).json({message:"contract created successfully"})
     }catch(error){
@@ -287,18 +289,23 @@ const getallContract = async(req,res) =>{
       return res.status(400).json({"error":"No contracts available"});
     }
 
-    const currentDate = new Date();
-    Contracts.forEach(async (contract) => {
-      if(contract.Status === "Terminated"){
-        await Contract.updateOne({ _id: contract._id }, { $set: { Status: "Terminated" } });
-      }else if (contract.contract_ED < currentDate) {
-        await Contract.updateOne({ _id: contract._id }, { $set: { Status: "waiting for termination" } });
-      } else if (contract.contract_SD <= currentDate) {
-        await Contract.updateOne({ _id: contract._id }, { $set: { Status: "ongoing" } });
-      } else if (contract.contract_SD > currentDate) {
-        await Contract.updateOne({ _id: contract._id }, { $set: { Status: "Newly Added" } });
-      }
-    });
+ const currentDate = new Date();
+
+  for (const contract of Contracts) {
+    let newStatus;
+    if (contract.Status === "Terminated") {
+      newStatus = "Terminated";
+    } else if (contract.contract_ED < currentDate) {
+      newStatus = "waiting for termination";
+    } else if (contract.contract_SD <= currentDate) {
+      newStatus = "ongoing";
+    } else {
+      newStatus = "Newly Added";
+    }
+
+    await Contract.updateOne({ _id: contract._id }, { $set: { Status: newStatus } });
+    contract.Status = newStatus; 
+  }
 
     return res.status(200).json(Contracts)
   }catch(error){
@@ -384,6 +391,7 @@ const deleteContract = async(req,res) =>{
     if(contractExist.Status === "waiting for termination"){
       
       await Contract.updateOne({_id:contractID},{$set:{Status:"Terminated"}})
+      await Client.updateOne({_id:contractExist.clientID},{$set:{Contract_Available:"Available"}})
       return res.status(200).json({message:"contract succesfully set to terminated"})
     }
 

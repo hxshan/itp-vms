@@ -89,7 +89,7 @@ function App() {
               <Route path="view/:id" element={<VehicleViewControl />} />
               <Route path="report" element={<VehReport />} />
             </Route>
-            <Route path="/Contract/:id" element={<AddContract />}/>
+            
             <Route path="/Vrform" element={<CreateMaintainceForm />}/>
             <Route path="/driver" element={<DriverDashboard />} />
             <Route path="/Mdashboard" element={<MaintainceDashboard />} />
@@ -99,9 +99,9 @@ function App() {
               path="/vehiclemaintain/edit/:id"
               element={<EditMaintainceOrder />}
             />
+
             <Route path="/Contract/Dashbored" element={<ContractDasboard />} />
-
-
+            <Route path="/Contract/:id" element={<AddContract />}/>
             <Route path="/client" element={<ClientDashboard/>}/>
             <Route path="/viewContract/:id" element={<ViewContract/>}/>
             <Route path="/EditContract/:id" element={<ContractEditForm/>}/>
