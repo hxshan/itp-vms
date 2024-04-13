@@ -60,6 +60,10 @@ const AddHireRates = ({setShowAddForm, reload}) => {
         setShowAddForm(false)
     }
 
+    if(loading) {
+        return<p>loading....</p>
+    }
+
 
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50">

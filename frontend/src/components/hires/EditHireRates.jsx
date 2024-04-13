@@ -61,6 +61,12 @@ const EditHireRates = ({setEditRates, editHireData, reload}) => {
         setEditRates(false)
     }
 
+    if(loading){
+        return(
+          <h1>Loading ...</h1>
+        )
+      }
+
 
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50">

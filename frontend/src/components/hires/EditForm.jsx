@@ -76,11 +76,7 @@ const EditForm = ({ setShowEditForm, viewHireData }) => {
   
   };
 
-  if(loading){
-    return(
-      <h1>Loading ...</h1>
-    )
-  }
+  
 
   //Fetch Vehicle Data
   const [vehiclesData, vehiclesError, vehiclesLoading, axiosFetchVehicles] = useAxios()
@@ -148,6 +144,12 @@ const EditForm = ({ setShowEditForm, viewHireData }) => {
     filterVehicles()
     filterDrivers()
   })
+
+  if(loading || vehiclesLoading || DriversLoading){
+    return(
+      <h1>Loading ...</h1>
+    )
+  }
 
   return (
     <div className="absolute bg-white border-2 border-[#0E6300] w-[75%] mb-6 top-11 right-11 xl:top-5">

@@ -30,11 +30,6 @@ const HireRates = () => {
         return <p>Cannot Fetch Data</p>;
     }
 
-    if (loading) {
-        return <p>Loading...</p>;
-    }
-
-
     const handleEdit = (id) => {
         const selected = rates.find((rate) => rate._id === id)
         setEditHireData(selected)
@@ -44,6 +39,11 @@ const HireRates = () => {
     const handleAddForm = () => {
         setShowAddForm(true);
     };
+
+    if (loading) {
+        return <p>Loading...</p>;
+    }
+
 
     return (
         <div className="w-full h-full flex flex-col px-2 py-[20px] justify-center align-center xl:px-[60px] xl:py-[50px] ">
