@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 const CaseFileTable = () => {
     const [caseFiles, setCaseFiles] = useState([]);
     const [loading, setLoading] = useState(true);
+    
 
     // Fetch case files
     useEffect(() => {
@@ -24,6 +25,24 @@ const CaseFileTable = () => {
             });
 
         }, []);
+
+        const deleteCaseFile = async (id) => {
+            if(confirm("Are you sure you want to delete this case file?")){
+                setLoading(true);
+                axios
+                 .delete(`http://localhost:3000/api/caseFiles/${id}`)
+                 .then(() => {
+                        setCaseFiles(caseFiles.filter((caseFile) => caseFile._id !== id));
+                        setLoading(false);
+                        alert("Case file deleted successfully!");
+                 })
+                 .catch((error) => {
+                     console.log("Error deleting case file", error);
+                     setLoading(false);
+                 });
+            }
+        }
+  
 
     return (
         <div className="container mx-auto">
@@ -61,11 +80,11 @@ const CaseFileTable = () => {
                                                 View
                                             </button>
                                         </Link>
-                                        <Link to={`/caseFiles/delete/${caseFile._id}`} className="text-red-600 hover:text-red-900">
-                                            <button className="hidden xl:grid px-2 py-1 bg-[#A90000] text-white rounded-md">
+                                        
+                                            <button className="hidden xl:grid px-2 py-1 bg-[#A90000] text-white rounded-md" onClick={() => deleteCaseFile(caseFile._id)}>
                                                 Delete
-                                            </button>
-                                        </Link>
+                                            </button>  
+                                        
                                     </td>
                                 </tr>
                             ))}
