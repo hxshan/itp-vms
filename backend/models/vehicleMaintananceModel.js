@@ -1,18 +1,27 @@
 const mongoose = require('mongoose')
+const Vehicles = require ('../models/vehicleModel')
+const Schema = mongoose.Schema
 
 const maintainSchema = mongoose.Schema(
     {
-        vrtype: {
-            type: String,
-            required: true
 
+        
+        
+        vehicleRegister: {
+            type: Schema.Types.ObjectId,
+            ref: 'Vehicles'
         },
 
-        vrid: {
-            type: String,
-            required: true
+        vrcategory:{
+            type:String
         },
+        
+        vrvehicleRegister:{
+            type:String
+        },
+        
 
+  
         vrissue: {
             type: String,
             required: true
@@ -25,12 +34,27 @@ const maintainSchema = mongoose.Schema(
 
         vraddit: {
             type: String,
+        },
 
+        vrsdate:{
+            type: Date
+        },
+        
+        vredate:{
+            type: Date
+        },
+
+        availability: {
+            type: String,
+            required: true,
+         
         }
+
     },{
         timestamps:true,
     }
-) 
+)
+
 
 const vehicleMaintain = mongoose.model('vehicleMaintain', maintainSchema);
 module.exports = vehicleMaintain;

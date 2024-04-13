@@ -5,7 +5,10 @@ const cors = require("cors");
 const corsOptions = require("./config/corsOptions");
 const coookieParser = require('cookie-parser')
 
+
 const app = express();
+
+
 app.use(express.json());
 app.use(cors(corsOptions));
 app.use(coookieParser())
@@ -22,6 +25,7 @@ const authRoutes = require('./routes/authRoutes')
 const {notFound,errorHandler} = require('./middleware/errorMiddleware')
 const hireRoutes = require('./routes/hireRoutes')
 const CaseFileRoutes = require('./routes/caseFileRoutes')
+const vehicleService = require('./routes/vehicleservice')
 
 
 app.use('/api/auth',authRoutes)
@@ -34,6 +38,7 @@ app.use('/api/expense', expenseRoutes)
 app.use('/api/income', incomeRoutes)
 app.use('/api/hire', hireRoutes)
 app.use('/api/casefile', CaseFileRoutes)
+app.use('/api/vehicleService', vehicleService)
 
 
 app.use(notFound)

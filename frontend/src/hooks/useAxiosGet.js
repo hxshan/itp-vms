@@ -1,7 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
 import axios from "../api/axios";
-import { useAuthContext } from "./useAuthContext";
-
 const useAxiosGet = (apiUrl) => {
 
     const [error, setError] = useState(null);
