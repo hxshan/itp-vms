@@ -5,9 +5,8 @@ import axios from '@/api/axios';
 
 
 
-
 const EditUserEmergencyForm = () => {
-    const [user,usererror, userloading, useraxiosFetch,axiosupdatedFetch] = useAxios()
+    const [user,usererror, userloading, useraxiosFetch] = useAxios()
     const [reload,setReload]=useState(0)
     const {id}=useParams()
   //constants
@@ -29,10 +28,10 @@ const EditUserEmergencyForm = () => {
  } 
 
  useEffect(()=>{
-    if(user && Object.keys(user).length !== 0){
-       
+    if(user && Object.keys(user).length !== 0 && user.emergencyContacts){
         if(user.emergencyContacts.length > 0){
             setEmergencyContacts(user.emergencyContacts)
+            console.log(user)
         }
     }
   },[user])
@@ -42,7 +41,7 @@ const EditUserEmergencyForm = () => {
   },[reload])
 
 
-    const AddContact = () => {
+      const AddContact = () => {
         let contactsArr = [...emergencyContacts];
         contactsArr.push(emptyContact);
         setEmergencyContacts(contactsArr);
@@ -56,7 +55,6 @@ const EditUserEmergencyForm = () => {
       };
 
       const DeleteContact = async(index,contactId)=>{
-
         if (id === ''){
           removeContact(index)
           console.log('went in')
@@ -75,7 +73,10 @@ const EditUserEmergencyForm = () => {
         })
 
         removeContact(index)
-
+        if(!usererror){
+          alert("Deleted succesfully")
+          setReload(reload+1)
+        }
       }
 
       const handleContactChange = (index, name, value) => {
@@ -84,11 +85,45 @@ const EditUserEmergencyForm = () => {
         updated[name] = value;
         setEmergencyContacts(contactsArr);
       };
+       
+      const handleSubmit = (e) =>{
+        e.preventDefault()
+        useraxiosFetch({
+          axiosInstance: axios,
+          method: "PATCH",
+          url: `/user/addcontacts/${id}`,
+          requestConfig:{
+            data:{
+              emergencyContacts
+            }
+          }
+        })
 
+        if(!usererror){
+          alert("updated succesfully")
+          setReload(reload+1)
+        }
+      }
+
+      if(usererror){
+        return(
+          <div className="bg-white p-8 my-8 shadow-xl rounded w-full h-[250px]"> 
+
+          </div>
+        )
+      }
+
+      if(userloading){
+        return(
+          <div className="bg-white p-8 my-8 shadow-xl rounded w-full h-[250px]"> 
+            <p>Loading</p>
+          </div>
+        )
+      }
 
   return (
     <div className="bg-white p-8 my-8 shadow-xl rounded ">
-        <form>
+        <form onSubmit={(e)=>handleSubmit(e)}>
         <div className="grid grid-cols-2 col-span-2 w-full ">
               <div className="col-span-2 mt -10 flex justify-between mb-8 items-center">
                 <h2 className="font-bold text-2xl w-fit ">Emergency Contact</h2>

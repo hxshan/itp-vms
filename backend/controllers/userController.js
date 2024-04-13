@@ -185,6 +185,49 @@ const deleteContact = async(req,res) =>{
   }
 }
 
+const updateContact = async(req,res) =>{
+  try{  
+    const { id } = req.params
+    const { emergencyContacts } = req.body.data;
+    
+    const user= await User.findById(id)
+    if(!user) return res.status(400).json({ message: 'No User Found' });
+
+    let contacts = user.emergencyContacts
+
+    //const parsedEmergencyContacts = JSON.parse(emergencyContacts);
+    
+    const emergencyContactPromises = emergencyContacts.map(async (contact) => {
+        if(contact._id ===''){
+          const EmContact = new EmergencyContact({
+            name: contact.name,
+            number: contact.number,
+          });
+          let newContact = await EmContact.save();
+          return newContact._id
+         }
+    });
+   
+    const emergencyContactIds = await Promise.all(emergencyContactPromises);
+    emergencyContactIds.forEach(ContactId => {
+      if(ContactId != null){
+        contacts.push(ContactId)
+      }
+    });
+
+
+    const updatedUser = await User.findByIdAndUpdate(id,{emergencyContacts:contacts})
+
+    if (!updatedUser) {
+      return res.status(500).json({ message: "Update Failed" });
+    }
+
+    return res.status(200).json({ message: "Update Succesfull" });
+  }catch(error){
+    return res.status(500).json({ message: "Internal Server Error"});
+  }
+}
+
 const getAllUsers = async (req, res) => {
   try {
     let users = await User.find().populate("role");
@@ -275,4 +318,14 @@ const resetPassword = async(req,res)=>{
   }
 }
 
-module.exports = { createUser, getAllUsers,getUserById,resetPassword,getDrivers,setUserAsDeleted,updateUserPersonal,deleteContact};
+module.exports = { 
+  createUser, 
+  getAllUsers,
+  getUserById,
+  resetPassword,
+  getDrivers,
+  setUserAsDeleted,
+  updateUserPersonal,
+  deleteContact,
+  updateContact
+};

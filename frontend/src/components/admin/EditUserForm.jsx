@@ -68,7 +68,7 @@ const getRoleData = async()=>{
       })
     }
     if(user && Object.keys(user).length !== 0){
-      console.log(user)
+  
         //let formatedDob=user.dob.toISOString().split('T')[0]
         setPersonalInfo({
             firstName:user.firstName,
@@ -88,7 +88,6 @@ const getRoleData = async()=>{
             email: user.email,
             password:''
         })
-        console.log(user.emergencyContacts.length > 0)
        
     }
     
@@ -119,7 +118,6 @@ const getRoleData = async()=>{
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(personalInfo)
     let emailReg=/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/
     if(!personalInfo.email.match(emailReg)){
       toast.error("Invalid Email Address")

@@ -36,8 +36,8 @@ const TopBar = () => {
               <img src={user_profile} alt="profile image" />
            </button>
           <div className={`fixed ${!menuOpen?'opacity-0':''} h-fit bg-white shadow-md border-black w-40 top-[80px] transition ease-in-out rounded-b-md right-1`} onMouseLeave={()=>setMenuOpen(false)}>
-            <button className='relative text-black w-full px-4 py-2 border-b-2 border-gray-200' onClick={()=>navigate(`/user/${id}`)}>View Profile</button>
-            <button className='relative text-black w-full px-4 py-2' onClick={()=>logout()}>Logout</button>
+            <button className='relative text-black w-full px-4 py-2 border-b-2 border-gray-200' disabled={!menuOpen} onClick={()=>navigate(`/user/${id}`)}>View Profile</button>
+            <button className='relative text-black w-full px-4 py-2' disabled={!menuOpen} onClick={()=>logout()}>Logout</button>
           </div>
         </div>)
         :(
