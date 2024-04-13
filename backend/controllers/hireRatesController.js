@@ -19,7 +19,7 @@ const fetchHiresRates = async (req, res) => {
     try {
         const {
             vehicleCatagory,
-            baseDistence,
+            basedDistance,
             baseRate,
             additionalRate,
             acBaseRate,
@@ -36,7 +36,7 @@ const fetchHiresRates = async (req, res) => {
 
         const newHireRate = new hireRates({
             vehicleCatagory: Category,   
-            baseDistence,
+            basedDistance,
             baseRate,
             additionalRate,
             acBaseRate,
@@ -59,7 +59,7 @@ const editHireRate = async (req, res) => {
     const { id } = req.params;
     const { 
         vehicleCatagory,
-        baseDistence,
+        basedDistance,
         baseRate,
         additionalRate,
         acBaseRate,
@@ -68,7 +68,7 @@ const editHireRate = async (req, res) => {
     try {
       const hire = await hireRates.findByIdAndUpdate(id, { 
         vehicleCatagory,
-        baseDistence,
+        basedDistance,
         baseRate,
         additionalRate,
         acBaseRate,

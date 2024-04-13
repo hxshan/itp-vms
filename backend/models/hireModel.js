@@ -53,7 +53,7 @@ const hireSchema = new mongoose.Schema({
     type: Boolean, 
     required: true 
 },
-  distence: { 
+  distance: { 
     type: Number, 
     required: true 
 },

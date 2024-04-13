@@ -20,7 +20,7 @@ const Form = () => {
   const [endPoint, setEndPoint] = useState('')
   const [startTime, setStartTime] = useState('')
   const [tripType, setTripType] = useState(false)
-  const [distence, setSetDistence] = useState('')
+  const [distance, setDistance] = useState('')
   const [cusName, setCusName] = useState('')
   const [cusEmail, setCusEmail] = useState('')
   const [cusMobile, setCusMobile] = useState('')
@@ -42,7 +42,7 @@ const Form = () => {
     endPoint,
     startTime,
     tripType,
-    distence,
+    distance,
     cusName, cusEmail, cusMobile, cusNic,
     estimatedTotal,
     finalTotal: null,
@@ -268,7 +268,7 @@ const [vehicleRates, Verror, Vloading, VaxiosFetch] = useAxios();
 
     const calculateEstimatedFare = async () => {
       try {
-          if (!vehicleType || !distence) {
+          if (!vehicleType || !distance) {
               console.log("Vehicle type or distance not selected");
               return { estimatedFare: 0, advancedPay: 0 };
           }
@@ -295,7 +295,7 @@ const [vehicleRates, Verror, Vloading, VaxiosFetch] = useAxios();
           let estimatedFare = airCondition ? acBaseRate : baseRate
           let advancedPay = 0;
   
-          let estimatedDistence = distence;
+          let estimatedDistence = distance;
   
           if (tripType) {
               estimatedDistence *= 2;
@@ -313,7 +313,7 @@ const [vehicleRates, Verror, Vloading, VaxiosFetch] = useAxios();
           console.log("Catogory : " + selectedVehicleRate.vehicleCatagory)
           console.log("Estimated Fare : " + estimatedFare)
           console.log("Advanced Payment: " + advancedPay)
-          console.log("Base Distence : " +  baseDistance)
+          console.log("Base distance : " +  baseDistance)
   
           return { estimatedFare, advancedPay, additionalRate };
       } catch (error) {
@@ -332,7 +332,7 @@ const [vehicleRates, Verror, Vloading, VaxiosFetch] = useAxios();
       };
       calculateFare();
     }
-  }, [step, vehicleType, distence, tripType, airCondition]);
+  }, [step, vehicleType, distance, tripType, airCondition]);
 
   useEffect(() => {
       fetchVehicleRates();
@@ -593,15 +593,15 @@ const [vehicleRates, Verror, Vloading, VaxiosFetch] = useAxios();
 
                     <div className="mb-6 flex justify-between align-baseline xl:justify-start">
 
-                    <label htmlFor="distence" 
+                    <label htmlFor="distance" 
                     className="block font-medium text-black mr-[5px] text-base xl:mr-7">
-                      Distence
+                      distance
                     </label>
 
-                    <input type="number" id="distence" name="distence" 
-                    value={distence}
-                    onChange={(e) => setSetDistence(e.target.value)} 
-                    placeholder='Estimate Distence'
+                    <input type="number" id="distance" name="distance" 
+                    value={distance}
+                    onChange={(e) => setDistance(e.target.value)} 
+                    placeholder='Estimate distance'
                     className='border-2 rounded border-black px-4'
                     required
                     />
@@ -720,7 +720,7 @@ const [vehicleRates, Verror, Vloading, VaxiosFetch] = useAxios();
                   <p className=' text-lg font-semibold leading-8'>End Point : &nbsp;&nbsp; {endPoint}</p>
                   <p className=' text-lg font-semibold leading-8'>Start Time : &nbsp;&nbsp; {startTime}</p>
                   <p className=' text-lg font-semibold leading-8'>Round Trip : &nbsp;&nbsp; {tripType ? 'Yes' : 'No'}</p>
-                  <p className=' text-lg font-semibold leading-8'>Distence : &nbsp;&nbsp; {distence}</p>
+                  <p className=' text-lg font-semibold leading-8'>distance : &nbsp;&nbsp; {distance}</p>
                   <p className=' text-lg font-semibold leading-8'>Customer Name : &nbsp;&nbsp; {cusName}</p>
                   <p className=' text-lg font-semibold leading-8'>Customer Email : &nbsp;&nbsp; {cusEmail}</p>
                   <p className=' text-lg font-semibold leading-8'>Customer Mobile : &nbsp;&nbsp; {cusMobile}</p>
@@ -742,7 +742,7 @@ const [vehicleRates, Verror, Vloading, VaxiosFetch] = useAxios();
               <div className=' xl:flex justify-between'>
                 <div className='mr-[20px]'>
 
-                  <p className=' text-lg font-semibold leading-8'>Estimated Distence : &nbsp;&nbsp;{distence} Km</p>          
+                  <p className=' text-lg font-semibold leading-8'>Estimated distance : &nbsp;&nbsp;{distance} Km</p>          
                   <p className=' text-lg font-semibold leading-8'>Estimated Total : &nbsp;&nbsp;Rs. {estimatedTotal}</p>
                 </div>
 

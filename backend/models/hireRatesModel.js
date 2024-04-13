@@ -5,7 +5,7 @@ const hireRates = new mongoose.Schema ({
         type: String, 
         required: true
       },
-      baseDistence: { 
+      basedDistance: { 
         type: Number, 
         required: true 
     },

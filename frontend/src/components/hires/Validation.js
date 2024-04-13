@@ -83,15 +83,15 @@ const validateFormSecondPage = (FormData) => {
         return error
     }
     
-    if (FormData.distence  === '') {
-        error.distence = 'Please Enter distence'
-        alert('Please Enter Distence')
+    if (FormData.distance  === '') {
+        error.distance = 'Please Enter distance'
+        alert('Please Enter distance')
         return error
     }
 
-    if (FormData.distence  <= 0) {
-        error.distence = 'Please Enter valid distence'
-        alert('Please Enter valid Distence')
+    if (FormData.distance  <= 0) {
+        error.distance = 'Please Enter valid distance'
+        alert('Please Enter valid distance')
         return error
     }
 
@@ -191,9 +191,9 @@ const validateForm = (FormData) => {
         return error
     }
     
-    if (FormData.distence  === '') {
-        error.startDate = 'Please Enter distence'
-        alert('Please Enter Distence')
+    if (FormData.distance  === '') {
+        error.startDate = 'Please Enter distance'
+        alert('Please Enter distance')
         return error
     }
     if (FormData.cusName  === '') {

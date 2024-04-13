@@ -10,7 +10,7 @@ const EditHireRates = ({setEditRates, editHireData, reload}) => {
     const [rateId , setRateId] = useState(editHireData._id)
     const [vehicleCatagory , setVehicleSubcategory] = useState(editHireData.vehicleCatagory)
     const [baseRate , setBaseRate] = useState(editHireData.baseRate)
-    const [baseDistence , setBaseDistence] = useState(editHireData.baseDistence)
+    const [basedDistance , setBaseDistance] = useState(editHireData.basedDistance)
     const [additionalRate, setAdditionalRate] = useState(editHireData.additionalRate)
     const [acBaseRate , setAcBaseRate] = useState(editHireData.acBaseRate)
     const [acAdditionalRate, setAcAdditionalRate] = useState(editHireData.acAdditionalRate)
@@ -21,7 +21,7 @@ const EditHireRates = ({setEditRates, editHireData, reload}) => {
 
         const editedRates = {
             vehicleCatagory,
-            baseDistence,
+            basedDistance,
             baseRate,
             additionalRate,
             acBaseRate,
@@ -73,8 +73,8 @@ const EditHireRates = ({setEditRates, editHireData, reload}) => {
                         <div className="mb-4">
                             <label className="block text-sm font-bold mb-2">Base Distance</label>
                             <input type="number" className="border rounded-md px-3 py-2 w-full" 
-                            value={baseDistence}
-                            onChange={(e) => setBaseDistence(e.target.value)}
+                            value={basedDistance}
+                            onChange={(e) => setBaseDistance(e.target.value)}
                             />
                         </div>
                         <div className="mb-4">

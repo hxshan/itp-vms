@@ -9,7 +9,7 @@ const AddHireRates = ({setShowAddForm, reload}) => {
 
     const [vehicleCatagory , setVehicleSubcategory] = useState('')
     const [baseRate , setBaseRate] = useState('')
-    const [baseDistence , setBaseDistence] = useState('')
+    const [basedDistance , setBaseDistance] = useState('')
     const [additionalRate, setAdditionalRate] = useState('')
     const [acBaseRate , setAcBaseRate] = useState('')
     const [acAdditionalRate, setAcAdditionalRate] = useState('')
@@ -21,7 +21,7 @@ const AddHireRates = ({setShowAddForm, reload}) => {
         const hireRates = {
             vehicleCatagory,
             baseRate,
-            baseDistence,
+            basedDistance,
             additionalRate,
             acBaseRate,
             acAdditionalRate           
@@ -79,8 +79,8 @@ const AddHireRates = ({setShowAddForm, reload}) => {
                         <div className="mb-4">
                             <label className="block text-sm font-bold mb-2">Base Distance</label>
                             <input type="number" className="border rounded-md px-3 py-2 w-full" 
-                            value={baseDistence}
-                            onChange={(e) => setBaseDistence(e.target.value)}
+                            value={basedDistance}
+                            onChange={(e) => setBaseDistance(e.target.value)}
                             />
                         </div>
                         <div className="mb-4">
