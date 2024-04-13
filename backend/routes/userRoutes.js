@@ -1,12 +1,13 @@
 const express = require('express')  
-//const Auth = require('../middleware/Auth')
-const {createUser,getAllUsers,getUserById,resetPassword,getDrivers,setUserAsDeleted,updateUserPersonal} = require('../controllers/userController')
-//const verifyJWT = require("../middleware/verifyJWT")
+const {createUser,getAllUsers,getUserById,resetPassword,getDrivers,setUserAsDeleted,updateUserPersonal,deleteContact} = require('../controllers/userController')
 const Auth =require('../middleware/Auth')
+
+
 const router = express.Router()
 
 const multer = require('multer');
-// Set up Multer storage configuration
+
+
 const storage = multer.diskStorage({
 
   destination: (req, file, cb) => {
@@ -24,7 +25,7 @@ const storage = multer.diskStorage({
   },
 });
 
-// Initialize Multer with the storage configuration
+
 const upload = multer({ storage });
 
 
@@ -42,7 +43,8 @@ router.patch('/password/:id',resetPassword)
 router.patch('/delete/:id',setUserAsDeleted)
 router.patch('/personal/:id',updateUserPersonal)
 
-//router.delete('/',deleteUser)
+//DELETE
+router.patch('/contacts/:id',deleteContact)
 
 
 

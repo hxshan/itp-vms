@@ -5,11 +5,13 @@ import axios from '@/api/axios';
 
 
 
+
 const EditUserEmergencyForm = () => {
     const [user,usererror, userloading, useraxiosFetch,axiosupdatedFetch] = useAxios()
     const {id}=useParams()
   //constants
   const emptyContact = {
+    _id:"",
     name: "",
     number: "",
   };
@@ -50,6 +52,30 @@ const EditUserEmergencyForm = () => {
         contactsArr.splice(index, 1);
         setEmergencyContacts(contactsArr);
       };
+
+      const DeleteContact = async(index,contactId)=>{
+
+        if (id === ''){
+          removeContact(index)
+          console.log('went in')
+          return
+        }
+        console.log(contactId)
+        useraxiosFetch({
+          axiosInstance: axios,
+          method: "PATCH",
+          url: `/user/contacts/${id}`,
+          requestConfig:{
+            data:{
+              ContactId:contactId
+            }
+          }
+        })
+
+        removeContact(index)
+
+      }
+
       const handleContactChange = (index, name, value) => {
         let contactsArr = [...emergencyContacts];
         let updated = contactsArr[index];
@@ -75,7 +101,7 @@ const EditUserEmergencyForm = () => {
               </div>
 
               {emergencyContacts.map((contact, index) => {
-                console.log(contact)
+                //console.log(contact)
                 return (
                   <div
                     key={index}
@@ -117,8 +143,10 @@ const EditUserEmergencyForm = () => {
                         />
                         <button
                           className={index > 0 ? "bg-actionRed py-2 px-4 ml-2 rounded-md text-white font-bold " : "hidden"}
-                          onClick={() => {
-                            removeContact(index);
+                          type='button'
+                          id={contact._id}
+                          onClick={(e) => {
+                            DeleteContact(index,e.target.id);
                           }}
                         >
                           -
@@ -132,6 +160,7 @@ const EditUserEmergencyForm = () => {
                 <div className="w-full flex justify-end mt-8">
                     <button className="bg-actionBlue py-2 px-6 rounded-md text-white font-bold mt-2" >Submit</button>
                 </div>
+                {usererror && <p>{usererror}</p>}
             </form>
     </div>
   )

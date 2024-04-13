@@ -161,7 +161,29 @@ const updateUserPersonal = async(req,res) =>{
 
 }
 
+const deleteContact = async(req,res) =>{
+  const {id}= req.params
+  try{
 
+    const { ContactId } = req.body.data;
+    const user = await User.findById(id)
+
+    if(!user) return res.status(400).json({ message: 'No User Found' });
+    
+    const deleteContact = await EmergencyContact.findByIdAndDelete(ContactId);
+    if(!deleteContact) return res.status(500).json({ message: 'Delete Failed' });
+
+    const newContactArr= user.emergencyContacts.filter(contact=>contact !== ContactId)
+    const updatedUser = await User.findByIdAndUpdate(id,{emergencyContacts:newContactArr})
+
+    if(!updatedUser) return res.status(500).json({ message: 'Update Failed' });
+
+    return res.status(200).json({ message: 'Delete Succesfull' });
+    
+  }catch(err){
+    return res.status(500).json({ message: err.message });
+  }
+}
 
 const getAllUsers = async (req, res) => {
   try {
@@ -253,4 +275,4 @@ const resetPassword = async(req,res)=>{
   }
 }
 
-module.exports = { createUser, getAllUsers,getUserById,resetPassword,getDrivers,setUserAsDeleted,updateUserPersonal};
+module.exports = { createUser, getAllUsers,getUserById,resetPassword,getDrivers,setUserAsDeleted,updateUserPersonal,deleteContact};

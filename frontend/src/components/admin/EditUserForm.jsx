@@ -56,7 +56,7 @@ const getRoleData = async()=>{
     await useraxiosFetch({
         axiosInstance: axios,
         method: "GET",
-        url: `/user/${id}`,
+        url: `/user/${id}`, 
       });
  } 
 
