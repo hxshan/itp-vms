@@ -58,7 +58,7 @@ const Form = () => {
   //Handle Submit
   const submit =async (e) => {
 
-    e.preventDefault()
+    e.preventDefault(tripType) 
   
     const confirm = window.confirm("Are you sure")
     if(confirm){
@@ -93,7 +93,6 @@ const Form = () => {
   const [vehiclesData, vehiclesError, vehiclesLoading, axiosFetchVehicles] = useAxios()
 
   const [vehcleTypes, setVehcleTypes] = useState(["Car", "Van" , "Bus", "Plane"])
-  const [vehcleSubTypes, setVehcleSubTypes] = useState(["Maruti" , "C200"])
   
 
   const fetchVehicleDetails = async () => {
@@ -180,6 +179,7 @@ const Form = () => {
     navigate('/hires')
   }
   
+  //Handle Steps
   const handleNextStep = (e) => {
     e.preventDefault()
 
@@ -236,8 +236,7 @@ const fetchVehicleData = async () => {
 )}
 */
 
-//Calculate total
-
+//Fetch Vehicle Rates
 const [vehicleRates, Verror, Vloading, VaxiosFetch] = useAxios();
 
 
@@ -270,12 +269,14 @@ const [vehicleRates, Verror, Vloading, VaxiosFetch] = useAxios();
         fetchVehicleRates();
     }, []);*/
 
+    //Calculate total Fare
     const calculateEstimatedFare = async () => {
       try {
           if (!vehicleType || !distance) {
               console.log("Vehicle type or distance not selected");
               return { estimatedFare: 0, advancedPay: 0 };
           }
+          
   
           console.log("Calculating estimated fare...");
   
@@ -319,7 +320,7 @@ const [vehicleRates, Verror, Vloading, VaxiosFetch] = useAxios();
           console.log("Advanced Payment: " + advancedPay)
           console.log("Base distance : " +  baseDistance)
   
-          return { estimatedFare, advancedPay, additionalRate };
+          return { estimatedFare, advancedPay, additionalRate, estimatedDistence };
       } catch (error) {
           console.error('Error calculating estimated fare:', error);
           return { estimatedFare: 0, advancedPay: 0 };
