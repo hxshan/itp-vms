@@ -17,10 +17,6 @@ const hireSchema = new mongoose.Schema({
     type: String, 
     required: true 
 },
-  vehicleSubcategory: { 
-    type: String, 
-    required: true 
-},
   passengerCount: { 
     type: Number, 
     required: true 
@@ -45,6 +41,14 @@ const hireSchema = new mongoose.Schema({
     type: String, 
     required: true 
 },
+  startTime: { 
+    type: String, 
+    required: true 
+  },
+  endTime: { 
+    type: String, 
+    default: '' 
+  },
   tripType: { 
     type: Boolean, 
     required: true 

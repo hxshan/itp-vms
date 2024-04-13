@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import {validateFormFirstPage, validateFormSecondPage} from './Validation';
+import {validateFormFirstPage, validateFormSecondPage, validateFormtthirddPage} from './Validation';
 import axios from '@/api/axios';
 import useAxios from '@/hooks/useAxios'
 import {useNavigate} from "react-router-dom";
@@ -12,13 +12,13 @@ const Form = () => {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [vehicleType, setVehicleType] = useState('');
-  const [vehicleSubcategory, setVehicleSubcategory] = useState('');
   const [passengerCount, setPassengerCount] = useState(1);
   const [airCondition, setAirCondition] = useState(false);
   const [vehicle, setVehicle] = useState('')
   const [driver, setDriver] = useState('')
   const [startPoint, setStartPoint] = useState('')
   const [endPoint, setEndPoint] = useState('')
+  const [startTime, setStartTime] = useState('')
   const [tripType, setTripType] = useState(false)
   const [distence, setSetDistence] = useState('')
   const [cusName, setCusName] = useState('')
@@ -34,13 +34,13 @@ const Form = () => {
     startDate,
     endDate,
     vehicleType,
-    vehicleSubcategory,
     airCondition,
     passengerCount,
     vehicle,
     driver,
     startPoint,
     endPoint,
+    startTime,
     tripType,
     distence,
     cusName, cusEmail, cusMobile, cusNic,
@@ -196,8 +196,15 @@ const Form = () => {
     }
 
     if(step == 3) {
+      errors = validateFormtthirddPage(formData)
+      if(Object.keys(errors).length === 0) {
         setStep(step + 1);
+      }
     }
+
+    if(step == 4) {
+      setStep(step + 1);
+  }
   };
 
   const handlePrevStep = () => {
@@ -317,7 +324,7 @@ const [vehicleRates, Verror, Vloading, VaxiosFetch] = useAxios();
   
 
   useEffect(() => {
-    if (step === 4) {
+    if (step === 5) {
       const calculateFare = async () => {
         const { estimatedFare, advancedPay } = await calculateEstimatedFare();
         setEstimatedTotal(estimatedFare);
@@ -394,7 +401,7 @@ const [vehicleRates, Verror, Vloading, VaxiosFetch] = useAxios();
               <div className='flex flex-col justify-between align-baseline '> 
 
                 <div className='flex flex-col justify-between align-baseline xl:flex-row'>
-                  <div className="mb-10 flex justify-between align-baseline xl:flex-1 xl:mr-14">
+                    <div className="mb-10 flex justify-between align-baseline xl:flex-1 xl:mr-14">
 
                       <label htmlFor="vehicleType" 
                       className="block font-medium text-black mr-[10px] text-base">
@@ -414,21 +421,6 @@ const [vehicleRates, Verror, Vloading, VaxiosFetch] = useAxios();
 
                       </div>
 
-                      <div className="mb-10 flex justify-between align-baseline xl:flex-1">
-                      <label htmlFor="vehicleSubcategory" 
-                      className="block font-medium text-black mr-[10px] text-base">
-                        Vehicle Subcategory
-                      </label>
-
-                      <select id="vehicleSubcategory" name="vehicleSubcategory" 
-                      value={vehicleSubcategory} onChange={(e) => setVehicleSubcategory(e.target.value)} 
-                      className='border-2 rounded border-black px-14' required>
-                          <option value="">Select......</option>
-                          {vehcleSubTypes.map((type) => (
-                            <option key={type.id} value={type}>{type}</option>
-                          ))}
-                      </select>
-                      </div>
 
                 </div>
                 
@@ -522,7 +514,7 @@ const [vehicleRates, Verror, Vloading, VaxiosFetch] = useAxios();
               </div>
 
               {/* Trip details */}
-              <div className=' border-b-2 border-black xl:flex xl:flex-col xl:justify-between xl:align-baseline'>
+              <div className='xl:flex xl:flex-col xl:justify-between xl:align-baseline'>
 
                 <div className='flex justify-between align-baseline mb-5'>
                   <div className=" flex flex-col justify-between align-baseline mr-2 xl:flex-row xl:flex-1 xl:mr-14">
@@ -558,6 +550,27 @@ const [vehicleRates, Verror, Vloading, VaxiosFetch] = useAxios();
                     />
 
                   </div>
+                  
+                </div>
+
+                <div className='flex justify-between'>
+
+                  <div className="mb-5  flex flex-col align-baseline xl:flex-row xl:flex-1 xl:mr-14">
+
+                    <label htmlFor="startTime" 
+                    className="block font-medium text-black mr-[5px] text-base xl:mr-7">
+                      Start Time
+                    </label>
+
+                    <input type="time" id="startTime" name="startTime" 
+                    value={startTime}
+                    onChange={(e) => setStartTime(e.target.value)} 
+                    className='border-2 px-2 rounded border-black xl:px-4'
+                    required
+                    />
+
+                  </div>
+ 
                   
                 </div>
 
@@ -602,92 +615,86 @@ const [vehicleRates, Verror, Vloading, VaxiosFetch] = useAxios();
 
               </div>
 
-              {/* Customer Details */}
-              <div className='mt-7'> 
-                <div className=''> 
-                  <div className="mb-7 flex justify-start align-baseline xl:justify-start">
+              
 
-                    <label htmlFor="cusName" 
-                    className="block mr-7 font-medium text-black text-base ">
-                      Name
-                    </label>
+            </div>
+          )}
 
-                    <input type="text" id="cusName" name="cusName" 
+{step === 3 && (
+    <div className='mt-7'> 
+        <div className=''> 
+            <div className="mb-7 flex justify-start align-baseline xl:justify-start">
+                <label htmlFor="cusName" className="block mr-7 font-medium text-black text-base ">
+                    Name
+                </label>
+                <input 
+                    type="text" 
+                    id="cusName" 
+                    name="cusName" 
                     value={cusName}
                     onChange={(e) => setCusName(e.target.value)} 
                     placeholder='Customer Name'
                     className='border-2 rounded border-black w-[100%] px-2 xl:px-4'
                     required
-                    />
+                />
+            </div>
 
-                  </div>
-
-                  <div className="mb-7 flex jjustify-start align-baseline xl:justify-start">
-
-                    <label htmlFor="cusEmail" 
-                    className="block font-medium text-black mr-7 text-base xl:mr-7">
-                      Email
-                    </label>
-
-                    <input type="email" id="cusEmail" name="cusEmail" 
+            <div className="mb-7 flex justify-start align-baseline xl:justify-start">
+                <label htmlFor="cusEmail" className="block font-medium text-black mr-7 text-base xl:mr-7">
+                    Email
+                </label>
+                <input 
+                    type="email" 
+                    id="cusEmail" 
+                    name="cusEmail" 
                     value={cusEmail}
                     onChange={(e) => setCusEmail(e.target.value)} 
                     placeholder='Customer Email'
                     className='border-2 rounded border-black w-[100%] px-2 xl:px-4'
                     required
-                    />
-
-                  </div>
-
-                </div>
-
-                <div className='flex justify-between'>
-
-                  <div className="mb-5  flex flex-col justify-between align-baseline xl:flex-row xl:flex-1 xl:mr-14">
-
-                    <label htmlFor="cusMobile" 
-                    className="block font-medium text-black mr-[5px] text-base xl:mr-7">
-                      Mobile
-                    </label>
-
-                    <input type="tel" id="cusMobile" name="cusMobile" 
-                    value={cusMobile}
-                    onChange={(e) => setCusMobile(e.target.value)} 
-                    placeholder='Customer Mobile No'
-                    className='border-2 px-2 rounded border-black xl:px-4'
-                    required
-                    />
-
-                  </div>
-
-                  <div className="mb-5  flex flex-col justify-between align-baseline xl:flex-row xl:flex-1">
-
-                    <label htmlFor="cusNic" 
-                    className="block font-medium text-black mr-[5px] text-base xl:mr-7">
-                      Nic
-                    </label>
-
-                    <input type="text" id="cusNic" name="cusNic" 
-                    value={cusNic}
-                    onChange={(e) => setCusNic(e.target.value)} 
-                    placeholder='Customer NIC'
-                    className='border-2 px-2 rounded border-black xl:px-4
-                    required
-                    '
-                    />
-
-                  </div> 
-                  
-                </div>
-              </div>
-              
-
-
+                />
             </div>
-          )}
+
+            <div className='flex justify-between'>
+                <div className="mb-5 flex flex-col justify-between align-baseline xl:flex-row xl:flex-1 xl:mr-14">
+                    <label htmlFor="cusMobile" className="block font-medium text-black mr-[5px] text-base xl:mr-7">
+                        Mobile
+                    </label>
+                    <input 
+                        type="tel" 
+                        id="cusMobile" 
+                        name="cusMobile" 
+                        value={cusMobile}
+                        onChange={(e) => setCusMobile(e.target.value)} 
+                        placeholder='Customer Mobile No'
+                        className='border-2 px-2 rounded border-black xl:px-4'
+                        required
+                    />
+                </div>
+
+                <div className="mb-5 flex flex-col justify-between align-baseline xl:flex-row xl:flex-1">
+                    <label htmlFor="cusNic" className="block font-medium text-black mr-[5px] text-base xl:mr-7">
+                        Nic
+                    </label>
+                    <input 
+                        type="text" 
+                        id="cusNic" 
+                        name="cusNic" 
+                        value={cusNic}
+                        onChange={(e) => setCusNic(e.target.value)} 
+                        placeholder='Customer NIC'
+                        className='border-2 px-2 rounded border-black xl:px-4'
+                        required
+                    />
+                </div> 
+            </div>
+        </div>
+    </div>
+)}
+
 
             {/* Confirmation */}
-          {step === 3 && (
+          {step === 4 && (
             <div>
               <div className="mt-3 px-4">
                 <h2 className="text-2xl font-semibold text-center mb-4 underline ">Confirmation</h2>
@@ -699,10 +706,10 @@ const [vehicleRates, Verror, Vloading, VaxiosFetch] = useAxios();
                   <p className=' text-lg font-semibold leading-8'>Start Date : &nbsp;&nbsp; {startDate}</p>
                   <p className=' text-lg font-semibold leading-8'>End Date : &nbsp;&nbsp; {endDate}</p>
                   <p className=' text-lg font-semibold leading-8'>Vehicle Type : &nbsp;&nbsp; {vehicleType}</p>
-                  <p className=' text-lg font-semibold leading-8'>Vehicle Sub-Catagory : &nbsp;&nbsp; {vehicleSubcategory}</p>
                   <p className=' text-lg font-semibold leading-8'>Air Condition : &nbsp;&nbsp; {airCondition ? 'With Air Condition' : 'Without Air Condition'}</p>
                   <p className=' text-lg font-semibold leading-8'>No of Passengers : &nbsp;&nbsp; {passengerCount}</p>
                   <p className=' text-lg font-semibold leading-8'>Assigned Vehicle : &nbsp;&nbsp; {vehicle}</p>
+                  <p className=' text-lg font-semibold leading-8'>Assigned Vehicle Model : &nbsp;&nbsp; {vehicle}</p>
                   <p className=' text-lg font-semibold leading-8'>Assigned Driver : &nbsp;&nbsp; {driver}</p>
 
                 </div>
@@ -711,6 +718,7 @@ const [vehicleRates, Verror, Vloading, VaxiosFetch] = useAxios();
 
                   <p className='text-lg font-semibold leading-8'>Start Point :&nbsp;&nbsp;{startPoint}</p>
                   <p className=' text-lg font-semibold leading-8'>End Point : &nbsp;&nbsp; {endPoint}</p>
+                  <p className=' text-lg font-semibold leading-8'>Start Time : &nbsp;&nbsp; {startTime}</p>
                   <p className=' text-lg font-semibold leading-8'>Round Trip : &nbsp;&nbsp; {tripType ? 'Yes' : 'No'}</p>
                   <p className=' text-lg font-semibold leading-8'>Distence : &nbsp;&nbsp; {distence}</p>
                   <p className=' text-lg font-semibold leading-8'>Customer Name : &nbsp;&nbsp; {cusName}</p>
@@ -725,7 +733,7 @@ const [vehicleRates, Verror, Vloading, VaxiosFetch] = useAxios();
           )}
 
             {/* Receipt */}
-          {step === 4 && (
+          {step === 5 && (
             <div>
               <div className="mt-3 px-4">
                 <h2 className="text-2xl font-semibold text-center mb-4 underline ">Receipt</h2>
@@ -760,7 +768,7 @@ const [vehicleRates, Verror, Vloading, VaxiosFetch] = useAxios();
                 Previous
               </button>
             )}
-            {step !== 4 ? (
+            {step !== 5 ? (
               <button type='button' className="px-4 py-2 text-white bg-black rounded-md hover:bg-gray-800 focus:outline-none" onClick={handleNextStep}>
                 Next
               </button>

@@ -37,12 +37,6 @@ const validateFormFirstPage = (FormData) => {
         return error
     }
     
-    if (FormData.vehicleSubcategory  === '') {
-        error.vehicleSubcategory = 'Please Enter vehicle Subcategory'
-        alert('Please Enter vehicleSubcategory')
-        return error
-    }
-    
     if (FormData.passengerCount  === '') {
         error.passengerCount = 'Please Enter passenger Count'
         alert('Please Enter Passenger Count')
@@ -82,6 +76,12 @@ const validateFormSecondPage = (FormData) => {
         alert('Please Enter End Point')
         return error
     }
+
+    if (FormData.startTime  === '') {
+        error.startTime = 'Please Enter Start Time'
+        alert('Please Enter Start Time')
+        return error
+    }
     
     if (FormData.distence  === '') {
         error.distence = 'Please Enter distence'
@@ -94,6 +94,13 @@ const validateFormSecondPage = (FormData) => {
         alert('Please Enter valid Distence')
         return error
     }
+
+
+    return error
+}
+
+const validateFormtthirddPage = (FormData) => {
+    const error = {};
 
     if (FormData.cusName  === '') {
         error.cusName = 'Please Enter Customer Name'
@@ -216,4 +223,4 @@ const validateForm = (FormData) => {
 
 */
 
-export { validateFormFirstPage, validateFormSecondPage};
+export { validateFormFirstPage, validateFormSecondPage, validateFormtthirddPage};

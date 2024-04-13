@@ -51,9 +51,9 @@ const ViewHire = ({setViewHire , viewHireData}) => {
                   </div>
 
                   <div>
-                    <p className=' text-lg font-semibold leading-8'>Assigned Vehicle : &nbsp;&nbsp; {viewHireData.vehicle}</p>
+                    <p className=' text-lg font-semibold leading-8'>Assigned Vehicle : &nbsp;&nbsp; {viewHireData.vehicle?.vehicleRegister || 'N/A'}</p>
                     <p className=' text-lg font-semibold leading-8'>Vehicle Model: &nbsp;&nbsp; BMW 5</p>
-                    <p className=' text-lg font-semibold leading-8'>Assigned Driver : &nbsp;&nbsp; {viewHireData.driver}</p>
+                    <p className=' text-lg font-semibold leading-8'>Assigned Driver : &nbsp;&nbsp; {viewHireData.driver?.firstName || 'N/A'}</p>
                     <p className='text-lg font-semibold leading-8'>Start Point :&nbsp;&nbsp; {viewHireData.startPoint}</p>
                     <p className=' text-lg font-semibold leading-8'>End Point : &nbsp;&nbsp; {viewHireData.endPoint}</p>
                     <p className=' text-lg font-semibold leading-8'>Round Trip : &nbsp;&nbsp; {viewHireData.tripType ? "yes" : "No"}</p>
