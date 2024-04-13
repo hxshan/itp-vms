@@ -78,10 +78,11 @@ export const Servicenote = () => {
 
     return (
         <main className='w-full flex flex-col justify-center items-center bg-slate-200'>
+            <Serviceview />
             <h1 className='text-3xl font-semibold my-9'>
                 Add Service Note
             </h1>
-            <Serviceview />
+            
             <div className="sm:w-3/4 bg-slate-300 p-10 flex flex-col rounded-2xl">
                 <form className='flex flex-col gap-4 md:flex-row' onSubmit={handleSubmit}>
                     <div className="w-full">

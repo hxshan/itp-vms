@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import useAxios from '@/hooks/useAxios';
+import { ReactToPrint } from 'react-to-print';
 
 export const Serviceview = () => {
     const [ error, loading, axiosFetch] = useAxios();
@@ -22,41 +23,33 @@ export const Serviceview = () => {
           });
   }, [id]);
 
-
-
-  
-    // const getData = async () => {
-    //   await axiosFetch({
-    //     axiosInstance: axios,
-    //     method: "GET",
-    //     url: "/vehicleService/getservices",
-    //   });
-    // };
-  
-    // useEffect(() => {
-    //   getData();
-    // }, []);
-  
-    // useEffect(() => {
-    //   if (data && data.length > 0) {
-    //     setServices(data);
-    //   }
-    // }, [data]);
-  
-    // if (loading) {
-    //   return <p>Loading...</p>;
-    // }
+  const componentRef = React.createRef();
   
     return (
-      <table className='border-separate border-spacing-2 mb-16'>
+      <main>
+        <h1 className='text-3xl font-semibold my-9 text-center'>
+                Past Service Records
+            </h1>  <ReactToPrint
+                    trigger={() => (
+                        <button
+                            className="bg-blue-500 text-white rounded-lg px-4 py-2"
+                        >
+                            Generate a Report
+                        </button>
+                    )}
+                    content={() => componentRef.current}
+                />
+
+<div ref={componentRef}>
+        <table className='border-separate border-spacing-2 mb-16'>
         <thead>
           <tr>
             <th className='border border-slate-700 rounded-md p-2'>No</th>
-            <th className='border border-slate-700 rounded-md  p-2'>Vehicle Type</th>
-            <th className='border border-slate-700 rounded-md  p-2'>Number Plate</th>
-            <th className='border border-slate-700 rounded-md  p-2'>Time(From - To)</th>
-            <th className='border border-slate-700 rounded-md  p-2'>Status</th>
-            <th className='border border-slate-700 rounded-md p-2'>Options</th>
+            <th className='border border-slate-700 rounded-md p-2'>Vehicle Number</th>
+            <th className='border border-slate-700 rounded-md p-2'>Date</th>
+            <th className='border border-slate-700 rounded-md p-2'>Last-Milage</th>
+            <th className='border border-slate-700 rounded-md p-2'>Expense</th>
+            <th className='border border-slate-700 rounded-md p-2'>Note</th>
           </tr>
         </thead>
         <tbody>
@@ -65,20 +58,14 @@ export const Serviceview = () => {
               <tr key={item._id} className='h-8 '>
                 <td className='border border-slate-700 rounded-md text-center'>{index + 1}</td>
                 <td className='border border-slate-700 rounded-md text-center'>{item.vehicleRegister.vehicleRegister}</td>
-                <td className='border border-slate-700 rounded-md text-center'>{item.servicedate}</td>
-                <td className='border border-slate-700 rounded-md text-center'>{item.lastmilage}</td> {/* Assuming you have logic to format servicedate */}
-                <td className='border border-slate-700 rounded-md text-center'>
-                  {item.Snote}
-                </td>
-                <td className='border border-slate-700 rounded-md text-center'>
-                  {/* Logic to display Status based on data structure */}
-                </td>
-                <td className='border border-slate-700 rounded-md text-center'>
-                  <div className="flex justify-center gap-x-4 pr-3 pl-3 p-1">
-                    <button className="btn btn-primary">Edit</button>
-                    <button className="btn btn-danger">Delete</button>
-                  </div>
-                </td>
+                <td className='border border-slate-700 rounded-md text-center'>{new Date(item.servicedate).toLocaleDateString('en-US', {
+                  year: 'numeric',
+                  month: '2-digit',
+                  day: '2-digit'
+                })}</td>
+                <td className='border border-slate-700 rounded-md text-center'>{item.lastmilage}km</td>
+                <td className='border border-slate-700 rounded-md text-center'>{item.Scost}</td>
+                <td className='border border-slate-700 rounded-md text-center'>{item.Snote}</td>
               </tr>
             ))
           ) : (
@@ -90,5 +77,8 @@ export const Serviceview = () => {
           )}
         </tbody>
       </table>
+      </div>
+      </main>
+
     );
   };

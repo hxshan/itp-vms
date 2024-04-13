@@ -139,7 +139,6 @@ export const MaintainOrderTable = () => {
                     <thead>
                         <tr>
                             <th className='border border-slate-700 rounded-md p-2'>No</th>
-                            <th className='border border-slate-700 rounded-md  p-2'>Vehicle Type</th>
                             <th className='border border-slate-700 rounded-md  p-2'>Number Plate</th>
                             <th className='border border-slate-700 rounded-md  p-2'>Time(From - To)</th>
                             <th className='border border-slate-700 rounded-md  p-2'>Status</th>
@@ -166,7 +165,6 @@ export const MaintainOrderTable = () => {
                                 return (
                                     <tr key={item._id} className='h-8 '>
                                         <td className='border border-slate-700 rounded-md text-center'>{index + 1}</td>
-                                        <td className='border border-slate-700 rounded-md text-center'>{item.vrcategory}</td>
                                         <td className='border border-slate-700 rounded-md text-center'>{item.vrvehicleRegister}</td>
                                         <td className='border border-slate-700 rounded-md text-center'>
                                             {new Date(item.vrsdate).toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' })} to {new Date(item.vredate).toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' })}
