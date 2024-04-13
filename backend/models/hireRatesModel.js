@@ -5,11 +5,11 @@ const hireRates = new mongoose.Schema ({
         type: String, 
         required: true
       },
-      baseRate: { 
+      baseDistence: { 
         type: Number, 
         required: true 
     },
-    baseDistence: { 
+      baseRate: { 
         type: Number, 
         required: true 
     },
@@ -17,6 +17,14 @@ const hireRates = new mongoose.Schema ({
         type: Number, 
         required: true 
     },
+    acBaseRate : {
+      type: Number, 
+      required: true
+    },
+    acAdditionalRate : {
+      type: Number, 
+      required: true
+    }
 })
 
 module.exports = mongoose.model('hireRates', hireRates)

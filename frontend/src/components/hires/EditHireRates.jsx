@@ -12,6 +12,8 @@ const EditHireRates = ({setEditRates, editHireData, reload}) => {
     const [baseRate , setBaseRate] = useState(editHireData.baseRate)
     const [baseDistence , setBaseDistence] = useState(editHireData.baseDistence)
     const [additionalRate, setAdditionalRate] = useState(editHireData.additionalRate)
+    const [acBaseRate , setAcBaseRate] = useState(editHireData.acBaseRate)
+    const [acAdditionalRate, setAcAdditionalRate] = useState(editHireData.acAdditionalRate)
 
     const [response, error, loading, axiosFetch] = useAxios()
 
@@ -19,9 +21,11 @@ const EditHireRates = ({setEditRates, editHireData, reload}) => {
 
         const editedRates = {
             vehicleCatagory,
-            baseRate,
             baseDistence,
-            additionalRate
+            baseRate,
+            additionalRate,
+            acBaseRate,
+            acAdditionalRate
         }
 
         setEditRates(false)
@@ -67,13 +71,6 @@ const EditHireRates = ({setEditRates, editHireData, reload}) => {
                 <div className="mt-4">
                     <form onSubmit={handleEditSubmit}>
                         <div className="mb-4">
-                            <label className="block text-sm font-bold mb-2">Base Rate</label>
-                            <input type="number" className="border rounded-md px-3 py-2 w-full" 
-                            value={baseRate}
-                            onChange={(e) => setBaseRate(e.target.value)}
-                            />
-                        </div>
-                        <div className="mb-4">
                             <label className="block text-sm font-bold mb-2">Base Distance</label>
                             <input type="number" className="border rounded-md px-3 py-2 w-full" 
                             value={baseDistence}
@@ -81,10 +78,31 @@ const EditHireRates = ({setEditRates, editHireData, reload}) => {
                             />
                         </div>
                         <div className="mb-4">
+                            <label className="block text-sm font-bold mb-2">Base Rate</label>
+                            <input type="number" className="border rounded-md px-3 py-2 w-full" 
+                            value={baseRate}
+                            onChange={(e) => setBaseRate(e.target.value)}
+                            />
+                        </div>
+                        <div className="mb-4">
                             <label className="block text-sm font-bold mb-2">Additional Rate</label>
                             <input type="number" className="border rounded-md px-3 py-2 w-full" 
                             value={additionalRate}
                             onChange={(e) => setAdditionalRate(e.target.value)}
+                            />
+                        </div>
+                        <div className="mb-4">
+                            <label className="block text-sm font-bold mb-2">Base Rate(AC)</label>
+                            <input type="number" className="border rounded-md px-3 py-2 w-full" 
+                            value={acBaseRate}
+                            onChange={(e) => setAcBaseRate(e.target.value)}
+                            />
+                        </div>
+                        <div className="mb-4">
+                            <label className="block text-sm font-bold mb-2">Additional Rate(AC)</label>
+                            <input type="number" className="border rounded-md px-3 py-2 w-full" 
+                            value={acAdditionalRate}
+                            onChange={(e) => setAcAdditionalRate(e.target.value)}
                             />
                         </div>
                         <div className="flex justify-between">
