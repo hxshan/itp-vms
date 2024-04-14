@@ -34,7 +34,6 @@ import { View } from '../src/components/VR/View';
 import ViewClient from "./pages/contract/ViewClient";
 import ClientEditForm from "./pages/contract/ClientEditForm";
 import UserReport from "./components/admin/UserReport";
-import { EditUserForm } from "./components/admin";
 import EditUser from "./pages/admin/EditUser";
 
 
@@ -74,11 +73,12 @@ function App() {
                 )
               }
             />
-            <Route path="/admin/userreport/:id" element={<UserReport/>}/>
+            
             <Route path="/admin/roles" element={<Roles />} />
             <Route path="/admin/roles/:id" element={<EditRoles />} />
-
             <Route path="/admin/edituser/:id" element={<EditUser/>}/>
+            <Route path="/admin/userreport/:id" element={<UserReport/>}/>
+
 
             <Route path="/emergency" element={<EAMDashboard />} />
             <Route path="/emergency/create" element={<CaseFileForm />} />

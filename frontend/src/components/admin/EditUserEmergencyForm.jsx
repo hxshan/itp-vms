@@ -4,7 +4,6 @@ import { useParams } from 'react-router-dom';
 import axios from '@/api/axios';
 
 
-
 const EditUserEmergencyForm = () => {
     const [user,usererror, userloading, useraxiosFetch] = useAxios()
     const [reload,setReload]=useState(0)
@@ -57,10 +56,9 @@ const EditUserEmergencyForm = () => {
       const DeleteContact = async(index,contactId)=>{
         if (id === ''){
           removeContact(index)
-          console.log('went in')
           return
         }
-        console.log(contactId)
+        // console.log(contactId)
         useraxiosFetch({
           axiosInstance: axios,
           method: "PATCH",
