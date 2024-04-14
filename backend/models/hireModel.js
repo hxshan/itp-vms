@@ -63,7 +63,7 @@ const hireSchema = new mongoose.Schema({
     type: Boolean, 
     required: true 
 },
-  distance: { 
+  estimatedDistance: { 
     type: Number, 
     required: true 
 },
