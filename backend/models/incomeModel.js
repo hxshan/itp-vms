@@ -12,7 +12,8 @@ const incomeSchema = new mongoose.Schema({
   
   },
   recordedBy: { 
-    type: String, 
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: 'User', 
 
   },
   editedBy: { 

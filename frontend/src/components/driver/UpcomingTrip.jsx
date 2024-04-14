@@ -19,43 +19,72 @@ const TripCard = ({trip}) => {
   
   
 
-  const calculateTimeUntilStart = (Date4, Time) => {
-   
+  const calculateTimeUntilStart = (startDate, startTime, status) => {
+    console.log(startDate, startTime);
+    if (!startDate || !startTime) {
+        return 'Invalid input';
+    }
 
-    const dateString = '2024-04-12T00:00:00.000Z';
-const formattedDate = dateString.split('T')[0];
- 
-   const  startDate= '2024-04-11'
-    const startTime = '10:00'
+    const isoDate = startDate;
+   const convertedDate = isoDate.substring(0, 10);
+    const tripStartDateTime = new Date(convertedDate + 'T' + startTime);
 
-   
-    const tripStartDateTime = new Date(`${startDate}T${startTime}`);
+    console.log(tripStartDateTime);
 
-    
-    
     // Check if tripStartDateTime is a valid date
     if (isNaN(tripStartDateTime.getTime())) {
-      return 'Invalid start date or time';
+        return 'Invalid';
     }
-    
-    const differenceInMilliseconds = tripStartDateTime - currentDateTime;
+    if(status === 'Active'){
+          const differenceInMilliseconds = tripStartDateTime - currentDateTime;
     const differenceInMinutes = Math.floor(differenceInMilliseconds / (1000 * 60));
     
     if (differenceInMinutes < 60) {
-      return `${differenceInMinutes} minute${differenceInMinutes !== 1 ? 's' : ''}`;
+        return `Trip starts in ${differenceInMinutes} minute${differenceInMinutes !== 1 ? 's' : ''}`;
     } else if (differenceInMinutes < 1440) { // Less than 24 hours
-      const hours = Math.floor(differenceInMinutes / 60);
-      return `${hours} hour${hours !== 1 ? 's' : ''}`;
+        const hours = Math.floor(differenceInMinutes / 60);
+        return `Trip starts in ${hours} hour${hours !== 1 ? 's' : ''}`;
     } else {
-      const days = Math.floor(differenceInMinutes / 1440);
-      return `${days} day${days !== 1 ? 's' : ''}`;
+        const days = Math.floor(differenceInMinutes / 1440);
+        return `Trip starts in ${days} day${days !== 1 ? 's' : ''}`;
     }
-  };
+  }else if(status ='Ongoing')
+  {
+
+    const differenceInMillisecondsongoing = currentDateTime - tripStartDateTime;
+
+    const differenceInMinutes = Math.floor(differenceInMillisecondsongoing / (1000 * 60));
+    const differenceInHours = Math.floor(differenceInMinutes / 60);
+    const differenceInDays = Math.floor(differenceInHours / 24);
+
+    // If the trip started less than an hour ago, show the time in minutes
+    if (differenceInMinutes < 60) {
+      return `Trip started ${differenceInMinutes} minute${differenceInMinutes !== 1 ? 's' : ''} ago`;
+    }
+    // If the trip started less than 24 hours ago, show the time in hours
+    else if (differenceInHours < 24) {
+      return `Trip started ${differenceInHours} hour${differenceInHours !== 1 ? 's' : ''} ago`;
+    }
+    // Otherwise, show the time in days
+    else {
+      return `Trip started ${differenceInDays} day${differenceInDays !== 1 ? 's' : ''} ago`;
+    }
+
+  }
+};
+
+
+
+
+
+
+  
+  
 
   const handleStartTrip = () => {
-    const timeUntilStart = calculateTimeUntilStart(trip.startDate, trip.startTime);
+    const timeUntilStart = calculateTimeUntilStart(trip.startDate, trip.startTime,trip.hireStatus);
   
-    // Check if time until start is less than or equal to 30 minutes
+    
     if (timeUntilStart && timeUntilStart.includes('minute')) {
       setShowStartTripForm(true);
     } else {
@@ -68,11 +97,11 @@ const formattedDate = dateString.split('T')[0];
   return (
     <div className="trip-card-container p-8 bg-gray-200 rounded-lg shadow-lg">
       <div className="flex justify-between items-center mb-6">
-        <p className="text-gray-500 font-semibold mr-15">Trip Starts in {calculateTimeUntilStart((trip.startDate, trip.startTime))}</p>
+        <p className="text-gray-500 font-semibold mr-15"> {calculateTimeUntilStart(trip.startDate, trip.startTime, trip.hireStatus)}</p>
         {!showStartTripForm && (
           <button 
             onClick={handleStartTrip} 
-            className={`bg-blue-500 text-white py-2 px-6 rounded-lg ml-20 hover:bg-blue-600 ${calculateTimeUntilStart(trip.startDate, trip.startTime).includes('minute') ? '' : 'opacity-50'}`}
+            className={`bg-blue-500 text-white py-2 px-6 rounded-lg ml-20 hover:bg-blue-600 ${calculateTimeUntilStart(trip.startDate, trip.startTime, trip.hireStatus).includes('minute') ? '' : 'opacity-50'}`}
           >
             Start Trip
           </button>
@@ -94,7 +123,7 @@ const formattedDate = dateString.split('T')[0];
       </div>
       <div className="mb-6">
         <p className="text-gray-500 font-semibold">Pickup Location</p>
-        <p className="text-lg">{trip.startPoint}</p>
+        <p className="text-lg">{trip.startPoint.no}, {trip.startPoint.street}, {trip.startPoint.city}</p>
       </div>
       <div className="mb-6">
         <p className="text-gray-500 font-semibold">Destination</p>

@@ -49,10 +49,7 @@ function App() {
       <Routes>
         <Route path="/userauth/failed" element={<UnAuthorized />} />
       </Routes>
-      <main className="flex w-full bg-slate-100 min-h-screen">
-        <TopBar />
-        <Navbar />
-        <div className={"ml-32 w-full mr-14 mt-[90px] lg:ml-80"}>
+      
           
           <Routes>
             <Route path="/login" element={<Login />} />
@@ -103,9 +100,9 @@ function App() {
             <Route path="/client" element={<ClientDashboard/>}/>
             <Route path="/viewContract/:id" element={<ViewContract/>}/>
             <Route path="/EditContract/:id" element={<ContractEditForm/>}/>
-            <Route path="/Finance/ Finance Dashboard" element={<FinanceDashboard />} />
-            <Route path="/Finance/Expense Tracking" element={<ExpenseTracking />} />
-            <Route path="/Finance/Income Tracking" element={<IncomeTracking  />} />       
+            <Route path="/finance/financeDashboard" element={<FinanceDashboard />} />
+            <Route path="/finance/expenseTracking" element={<ExpenseTracking />} />
+            <Route path="/finance/IncomeTracking" element={<IncomeTracking  />} />       
 
             <Route path="/addClient" element={<AddClient/>}/>
 
@@ -114,8 +111,7 @@ function App() {
               element={<VehicleServiceList />}
             />
           </Routes>
-        </div>
-      </main>
+     
     </>
   );
 }

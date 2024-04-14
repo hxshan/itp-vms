@@ -1,18 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import useAxios from '@/hooks/useAxios';
 import axios from '@/api/axios';
-
+import TripReceipt from './TripReciept';
 
 const EndTripForm = ({ trip }) => {
 
-    console.log(trip)
+  
   
   const [mileage, setMileage] = useState('');
   const [odometerImage, setOdometerImage] = useState(null);
   const [endDate, setEndDate] = useState('');
   const [endTime, setEndTime] = useState('');
   const [dropLocation, setdropLocation] = useState(`${trip.endPoint}`);
+  const [tripEnded, setTripEnded] = useState(false);
+  const [formError, setFormError] = useState();
 
+  const [vehicleData, Verror, Vloading, VaxiosFetch] = useAxios();
   const [updateResponse, updateError, updateLoading, updateAxiosFetch] = useAxios();
 
   const [showDetails, setShowDetails] = useState(false);
@@ -36,6 +39,12 @@ const EndTripForm = ({ trip }) => {
       console.log(updateResponse.data);
     }
   }, [updateResponse]);
+
+  useEffect(() => {
+    if (updateError) {
+      console.error("Error updating trip:", updateError);
+    }
+  }, [updateError]);
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     setOdometerImage(file);
@@ -49,19 +58,33 @@ const EndTripForm = ({ trip }) => {
     endTime: endTime,
     finalOdometerReading: mileage,
     endPoint:dropLocation,
-    hireStatus:"Completed"
+    hireStatus:"Ended"
     
   };
 
+  const updateMileage ={
 
-  const handleSubmit = (event) => {
+    ...trip.vehicle,
+    lastMileage : mileage
+  }
+
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
     // Handle form submission logic, including sending the image file to the server
 
-   
-
-    console.log(updatedTrip)
-    updateAxiosFetch({
+    if (!mileage || !endDate || !endTime || !dropLocation) {
+      setFormError('All fields are required');
+      return;
+    }
+  
+    // Check if mileage is greater than the last recorded mileage
+    if (parseInt(mileage) <= trip.vehicle.lastMileage) {
+      setFormError('Mileage should be greater than the last recorded mileage');
+      return;
+    }
+    setFormError('');
+    await updateAxiosFetch({
       axiosInstance: axios,
       method: 'PATCH',
       url: `/hire/driverEdit/${trip._id}/`,
@@ -70,9 +93,32 @@ const EndTripForm = ({ trip }) => {
       },
     });
 
+    await VaxiosFetch({
+      axiosInstance: axios,
+      method: 'PATCH',
+      url: `/vehicle/mileage/${trip.vehicle._id}/`,
+      requestConfig: {
+        data: updateMileage,
+      },
+    });
+
+    if(vehicleData){
+      console.log('Mileage updated')
+    }
+
+    setTripEnded(true);
   };
 
+
+  
+
+  
   return (
+
+    <div>
+       {tripEnded ? (
+        <TripReceipt trip={updatedTrip} />
+      ) : (
     <form onSubmit={handleSubmit} className="bg-white p-4 rounded-lg shadow-md">
       <div className="mb-4">
 
@@ -82,7 +128,7 @@ const EndTripForm = ({ trip }) => {
         <input
           type="text"
           id="pickupLocation"
-          value={trip.startPoint}
+          value={`${trip.startPoint.no},${trip.startPoint.street}, ${trip.startPoint.city}`}
           readOnly
           className="mt-1 p-2 w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
         />
@@ -170,6 +216,8 @@ const EndTripForm = ({ trip }) => {
         End Trip
       </button>
     </form>
+     )}
+    </div>
   );
 };
 
