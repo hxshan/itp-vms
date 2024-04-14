@@ -1,23 +1,62 @@
 import React from "react";
 import { FaTimes, FaDownload } from "react-icons/fa";
-import html2pdf from 'html2pdf.js';
+import { Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
+
+const styles = StyleSheet.create({
+  page: {
+    flexDirection: 'column',
+    padding: 20,
+  },
+  section: {
+    margin: 10,
+    padding: 10,
+    flexGrow: 1,
+  },
+  title: {
+    fontSize: 24,
+    marginBottom: 10,
+  },
+  text: {
+    fontSize: 14,
+    marginBottom: 5,
+  },
+});
+
+const MyDocument = ({ expense, renderCategorySpecificDetails }) => (
+  <Document>
+    <Page size="A4" style={styles.page}>
+      <View style={styles.section}>
+        <Text style={styles.title}>Expense Details</Text>
+        <Text style={styles.text}>Expense Date: {new Date(expense.date).toLocaleDateString()}</Text>
+        <Text style={styles.text}>Associated Vehicle: {expense.vehicle.vehicleRegister}</Text>
+        {expense.trip && <Text style={styles.text}>Associated Trip: {expense.trip.details}</Text>}
+        <Text style={styles.text}>Status: {expense.status}</Text>
+        <Text style={styles.text}>Recorded By: {expense.recordedBy}</Text>
+        <Text style={styles.text}>Notes: {expense.notes}</Text>
+        {renderCategorySpecificDetails()}
+      </View>
+    </Page>
+  </Document>
+);
 
 const ViewExpense = ({ expense, onClose }) => {
   const renderCategorySpecificDetails = () => {
     switch (expense.category) {
       case "Fuel":
         return (
-          <div className="mt-4">
-            <p className="text-lg font-semibold mb-2">Fuel Details</p>
-            <p>Total Price: Rs.{expense.fuelDetails.totalPrice.toFixed(2)}</p>
-          </div>
+          <View style={styles.section}>
+            <Text style={styles.text}>Fuel Details</Text>
+            <Text style={styles.text}>Total Price: Rs.{expense.fuelDetails.totalPrice.toFixed(2)}</Text>
+          </View>
         );
       case "Maintenance and Repairs":
         return (
-          <div className="mt-4">
-            <p className="text-lg font-semibold mb-2">Maintenance Details</p>
-            <p>Maintenance Cost: Rs.{expense.maintenanceDetails.maintenanceCost.toFixed(2)}</p>
-          </div>
+          <View style={styles.section}>
+            <Text style={styles.text}>Maintenance Details</Text>
+            <Text style={styles.text}>Maintenance Cost: Rs.{expense.maintenanceDetails.maintenanceCost.toFixed(2)}</Text>
+          </View>
         );
       default:
         return null;
@@ -25,26 +64,17 @@ const ViewExpense = ({ expense, onClose }) => {
   };
 
   const handleDownload = () => {
-    // Create a div to hold the component content
-    const container = document.createElement('div');
-    container.innerHTML = `
-      <h2>Expense Details</h2>
-      <p>Expense Date: ${new Date(expense.date).toLocaleDateString()}</p>
-      <p>Associated Vehicle: ${expense.vehicle.vehicleRegister}</p>
-      ${expense.trip && `<p>Associated Trip: ${expense.trip.details}</p>`}
-      <p>Status: ${expense.status}</p>
-      <p>Recorded By: ${expense.recordedBy}</p>
-      <p>Notes: ${expense.notes}</p>
-      ${renderCategorySpecificDetails()}
-    `;
-
-    // Convert the content to PDF
-    html2pdf().from(container).save();
+    html2canvas(document.getElementById('expense-details')).then(canvas => {
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF();
+      pdf.addImage(imgData, 'PNG', 0, 0);
+      pdf.save("expense_details.pdf");
+    });
   };
 
   return (
     <div className="fixed inset-0 flex justify-center items-center bg-gray-800 bg-opacity-50">
-      <div className="bg-white p-8 rounded-lg shadow-md w-96">
+      <div className="bg-white p-8 rounded-lg shadow-md w-96" id="expense-details">
         <div className="flex justify-between items-center">
           <button onClick={onClose} className="text-gray-500 hover:text-gray-800">
             <FaTimes />
@@ -88,3 +118,4 @@ const ViewExpense = ({ expense, onClose }) => {
 };
 
 export default ViewExpense;
+ 

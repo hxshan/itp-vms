@@ -7,6 +7,7 @@ import PastTripsTable from "./PastTripsTable";
 import MaintenanceForm from "./MaintenanceForm";
 import EndTripForm from "./EndTripForm";
 import EmergencyReportForm from "./ReportEmergencyForm";
+import TripSummary from "./TripSummary";
 
 export{
     TripCard,
@@ -17,6 +18,7 @@ export{
     PastTripsTable,
     MaintenanceForm,
     EndTripForm,
-    EmergencyReportForm
+    EmergencyReportForm,
+    TripSummary
 
 }

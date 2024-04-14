@@ -29,27 +29,39 @@ useEffect(() => {
     tripAxiosFetch({
       axiosInstance: axios,
       method: "GET",
-      url: `/hire/${userID}`, // Use userID variable dynamically
+      url: `/hire/driver/${userID}`, // Use userID variable dynamically
     });
   }
 }, [userID]);
-
-
+console.log(tripData)
 
   useEffect(() => {
     if (tripData && tripData.length > 0) {
-      // Filter trips into past and upcoming based on current date
+      
       const currentDate = new Date();
+
+      console.log(currentDate)
       const past = [];
       const upcoming = [];
 
+      
+
       tripData.forEach(trip => {
-        const tripDate = new Date(trip.startDate); // Assuming trip object has a startDate property
-        if (tripDate < currentDate) {
-          past.push(trip);
-        } else {
+        
+        const isoDate = trip.startDate;
+        const convertedDate = isoDate.substring(0, 10);
+         const tripStartDateTime = new Date(convertedDate + 'T' + trip.startTime);
+       console.log(tripStartDateTime > currentDate, tripStartDateTime, currentDate )
+       console.log((trip.hireStatus === "Active" ||trip.hireStatus === "Ongoing"), trip.hireStatus)
+         if (tripStartDateTime > currentDate && (trip.hireStatus === "Active" ||trip.hireStatus === "Ongoing")) {
           upcoming.push(trip);
-        }
+      } else if (tripStartDateTime < currentDate && 
+                 (trip.hireStatus === "Completed" || 
+                  trip.hireStatus === "Ended" || 
+                  trip.hireStatus === "Cancelled")) {
+          past.push(trip);
+      }
+      
       });
 
       setPastTrips(past);
@@ -59,7 +71,7 @@ useEffect(() => {
   // Select the very next trip
   const nextTrip = upcomingTrips.length > 0 ? upcomingTrips[0] : null;
 
-  console.log(nextTrip)
+
 
   return (
     <div className="container mx-auto">
@@ -97,8 +109,16 @@ useEffect(() => {
         <h2 className="text-xl lg:text-2xl font-bold">Your Past Trips</h2>
       </div>
       <div className="max-h-96 overflow-y-auto scrollbar-thin scrollbar-thumb-blue-400 scrollbar-track-gray-200 mt-2">
-        {pastTrips.map((trip) => (
-          <TripDetailCard trip={trip} />
+      {pastTrips
+        .slice() // Create a shallow copy to avoid mutating the original array
+        .sort((a, b) => {
+          const dateA = new Date(a.startDate + 'T' + a.startTime);
+          const dateB = new Date(b.startDate + 'T' + b.startTime);
+          // Sort in descending order (most recent first)
+          return dateB - dateA;
+        })
+        .map((trip) => (
+          <TripDetailCard trip={trip} key={trip._id} />
         ))}
       </div>
     </div>

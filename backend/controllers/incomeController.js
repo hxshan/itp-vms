@@ -3,11 +3,12 @@ const { Vehicles }= require('../models/vehicleModel');
 const Client = require('../models/clientModel');
 const Contract = require('../models/contractModel');
 const Hire = require('../models/hireModel');
+const user = require('../models/userModel')
 const mongoose = require('mongoose')
 
 //get all expense
 const getAllIncome = async(req,res) => {
-    const incomes= await Income.find({}).populate('vehicle').populate('hirePayment.hire')
+    const incomes= await Income.find({}).populate('vehicle').populate('hirePayment.hire').populate('recordedBy')
     .populate('contractIncome.client')
     .populate('contractIncome.contract').sort({ createdAt: -1 });
     res.status(200).json(incomes)

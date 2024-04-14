@@ -24,7 +24,7 @@ const TripDetailCard = ({ trip }) => {
 
   {/* Pickup and Destination */}
   <div className="flex items-center mb-2 md:mb-0 md:mr-4">
-    <p className="text-lg font-semibold mr-2">{trip.startPoint}</p>
+    <p className="text-lg font-semibold mr-2">{trip.startPoint.city}</p>
     <p className="text-lg font-semibold mr-2">-</p>
     <p className="text-lg font-semibold">{trip.endPoint}</p>
   </div>

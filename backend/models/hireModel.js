@@ -9,24 +9,11 @@ const hireSchema = new mongoose.Schema({
     type: Date, 
     required: true 
 },
-startTime: { 
-  type: String, 
-  required: true 
-},
-endTime: { 
-  type: String, 
-   
-},
-
   endDate: { 
     type: Date, 
     required: true 
 },
   vehicleType: { 
-    type: String, 
-    required: true 
-},
-  vehicleSubcategory: { 
     type: String, 
     required: true 
 },
@@ -40,28 +27,54 @@ endTime: {
 },
   vehicle: { 
     type: mongoose.Schema.Types.ObjectId, 
-    ref: 'Vehicles', 
+    ref: 'Vehicles',
 },
   driver: { 
     type: mongoose.Schema.Types.ObjectId, 
     ref: 'User', 
 },
   startPoint: { 
-    type: String, 
-    required: true 
+    no: {
+      type: String,
+      required: true
+    },
+    street: {
+      type: String,
+      required: true
+    },
+    city: {
+      type: String,
+      required: true
+    }
 },
   endPoint: { 
     type: String, 
     required: true 
 },
+  startTime: { 
+    type: String, 
+    required: true 
+  },
+  endTime: { 
+    type: String, 
+    default: '' 
+  },
   tripType: { 
     type: Boolean, 
     required: true 
 },
-  distence: { 
+  estimatedDistance: { 
     type: Number, 
     required: true 
 },
+  actualDistance: { 
+    type: Number, 
+  
+  },
+  actualTimeTaken: { 
+    type: String, 
+  
+  },
   cusName: { 
     type: String, 
     required: true 
@@ -89,17 +102,17 @@ endTime: {
     type : Number,
     required: true
 },
-intialOdometerReading: {
-  type: Number, 
+  intialOdometerReading: {
+    type: Number, 
 },
-intialOdometerPic: {
-  type:String, 
+  intialOdometerPic: {
+    type:String, 
 },
   finalOdometerReading: {
   type: Number, 
 },
-finalOdometerPic: {
-  type:String, 
+  finalOdometerPic: {
+    type:String, 
 }
 });
 
