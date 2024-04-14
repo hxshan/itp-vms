@@ -1,14 +1,19 @@
 import useAxios from "@/hooks/useAxios";
 import axios from "@/api/axios";
-import { useEffect, useState } from "react"
+import { useEffect, useState} from "react"
 import { useAuthContext } from "@/hooks/useAuthContext";
+import { ClockLoader } from 'react-spinners'
+import { useNavigate } from "react-router-dom";
+
 
 const UserTable = () => {
 const { user } = useAuthContext()
 const columns=["Name","Email","Role","Status"]
+const navigate=useNavigate()
 const [search,setSearch]=useState('')
 const [statusFilter,setStatusFilter]=useState('')
-const [users, error, loading, axiosFetch] = useAxios()
+const [usersdata, error, loading, axiosFetch] = useAxios()
+const [users,setUsers]=useState([])
 const [reload,setReload]= useState(0)
 const [startIdx, setStartIdx] = useState(0);
 const [endIdx, setEndIdx] = useState(6);
@@ -29,23 +34,35 @@ const deleteData =async(e) => {
   if(confirm("Are you sure you want to Delete the following user")){
     await axiosFetch({
       axiosInstance: axios,
-      method: "DELETE",
-      url: `/user/${e.target.id}`,
+      method: "PATCH",
+      url: `/user/delete/${e.target.id}`,
     });
     if(!error){
       setReload(reload + 1);
-    } 
+    }   
   }
 };
 
 useEffect(()=>{
+  if(usersdata)
+    setUsers(usersdata)   
+},[usersdata])
+
+useEffect(()=>{
   if(user?.accessToken)
     getData()
-},[user])
+},[user,reload])
 
   if(loading){
     return(
-      <p>Loading...</p>
+      <div className="w-full h-[300px] bg-white shadow-lg border border-gray-200 flex justify-center items-center">
+         
+        <ClockLoader
+          color="#36d7b7"
+          size={60}
+        />
+      </div>
+      
     )
   }
   if(error){
@@ -115,8 +132,8 @@ useEffect(()=>{
                   </td>
                   <td className="px-6 py-2 whitespace-nowrap justify-between flex">
                   <button className="bg-actionBlue text-white py-1 px-6 rounded-md">View</button>
-                    <button className="bg-actionGreen text-white py-1 px-6 rounded-md">Edit</button>
-                    <button type="submit" onClick={(e)=>deleteData(e)} className="bg-actionRed text-white py-1 px-6 rounded-md">Delete</button>
+                    <button className="bg-actionGreen text-white py-1 px-6 rounded-md" onClick={()=>navigate(`/admin/edituser/${row._id}`)}>Edit</button>
+                    <button type="submit" id={row._id} onClick={(e)=>deleteData(e)} className="bg-actionRed text-white py-1 px-6 rounded-md">Delete</button>
                   </td>   
               </tr>
             );

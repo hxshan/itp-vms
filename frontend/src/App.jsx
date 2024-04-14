@@ -30,6 +30,9 @@ import { UserProfile } from "./pages/admin";
 import {HireDashboard, CreateHire, EditHire, HireRates} from "./pages/hires/hires"
 import AddClient from "./pages/contract/AddClient";
 import { View } from '../src/components/VR/View';
+import UserReport from "./components/admin/UserReport";
+import { EditUserForm } from "./components/admin";
+import EditUser from "./pages/admin/EditUser";
 
 function App() {
   const { user, loading } = useAuthContext();
@@ -68,14 +71,17 @@ function App() {
                 )
               }
             />
+            <Route path="/admin/userreport/:id" element={<UserReport/>}/>
             <Route path="/admin/roles" element={<Roles />} />
             <Route path="/admin/roles/:id" element={<EditRoles />} />
-     
+
+            <Route path="/admin/edituser/:id" element={<EditUser/>}/>
+
             <Route path="/emergency" element={<EAMDashboard />} />
             <Route path="/emergency/create" element={<CaseFileForm />} />
             <Route path="/emergency/CaseFileTable" element={<CaseFileTable />} />
-
             <Route path="/user/:id" element={<UserProfile/>}/>
+              
             <Route path="/hires">
               <Route index={true} element={<HireDashboard />} />
               <Route path="add" element={<CreateHire />}/>

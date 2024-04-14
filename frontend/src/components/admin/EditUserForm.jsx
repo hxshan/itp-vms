@@ -2,86 +2,106 @@
 import useAxios from "@/hooks/useAxios";
 import axios from "@/api/axios";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
+import{ ClockLoader } from 'react-spinners'
 
-const CreateUserForm = () => {
+const EditUserForm = () => {
+
   //Api Hooks
   const [roleData,roleError, roleloading, axiosFetch] = useAxios()
   const [user,usererror, userloading, useraxiosFetch,axiosupdatedFetch] = useAxios()
   const navigate = useNavigate()
+  const {id} = useParams()
+  
 
-  const getRoleData =()=>{
-    axiosFetch({
+
+
+//states
+const [roles, setRoles] = useState([]);
+const [isDriver, setIsDriver] = useState(null);
+
+const [personalInfo, setPersonalInfo] = useState({
+  firstName: "",
+  middleName: "",
+  lastName: "",
+  gender: "",
+  dob:"",
+  phoneNumber:"",
+  nicNumber: "",
+  role: "",
+  department: "",
+  jobTitle:"",
+  empDate: "",
+  baseSal: "",
+  licenceNum: "",
+  status: "",
+  email: "",
+  password: "",
+});
+
+
+const [currentForm, setCurrentForm] = useState(0);
+
+
+//functions
+const getRoleData = async()=>{
+    await axiosFetch({
      axiosInstance: axios,
      method: "GET",
      url: `/role/`,
    });
  }
+ const getUserData =async () =>{
+    await useraxiosFetch({
+        axiosInstance: axios,
+        method: "GET",
+        url: `/user/${id}`, 
+      });
+ } 
 
-  useEffect(()=>{
-    getRoleData()
-  },[])
-
-  useEffect(()=>{
+ useEffect(()=>{
     if(roleData && roleData.length > 0){
       setRoles(roleData)
       setIsDriver(()=>{
         return roleData.find(role=>role.name.toUpperCase() == 'DRIVER')
       })
     }
-  },[roleData])
+    if(user && Object.keys(user).length !== 0){
+  
+        //let formatedDob=user.dob.toISOString().split('T')[0]
+        setPersonalInfo({
+            firstName:user.firstName,
+            middleName: user.middleName,
+            lastName: user.lastName,
+            gender: user.gender ,
+            dob:user.dob.split('T')[0],
+            phoneNumber: user.phoneNumber ,
+            nicNumber: user.nicNumber ,
+            role:user.role,
+            department: user.department,
+            jobTitle: user.jobTitle,
+            empDate: user.employmentDate.split('T')[0],
+            baseSal: user.baseSalary,
+            licenceNum: user.licenceNum,
+            status: user.status,
+            email: user.email,
+            password:''
+        })
+       
+    }
+    
+  },[user,roleData])
 
-  //constants
-  const emptyContact = {
-    emergencyName: "",
-    emergencyContact: "",
-  };
-
-
-  //states
-  const [roles, setRoles] = useState([]);
-  const [isDriver, setIsDriver] = useState(null);
-
-  const [personalInfo, setPersonalInfo] = useState({
-    firstName: "",
-    middleName: "",
-    lastName: "",
-    gender: "",
-    dob:"",
-    phoneNumber:"",
-    nicNumber: "",
-    role: "",
-    department: "",
-    jobTitle:"",
-    empDate: "",
-    baseSal: "",
-    licenceNum: "",
-    status: "",
-    email: "",
-    password: "",
-  });
-
-  const[nicDocument,setNicDocument]=useState(null);
-  const[licenceDoc,setLicenceDocument]=useState(null);
-  const[empPhoto,setEmpPhoto]=useState(null);
-  const [currentForm, setCurrentForm] = useState(0);
-  const [emergencyContacts, setEmergencyContacts] = useState([emptyContact]);
-
+  useEffect(()=>{
+    getUserData()
+    getRoleData()
+  },[])
 
 
   const formPageIncrement=()=>{
     if((personalInfo.firstName||personalInfo.lastName||personalInfo.gender||personalInfo.dob||personalInfo.phoneNumber||personalInfo.nicNumber) ==''){
       toast.error("All Personal details should be filled")
-      return
-    }
-    if((emergencyContacts[0].emergencyContact||emergencyContacts[0].emergencyName)===''){
-      toast.error("Add Atleast one Emergency Contact")
-      return
-    }
-   
-    if(nicDocument == null){
-      toast.error("Please upload Nic Document")
       return
     }
 
@@ -98,7 +118,6 @@ const CreateUserForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(personalInfo)
     let emailReg=/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/
     if(!personalInfo.email.match(emailReg)){
       toast.error("Invalid Email Address")
@@ -124,54 +143,35 @@ const CreateUserForm = () => {
     formDataToSend.append('empDate', personalInfo.empDate);
     formDataToSend.append('baseSal', personalInfo.baseSal);
     formDataToSend.append('licenceNum', personalInfo.licenceNum);
-    formDataToSend.append('licenceDoc', licenceDoc);
     formDataToSend.append('status', personalInfo.status);
-    formDataToSend.append('email', personalInfo.email);
-    formDataToSend.append('password', personalInfo.password);
-    formDataToSend.append('emergencyContacts',JSON.stringify(emergencyContacts))
-    formDataToSend.append('nicDocument', nicDocument);
-    formDataToSend.append('empPhoto', empPhoto);
-    
+   
     axiosupdatedFetch({
       axiosInstance: axios,
-      method: 'POST',
-      url: '/user/',
+      method: 'PATCH',
+      url: `/user/personal/${id}`,
       data: formDataToSend,
       headers: {
         'Content-Type': 'multipart/form-data',
       },
     });
   }
-
-  const AddContact = () => {
-    let contactsArr = [...emergencyContacts];
-    contactsArr.push(emptyContact);
-    setEmergencyContacts(contactsArr);
-  };
-
-  const removeContact = (index) => {
-    let contactsArr = [...emergencyContacts];
-    contactsArr.splice(index, 1);
-    setEmergencyContacts(contactsArr);
-  };
-  const handleContactChange = (index, name, value) => {
-    let contactsArr = [...emergencyContacts];
-    let updated = contactsArr[index];
-    updated[name] = value;
-    setEmergencyContacts(contactsArr);
-  };
-
-
-
+  if(userloading){
+    <div className="shadow-xl bg-white rounded flex flex-col items-center w-full h-[300px]">
+          <ClockLoader
+            color="#36d7b7"
+            size={60}
+          />
+    </div>
+  }
   return (
-    <div className="shadow-xl bg-white rounded flex flex-col items-center">
-      <h2 className="font-bold text-3xl w-fit mt-10">Add New User</h2>
+    <div className="shadow-xl bg-white rounded flex flex-col items-center mt-4">
       <ToastContainer/>
       <form onSubmit={handleSubmit} className="mt-6 px-8 pt-6 pb-8 mb-4 w-full">
         <div id="formPage-1" className={currentForm == 0 ? "" : "hidden"}>
-          <h2 className="font-bold text-2xl w-fit mt-5 mb-8">
-            Personal Information
+          <h2 className="font-bold text-2xl w-fit">
+            Edit Personal Information
           </h2>
+          <hr className="mb-8 mt-2"></hr>
           <div className="grid grid-cols-2 gap-x-4">
             <div className="col-span-1 w-full flex flex-col mb-4 ">
               <label
@@ -293,112 +293,15 @@ const CreateUserForm = () => {
                 required
               />
             </div>
-            <div className="col-span-1 w-full flex flex-col mb-4 ">
-              <label
-                className="block text-gray-700 text-md font-bold mb-2"
-                htmlFor="nicDocument"
-              >
-                Nic Document
-              </label>
-              <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                type="file"
-                name="nicDocument"
-                id="nicDocument"
-                onChange={(e)=>{setNicDocument(e.target.files[0])}}
-                required
-              />
-            </div>
-            <div className="col-span-1 w-full flex flex-col mb-4 ">
-              <label
-                className="block text-gray-700 text-md font-bold mb-2"
-                htmlFor="empPhoto"
-              >
-                Employee Photogragh <span className="font-normal">(.png .jpg .jpeg are only accepted)</span>
-              </label>
-              <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                type="file"
-                accept=".png .jpg .jpeg"
-                name="empPhoto"
-                id="empPhoto"
-                onChange={(e)=>{setEmpPhoto(e.target.files[0])}}
-                required
-              />
-            </div>
-            <div className="grid grid-cols-2 col-span-2 w-full ">
-              <div className="col-span-2 mt -10 flex justify-between mb-8 items-center">
-                <h2 className="font-bold text-2xl w-fit ">Emergency Contact</h2>
-                <button
-                className="bg-actionBlue py-2 px-6 rounded-md text-white font-bold mt-2"
-                  onClick={() => {
-                    AddContact();
-                  }}
-                >
-                  Add
-                </button>
-              </div>
-
-              {emergencyContacts.map((contact, index) => {
-                return (
-                  <div
-                    key={index}
-                    className="grid grid-cols-2 col-span-2 gap-x-4"
-                  >
-                    <div className="col-span-1 w-full flex flex-col">
-                      <label
-                        className="block text-gray-700 text-md font-bold mb-2"
-                        htmlFor="emergencyName"
-                      >
-                        Contact Name
-                      </label>
-                      <input
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        type="text"
-                        name="emergencyName"
-                        value={emergencyContacts[index].emergencyName}
-                        onChange={(e)=>{handleContactChange(index,e.target.name,e.target.value)}}
-                        id={`emergencyName${index}`}
-                        required
-                      />
-                    </div>
-                    <div className="col-span-1 w-full flex flex-col">
-                      <label
-                        className="block text-gray-700 text-md font-bold mb-2"
-                        htmlFor="emergencyContact"
-                      >
-                        Contact Number
-                      </label>
-                      <div className="flex w-full">
-                        <input
-                          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                          type="text"
-                          name="emergencyContact"
-                          id={`emergencyContact${index}`}
-                          value={emergencyContacts[index].emergencyContact}
-                          onChange={(e)=>{handleContactChange(index,e.target.name,e.target.value)}}
-                          required
-                        />
-                        <button
-                          className={index > 0 ? "bg-actionRed py-2 px-4 ml-2 rounded-md text-white font-bold " : "hidden"}
-                          onClick={() => {
-                            removeContact(index);
-                          }}
-                        >
-                          -
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
+            
+            
           </div>
         </div>
         <div id="formPage-2" className={currentForm == 1 ? "" : "hidden"}>
-          <h2 className="font-bold text-2xl w-fit mt-5 mb-8">
-            Employee Information
+          <h2 className="font-bold text-2xl w-fit mt-5">
+            Edit Employee Information
           </h2>
+          <hr className="mb-8 mt-2"></hr>
           <div className="grid grid-cols-2 gap-x-4">
             <div className="col-span-1 w-full flex flex-col mb-4">
               <label className="block text-gray-700 text-md font-bold mb-2" htmlFor="role">Role</label>
@@ -478,17 +381,7 @@ const CreateUserForm = () => {
                 required
               />
             </div>
-            <div className="col-span-1 w-full flex flex-col mb-4">
-              <label className="block text-gray-700 text-md font-bold mb-2" htmlFor="licenceDoc">Licence Document</label>
-              <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                type="file"
-                name="licenceDoc"
-                id="licenceDoc"
-                onChange={(e)=>{setLicenceDocument(e.target.files[0])}}
-                required
-              />
-            </div>
+         
                 </>
               ):(<></>)
             }
@@ -574,4 +467,4 @@ const CreateUserForm = () => {
   );
 };
 
-export default CreateUserForm;
+export default EditUserForm;
