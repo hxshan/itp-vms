@@ -4,11 +4,15 @@ import axios from "@/api/axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
+import Swal from "sweetalert2";
+
+
 
 const CreateUserForm = () => {
   //Api Hooks
   const [roleData,roleError, roleloading, axiosFetch] = useAxios()
   const [user,usererror, userloading, useraxiosFetch,axiosupdatedFetch] = useAxios()
+  const [reload,setReload]=useState(0)
   const navigate = useNavigate()
 
   const getRoleData =()=>{
@@ -21,7 +25,7 @@ const CreateUserForm = () => {
 
   useEffect(()=>{
     getRoleData()
-  },[])
+  },[reload])
 
   useEffect(()=>{
     if(roleData && roleData.length > 0){
@@ -141,6 +145,16 @@ const CreateUserForm = () => {
         'Content-Type': 'multipart/form-data',
       },
     });
+
+    if(!error){  
+      Swal.fire({
+        title: "Success!",
+        text: "A new user has been created",
+        icon: "success"
+      });
+      setReload(reload+1)
+    }
+
   }
 
   const AddContact = () => {
