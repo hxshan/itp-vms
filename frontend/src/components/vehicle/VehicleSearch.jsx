@@ -36,6 +36,7 @@ const VehicleSearch = () => {
 
     if (confirm("Are you sure you want to delete the following vehicle?")) {
       try {
+        confirm('Do you want to Delete this vehicle ?')
         await axios.patch(`/vehicle/delete/${e.target.id}`);
         setReload(reload + 1);
 
@@ -127,7 +128,7 @@ const VehicleSearch = () => {
                 <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{vehicle.vehicleRegister}</td>
                 <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200"><span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded -full ${vehicle.statusVehicle=='Active'?'text-green-500 bg-green-100': vehicle.statusVehicle=='Deactive'?'text-red-600 bg-red-100':'text-orange-600 bg-orange-100'}`}>{vehicle.statusVehicle.toUpperCase()}</span></td>
                 <td className="px-2 py-2 whitespace-nowrap border-r border-gray-200 flex justify-center">
-                        <button className="my-1 mx-1 bg-blue-700 text-white py-1 px-4 rounded-md text-sm"
+                        <button className="my-1 mx-1 bg-actionBlue text-white py-1 px-4 rounded-md text-sm"
                         id={vehicle._id}
                         onClick={() => handleViewClick(vehicle._id)}>
                           View
@@ -142,7 +143,7 @@ const VehicleSearch = () => {
                         </button>
 
                         <button
-                          className="my-1 mx-1 bg-red-700 text-white py-1 px-4 rounded-md text-sm"
+                          className="my-1 mx-1 bg-actionRed text-white py-1 px-4 rounded-md text-sm"
                           id={vehicle._id}
                           onClick={(e)=>{deactiveVehicle(e)}}
                         >

@@ -127,12 +127,12 @@ fetchData();
             
              {renderFormComponent()} 
             <div className="flex flex-row justify-end">
-            <button className="mx-2 bg-blue-600 py-2 px-6 rounded-md text-white font-bold mt-2" type="submit">Update</button>
+            <button className="mx-2 bg-actionBlue py-2 px-6 rounded-md text-white font-bold mt-2" type="submit">Update</button>
             </div> 
             
           </form>
           <div className="flex flex-row justify-start">
-            <button className="mx-2 bg-red-600 py-2 px-4 rounded-md text-white text-sm font-bold mt-2" type="button" onClick={handleCancel}>Cancel</button>
+            <button className="mx-2 bg-actionRed py-2 px-4 rounded-md text-white text-sm font-bold mt-2" type="button" onClick={handleCancel}>Cancel</button>
           </div>
         </>
       )}

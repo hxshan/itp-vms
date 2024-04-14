@@ -49,7 +49,7 @@ const NewlyAddedTable = ({ category, categoryData }) => {
         <ReactToPrint
                     trigger={() => (
                         <button
-                            className="mx-2 px-3 py-1 rounded-md bg-red-500 text-white text-sm text-bold"
+                            className="mx-2 px-3 py-1 rounded-md bg-actionRed text-white text-sm text-bold"
                         >
                             {category.charAt(0).toUpperCase() + category.slice(1)} Vehicle Table Report
                         </button>

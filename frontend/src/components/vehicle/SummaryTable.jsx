@@ -46,9 +46,9 @@ const SummaryTable = ({ category, filteredData }) => {
     <ReactToPrint
                     trigger={() => (
                         <button
-                            className="mx-2 px-3 py-1 rounded-md bg-red-500 text-white text-sm text-bold"
+                            className="mx-2 px-3 py-1 rounded-md bg-actionRed text-white text-sm text-bold"
                         >
-                            General {category.charAt(0).toUpperCase() + category.slice(1)} Table Report
+                             {category.charAt(0).toUpperCase() + category.slice(1)} Table Report
                         </button>
                     )}
                     content={() => componentRef.current}

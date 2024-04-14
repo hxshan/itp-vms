@@ -112,7 +112,7 @@ const calculatePercentage = (numerator, denominator) => {
             <ReactToPrint
                     trigger={() => (
                         <button
-                            className="mx-2 px-3 py-1 rounded-md bg-red-500 text-white text-sm text-bold"
+                            className="mx-2 px-3 py-1 rounded-md bg-actionRed text-white text-sm text-bold"
                         >
                             General Report
                         </button>
@@ -123,7 +123,7 @@ const calculatePercentage = (numerator, denominator) => {
     
             </div>    
 
-            <button className='mx-2 px-3 py-1 rounded-md bg-blue-500 text-white text-sm text-bold' onClick={() => navigate('/vehicle')}>Dashboard</button>     
+            <button className='mx-2 px-3 py-1 rounded-md bg-actionBlue text-white text-sm text-bold' onClick={() => navigate('/vehicle')}>Dashboard</button>     
         </div>
         <div ref={componentRef}>
           <div className='p-4'> 
@@ -132,7 +132,7 @@ const calculatePercentage = (numerator, denominator) => {
           <div className="flex m-0 flex-col ">
 
            
-            <div className='flex flex-row '>
+            <div className='flex flex-row mb-6'>
                
                 <div className="grow-0 p-3 bg-white rounded-md pad justify-satart">
 
