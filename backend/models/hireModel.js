@@ -9,6 +9,15 @@ const hireSchema = new mongoose.Schema({
     type: Date, 
     required: true 
 },
+startTime: { 
+  type: String, 
+  required: true 
+},
+endTime: { 
+  type: String, 
+   
+},
+
   endDate: { 
     type: Date, 
     required: true 
@@ -30,12 +39,12 @@ const hireSchema = new mongoose.Schema({
     required: true 
 },
   vehicle: { 
-    type: String, 
-    required: true 
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: 'Vehicles', 
 },
   driver: { 
-    type: String, 
-    required: true 
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: 'User', 
 },
   startPoint: { 
     type: String, 
@@ -80,6 +89,18 @@ const hireSchema = new mongoose.Schema({
     type : Number,
     required: true
 },
+intialOdometerReading: {
+  type: Number, 
+},
+intialOdometerPic: {
+  type:String, 
+},
+  finalOdometerReading: {
+  type: Number, 
+},
+finalOdometerPic: {
+  type:String, 
+}
 });
 
 module.exports = mongoose.model('Hire', hireSchema);

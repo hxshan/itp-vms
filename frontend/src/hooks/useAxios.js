@@ -16,15 +16,21 @@ const useAxios = () => {
     } = configObj;
 
     try {
+   
       setLoading(true);
       const ctrl = new AbortController();
       setController(ctrl);
+      
+      console.log(requestConfig.data)
       const res = await axiosInstance[method.toLowerCase()](url, {
         ...requestConfig,
         headers,
         signal: ctrl.signal,
+       
       });
+      console.log(res)
       setResponse(res.data);
+
       setError("");
     } catch (error) {
       console.log(error);

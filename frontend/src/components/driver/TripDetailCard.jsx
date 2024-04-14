@@ -24,9 +24,9 @@ const TripDetailCard = ({ trip }) => {
 
   {/* Pickup and Destination */}
   <div className="flex items-center mb-2 md:mb-0 md:mr-4">
-    <p className="text-lg font-semibold mr-2">{trip.pickupLocation}</p>
+    <p className="text-lg font-semibold mr-2">{trip.startPoint}</p>
     <p className="text-lg font-semibold mr-2">-</p>
-    <p className="text-lg font-semibold">{trip.destination}</p>
+    <p className="text-lg font-semibold">{trip.endPoint}</p>
   </div>
 
   {/* Time and Car Details */}
@@ -37,7 +37,7 @@ const TripDetailCard = ({ trip }) => {
     </div>
     <div className="flex items-center">
       <FaCar className="text-gray-600 mr-2" />
-      <p className="text-sm md:text-base text-gray-600">{trip.vehicleName} ({trip.vehicleNumber})</p>
+      <p className="text-sm md:text-base text-gray-600">{trip.vehicle.vehicleRegister} </p>
     </div>
   </div>
 </button>
