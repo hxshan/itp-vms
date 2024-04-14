@@ -71,14 +71,15 @@ const CreateUserForm = () => {
 
 
   const formPageIncrement=()=>{
-    if((emergencyContacts[0].emergencyContact||emergencyContacts[0].emergencyName)===''){
-      toast.error("Add Atleast one Emergency Contact")
-      return
-    }
     if((personalInfo.firstName||personalInfo.lastName||personalInfo.gender||personalInfo.dob||personalInfo.phoneNumber||personalInfo.nicNumber) ==''){
       toast.error("All Personal details should be filled")
       return
     }
+    if((emergencyContacts[0].emergencyContact||emergencyContacts[0].emergencyName)===''){
+      toast.error("Add Atleast one Emergency Contact")
+      return
+    }
+   
     if(nicDocument == null){
       toast.error("Please upload Nic Document")
       return
