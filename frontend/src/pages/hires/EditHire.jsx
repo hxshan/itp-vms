@@ -27,7 +27,7 @@ const EditHire = () => {
     const [startPointCity, setStartPointCity] = useState(viewHireData.startPoint.city)
     const [endPoint, setEndPoint] = useState(viewHireData.endPoint);
     const [tripType, setTripType] = useState(viewHireData.tripType);
-    const [distance, setDistance] = useState(viewHireData.distance);
+    const [estimatedDistance, setEstimatedDistance] = useState(viewHireData.estimatedDistance);
     const [cusName, setCusName] = useState(viewHireData.cusName);
     const [cusEmail, setCusEmail] = useState(viewHireData.cusEmail);
     const [cusMobile, setCusMobile] = useState(viewHireData.cusMobile);
@@ -56,7 +56,7 @@ const EditHire = () => {
           startPointCity,
           endPoint,
           tripType,
-          distance,
+          estimatedDistance,
           cusName,
           cusEmail,
           cusMobile,
@@ -361,8 +361,8 @@ const EditHire = () => {
                             </label>
 
                             <input type="number" id="distence" name="distence" 
-                            value={distance}
-                            onChange={(e) => setDistance(e.target.value)} 
+                            value={estimatedDistance}
+                            onChange={(e) => setEstimatedDistance(e.target.value)} 
                             placeholder='Estimate Distence'
                             className='border-2 rounded border-black px-4'
                             required

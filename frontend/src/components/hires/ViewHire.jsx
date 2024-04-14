@@ -59,7 +59,7 @@ const ViewHire = ({setViewHire , viewHireData}) => {
                     <p className='text-lg font-semibold leading-8'>Start Point :&nbsp;&nbsp; {viewHireData.startPoint.no} {viewHireData.startPoint.street} {viewHireData.startPoint.city}</p>
                     <p className=' text-lg font-semibold leading-8'>End Point : &nbsp;&nbsp; {viewHireData.endPoint}</p>
                     <p className=' text-lg font-semibold leading-8'>Round Trip : &nbsp;&nbsp; {viewHireData.tripType ? "yes" : "No"}</p>
-                    <p className=' text-lg font-semibold leading-8'>distance : &nbsp;&nbsp; {viewHireData.distance}</p>
+                    <p className=' text-lg font-semibold leading-8'>Estimated Distance : &nbsp;&nbsp; {viewHireData.estimatedDistance}</p>
                   </div>
                 </div>
                 

@@ -83,14 +83,14 @@ const validateFormSecondPage = (FormData) => {
         return error
     }
     
-    if (FormData.distance  === '') {
-        error.distance = 'Please Enter distance'
+    if (FormData.estimatedDistance  === '') {
+        error.estimatedDistance = 'Please Enter distance'
         alert('Please Enter distance')
         return error
     }
 
-    if (FormData.distance  <= 0) {
-        error.distance = 'Please Enter valid distance'
+    if (FormData.estimatedDistance  <= 0) {
+        error.estimatedDistance = 'Please Enter valid estimatedDistance'
         alert('Please Enter valid distance')
         return error
     }
