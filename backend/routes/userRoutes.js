@@ -28,6 +28,7 @@ const storage = multer.diskStorage({
       path='uploads/licence_documents'
     else
       path='uploads/employee_picture'
+    
     cb(null, path);
   },
   filename: (req, file, cb) => {

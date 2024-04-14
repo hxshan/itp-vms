@@ -30,7 +30,7 @@ const EditUserDocuments = () => {
 
     formDataToSend.append('licenceDoc', licenceDoc);
     formDataToSend.append('empPhoto', empPhoto);
-    formDataToSend.append('nicDocument',nicDocument)
+    formDataToSend.append('nicDocument',nicDocument);
     
     axiosupdatedFetch({
       axiosInstance: axios,

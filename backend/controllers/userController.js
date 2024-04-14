@@ -49,7 +49,7 @@ const createUser = async (req, res) => {
     const nicDocumentPath = req.files.nicDocument[0].path||null;
     const empPhotoName=req.files.empPhoto[0].filename;
 
-    console.log(empPhotoName)
+    // console.log(empPhotoName)
     //match front and back names
     const user = new User({
       firstName,
@@ -90,14 +90,14 @@ const createUser = async (req, res) => {
       return res.status(500).json({ message: err.message });
     }
 
-    console.log(user)
+    // console.log(user)
     await user.save();
-    console.log('saved')
+    // console.log('saved')
 
 
     return res.status(200).json({ message: "User created succesfully" });
   } catch (err) {
-    console.log(err);
+    // console.log(err);
     return res.status(500).json({ message: err.message });
   }
 };
@@ -155,7 +155,7 @@ const updateUserPersonal = async(req,res) =>{
 
     return res.status(200).json({ message: "User Updated succesfully" });
   } catch (err) {
-    console.log(err);
+    // console.log(err);
     return res.status(500).json({ message: err.message });
   }
 
@@ -172,8 +172,11 @@ const deleteContact = async(req,res) =>{
     
     const deleteContact = await EmergencyContact.findByIdAndDelete(ContactId);
     if(!deleteContact) return res.status(500).json({ message: 'Delete Failed' });
+    
+    const newContactArr = user.emergencyContacts.filter((id)=>{
+      return id.toString() !== deleteContact._id.toString()
+    })
 
-    const newContactArr= user.emergencyContacts.filter(contact=>contact !== ContactId)
     const updatedUser = await User.findByIdAndUpdate(id,{emergencyContacts:newContactArr})
 
     if(!updatedUser) return res.status(500).json({ message: 'Update Failed' });
@@ -207,9 +210,13 @@ const updateContact = async(req,res) =>{
           return newContact._id
          }
     });
-   
+   //Change This to not update with Null
     const emergencyContactIds = await Promise.all(emergencyContactPromises);
-    emergencyContactIds.forEach(ContactId => {
+    let filteredid=emergencyContactIds.filter((id)=>id!=null)
+
+    // console.log(filteredid)
+
+    filteredid.forEach(ContactId => {
       if(ContactId != null){
         contacts.push(ContactId)
       }
@@ -264,7 +271,7 @@ const updateDocuments = async(req,res) =>{
     
     return res.status(200).json({message:'Success'})
   }catch(error){
-    console.log(error)
+    // console.log(error)
     return res.status(500).json({message:JSON.stringify(error)})
   }
 
@@ -288,7 +295,7 @@ const getAllUsers = async (req, res) => {
 
 const setUserAsDeleted=async (req,res)=>{
   const {id}=req.params
-  console.log(id)
+  // console.log(id)
   try{
     const updateduser= await User.findByIdAndUpdate(id,{status:'deleted'})
     if(!updateduser) return res.status(500).json({ message: "Update Failed" });
@@ -312,7 +319,7 @@ const getDrivers= async (req,res)=>{
     return res.status(200).json(drivers);  
 
   }catch(error){
-    console.log(error)
+    // console.log(error)
   }
   
 }
@@ -326,7 +333,7 @@ const getUserById = async (req,res)=>{
     if(!user) return res.status(404).json({message:'User Not Found'})
     return res.status(200).json(user)
   }catch(error){
-    console.log(error);
+    // console.log(error);
     return res.status(404).json({message:JSON.stringify(error.message)})
   }
     
