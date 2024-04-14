@@ -1,5 +1,15 @@
 const express = require('express')  
-const {createUser,getAllUsers,getUserById,resetPassword,getDrivers,setUserAsDeleted,updateUserPersonal,deleteContact,updateContact} = require('../controllers/userController')
+const {
+  createUser,
+  getAllUsers,
+  getUserById,
+  resetPassword,
+  getDrivers,
+  setUserAsDeleted
+  ,updateUserPersonal,
+  deleteContact,
+  updateContact,
+  updateDocuments} = require('../controllers/userController')
 const Auth =require('../middleware/Auth')
 
 
@@ -38,11 +48,13 @@ router.get('/:id',getUserById)
 //POST
 router.post('/',upload.fields([{name:'nicDocument',maxCount:1},{name:'licenceDoc',maxCount:1},{name:'empPhoto',maxCount:1}]),createUser)
 
+
 //PATCH
 router.patch('/password/:id',resetPassword)
 router.patch('/delete/:id',setUserAsDeleted)
 router.patch('/personal/:id',updateUserPersonal)
 router.patch('/addcontacts/:id',updateContact)
+router.patch('/editdocs/:id',upload.fields([{name:'nicDocument',maxCount:1},{name:'licenceDoc',maxCount:1},{name:'empPhoto',maxCount:1}]),updateDocuments)
 
 //DELETE
 router.patch('/contacts/:id',deleteContact)

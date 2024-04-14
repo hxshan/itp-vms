@@ -36,6 +36,7 @@
     "react-spinners": "^0.13.8",
     "react-to-print": "^2.15.1",
     "react-toastify": "^10.0.5",
+    "sweetalert2": "^11.10.7",
     "tailwind-merge": "^2.2.1",
     "tailwindcss-animate": "^1.0.7"
   },

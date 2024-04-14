@@ -47,8 +47,8 @@ const createUser = async (req, res) => {
     }
 
     const nicDocumentPath = req.files.nicDocument[0].path||null;
-    
     const empPhotoName=req.files.empPhoto[0].filename;
+
     console.log(empPhotoName)
     //match front and back names
     const user = new User({
@@ -228,6 +228,49 @@ const updateContact = async(req,res) =>{
   }
 }
 
+const updateDocuments = async(req,res) =>{
+
+  const { id } = req.params
+
+  try{
+
+    const user = await User.findById(id).exec()
+    if(!user) return res.status(400).json({message:'User not found'})
+
+    //TODO: make this shorter with the ? for now keep it so it works
+    let  newNicDocumentName =user.nicDocument
+    let newEmpPhotoName =user.empPhoto
+    let newLicenceName =user.licenceDoc||null
+
+    if(req?.files?.empPhoto !== undefined)
+     newEmpPhotoName=req.files.empPhoto[0].filename
+    else
+      newEmpPhotoName=user?.empPhoto||null
+
+    if(req.files?.nicDocument !== undefined)
+      newNicDocumentName=req.files.nicDocument[0].filename
+    else
+      newNicDocumentName=user?.empPhoto||null
+
+    if(req.files?.licenceDoc !== undefined)
+      newLicenceName=req.files.licenceDoc[0].filename 
+    else
+      newLicenceName=user?.licenceDoc ||null;
+
+
+    const updatedUser = await User.findByIdAndUpdate(id,{nicDocument:newNicDocumentName,empPhoto:newEmpPhotoName,licenceDoc:newLicenceName})
+
+    if(!updatedUser) return res.status(500).json({message:'Update failed'})
+    
+    return res.status(200).json({message:'Success'})
+  }catch(error){
+    console.log(error)
+    return res.status(500).json({message:JSON.stringify(error)})
+  }
+
+}
+
+
 const getAllUsers = async (req, res) => {
   try {
     let users = await User.find().populate("role");
@@ -327,5 +370,6 @@ module.exports = {
   setUserAsDeleted,
   updateUserPersonal,
   deleteContact,
-  updateContact
+  updateContact,
+  updateDocuments,
 };
