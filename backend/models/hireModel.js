@@ -67,6 +67,14 @@ const hireSchema = new mongoose.Schema({
     type: Number, 
     required: true 
 },
+  actualDistance: { 
+    type: Number, 
+  
+  },
+  actualTimeTaken: { 
+    type: String, 
+  
+  },
   cusName: { 
     type: String, 
     required: true 
@@ -94,6 +102,18 @@ const hireSchema = new mongoose.Schema({
     type : Number,
     required: true
 },
+  intialOdometerReading: {
+    type: Number, 
+},
+  intialOdometerPic: {
+    type:String, 
+},
+  finalOdometerReading: {
+  type: Number, 
+},
+  finalOdometerPic: {
+    type:String, 
+}
 });
 
 module.exports = mongoose.model('Hire', hireSchema);
