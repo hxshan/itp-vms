@@ -4,12 +4,12 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Pie } from 'react-chartjs-2';
 import useAxios from "@/hooks/useAxios";
 import axios from "@/api/axios";
+
 import NewlyAddedTable from '../../components/vehicle/NewlyAddedTable';
 import UnavailableTable from '../../components/vehicle/UnavailableTable';
 import VehicleSearch from "../../components/vehicle/VehicleSearch"
 import SummaryTable from "../../components/vehicle/SummaryTable"
 import DeletedTable from "../../components/vehicle/DeletedVehicle"
-import PieChart from "../../components/vehicle/PieChart"
 
 
 const VehicleDashboard = () => {
@@ -50,7 +50,7 @@ const VehicleDashboard = () => {
   }
   if(error){
     return(
-      <p>Unexpected Error has occured!</p>
+      <p className="flex flex-col items-center justify-center h-screen text-center text-lg font-bold text-black">Unexpected Error has occured!</p>
     )
   }
 
@@ -89,7 +89,7 @@ const VehicleDashboard = () => {
       case 'search':
         return (
           <div>
-            <PieChart />
+            <VehicleSearch />
           </div>
         );
       case 'summary':
@@ -206,7 +206,7 @@ const VehicleDashboard = () => {
              <div className='mt-8 flex flex-row'>
              <button className= "m-1 px-2 py-2 bg-blue-500 text-zinc-50 rounded-md text-sm font-semibold  hover:bg-slate-500 ease-in-out duration-300" onClick={() => navigate('add')}>Add vehicle</button>
              <button className= "m-1 p-2 bg-blue-500 text-zinc-50 rounded-md text-sm font-semibold  hover:bg-slate-500 ease-in-out duration-300" onClick={() => setActiveComponent('search')}>Search vehicle</button>
-             <button className= "m-1 p-2 bg-blue-500 text-zinc-50 rounded-md text-sm font-semibold  hover:bg-red-500 ease-in-out duration-300" onClick={() => setActiveComponent('chart')}>Report Generate</button>
+             <button className= "m-1 p-2 bg-blue-500 text-zinc-50 rounded-md text-sm font-semibold  hover:bg-red-500 ease-in-out duration-300" onClick={() => navigate('report')}>Report Generate</button>
              <button className= "m-1 p-2 bg-blue-500 text-zinc-50 rounded-md text-sm font-semibold  hover:bg-slate-500 ease-in-out duration-300" onClick={() => setActiveComponent('summary')}>Vehicle Summary</button>
              <button className= "m-1 p-2 bg-blue-500 text-zinc-50 rounded-md text-sm font-semibold  hover:bg-slate-500 ease-in-out duration-300" onClick={() => setActiveComponent('newAdded')}>Newly added</button> 
              </div>
