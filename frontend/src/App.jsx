@@ -58,7 +58,9 @@ function App() {
       <Routes>
         <Route path="/userauth/failed" element={<UnAuthorized />} />
       </Routes>
-      
+      <main className="flex w-full bg-slate-100 min-h-screen">
+        <TopBar />
+        <Navbar />
           
           <Routes>
             <Route path="/login" element={<Login />} />
@@ -130,7 +132,7 @@ function App() {
               element={<VehicleServiceList />}
             />
           </Routes>
-     
+     </main>
     </>
   );
 }
