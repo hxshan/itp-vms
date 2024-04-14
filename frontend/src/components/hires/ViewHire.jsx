@@ -94,7 +94,7 @@ const ViewHire = ({setViewHire , viewHireData}) => {
 
               <div className='mr-[20px] mt-10 flex justify-between items-baseline'>  
                 <button className="px-4 py-2 bg-gray-300  text-gray-700 rounded-md mr-4 " onClick={cancel}>Cancel</button> 
-                <button className="px-7 py-2 bg-actionGreen text-white text-white rounded-md mr-4" onClick={handleEdit}>Edit</button>
+                <button className="px-7 py-2 bg-actionGreen text-white rounded-md mr-4" onClick={handleEdit}>Edit</button>
                
 
                 <ReactToPrint
