@@ -19,9 +19,11 @@ const fetchHiresRates = async (req, res) => {
     try {
         const {
             vehicleCatagory,
+            basedDistance,
             baseRate,
-            baseDistence,
-            additionalRate
+            additionalRate,
+            acBaseRate,
+            acAdditionalRate
         } = req.body.data;
 
         const Category = vehicleCatagory.toLowerCase();
@@ -33,10 +35,12 @@ const fetchHiresRates = async (req, res) => {
         }
 
         const newHireRate = new hireRates({
-            vehicleCatagory: Category,
+            vehicleCatagory: Category,   
+            basedDistance,
             baseRate,
-            baseDistence,
-            additionalRate
+            additionalRate,
+            acBaseRate,
+            acAdditionalRate
         });
 
         await newHireRate.save();
@@ -55,16 +59,20 @@ const editHireRate = async (req, res) => {
     const { id } = req.params;
     const { 
         vehicleCatagory,
+        basedDistance,
         baseRate,
-        baseDistence,
-        additionalRate
+        additionalRate,
+        acBaseRate,
+        acAdditionalRate
      } = req.body.data;
     try {
       const hire = await hireRates.findByIdAndUpdate(id, { 
         vehicleCatagory,
+        basedDistance,
         baseRate,
-        baseDistence,
-        additionalRate
+        additionalRate,
+        acBaseRate,
+        acAdditionalRate
        }, { new: true });
 
       if (!hireRates) {

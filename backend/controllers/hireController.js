@@ -33,7 +33,7 @@ const addHire = async (req, res) => {
       endPoint,
       startTime,
       tripType,
-      distance,
+      estimatedDistance,
       cusName,
       cusEmail,
       cusMobile,
@@ -61,7 +61,8 @@ const addHire = async (req, res) => {
       endPoint,
       startTime,
       tripType,
-      distance,
+      estimatedDistance,
+
       cusName,
       cusEmail,
       cusMobile,
@@ -115,7 +116,7 @@ const editHire = async (req, res) => {
     endPoint,
     startTime,
     tripType,
-    distance,
+    estimatedDistance,
     cusName,
     cusEmail,
     cusMobile,
@@ -142,7 +143,7 @@ const editHire = async (req, res) => {
       endPoint,
       startTime,
       tripType,
-      distance,
+      estimatedDistance,
       cusName,
       cusEmail,
       cusMobile,
@@ -212,7 +213,8 @@ const sendmail = async (transporter, hireData) => {
       <p>Driver: ${hireData.driver}</p>
       <p>Start Point: ${hireData.startPoint}</p>
       <p>End Point: ${hireData.endPoint}</p>
-      <p>Distance: ${hireData.distence}</p>
+      <p>Distance: ${hireData.estimatedDistance}</p>
+
       <p>Customer Name: ${hireData.cusName}</p>
       <p>Customer Email: ${hireData.cusEmail}</p>
       <p>Customer Mobile: ${hireData.cusMobile}</p>
@@ -232,3 +234,4 @@ const sendmail = async (transporter, hireData) => {
 };
 
 module.exports = { addHire, fetchHires, editHire, deleteHire };
+

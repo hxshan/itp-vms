@@ -1,12 +1,13 @@
 import { useLocation, useNavigate} from 'react-router-dom'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 import axios from '@/api/axios';
 import useAxios from "@/hooks/useAxios";
 
+import { ClipLoader } from "react-spinners";
+
 
 const EditHire = () => {
-
     const location = useLocation()
     const viewHireData = location.state.viewHireData
 
@@ -21,10 +22,12 @@ const EditHire = () => {
     const [passengerCount, setPassengerCount] = useState(viewHireData.passengerCount);
     const [vehicle, setVehicle] = useState(viewHireData.vehicle);
     const [driver, setDriver] = useState(viewHireData.driver);
-    const [startPoint, setStartPoint] = useState(viewHireData.startPoint);
+    const [startPointNo, setStartPointNo] = useState(viewHireData.startPoint.no)
+    const [startPointStreet, setStartPointSteet] = useState(viewHireData.startPoint.street)
+    const [startPointCity, setStartPointCity] = useState(viewHireData.startPoint.city)
     const [endPoint, setEndPoint] = useState(viewHireData.endPoint);
     const [tripType, setTripType] = useState(viewHireData.tripType);
-    const [distance, setDistance] = useState(viewHireData.distance);
+    const [estimatedDistance, setEstimatedDistance] = useState(viewHireData.estimatedDistance);
     const [cusName, setCusName] = useState(viewHireData.cusName);
     const [cusEmail, setCusEmail] = useState(viewHireData.cusEmail);
     const [cusMobile, setCusMobile] = useState(viewHireData.cusMobile);
@@ -48,10 +51,12 @@ const EditHire = () => {
           passengerCount,
           vehicle,
           driver,
-          startPoint,
+          startPointNo,
+          startPointStreet,
+          startPointCity,
           endPoint,
           tripType,
-          distance,
+          estimatedDistance,
           cusName,
           cusEmail,
           cusMobile,
@@ -97,6 +102,91 @@ const EditHire = () => {
             navigate('/hires');
         }
     }
+
+    //Fetch Vehicle Data
+  const [vehiclesData, vehiclesError, vehiclesLoading, axiosFetchVehicles] = useAxios()
+  
+
+  const fetchVehicleDetails = async () => {
+    axiosFetchVehicles({
+          axiosInstance: axios,
+          method: "GET",
+          url: "/vehicle/",
+      });
+  };
+
+  if(vehiclesError){
+    return(
+      <p>Can not Vehicle Fetch Data</p>
+    )
+  }
+
+  //Filter Vehicles
+  const [filteredVehicles, setFilteredVehicles] = useState([]);
+  
+  const filterVehicles = () => {
+    console.log("Filter Vehicles")
+
+    console.log("Selected Vehicle : " + vehicleType)
+    const selectedVehicles = vehiclesData.vehicles ?.filter((vehicle) => vehicle.category.toLowerCase() === vehicleType.toLowerCase());
+    console.log(selectedVehicles)
+
+    setFilteredVehicles(selectedVehicles); 
+    if(selectedVehicles.length === 0 ){
+      console.log("No vehicles Available")
+      alert("No vehicles Available")
+    }
+
+    if(vehiclesError){
+    return(
+      <p>Can not Fetch Data</p>
+    )
+  }
+
+
+  }
+
+    //Fetch Drivers
+    const [DriversData, DriversError, DriversLoading, axiosFetchDrivers] = useAxios()
+    //const [availableDrivers, setavailableDrivers] = useState(["Chamara" , "Jonny", "Danny", "Chanchala"])
+
+    const filterDrivers = () => {
+        console.log('Filter Drivers')
+        axiosFetchDrivers({
+        axiosInstance: axios,
+        method: "GET",
+        url: "/user/drivers",
+    });
+    }
+
+    if(DriversError) {
+        <p>Can not Fetch Driver Data</p>
+    }
+    
+
+    useEffect(() => {
+        fetchVehicleDetails()
+        console.log('vehiclesData')
+        console.log(vehiclesData)
+        filterDrivers()
+    }, [])
+
+    useEffect(() => {
+        if (vehiclesData && vehiclesData.vehicles) {
+            filterVehicles();
+        }
+    }, [vehiclesData]);
+
+    if(loading || vehiclesLoading || DriversLoading) {
+        return (
+            <div className="flex justify-center items-center h-screen">
+              <div className="sweet-loading">
+                <ClipLoader color="#10971D" loading={true}  size={50} />
+              </div>
+            </div>
+          );
+          
+    }
       
 
   return (
@@ -135,9 +225,8 @@ const EditHire = () => {
                             className='border-2 rounded border-black px-14'
                             required
                             >
-                                <option value="">Select Vehicle</option>
-                                {availableVehicles.map((type) => (
-                                    <option key={type.id} value={type}>{type}</option>
+                                {filteredVehicles.map((vehicle) => (
+                                <option key={vehicle.id} value={vehicle._id}>{vehicle.vehicleRegister}</option>
                                 ))}
 
                             </select>
@@ -155,9 +244,9 @@ const EditHire = () => {
                             className='border-2 rounded border-black px-14'
                             required
                             >
-                                <option value="">Select Driver</option>
-                                {availableDrivers.map((type) => (
-                                    <option key={type.id} value={type}>{type}</option>
+                                
+                                {DriversData.map((driver) => (
+                                    <option key={driver.id} value={driver}>{driver.firstName}</option>
                                 ))}
                             </select>
                         </div>
@@ -165,24 +254,69 @@ const EditHire = () => {
                     </div>
 
                     <div className='flex justify-between align-baseline mb-5'>
-                        <div className=" flex flex-col justify-between align-baseline mr-2 xl:flex-row xl:flex-1 xl:mr-14">
+                    <div>
+                        <div className='mb-2'><h2 className='font-medium text-black  text-base'>Start Point : </h2></div>
+                        
+                        <div>
+                            <div className='flex justify-between align-baseline mb-7'>
+                            <div className=" flex flex-col justify-between align-baseline mr-2 xl:flex-row xl:flex-1 xl:mr-14">
 
-                            <label htmlFor="startPoint" 
-                            className="block font-medium text-black  text-base xl:mr-7">
-                            Starting Point
-                            </label>
+                                <label htmlFor="startPointNo" 
+                                className="block font-medium text-black  text-base xl:mr-7">
+                                No
+                                </label>
 
-                            <input type="text" id="startPoint" name="startPoint" 
-                            value={startPoint}
-                            onChange={(e) => setStartPoint(e.target.value)} 
-                            placeholder='From'
-                            className='border-2 rounded border-black px-4'
-                            required
-                            />
+                                <input type="text" id="startPointNo" name="startPointNo" 
+                                value={startPointNo}
+                                onChange={(e) => setStartPointNo(e.target.value)} 
+                                placeholder='House Number'
+                                className='border-2 rounded border-black px-4'
+                                required
+                                />
 
-                        </div> 
+                            </div> 
+                            
 
-                        <div className=" flex flex-col justify-between align-baseline xl:flex-row xl:flex-1">
+                            <div className=" flex flex-1 flex-col justify-between align-baseline xl:flex-row xl:flex-1">
+
+                                <label htmlFor="startPointStreet" 
+                                className="block font-medium text-black mr-[5px] text-base xl:mr-7">
+                                Street
+                                </label>
+
+                                <input type="text" id="startPointStreet" name="startPointStreet" 
+                                value={startPointStreet}
+                                onChange={(e) => setStartPointSteet(e.target.value)} 
+                                placeholder='Street'
+                                className='border-2 rounded border-black px-4'
+                                required
+                                />
+
+                            </div>
+                            
+                            </div>
+
+                            <div className='flex justify-between align-baseline mb-7'>
+                            <div className=" flex  flex-col align-baseline xl:flex-row xl:flex-1">
+
+                                <label htmlFor="startPointCity" 
+                                className="block font-medium text-black mr-[5px] text-base xl:mr-7">
+                                City
+                                </label>
+
+                                <input type="text" id="startPointCity" name="startPointCity" 
+                                value={startPointCity}
+                                onChange={(e) => setStartPointCity(e.target.value)} 
+                                placeholder='City'
+                                className='border-2 rounded border-black px-4 ml-10'
+                                required
+                                />
+
+                            </div>
+                            </div>
+                        </div>
+
+                        <div className=" flex flex-col  align-baseline xl:flex-row xl:flex-1">
 
                             <label htmlFor="endPoint" 
                             className="block font-medium text-black mr-[5px] text-base xl:mr-7">
@@ -198,6 +332,8 @@ const EditHire = () => {
                             />
 
                         </div>
+
+                    </div>
                         
                     </div>
 
@@ -225,8 +361,8 @@ const EditHire = () => {
                             </label>
 
                             <input type="number" id="distence" name="distence" 
-                            value={distance}
-                            onChange={(e) => setDistance(e.target.value)} 
+                            value={estimatedDistance}
+                            onChange={(e) => setEstimatedDistance(e.target.value)} 
                             placeholder='Estimate Distence'
                             className='border-2 rounded border-black px-4'
                             required
@@ -318,7 +454,7 @@ const EditHire = () => {
                         <button
                             type="button"
                             onClick={handleEdit}
-                            className="px-7 py-2 bg-[#0E6300] text-white rounded-md mr-4"
+                            className="px-7 py-2 bg-actionGreen text-white rounded-md mr-4"
                         >
                             Save
                         </button>

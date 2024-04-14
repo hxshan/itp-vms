@@ -10,8 +10,10 @@ const EditHireRates = ({setEditRates, editHireData, reload}) => {
     const [rateId , setRateId] = useState(editHireData._id)
     const [vehicleCatagory , setVehicleSubcategory] = useState(editHireData.vehicleCatagory)
     const [baseRate , setBaseRate] = useState(editHireData.baseRate)
-    const [baseDistence , setBaseDistence] = useState(editHireData.baseDistence)
+    const [basedDistance , setBaseDistance] = useState(editHireData.basedDistance)
     const [additionalRate, setAdditionalRate] = useState(editHireData.additionalRate)
+    const [acBaseRate , setAcBaseRate] = useState(editHireData.acBaseRate)
+    const [acAdditionalRate, setAcAdditionalRate] = useState(editHireData.acAdditionalRate)
 
     const [response, error, loading, axiosFetch] = useAxios()
 
@@ -19,9 +21,11 @@ const EditHireRates = ({setEditRates, editHireData, reload}) => {
 
         const editedRates = {
             vehicleCatagory,
+            basedDistance,
             baseRate,
-            baseDistence,
-            additionalRate
+            additionalRate,
+            acBaseRate,
+            acAdditionalRate
         }
 
         setEditRates(false)
@@ -57,6 +61,12 @@ const EditHireRates = ({setEditRates, editHireData, reload}) => {
         setEditRates(false)
     }
 
+    if(loading){
+        return(
+          <h1>Loading ...</h1>
+        )
+      }
+
 
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50">
@@ -67,6 +77,13 @@ const EditHireRates = ({setEditRates, editHireData, reload}) => {
                 <div className="mt-4">
                     <form onSubmit={handleEditSubmit}>
                         <div className="mb-4">
+                            <label className="block text-sm font-bold mb-2">Base Distance</label>
+                            <input type="number" className="border rounded-md px-3 py-2 w-full" 
+                            value={basedDistance}
+                            onChange={(e) => setBaseDistance(e.target.value)}
+                            />
+                        </div>
+                        <div className="mb-4">
                             <label className="block text-sm font-bold mb-2">Base Rate</label>
                             <input type="number" className="border rounded-md px-3 py-2 w-full" 
                             value={baseRate}
@@ -74,17 +91,24 @@ const EditHireRates = ({setEditRates, editHireData, reload}) => {
                             />
                         </div>
                         <div className="mb-4">
-                            <label className="block text-sm font-bold mb-2">Base Distance</label>
-                            <input type="number" className="border rounded-md px-3 py-2 w-full" 
-                            value={baseDistence}
-                            onChange={(e) => setBaseDistence(e.target.value)}
-                            />
-                        </div>
-                        <div className="mb-4">
                             <label className="block text-sm font-bold mb-2">Additional Rate</label>
                             <input type="number" className="border rounded-md px-3 py-2 w-full" 
                             value={additionalRate}
                             onChange={(e) => setAdditionalRate(e.target.value)}
+                            />
+                        </div>
+                        <div className="mb-4">
+                            <label className="block text-sm font-bold mb-2">Base Rate(AC)</label>
+                            <input type="number" className="border rounded-md px-3 py-2 w-full" 
+                            value={acBaseRate}
+                            onChange={(e) => setAcBaseRate(e.target.value)}
+                            />
+                        </div>
+                        <div className="mb-4">
+                            <label className="block text-sm font-bold mb-2">Additional Rate(AC)</label>
+                            <input type="number" className="border rounded-md px-3 py-2 w-full" 
+                            value={acAdditionalRate}
+                            onChange={(e) => setAcAdditionalRate(e.target.value)}
                             />
                         </div>
                         <div className="flex justify-between">
@@ -96,7 +120,7 @@ const EditHireRates = ({setEditRates, editHireData, reload}) => {
                                 </button>
                             </div>
                             <div className="text-center">
-                                <button type="submit" className="bg-green-500 text-white px-4 py-2 rounded-md"
+                                <button type="submit" className="bg-actionGreen text-white px-4 py-2 rounded-md"
                                 >
                                     Save
                                 </button>

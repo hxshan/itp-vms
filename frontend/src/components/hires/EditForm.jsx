@@ -1,7 +1,7 @@
 import axios from '@/api/axios';
 import useAxios from "@/hooks/useAxios";
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 
 const EditForm = ({ setShowEditForm, viewHireData }) => {
@@ -101,7 +101,76 @@ const EditForm = ({ setShowEditForm, viewHireData }) => {
   
   };
 
-  if(loading){
+  
+
+  //Fetch Vehicle Data
+  const [vehiclesData, vehiclesError, vehiclesLoading, axiosFetchVehicles] = useAxios()
+
+  const [vehcleTypes, setVehcleTypes] = useState(["Car", "Van" , "Bus", "Plane"])
+  
+
+  const fetchVehicleDetails = async () => {
+    axiosFetchVehicles({
+          axiosInstance: axios,
+          method: "GET",
+          url: "/vehicle/",
+      });
+  };
+
+  if(vehiclesError){
+    return(
+      <p>Can not Vehicle Fetch Data</p>
+    )
+  }
+
+  //Filter Vehicles
+  const [filteredVehicles, setFilteredVehicles] = useState([]);
+  
+  const filterVehicles = () => {
+    console.log("Filter Vehicles")
+
+    console.log("Selected Vehicle : " + vehicleType)
+    const selectedVehicles = vehiclesData.vehicles.filter((vehicle) => vehicle.category.toLowerCase() === vehicleType.toLowerCase());
+    console.log(selectedVehicles)
+
+    setFilteredVehicles(selectedVehicles); 
+    if(selectedVehicles.length === 0 ){
+      console.log("No vehicles Available")
+      alert("No vehicles Available")
+    }
+
+    if(vehiclesError){
+    return(
+      <p>Can not Fetch Data</p>
+    )
+  }
+
+
+  }
+
+  //Fetch Drivers
+  const [DriversData, DriversError, DriversLoading, axiosFetchDrivers] = useAxios()
+  //const [availableDrivers, setavailableDrivers] = useState(["Chamara" , "Jonny", "Danny", "Chanchala"])
+
+  const filterDrivers = () => {
+    console.log('Filter Drivers')
+    axiosFetchDrivers({
+      axiosInstance: axios,
+      method: "GET",
+      url: "/user/drivers",
+  });
+  }
+
+  if(DriversError) {
+    <p>Can not Fetch Driver Data</p>
+  }
+
+  useEffect(() => {
+    filterVehicles()
+    filterDrivers()
+  })
+
+  if(loading || vehiclesLoading || DriversLoading){
     return(
       <h1>Loading ...</h1>
     )

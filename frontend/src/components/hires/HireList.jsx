@@ -45,7 +45,8 @@ const HireList = ({ hireData, searchTerm, searchType }) => {
     useEffect(() => {
         const result = hireData.filter((hire) => {
             if (searchType === 'vehicleNumber') {
-                return hire.vehicle.toLowerCase().includes(searchTerm.toLowerCase());
+                return hire.vehicle?.vehicleRegister?.toLowerCase().includes(searchTerm.toLowerCase()) || false;
+                //return hire.vehicle.toLowerCase().includes(searchTerm.toLowerCase());
             } else if (searchType === 'customerMobile') {
                 return hire.cusMobile.includes(searchTerm);
             }
@@ -81,14 +82,15 @@ const HireList = ({ hireData, searchTerm, searchType }) => {
                     <tbody>
                         {currentItems.map((hire) => (
                             <tr key={hire._id} className="border-b-2 border-black">
-                                <td className="px-4 py-2">{hire.vehicle}</td>
+                                <td className="px-4 py-2"> {hire.vehicle?.vehicleRegister || 'N/A'}</td>
+
                                 <td className="px-4 py-2">{new Date(hire.startDate).toLocaleDateString()}</td>
                                 <td className="px-4 py-2">{new Date(hire.endDate).toLocaleDateString()}</td>
                                 <td className="px-4 py-2">{hire.cusMobile}</td>
                                 <td className="px-4 py-2">{hire.hireStatus}</td>
                                 <td className="px-4 py-4 flex justify-between items-baseline">
-                                    <button className="px-2 py-1 bg-[#D4D800] text-white rounded-md mr-2" onClick={() => handleView(hire._id)}>View</button>
-                                    <button className="hidden xl:grid px-2 py-1 bg-[#A90000] text-white rounded-md" onClick={() => deleteHire(hire._id)}>Delete</button>
+                                    <button className="px-2 py-1 bg-actionBlue text-white rounded-md mr-2" onClick={() => handleView(hire._id)}>View</button>
+                                    <button className="hidden xl:grid px-2 py-1 bg-actionRed text-white rounded-md" onClick={() => deleteHire(hire._id)}>Delete</button>
                                 </td>
                             </tr>
                         ))}
