@@ -29,7 +29,7 @@ const maintainSchema = mongoose.Schema(
 
         vrcost: {
             type: Number,
-            required: true
+            
         },
 
         vraddit: {
@@ -46,7 +46,7 @@ const maintainSchema = mongoose.Schema(
 
         availability: {
             type: String,
-            required: true,
+            
          
         }
 

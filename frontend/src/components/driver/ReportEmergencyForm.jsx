@@ -2,13 +2,13 @@
 
 import React, { useState } from 'react';
 
-const EmergencyReportForm = ({ tripDetails }) => {
+const EmergencyReportForm = ({ trip }) => {
   const [emergencyDetails, setEmergencyDetails] = useState({
     date: new Date().toISOString().slice(0, 10),
     time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
-    driverName: tripDetails.driverName,
-    vehicleNumber: tripDetails.vehicleNumber,
-    vehicleName: tripDetails.vehicleName,
+    driverName: trip.driver.firstName,
+    vehicleNumber: trip.vehicle.vehicleRegister,
+    vehicleName: trip.vehicle.vehicleType,
     location: '',
     emergencyType: '',
     description: ''
@@ -30,9 +30,9 @@ const EmergencyReportForm = ({ tripDetails }) => {
     setEmergencyDetails({
       date: new Date().toISOString().slice(0, 10),
       time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
-      driverName: tripDetails.driverName,
-      vehicleNumber: tripDetails.vehicleNumber,
-      vehicleName: tripDetails.vehicleName,
+      driverName: trip.driver.firstName,
+      vehicleNumber: trip.vehicle.vehicleRegister,
+      vehicleName: trip.vehicle.vehicleType,
       location: '',
       emergencyType: '',
       description: ''

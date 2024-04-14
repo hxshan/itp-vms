@@ -17,6 +17,7 @@ const createUser = async (req, res) => {
       nicNumber,
       role,
       department,
+      jobTitle,
       empDate,
       baseSal,
       licenceNum,
@@ -26,7 +27,7 @@ const createUser = async (req, res) => {
       emergencyContacts,
     } = req.body;
 
-    console.log(req.body)
+ 
     if (!firstName || !lastName || !email || !password)
       return res.status(400).json({ msg: "Not all fields have been entered." });
   
@@ -45,8 +46,10 @@ const createUser = async (req, res) => {
       return res.status(400).json({ message: 'NIC document is required' });
     }
 
-    const nicDocumentPath = req.files.nicDocument.path||null;
-
+    const nicDocumentPath = req.files.nicDocument[0].path||null;
+    
+    const empPhotoName=req.files.empPhoto[0].filename;
+    console.log(empPhotoName)
     //match front and back names
     const user = new User({
       firstName,
@@ -59,6 +62,7 @@ const createUser = async (req, res) => {
       nicDocument:nicDocumentPath,
       status,
       department,
+      jobTitle,
       emergencyContacts:[],
       employmentDate: empDate,
       baseSalary: baseSal,
@@ -66,6 +70,7 @@ const createUser = async (req, res) => {
       email:email.toLowerCase(),
       password: passwordHash,
       role,
+      empPhoto:empPhotoName
     });
     const parsedEmergencyContacts = JSON.parse(emergencyContacts);
 
@@ -97,20 +102,158 @@ const createUser = async (req, res) => {
   }
 };
 
+const updateUserPersonal = async(req,res) =>{
+  try {
+    const {id} =req.params;
+    const {
+      firstName,
+      middleName,
+      lastName,
+      gender,
+      dob,
+      phoneNumber,
+      nicNumber,
+      role,
+      department,
+      jobTitle,
+      empDate,
+      baseSal,
+      licenceNum,
+      status,
+    } = req.body;
+
+ 
+    if (!firstName || !lastName || !email || !password)
+      return res.status(400).json({ msg: "Not all fields have been entered." });
+  
+    try{
+      const updatedUser = await User.findByIdAndUpdate(id,{
+        firstName,
+        middleName,
+        lastName,
+        gender,
+        dob,
+        phoneNumber,
+        nicNumber,
+        role,
+        department,
+        jobTitle,
+        empDate,
+        baseSal,
+        licenceNum,
+        status,
+      })
+
+      if (!updatedUser) {
+        return res.status(500).json({ message: "Update Failed" });
+      }
+      res.status(200).json(updatedUser);
+
+    }catch(err){
+      res.status(500).json({ message: error.message });
+    }
+
+    return res.status(200).json({ message: "User Updated succesfully" });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ message: err.message });
+  }
+
+}
+
+const deleteContact = async(req,res) =>{
+  const {id}= req.params
+  try{
+
+    const { ContactId } = req.body.data;
+    const user = await User.findById(id)
+
+    if(!user) return res.status(400).json({ message: 'No User Found' });
+    
+    const deleteContact = await EmergencyContact.findByIdAndDelete(ContactId);
+    if(!deleteContact) return res.status(500).json({ message: 'Delete Failed' });
+
+    const newContactArr= user.emergencyContacts.filter(contact=>contact !== ContactId)
+    const updatedUser = await User.findByIdAndUpdate(id,{emergencyContacts:newContactArr})
+
+    if(!updatedUser) return res.status(500).json({ message: 'Update Failed' });
+
+    return res.status(200).json({ message: 'Delete Succesfull' });
+    
+  }catch(err){
+    return res.status(500).json({ message: err.message });
+  }
+}
+
+const updateContact = async(req,res) =>{
+  try{  
+    const { id } = req.params
+    const { emergencyContacts } = req.body.data;
+    
+    const user= await User.findById(id)
+    if(!user) return res.status(400).json({ message: 'No User Found' });
+
+    let contacts = user.emergencyContacts
+
+    //const parsedEmergencyContacts = JSON.parse(emergencyContacts);
+    
+    const emergencyContactPromises = emergencyContacts.map(async (contact) => {
+        if(contact._id ===''){
+          const EmContact = new EmergencyContact({
+            name: contact.name,
+            number: contact.number,
+          });
+          let newContact = await EmContact.save();
+          return newContact._id
+         }
+    });
+   
+    const emergencyContactIds = await Promise.all(emergencyContactPromises);
+    emergencyContactIds.forEach(ContactId => {
+      if(ContactId != null){
+        contacts.push(ContactId)
+      }
+    });
+
+
+    const updatedUser = await User.findByIdAndUpdate(id,{emergencyContacts:contacts})
+
+    if (!updatedUser) {
+      return res.status(500).json({ message: "Update Failed" });
+    }
+
+    return res.status(200).json({ message: "Update Succesfull" });
+  }catch(error){
+    return res.status(500).json({ message: "Internal Server Error"});
+  }
+}
+
 const getAllUsers = async (req, res) => {
   try {
-    const users = await User.find().populate("role");
+    let users = await User.find().populate("role");
 
     if (!users) {
       return res.json([{}]);
     }
-
+    users=users.filter(user=>user.status !='deleted')
     res.status(200).json(users);
   } catch (error) {
     console.error("Error fetching users:", error);
     res.status(500).json({ message: "Internal server error" });
   }
 };
+
+const setUserAsDeleted=async (req,res)=>{
+  const {id}=req.params
+  console.log(id)
+  try{
+    const updateduser= await User.findByIdAndUpdate(id,{status:'deleted'})
+    if(!updateduser) return res.status(500).json({ message: "Update Failed" });
+    res.status(200).json(updateduser);
+  }catch(err){
+    return res.status(500).json({message:"Internal Sever Error"})
+  }
+}
 
 const getDrivers= async (req,res)=>{
   try{
@@ -136,14 +279,14 @@ const getUserById = async (req,res)=>{
   try{
     const {id} = req.params;
   
-    const user = await User.findById(id).exec()
+    const user = await User.findById(id).populate('emergencyContacts').exec()
     if(!user) return res.status(404).json({message:'User Not Found'})
     return res.status(200).json(user)
   }catch(error){
     console.log(error);
     return res.status(404).json({message:JSON.stringify(error.message)})
   }
-  
+    
 }
 
 
@@ -175,4 +318,14 @@ const resetPassword = async(req,res)=>{
   }
 }
 
-module.exports = { createUser, getAllUsers,getUserById,resetPassword,getDrivers};
+module.exports = { 
+  createUser, 
+  getAllUsers,
+  getUserById,
+  resetPassword,
+  getDrivers,
+  setUserAsDeleted,
+  updateUserPersonal,
+  deleteContact,
+  updateContact
+};

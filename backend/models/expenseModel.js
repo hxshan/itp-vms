@@ -1,27 +1,36 @@
 const mongoose = require('mongoose');
 
-// Define main expense schema with embedded documents for category-specific details
+
 const expenseSchema = new mongoose.Schema({
   date: { 
     type: Date, 
     required: true 
   },
+  time: { 
+    type: String, 
+    required: true 
+  },
   vehicle: { 
     type: mongoose.Schema.Types.ObjectId, 
-    ref: 'vehicles', 
+    ref: 'Vehicles', 
     required: true 
   },
   recordedBy: { 
     type: String, 
     required: true 
   },
+  editedBy: { 
+    type: String,
+    default: ''
+     
+  },
   tripId: { 
-    type: mongoose.Schema.Types.ObjectId, 
-    ref: 'hires' 
+    type: String
+   
   },
   category: { 
     type: String, 
-    enum: ['Fuel', 'Maintenance and Repairs', 'Insurance', 'Licensing and Permits', 'Other'], 
+    enum: ['Fuel', 'Maintenance and Repairs', 'Insurance', 'Licensing and Permits', 'Driver Wages','Other'], 
     required: true 
   },
   status: { 
@@ -39,7 +48,7 @@ const expenseSchema = new mongoose.Schema({
     odometerReading: Number,
     fuelType: { 
       type: String, 
-      enum: ['Petrol', 'Diesel', 'Electric'] 
+      enum: ['Petrol', 'Diesel', 'Electric',''] 
     },
     fuelQuantity: Number,
     fuelPricePerUnit: Number,
@@ -59,8 +68,9 @@ const expenseSchema = new mongoose.Schema({
   licensingDetails: {
     licenseType: { 
       type: String, 
-      enum: ['Vehicle Registration', 'Vehicle Emmission Testing', 'Taxi Permit'] 
+      enum: ['Vehicle Registration', 'Vehicle Emmission Testing', 'Taxi Permit', 'other',''] 
     },
+    otherDescription:String,
     licenseCost: Number
   },
   driverWages: {
@@ -71,13 +81,18 @@ const expenseSchema = new mongoose.Schema({
     totalEarning: Number
 
   },
-  otherDetails: {
+  other: {
     description: String,
     amount: Number
   }
+}, { timestamps: true }); // Adding timestamps option to automatically manage createdAt and updatedAt fields
+
+// Middleware to update updatedAt field before saving the document
+expenseSchema.pre('save', function (next) {
+  this.updatedAt = new Date();
+  next();
 });
 
-// Create expense model
-const Expense = mongoose.model('Expense', expenseSchema);
 
-module.exports = Expense;
+module.exports = mongoose.model('Expense', expenseSchema);
+

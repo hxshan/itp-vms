@@ -10,7 +10,6 @@ const userShema = new Schema({
     middleName:{
         type:String,
     },
-   
     lastName:{
         type:String,
         required: true
@@ -58,6 +57,9 @@ const userShema = new Schema({
     department:{
         type:String,
     },
+    jobTitle:{
+        type:String,
+    },
     employmentDate:{
         type:Date,
     },
@@ -66,6 +68,9 @@ const userShema = new Schema({
         require:true
     },
     licenceNumber:{
+        type:String
+    },
+    empPhoto:{
         type:String
     }
 })
