@@ -30,25 +30,25 @@ const EditRoleForm = () => {
       Update: false,
       Delete: false,
     },
-    HirePermissions: {
+    hirePermissions: {
       Create: false,
       Read: false,
       Update: false,
       Delete: false,
     },
-    ContractPermissions: {
+    contractPermissions: {
       Create: false,
       Read: false,
       Update: false,
       Delete: false,
     },
-    EmergencyPermissions:{
+    emergencyPermissions:{
       Create: false,
       Read: false,
       Update: false,
       Delete: false,
     },
-    FinancePermissions: {
+    financePermissions: {
       Create: false,
       Read: false,
       Update: false,
@@ -57,12 +57,15 @@ const EditRoleForm = () => {
   });
 
   const getData =()=>{
+
      axiosFetch({
       axiosInstance: axios,
       method: "GET",
       url: `/role/${id}`,
     });
+
   }
+
   useEffect(()=>{
     console.log(data)
     if(error){
@@ -92,16 +95,16 @@ const EditRoleForm = () => {
         updatedRoleData.vehicleMaintenencePermissions[type] = checked;
         break;
       case "hire":
-        updatedRoleData.HirePermissions[type] = checked;
+        updatedRoleData.hirePermissions[type] = checked;
         break;
       case "contract":
-        updatedRoleData.ContractPermissions[type] = checked;
+        updatedRoleData.contractPermissions[type] = checked;
         break;
       case "emergency":
-        updatedRoleData.EmergencyPermissions[type] = checked;
+        updatedRoleData.emergencyPermissions[type] = checked;
         break;
       case "finance":
-        updatedRoleData.FinancePermissions[type] = checked;
+        updatedRoleData.financePermissions[type] = checked;
         break;
     }
     setRoleData(updatedRoleData);
@@ -153,7 +156,7 @@ const EditRoleForm = () => {
               type="text"
               value={roleData.name}
               onChange={(e) => {
-                return setRoleData({
+                  return setRoleData({
                   ...roleData,
                   name: e.target.value,
                 });
@@ -369,7 +372,7 @@ const EditRoleForm = () => {
                     <input
                       type="checkbox"
                       name="Create"
-                      checked={roleData.HirePermissions.Create}
+                      checked={roleData.hirePermissions.Create}
                       onChange={(e) => {
                         handlePermissionChange(
                           "hire",
@@ -383,7 +386,7 @@ const EditRoleForm = () => {
                     <input
                       type="checkbox"
                       name="Read"
-                      checked={roleData.HirePermissions.Read}
+                      checked={roleData.hirePermissions.Read}
                       onChange={(e) => {
                         handlePermissionChange(
                           "hire",
@@ -397,7 +400,7 @@ const EditRoleForm = () => {
                     <input
                       type="checkbox"
                       name="Update"
-                      checked={roleData.HirePermissions.Update}
+                      checked={roleData.hirePermissions.Update}
                       onChange={(e) => {
                         handlePermissionChange(
                           "hire",
@@ -411,7 +414,7 @@ const EditRoleForm = () => {
                     <input
                       type="checkbox"
                       name="Delete"
-                      checked={roleData.HirePermissions.Delete}
+                      checked={roleData.hirePermissions.Delete}
                       onChange={(e) => {
                         handlePermissionChange(
                           "hire",
@@ -430,7 +433,7 @@ const EditRoleForm = () => {
                     <input
                       type="checkbox"
                       name="Create"
-                      checked={roleData.ContractPermissions.Create}
+                      checked={roleData.contractPermissions.Create}
                       onChange={(e) => {
                         handlePermissionChange(
                           "contract",
@@ -444,7 +447,7 @@ const EditRoleForm = () => {
                     <input
                       type="checkbox"
                       name="Read"
-                      checked={roleData.ContractPermissions.Read}
+                      checked={roleData.contractPermissions.Read}
                       onChange={(e) => {
                         handlePermissionChange(
                           "contract",
@@ -458,7 +461,7 @@ const EditRoleForm = () => {
                     <input
                       type="checkbox"
                       name="Update"
-                      checked={roleData.ContractPermissions.Update}
+                      checked={roleData.contractPermissions.Update}
                       onChange={(e) => {
                         handlePermissionChange(
                           "contract",
@@ -472,7 +475,7 @@ const EditRoleForm = () => {
                     <input
                       type="checkbox"
                       name="Delete"
-                      checked={roleData.ContractPermissions.Delete}
+                      checked={roleData.contractPermissions.Delete}
                       onChange={(e) => {
                         handlePermissionChange(
                           "contract",
@@ -492,7 +495,7 @@ const EditRoleForm = () => {
                     <input
                       type="checkbox"
                       name="Create"
-                      value={roleData.EmergencyPermissions.Create}
+                      value={roleData.emergencyPermissions.Create}
                       onChange={(e) => {
                         handlePermissionChange(
                           "emergency",
@@ -506,7 +509,7 @@ const EditRoleForm = () => {
                     <input
                       type="checkbox"
                       name="Read"
-                      value={roleData.EmergencyPermissions.Read}
+                      value={roleData.emergencyPermissions.Read}
                       onChange={(e) => {
                         handlePermissionChange(
                           "emergency",
@@ -520,7 +523,7 @@ const EditRoleForm = () => {
                     <input
                       type="checkbox"
                       name="Update"
-                      value={roleData.EmergencyPermissions.Update}
+                      value={roleData.emergencyPermissions.Update}
                       onChange={(e) => {
                         handlePermissionChange(
                           "emergency",
@@ -534,7 +537,7 @@ const EditRoleForm = () => {
                     <input 
                       type="checkbox"
                       name="Delete"
-                      value={roleData.EmergencyPermissions.Delete}
+                      value={roleData.emergencyPermissions.Delete}
                       onChange={(e) => {
                         handlePermissionChange(
                           "emergency",
@@ -555,7 +558,7 @@ const EditRoleForm = () => {
                     <input
                       type="checkbox"
                       name="Create"
-                      checked={roleData.FinancePermissions.Create}
+                      checked={roleData.financePermissions.Create}
                       onChange={(e) => {
                         handlePermissionChange(
                           "finance",
@@ -569,7 +572,7 @@ const EditRoleForm = () => {
                     <input
                       type="checkbox"
                       name="Read"
-                      checked={roleData.FinancePermissions.Read}
+                      checked={roleData.financePermissions.Read}
                       onChange={(e) => {
                         handlePermissionChange(
                           "finance",
@@ -583,7 +586,7 @@ const EditRoleForm = () => {
                     <input
                       type="checkbox"
                       name="Update"
-                      checked={roleData.FinancePermissions.Update}
+                      checked={roleData.financePermissions.Update}
                       onChange={(e) => {
                         handlePermissionChange(
                           "finance",
@@ -597,7 +600,7 @@ const EditRoleForm = () => {
                     <input
                       type="checkbox"
                       name="Delete"
-                      checked={roleData.FinancePermissions.Delete}
+                      checked={roleData.financePermissions.Delete}
                       onChange={(e) => {
                         handlePermissionChange(
                           "finance",

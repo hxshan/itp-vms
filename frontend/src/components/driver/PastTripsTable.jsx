@@ -1,8 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState ,useEffect } from 'react';
+import useAxios from '@/hooks/useAxios';
+import axios from '@/api/axios';
+import { useAuthContext } from "@/hooks/useAuthContext";
+import { jwtDecode } from 'jwt-decode';
 
-const PastTripTable = ({ data, isLoading, error, refetch }) => {
+const PastTripTable = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const columns = ["Date", "Start Time", "End Time", "Start Location", "End Location", "Fare", "Actions"];
+  const [data, error, loading, axiosFetch] = useAxios();
+  const { user } = useAuthContext()
+
+
+  console.log(user)
+
+  const [userID,setUserID]=useState('')
+ 
+  useEffect(() => {
+    const decodedToken = jwtDecode(user?.accessToken);
+    setUserID(decodedToken?.UserInfo?.id);
+  }, [user]);
+  
+
+  console.log(userID)
 
   const canEditTrip = (endTime) => {
     const oneHourInMillis = 60 * 60 * 1000;
@@ -11,9 +30,7 @@ const PastTripTable = ({ data, isLoading, error, refetch }) => {
     return currentTime - tripEndTime < oneHourInMillis;
   };
 
-  useEffect(() => {
-    refetch(); // Fetch past trips data when the component mounts
-  }, [refetch]);
+ 
 
   const filteredData = data.filter((trip) =>
     Object.values(trip).some((value) =>
@@ -21,7 +38,16 @@ const PastTripTable = ({ data, isLoading, error, refetch }) => {
     )
   );
 
-  if (isLoading) {
+  const getData = () => {
+    axiosFetch({
+      axiosInstance: axios,
+      method: "GET",
+      url: "/hire/past/",
+    });
+  };
+
+
+  if (loading) {
     return <p>Loading...</p>;
   }
 
@@ -54,20 +80,14 @@ const PastTripTable = ({ data, isLoading, error, refetch }) => {
         <tbody className="bg-white divide-y divide-gray-200">
           {filteredData.length > 0 ? (
             filteredData.map((trip) => (
-              <tr key={trip.id}>
-                <td className="px-6 py-4 whitespace-nowrap">{trip.date}</td>
-                <td className="px-6 py-4 whitespace-nowrap">{trip.startTime}</td>
-                <td className="px-6 py-4 whitespace-nowrap">{trip.endTime}</td>
-                <td className="px-6 py-4 whitespace-nowrap">{trip.startLocation}</td>
-                <td className="px-6 py-4 whitespace-nowrap">{trip.endLocation}</td>
-                <td className="px-6 py-4 whitespace-nowrap">{trip.fare}</td>
+              
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                  {canEditTrip(trip.endTime) && (
+                  {canEditTrip() && (
                     <button className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 mr-2">Edit</button>
                   )}
                   <button className="bg-gray-200 text-gray-800 py-2 px-4 rounded hover:bg-gray-300">View Summary</button>
                 </td>
-              </tr>
+            
             ))
           ) : (
             <tr>

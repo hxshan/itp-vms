@@ -1,35 +1,58 @@
 const vehicleMaintain = require ('../models/vehicleMaintananceModel')
+const {Vehicles} = require('../models/vehicleModel')
 
 
 //Add maintain to the system
-const createmaintain = async (req , res)=>{
-    try{
-        if (
-            !req.body.vrtype||
-            !req.body.vrid||
-            !req.body.vrissue||
-            !req.body.vrcost||
-            !req.body.vraddit
-
-        ) {
-            return res.status(400).send({message:'Send required Fields'});
-            
+const createmaintain = async (req, res) => {
+    try {
+        // Check if all required fields are provided in the request body
+        const requiredFields = ['vehicleRegister', 'vrissue', 'vrcost', 'vrsdate', 'vredate', 'availability'];
+        const missingFields = requiredFields.filter(field => !req.body[field]);
+        if (missingFields.length > 0) {
+            return res.status(400).send({ message: `Missing required fields: ${missingFields.join(', ')}` });
         }
-        const maintain ={
-            vrtype : req.body.vrtype,
-            vrid : req.body.vrid,
-            vrissue : req.body.vrissue,
-            vrcost : req.body.vrcost,
-            vraddit : req.body.vraddit
+
+        const currentDate = new Date();
+        
+        // Find the ObjectId for category and vehicleRegister based on the provided strings
+        
+        const vehicle = await Vehicles.findOne({ vehicleRegister: req.body.vehicleRegister });
+
+        if (!vehicle) {
+            return res.status(400).send({ message: "Invalid category or vehicle register provided." });
+        }
+
+        // Create the maintenance object
+        const maintain = {
+           
+            vehicleRegister: vehicle._id,
+            vrvehicleRegister:req.body.vehicleRegister,
+            vrissue: req.body.vrissue,
+            vrcost: req.body.vrcost,
+            vraddit: req.body.vraddit,
+            vrsdate: req.body.vrsdate,
+            vredate: req.body.vredate,
+            availability: req.body.availability
         };
-        const newmaintain = await vehicleMaintain.create(maintain);
-        return res.status(201).send(newmaintain)
-    }
-    catch(error){
+
+        // Check if the current date is within the maintenance period
+        if (currentDate >= new Date(maintain.vrsdate) && currentDate <= new Date(maintain.vredate)) {
+            maintain.availability = 'unavailable';
+        } else {
+            maintain.availability = 'available';
+        }
+
+        // Create a new maintenance record
+        const newMaintain = await vehicleMaintain.create(maintain);
+        
+        return res.status(201).send(newMaintain);
+    } catch (error) {
         console.log(error.message);
-        res.status(500).send({message:error.message})
+        res.status(500).send({ message: 'Internal server error' });
     }
 };
+
+
 
 
 //Get all maintains from system
@@ -60,11 +83,13 @@ const getonemaintain = async(req, res)=>{
 //Edit Maintain
 const editmaintain = async (req, res)=>{
     try {
-        if (!req.body.vrtype||
-            !req.body.vrid||
+        if (
+            !req.body.vehicleRegister||
             !req.body.vrissue||
             !req.body.vrcost||
-            !req.body.vraddit
+            !req.body.vraddit||
+            !req.body.vredate
+
         ) {
             return res.status(400).send({ message: 'Send All required Filds' });
         }

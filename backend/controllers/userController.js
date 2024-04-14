@@ -1,11 +1,12 @@
 const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
 const User = require("../models/userModel");
 const EmergencyContact = require("../models/emergencyContactModel");
 const Role = require("../models/roleModel");
 
+//TODO:add validation use REGEX 
 const createUser = async (req, res) => {
   try {
+    
     const {
       firstName,
       middleName,
@@ -23,12 +24,14 @@ const createUser = async (req, res) => {
       email,
       password,
       emergencyContacts,
-    } = req.body.data;
+    } = req.body;
 
+    console.log(req.body)
     if (!firstName || !lastName || !email || !password)
       return res.status(400).json({ msg: "Not all fields have been entered." });
+  
 
-    const userExist = await User.findOne({ email: email });
+    const userExist = await User.findOne({ email: email.toLowerCase()});
 
     if (userExist)
       return res
@@ -37,6 +40,12 @@ const createUser = async (req, res) => {
 
     const salt = await bcrypt.genSalt();
     const passwordHash = await bcrypt.hash(password, salt);
+
+    if (!req.files.nicDocument) {
+      return res.status(400).json({ message: 'NIC document is required' });
+    }
+
+    const nicDocumentPath = req.files.nicDocument.path||null;
 
     //match front and back names
     const user = new User({
@@ -47,31 +56,39 @@ const createUser = async (req, res) => {
       dob,
       phoneNumber,
       nicNumber,
+      nicDocument:nicDocumentPath,
       status,
       department,
+      emergencyContacts:[],
       employmentDate: empDate,
       baseSalary: baseSal,
       licenceNumber: licenceNum,
-      email,
+      email:email.toLowerCase(),
       password: passwordHash,
-      status: "active",
       role,
     });
+    const parsedEmergencyContacts = JSON.parse(emergencyContacts);
 
-    try {
-      emergencyContacts.forEach(async (contact) => {
+    try {//create the emergency contact first then the user
+      const emergencyContactPromises = parsedEmergencyContacts.map(async (contact) => {
         const EmContact = new EmergencyContact({
           name: contact.emergencyName,
           number: contact.emergencyContact,
         });
         let newContact = await EmContact.save();
-        user.emergencyContacts.push(newContact._id);
+        return newContact._id
       });
+      const emergencyContactIds = await Promise.all(emergencyContactPromises);
+      user.emergencyContacts = emergencyContactIds;
+      
     } catch (err) {
-      res.status(500).json({ message: err.message });
+      return res.status(500).json({ message: err.message });
     }
 
+    console.log(user)
     await user.save();
+    console.log('saved')
+
 
     return res.status(200).json({ message: "User created succesfully" });
   } catch (err) {
@@ -97,7 +114,7 @@ const getAllUsers = async (req, res) => {
 
 const getDrivers= async (req,res)=>{
   try{
-    const driverRole= await Role.findOne({name:'driver'}).exec()
+    const driverRole= await Role.findOne({name:'DRIVER'}).exec()
     if(!driverRole) return res.status(404).json({message:'No such Role Exists in the System'})
 
     const drivers=await User.find({role:driverRole._id}).exec()
@@ -114,5 +131,48 @@ const getDrivers= async (req,res)=>{
   
 }
 
+const getUserById = async (req,res)=>{
+  
+  try{
+    const {id} = req.params;
+  
+    const user = await User.findById(id).exec()
+    if(!user) return res.status(404).json({message:'User Not Found'})
+    return res.status(200).json(user)
+  }catch(error){
+    console.log(error);
+    return res.status(404).json({message:JSON.stringify(error.message)})
+  }
+  
+}
 
-module.exports = { createUser, getAllUsers};
+
+//TODO:add validation use REGEX
+const resetPassword = async(req,res)=>{
+  try{
+    const {id} = req.params
+    const {currentPwd,newPwd} =req.body.data;
+
+    if(!currentPwd) return res.status(401).json({message:'Enter Current Password'})
+    if(!newPwd) return res.status(401).json({message:'Enter New Password'})
+
+    const userpwd= await User.findById(id)
+    if(!userpwd) return res.status(401).json({message:'User Not Found'})
+    const match = await bcrypt.compare(currentPwd,userpwd.password)
+    
+    if(!match) return res.status(401).json({message:'Current Password is Wrong'})
+
+    const salt = await bcrypt.genSalt();
+    const passwordHash = await bcrypt.hash(newPwd, salt);
+    const user = User.findByIdAndUpdate(id,{password:passwordHash})
+
+    if(!user) return res.status(500).json({message:'Update Failed'})
+
+    return res.status(200).json({message:'succesfull'})
+    
+  }catch(error){
+    return res.status(500).json({message:'internal server Error'})
+  }
+}
+
+module.exports = { createUser, getAllUsers,getUserById,resetPassword,getDrivers};

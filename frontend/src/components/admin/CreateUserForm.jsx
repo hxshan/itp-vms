@@ -3,18 +3,13 @@ import useAxios from "@/hooks/useAxios";
 import axios from "@/api/axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from 'react-toastify';
 
 const CreateUserForm = () => {
   //Api Hooks
-  const [roleData,roleerror, loading, axiosFetch] = useAxios()
-  const [user,usererror, userloading, useraxiosFetch] = useAxios()
+  const [roleData,roleError, roleloading, axiosFetch] = useAxios()
+  const [user,usererror, userloading, useraxiosFetch,axiosupdatedFetch] = useAxios()
   const navigate = useNavigate()
-  /*const {
-    data: rolesData,
-    refetch: roleRefetch,
-  } = useAxiosGet("/role/");
-*/
-  //const { status, error, isLoading, postData } = useAxiosPost();
 
   const getRoleData =()=>{
     axiosFetch({
@@ -29,13 +24,11 @@ const CreateUserForm = () => {
   },[])
 
   useEffect(()=>{
-    //console.log(roleData)
-    /*if(error){
-      alert(error)
-      navigate('/admin')
-    }*/
     if(roleData && roleData.length > 0){
       setRoles(roleData)
+      setIsDriver(()=>{
+        return roleData.find(role=>role.name.toUpperCase() == 'DRIVER')
+      })
     }
   },[roleData])
 
@@ -48,6 +41,7 @@ const CreateUserForm = () => {
 
   //states
   const [roles, setRoles] = useState([]);
+  const [isDriver, setIsDriver] = useState(null);
 
   const [personalInfo, setPersonalInfo] = useState({
     firstName: "",
@@ -69,19 +63,23 @@ const CreateUserForm = () => {
 
   const[nicDocument,setNicDocument]=useState(null);
   const[licenceDoc,setLicenceDocument]=useState(null);
-
+  const[empPhoto,setEmpPhoto]=useState(null);
   const [currentForm, setCurrentForm] = useState(0);
   const [emergencyContacts, setEmergencyContacts] = useState([emptyContact]);
 
 
 
   const formPageIncrement=()=>{
+    if((emergencyContacts[0].emergencyContact||emergencyContacts[0].emergencyName)===''){
+      toast.error("Add Atleast one Emergency Contact")
+      return
+    }
     if((personalInfo.firstName||personalInfo.lastName||personalInfo.gender||personalInfo.dob||personalInfo.phoneNumber||personalInfo.nicNumber) ==''){
-      alert("All feilds should be filled")
+      toast.error("All Personal details should be filled")
       return
     }
     if(nicDocument == null){
-      alert("Please upload Nic Document")
+      toast.error("Please upload Nic Document")
       return
     }
 
@@ -98,33 +96,48 @@ const CreateUserForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const formData = {
-      ...personalInfo,
-      nicDocument: nicDocument,
-      licenceDoc: licenceDoc,
-      emergencyContacts: emergencyContacts
-  };
-
-    // Handle form submission here
-    useraxiosFetch({
-      axiosInstance:axios,
-      method:'POST',
-      url:'/user/',
-      requestConfig:{
-        data:{
-          ...formData
-        }
-      }
-    })
-    if(usererror){
-      alert(usererror)
+    console.log(personalInfo)
+    let emailReg=/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/
+    if(!personalInfo.email.match(emailReg)){
+      toast.error("Invalid Email Address")
+      return
     }
-    if(user){
-      alert("user created succesfully")
-      navigate('/admin')
+    if((personalInfo.role||personalInfo.department||personalInfo.empDate||personalInfo.baseSal||personalInfo.status)===''){
+      toast.error("All Employee details should be filled")
+      return
     }
-  };
+    
+
+    const formDataToSend = new FormData();
+    formDataToSend.append('firstName', personalInfo.firstName);
+    formDataToSend.append('middleName', personalInfo.middleName);
+    formDataToSend.append('lastName', personalInfo.lastName);
+    formDataToSend.append('gender', personalInfo.gender);
+    formDataToSend.append('dob', personalInfo.dob);
+    formDataToSend.append('phoneNumber', personalInfo.phoneNumber);
+    formDataToSend.append('nicNumber', personalInfo.nicNumber);
+    formDataToSend.append('role', personalInfo.role);
+    formDataToSend.append('empDate', personalInfo.empDate);
+    formDataToSend.append('baseSal', personalInfo.baseSal);
+    formDataToSend.append('licenceNum', personalInfo.licenceNum);
+    formDataToSend.append('licenceDoc', licenceDoc);
+    formDataToSend.append('status', personalInfo.status);
+    formDataToSend.append('email', personalInfo.email);
+    formDataToSend.append('password', personalInfo.password);
+    formDataToSend.append('emergencyContacts',JSON.stringify(emergencyContacts))
+    formDataToSend.append('nicDocument', nicDocument);
+    formDataToSend.append('empPhoto', empPhoto);
+    
+    axiosupdatedFetch({
+      axiosInstance: axios,
+      method: 'POST',
+      url: '/user/',
+      data: formDataToSend,
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+  }
 
   const AddContact = () => {
     let contactsArr = [...emergencyContacts];
@@ -147,7 +160,7 @@ const CreateUserForm = () => {
   return (
     <div className="shadow-xl bg-white rounded flex flex-col items-center">
       <h2 className="font-bold text-3xl w-fit mt-10">Add New User</h2>
-
+      <ToastContainer/>
       <form onSubmit={handleSubmit} className="mt-6 px-8 pt-6 pb-8 mb-4 w-full">
         <div id="formPage-1" className={currentForm == 0 ? "" : "hidden"}>
           <h2 className="font-bold text-2xl w-fit mt-5 mb-8">
@@ -290,6 +303,23 @@ const CreateUserForm = () => {
                 required
               />
             </div>
+            <div className="col-span-1 w-full flex flex-col mb-4 ">
+              <label
+                className="block text-gray-700 text-md font-bold mb-2"
+                htmlFor="nicDocument"
+              >
+                Employee Photogragh <span className="font-normal">(.png .jpg .jpeg are only accepted)</span>
+              </label>
+              <input
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                type="file"
+                accept=".png .jpg .jpeg"
+                name="empPhoto"
+                id="empPhoto"
+                onChange={(e)=>{setEmpPhoto(e.target.files[0])}}
+                required
+              />
+            </div>
             <div className="grid grid-cols-2 col-span-2 w-full ">
               <div className="col-span-2 mt -10 flex justify-between mb-8 items-center">
                 <h2 className="font-bold text-2xl w-fit ">Emergency Contact</h2>
@@ -416,8 +446,10 @@ const CreateUserForm = () => {
                 required
               />
             </div>
-
-            <div className="col-span-1 w-full flex flex-col mb-4">
+            {
+              isDriver!=null && isDriver?._id == personalInfo.role ? (
+                <>
+                <div className="col-span-1 w-full flex flex-col mb-4">
               <label className="block text-gray-700 text-md font-bold mb-2" htmlFor="licenceNum">Licence Number</label>
               <input
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -440,6 +472,10 @@ const CreateUserForm = () => {
                 required
               />
             </div>
+                </>
+              ):(<></>)
+            }
+            
 
             <div className="col-span-1 w-full flex flex-col mb-4">
               <label className="block text-gray-700 text-md font-bold mb-2" htmlFor="status">Status</label>

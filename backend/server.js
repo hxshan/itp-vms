@@ -5,7 +5,10 @@ const cors = require("cors");
 const corsOptions = require("./config/corsOptions");
 const coookieParser = require('cookie-parser')
 
+
 const app = express();
+
+
 app.use(express.json());
 app.use(cors(corsOptions));
 app.use(coookieParser())
@@ -17,10 +20,13 @@ const vehicleRoutes = require('./routes/vehicleRoutes')
 const vehicleMaintain = require('./routes/vehicleMaintainRoutes')
 const contractRoutes = require('./routes/contractRoutes')
 const expenseRoutes = require('./routes/expenseRoutes')
+const incomeRoutes = require('./routes/incomeRoutes')
 const authRoutes = require('./routes/authRoutes')
 const {notFound,errorHandler} = require('./middleware/errorMiddleware')
 const hireRoutes = require('./routes/hireRoutes')
+
 const { caseFileRouter } = require('./routes/caseFileRoutes')
+const vehicleService = require('./routes/vehicleservice')
 
 
 
@@ -31,8 +37,10 @@ app.use('/api/vehicle',vehicleRoutes)
 app.use('/api/vehiclemaintain',vehicleMaintain)
 app.use('/api/contract',contractRoutes)
 app.use('/api/expense', expenseRoutes)
+app.use('/api/income', incomeRoutes)
 app.use('/api/hire', hireRoutes)
 app.use('/api/caseFiles', caseFileRouter)
+app.use('/api/vehicleService', vehicleService)
 
 
 

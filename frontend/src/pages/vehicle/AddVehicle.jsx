@@ -1,9 +1,8 @@
-import React, { useState , useEffect } from 'react';
+import { useState , useEffect } from 'react';
 import { useNavigate} from 'react-router-dom'
 import axios from 'axios'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
 import { CarForm } from '../../components/vehicle/';
 import { VanForm } from '../../components/vehicle/';
 import { BusForm } from '../../components/vehicle/';
@@ -12,7 +11,6 @@ import { TruckForm } from '../../components/vehicle/';
 
 const AddVehicle = () => {
      
-
     const initialFormState= {
         category: '',
         vehicleType: '',
@@ -38,8 +36,8 @@ const AddVehicle = () => {
         passengerCabin: '',
         vehicleBookImage: null,
         vehicleLicenceImage: null,
-        vehicleInsuImage: null,
-        availability:'available'
+        vehicleInsuImage: null, 
+        statusVehicle:'Active'   
     }
     
     const [formState, setFormState] = useState(initialFormState);
@@ -55,7 +53,7 @@ const AddVehicle = () => {
         window.addEventListener('online', handleOnlineStatus);
         window.addEventListener('offline', handleOnlineStatus);
     
-        // Cleanup event listeners on component unmount
+        
         return () => {
           window.removeEventListener('online', handleOnlineStatus);
           window.removeEventListener('offline', handleOnlineStatus);
@@ -78,7 +76,6 @@ const AddVehicle = () => {
         try {
           const response = await axios.post(`http://localhost:3000/api/vehicle/`, formState)
           const newVehicle = await response.data;
-          console.log(newVehicle);
           
           if(!newVehicle){
            setError("Couldn't add Vehicle.Please try again.")
@@ -94,6 +91,8 @@ const AddVehicle = () => {
         }
      }
 
+     
+
 
     return (
      <div className='m-0 p-0'>
@@ -104,11 +103,11 @@ const AddVehicle = () => {
         <div className="place-content-center mt-8 bg-cover bg-center bg-white ">
 
             <div className='flex flex-row justify-between'>
-            <h1 className="text-lg font-bold">Add Vehicle Details</h1>
+            <h1 className="text-2xl font-bold">Add Vehicle Details</h1>
             <button className='px-3 py-1 rounded-md bg-blue-500 text-white text-sm text-bold' onClick={() => navigate('/vehicle')}>Dashboard</button>
             </div>
 
-            <form className="space-y-2 m-3 p-3  bg-slate-200 rounded-md pad" onSubmit={handleSubmit}>
+            <form className="space-y-3 m-1 mt-5 p-4  pad shadow-xl bg-white rounded " onSubmit={handleSubmit}>
             <p className="text-sm text-red-600 leading-relaxed">
             - Before adding a vehicle, please ensure you have all the necessary information at hand. This includes vehicle details such as registration number, model, manufacturing year, and more.
             </p>
@@ -118,11 +117,12 @@ const AddVehicle = () => {
            <p className="text-sm text-red-600 leading-relaxed">
             - Ensure all fields are filled accurately before submitting.
            </p>
-           <p className="text-sm text-red-600 leading-relaxed">
+           <p className=" text-sm text-red-600 leading-relaxed">
             - If you have any questions or require assistance while adding a vehicle, feel free to reach out to our support team. We're here to help you every step of the way.
            </p>
-                <label className='m-2 font-semibold text-base' htmlFor="category">Select Vehicle Category:</label>
-                <select id="category" name="category" value={formState.category} onChange={handleCategoryChange}>
+           <div className="col-span-1 w-full flex flex-col mt-4 mb-4 ">
+                <label className="block text-gray-700 text-md font-bold mb-2" htmlFor="category">Select Vehicle Category:</label>
+                <select id="category" name="category" value={formState.category} onChange={handleCategoryChange} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                     <option value="">Select</option>
                     <option value="car">Car</option>
                     <option value="van">Van</option>
@@ -130,9 +130,10 @@ const AddVehicle = () => {
                     <option value="lorry">Lorry</option>
                     <option value="truck">Truck</option>
                 </select>
+            </div>   
             </form>
             {formState.category && (
-                <form className="m-3 p-3  bg-slate-200 rounded-md pad" onSubmit={handleSubmit}>
+                <form className="mx-1 mt-5 px-8 pt-6 pb-8 shadow-xl bg-white rounded pad" onSubmit={handleSubmit}>
                     
                     {/* Render appropriate form based on selected category */}
                     {formState.category === 'car' && <CarForm formState={formState} setFormState={setFormState} />}
@@ -143,13 +144,13 @@ const AddVehicle = () => {
 
                     <div className='mt-10 flex flex-row justify-between'>
                         <div>
-                            <input className='ml-2' type="checkbox" required/>
-                            <label className= 'ml-3 text-sm text-red-600 font-medium' htmlFor="vehicle1">I checked the above details before adding a vehicle to the system.</label>
+                            <input className='m-0' type="checkbox" required/>
+                            <label className= 'ml-3 p-0 text-sm text-red-600 font-medium' htmlFor="vehicle1">I checked the above details before adding a vehicle to the system.</label>
                         </div>
 
-                        <div>
-                            <button className= "m-1 p-2 bg-black text-zinc-50 rounded-md" onClick={resetForm}>Reset</button>
-                            <button className= "m-1 p-2 bg-black text-zinc-50 rounded-md" type="submit" >Add vehicle</button>
+                        <div className='m-0 pb-1'>
+                            <button className=" mx-2 bg-red-600 py-2 px-6 rounded-md text-white font-bold mt-2" onClick={resetForm}>Reset</button>
+                            <button className="mx-2 bg-blue-600 py-2 px-6 rounded-md text-white font-bold mt-2" >Add vehicle</button>
                         </div>
                         
                     </div>
@@ -157,7 +158,7 @@ const AddVehicle = () => {
                 </form>      
             )}
 
-                       <ToastContainer />
+                <ToastContainer />
 
         </div>
         )}

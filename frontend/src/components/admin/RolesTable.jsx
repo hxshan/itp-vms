@@ -9,6 +9,8 @@ const RolesTable = () => {
   const [search, setSearch] = useState("");
   const [roles, error, loading, axiosFetch] = useAxios();
   const [reload, setReload] = useState(0);
+  const [startIdx, setStartIdx] = useState(0);
+  const [endIdx, setEndIdx] = useState(6);
 
   const getData = () => {
     axiosFetch({
@@ -18,17 +20,17 @@ const RolesTable = () => {
     });
   };
 
-  const deleteData =async(e) => {
-    e.preventDefault()
-    if(confirm("Are you sure you want to Delete the following")){
+  const deleteData = async (e) => {
+    e.preventDefault();
+    if (confirm("Are you sure you want to Delete the following")) {
       await axiosFetch({
         axiosInstance: axios,
         method: "DELETE",
         url: `/role/${e.target.id}`,
       });
-      if(!error){
+      if (!error) {
         setReload(reload + 1);
-      } 
+      }
     }
   };
 
@@ -39,7 +41,6 @@ const RolesTable = () => {
   if (loading) {
     return <p>Loading...</p>;
   }
-
   return (
     <div className="w-full">
       <div className="w-full flex justify-between mb-4">
@@ -48,7 +49,6 @@ const RolesTable = () => {
           <button className="w-[130px] bg-blue-600 p-1 px-1 rounded-lg shadow-md text-sm text-white font-bold">
             Add Role
           </button>
-
           <input
             type="text"
             name="Search"
@@ -86,6 +86,7 @@ const RolesTable = () => {
                     ? role
                     : role.name.toLowerCase().includes(search);
                 })
+                .slice(startIdx, endIdx)
                 .map((row) => {
                   return (
                     <tr
@@ -95,24 +96,41 @@ const RolesTable = () => {
                       <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">
                         {row.name}
                       </td>
-                      <td className="px-6 py-2 whitespace-nowrap justify-between flex">
-                        <button
-                          className="bg-yellow-300 text-white py-1 px-6 rounded-md"
-                          id={row._id}
-                          onClick={(e) => {
-                            navigate(e.target.id);
-                          }}
-                        >
-                          Edit
-                        </button>
-                        <button
-                          className="bg-red-700 text-white py-1 px-6 rounded-md"
-                          id={row._id}
-                          onClick={(e)=>{deleteData(e)}}
-                        >
-                          Delete
-                        </button>
-                      </td>
+                      {row?.isSystemRole ? (
+                        <td>
+                          <p>System Role cannot be changed</p>
+                        </td>
+                      ) : (
+                        <td className="px-6 py-2 whitespace-nowrap justify-evenly flex">
+                          <button
+                            className="bg-blue-600 text-white py-1 px-6 rounded-md"
+                            id={row._id}
+                            onClick={(e) => {
+                              navigate(e.target.id);
+                            }}
+                          >
+                            View
+                          </button>
+                          <button
+                            className="bg-yellow-300 text-white py-1 px-6 rounded-md"
+                            id={row._id}
+                            onClick={(e) => {
+                              navigate(e.target.id);
+                            }}
+                          >
+                            Edit
+                          </button>
+                          <button
+                            className="bg-red-700 text-white py-1 px-6 rounded-md"
+                            id={row._id}
+                            onClick={(e) => {
+                              deleteData(e);
+                            }}
+                          >
+                            Delete
+                          </button>
+                        </td>
+                      )}
                     </tr>
                   );
                 })
@@ -123,6 +141,33 @@ const RolesTable = () => {
             )}
           </tbody>
         </table>
+      </div>
+      <div className="w-full flex justify-end">
+        <button
+          className={`${
+            startIdx == 0 ? "hidden" : ""
+          } py-1 px-2 border border-gray-600 rounded-md mt-4`}
+        
+          onClick={() => {
+            setStartIdx(startIdx - 6);
+            setEndIdx(endIdx - 6);
+          }}
+          type="button"
+        >
+          Previous
+        </button>
+        <button
+          className={`${
+            roles.length - endIdx <= 0 ? "hidden" : " "
+          } ml-8 py-1 px-2 border border-gray-600 rounded-md mt-4`}    
+          onClick={() => {
+            setStartIdx(startIdx + 6);
+            setEndIdx(endIdx + 6);
+          }}
+          type="button"
+        >
+          Next
+        </button>
       </div>
     </div>
   );

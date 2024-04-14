@@ -5,6 +5,8 @@ import StartTripForm from "./StartTripForm";
 import Dashboard from "./Dashboard"
 import PastTripsTable from "./PastTripsTable";
 import MaintenanceForm from "./MaintenanceForm";
+import EndTripForm from "./EndTripForm";
+import EmergencyReportForm from "./ReportEmergencyForm";
 
 export{
     TripCard,
@@ -13,5 +15,8 @@ export{
     StartTripForm,
     Dashboard,
     PastTripsTable,
-    MaintenanceForm
+    MaintenanceForm,
+    EndTripForm,
+    EmergencyReportForm
+
 }
