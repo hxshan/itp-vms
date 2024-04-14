@@ -5,6 +5,8 @@ import useAxios from '@/hooks/useAxios'
 import {useNavigate} from "react-router-dom";
 
 import { ClipLoader } from "react-spinners";
+import Swal from 'sweetalert2';
+
 
 const Form = () => { 
   const [step, setStep] = useState(1);
@@ -64,9 +66,6 @@ const Form = () => {
   
     const confirm = window.confirm("Are you sure")
     if(confirm){
-      navigate('/hires', { replace: true, state: { forceRefresh: true } });
-
-      
       await axiosFetch({
         axiosInstance:axios,
         method:'POST',
@@ -80,6 +79,17 @@ const Form = () => {
 
       if(error){
         alert(error)
+      }
+      else {
+        Swal.fire({
+          icon: 'success',
+          title: 'Success',
+          text: 'Hire added successfully!',
+          timer: 1500,
+          showConfirmButton: false
+      }).then(() => {
+          navigate('/hires', { replace: true, state: { forceRefresh: true } });
+      });
       }
 
       //axios.post('http://localhost:3000/api/hire/add', formData)

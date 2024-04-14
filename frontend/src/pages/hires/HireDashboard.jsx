@@ -6,6 +6,8 @@ import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from "react";
 
 import { ClipLoader } from "react-spinners";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const HireDashboard = () => {
     const navigate = useNavigate();
@@ -76,6 +78,8 @@ const HireDashboard = () => {
                 
 
             </div>
+
+            <ToastContainer />
             
         </div>
     )

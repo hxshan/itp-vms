@@ -5,6 +5,7 @@ import axios from '@/api/axios';
 import useAxios from "@/hooks/useAxios";
 
 import { ClipLoader } from "react-spinners";
+import Swal from 'sweetalert2';
 
 
 const EditHire = () => {
@@ -81,11 +82,23 @@ const EditHire = () => {
               })
 
               if(error){
-                alert(error)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: error,
+                })
               }
               if(response){
-                alert("successfully updated")
-                navigate('/hires')
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: 'Hire Edited successfully!',
+                    timer: 1500,
+                    showConfirmButton: false
+                }).then(() => {
+                    navigate('/hires')
+                });
+                
               }
             console.log("Response:", response.data);
           } catch (error) {
