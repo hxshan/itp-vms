@@ -114,9 +114,10 @@ const ContractDasboard = () => {
       const diffMilliseconds = endDateTime - currentDateTime;
       const days = Math.floor(diffMilliseconds / (1000 * 60 * 60 * 24));
       const hours = Math.floor((diffMilliseconds % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((diffMilliseconds % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((diffMilliseconds % (1000 * 60)) / 1000);
-      return `${days} days ${hours} hours ${minutes} minutes ${seconds} seconds`;
+     // const minutes = Math.floor((diffMilliseconds % (1000 * 60 * 60)) / (1000 * 60));
+     // const seconds = Math.floor((diffMilliseconds % (1000 * 60)) / 1000);
+    // ${minutes} minutes ${seconds} seconds
+      return `${days} days ${hours} hours`;
     }
   };
   useEffect(() => {
@@ -129,7 +130,7 @@ const ContractDasboard = () => {
           };
         });
       });
-    }, 1000);
+    }, 1000*60);
 
     return () => clearInterval(intervalId);
   }, []);

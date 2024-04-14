@@ -209,6 +209,7 @@ if(endDate < minstartDate){
         }
       }else if(updateData.message === "failed"){
         alert(`No changes detected "Redirecting to contract page" `)
+        navigate(`/viewContract/${contractID}`)
       }
     }
   },[updLoading])
