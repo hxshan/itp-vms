@@ -5,12 +5,14 @@ import axios from '@/api/axios';
 import useAxios from "@/hooks/useAxios";
 
 
-const EditHireRates = ({setShowAddForm, reload}) => {
+const AddHireRates = ({setShowAddForm, reload}) => {
 
     const [vehicleCatagory , setVehicleSubcategory] = useState('')
     const [baseRate , setBaseRate] = useState('')
-    const [baseDistence , setBaseDistence] = useState('')
+    const [basedDistance , setBaseDistance] = useState('')
     const [additionalRate, setAdditionalRate] = useState('')
+    const [acBaseRate , setAcBaseRate] = useState('')
+    const [acAdditionalRate, setAcAdditionalRate] = useState('')
 
     const [response, error, loading, axiosFetch] = useAxios()
 
@@ -19,8 +21,10 @@ const EditHireRates = ({setShowAddForm, reload}) => {
         const hireRates = {
             vehicleCatagory,
             baseRate,
-            baseDistence,
-            additionalRate
+            basedDistance,
+            additionalRate,
+            acBaseRate,
+            acAdditionalRate           
         }
 
         setShowAddForm(false)
@@ -56,6 +60,10 @@ const EditHireRates = ({setShowAddForm, reload}) => {
         setShowAddForm(false)
     }
 
+    if(loading) {
+        return<p>loading....</p>
+    }
+
 
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50">
@@ -73,6 +81,13 @@ const EditHireRates = ({setShowAddForm, reload}) => {
                             />
                         </div>
                         <div className="mb-4">
+                            <label className="block text-sm font-bold mb-2">Base Distance</label>
+                            <input type="number" className="border rounded-md px-3 py-2 w-full" 
+                            value={basedDistance}
+                            onChange={(e) => setBaseDistance(e.target.value)}
+                            />
+                        </div>
+                        <div className="mb-4">
                             <label className="block text-sm font-bold mb-2">Base Rate</label>
                             <input type="number" className="border rounded-md px-3 py-2 w-full" 
                             value={baseRate}
@@ -80,17 +95,24 @@ const EditHireRates = ({setShowAddForm, reload}) => {
                             />
                         </div>
                         <div className="mb-4">
-                            <label className="block text-sm font-bold mb-2">Base Distance</label>
-                            <input type="number" className="border rounded-md px-3 py-2 w-full" 
-                            value={baseDistence}
-                            onChange={(e) => setBaseDistence(e.target.value)}
-                            />
-                        </div>
-                        <div className="mb-4">
                             <label className="block text-sm font-bold mb-2">Additional Rate</label>
                             <input type="number" className="border rounded-md px-3 py-2 w-full" 
                             value={additionalRate}
                             onChange={(e) => setAdditionalRate(e.target.value)}
+                            />
+                        </div>
+                        <div className="mb-4">
+                            <label className="block text-sm font-bold mb-2">Base Rate(AC)</label>
+                            <input type="number" className="border rounded-md px-3 py-2 w-full" 
+                            value={acBaseRate}
+                            onChange={(e) => setAcBaseRate(e.target.value)}
+                            />
+                        </div>
+                        <div className="mb-4">
+                            <label className="block text-sm font-bold mb-2">Additional Rate(AC)</label>
+                            <input type="number" className="border rounded-md px-3 py-2 w-full" 
+                            value={acAdditionalRate}
+                            onChange={(e) => setAcAdditionalRate(e.target.value)}
                             />
                         </div>
                         <div className="flex justify-between">
@@ -102,7 +124,7 @@ const EditHireRates = ({setShowAddForm, reload}) => {
                                 </button>
                             </div>
                             <div className="text-center">
-                                <button type="submit" className="bg-green-500 text-white px-4 py-2 rounded-md"
+                                <button type="submit" className="bg-actionGreen text-white px-4 py-2 rounded-md"
                                 >
                                     Save
                                 </button>
@@ -116,9 +138,9 @@ const EditHireRates = ({setShowAddForm, reload}) => {
     );
 };
 
-EditHireRates.propTypes = {
+AddHireRates.propTypes = {
     setShowAddForm: PropTypes.func.isRequired,
     reload: PropTypes.func.isRequired,
 };
 
-export default EditHireRates;
+export default AddHireRates;

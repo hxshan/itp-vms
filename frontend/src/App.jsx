@@ -2,11 +2,12 @@
 import { useAuthContext } from "./hooks/useAuthContext";
 import {Routes, Route, Navigate } from "react-router-dom";
 import { Login, Navbar, TopBar, UnAuthorized } from "./pages/shared";
-import DriverDashboard from "./pages/driver/DriverDashboard";
+import {DriverDashboard, TripPage} from "./pages/driver";
 import VehicleDashboard from "./pages/vehicle/VehicleDashboard";
 
 
 import CaseFileForm from "./components/EAM/CaseFileForm";
+import EAMDashboard  from "./pages/EAM/EAMDashboard";
 import { CreateMaintainceForm } from "./components/VR/CreateMaintainceForm";
 
 import AddVehicle from "./pages/vehicle/AddVehicle";
@@ -19,17 +20,22 @@ import { AdminDashboard, Roles, EditRoles } from "./pages/admin";
 import { MaintainceDashboard } from "./pages/Maintains/MaintainceDashboard";
 import { EditMaintainceOrder } from "./components/VR/EditMaintainceOrder";
 import ContractDasboard from "./pages/contract/ContractDasboard";
-import FinanaceDashboard from "./pages/finance/FinanaceDashboard";
+import {FinanceDashboard,ExpenseTracking, IncomeTracking }from "./pages/finance";
 import { VehicleServiceList } from "./components/VR/VehicleServiceList";
 import ClientDashboard from "./pages/contract/ClientDashboard";
 import ViewContract from "./pages/contract/ViewContract";
 import ContractEditForm from "./pages/contract/ContractEditForm";
+import CaseFileTable from "./components/EAM/CaseFileTable";
 import { UserProfile } from "./pages/admin";
 import {HireDashboard, CreateHire, EditHire, HireRates} from "./pages/hires/hires"
 import AddClient from "./pages/contract/AddClient";
 import { View } from '../src/components/VR/View';
+
 import ViewClient from "./pages/contract/ViewClient";
 import ClientEditForm from "./pages/contract/ClientEditForm";
+import UserReport from "./components/admin/UserReport";
+import { EditUserForm } from "./components/admin";
+import EditUser from "./pages/admin/EditUser";
 
 
 function App() {
@@ -52,10 +58,7 @@ function App() {
       <Routes>
         <Route path="/userauth/failed" element={<UnAuthorized />} />
       </Routes>
-      <main className="flex w-full bg-slate-100 min-h-screen">
-        <TopBar />
-        <Navbar />
-        <div className={"ml-32 w-full mr-14 mt-[90px] lg:ml-80"}>
+      
           
           <Routes>
             <Route path="/login" element={<Login />} />
@@ -69,19 +72,24 @@ function App() {
                 )
               }
             />
+            <Route path="/admin/userreport/:id" element={<UserReport/>}/>
             <Route path="/admin/roles" element={<Roles />} />
             <Route path="/admin/roles/:id" element={<EditRoles />} />
 
+            <Route path="/admin/edituser/:id" element={<EditUser/>}/>
+
+            <Route path="/emergency" element={<EAMDashboard />} />
+            <Route path="/emergency/create" element={<CaseFileForm />} />
+            <Route path="/emergency/CaseFileTable" element={<CaseFileTable />} />
             <Route path="/user/:id" element={<UserProfile/>}/>
-
-
+              
             <Route path="/hires">
               <Route index={true} element={<HireDashboard />} />
               <Route path="add" element={<CreateHire />}/>
               <Route path="edit/:id" element={<EditHire />}/>
               <Route path="rates" element={<HireRates />}/>
             </Route>
-            <Route path="/emergency" element={<CaseFileForm />} />
+
             <Route path="vehicle">
               <Route index={true} element={<VehicleDashboard />} />
               <Route path="add" element={<AddVehicle />} />
@@ -92,6 +100,7 @@ function App() {
             
             <Route path="/Vrform" element={<CreateMaintainceForm />}/>
             <Route path="/driver" element={<DriverDashboard />} />
+            <Route path="/driver/TripPage" element={<TripPage />} />
             <Route path="/Mdashboard" element={<MaintainceDashboard />} />
             <Route path="/view/:id" element={<View />} />
             <Route path="/addnote" element={<servicenote />} />
@@ -105,20 +114,23 @@ function App() {
             <Route path="/client" element={<ClientDashboard/>}/>
             <Route path="/viewContract/:id" element={<ViewContract/>}/>
             <Route path="/EditContract/:id" element={<ContractEditForm/>}/>
+
             <Route path="/EditClient/:id" element={<ClientEditForm/>}/>
             <Route path="/addClient" element={<AddClient/>}/>
             <Route path="/viewClient/:id" element={<ViewClient/>}/>
+              
 
+            <Route path="/finance/financeDashboard" element={<FinanceDashboard />} />
+            <Route path="/finance/expenseTracking" element={<ExpenseTracking />} />
+            <Route path="/finance/IncomeTracking" element={<IncomeTracking  />} />       
+            <Route path="/addClient" element={<AddClient/>}/>
 
-            <Route path="/finance" element={<FinanaceDashboard />} />
-            
             <Route
               path="/VehicleServiceList"
               element={<VehicleServiceList />}
             />
           </Routes>
-        </div>
-      </main>
+     
     </>
   );
 }

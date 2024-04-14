@@ -18,7 +18,6 @@ import {
 
 export const CreateMaintainceForm = () => {
     const [files, setFiles] = useState([]);
-    const [searchinput, setSearchinput] = useState('');
     const [data, error, loading, axiosFetch] = useAxios()
     const currentDate = new Date().toISOString().split('T')[0];
 

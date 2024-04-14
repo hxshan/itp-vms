@@ -4,15 +4,20 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import useAxios from '@/hooks/useAxios';
 
-export const servicenote = () => {
+export const Servicenote = () => {
+
+    const navigate = useNavigate();
+    const currentDate = new Date().toISOString().split('T')[0];
 
     const [formdata, setFormdata] = useState({
         vehicleRegister: '',
+        servicedate:currentDate,
+        lastmilage:'',
         Snote: '',
         Scost: '',
     });
 
-    const navigate = useNavigate();
+    
 
     const handleSubmit = () => {
         // if (!validateForm()) {
@@ -22,7 +27,7 @@ export const servicenote = () => {
         // }
         // Assuming you want to submit formdata somewhere using Axios
 
-        axios.post('http://localhost:3000/api/vehiclemaintain/createmainform', formdata)
+        axios.post('http://localhost:3000/api/vehicleService/addservicenote', formdata)
             .then(response => {
                 console.log('Submission successful:', response);
                 // Optionally, you can reset the form after successful submission
@@ -30,6 +35,8 @@ export const servicenote = () => {
                 setFormdata({
                     vehicleRegister: '',
                     Snote: '',
+                    servicedate:'',
+                    lastmilage:'',
                     Scost: '',
                 });
 
@@ -42,7 +49,7 @@ export const servicenote = () => {
     };
     const handlechange = (e) => {
        
-        if (e.target.id === 'vehicleRegister' || e.target.id === 'Snote' || e.target.id === 'Scost' ) {
+        if (e.target.id === 'vehicleRegister' || e.target.id === 'Snote' || e.target.id === 'Scost' || e.target.id === 'servicedate' || e.target.id === 'lastmilage' ) {
             setFormdata({
                 ...formdata,
                 [e.target.id]: e.target.value
@@ -71,11 +78,28 @@ export const servicenote = () => {
                             required
                             onChange={handlechange}
                             value={formdata.vehicleRegister} />
+                            <label className='  font-semibold  '>Date :</label>
+                        <input
+                            type="date"
+                            id='servicedate'
+                            className='border p-2 rounded-lg'
+                            required
+                            onChange={handlechange}
+                            value={formdata.servicedate} />
+                            <label className='  font-semibold  '>Last-Milage :</label>
+                        <input
+                            type="number"
+                            id='lastmilage'
+                            placeholder='10000km'
+                            className='border p-2 rounded-lg'
+                            required
+                            onChange={handlechange}
+                            value={formdata.lastmilage} />
                         <label className='  font-semibold  '>Service Note :</label>
                         <textarea
                             type="text"
-                            id='vrissue'
-                            placeholder='Ex:- Front Arm Vibartion '
+                            id='Snote'
+                            placeholder=' '
                             className='border p-2 rounded-lg'
                             required
                             onChange={handlechange}
@@ -83,13 +107,14 @@ export const servicenote = () => {
                         <label className='  font-semibold  '>Cost :</label>
                         <input
                             type="number"
-                            id='vrcost'
+                            id='Scost'
                             placeholder='RS:-10,000'
                             className='border p-2 rounded-lg'
                             required
                             onChange={handlechange}
                             value={formdata.Scost} />
                     </div>
+                    
                 </div>
             </form>
             <button onClick={handleSubmit}

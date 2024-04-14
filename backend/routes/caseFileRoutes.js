@@ -1,22 +1,25 @@
-const express = require('express')
-
-const {getCaseFileById, getCaseFiles, createCaseFile, deleteCaseFile, updateCaseFile} = require('../controllers/CaseFileController')
-
-const router = express.Router()
-
-
-
-router.get('/:id', getCaseFileById)
-
-router.get('/', getCaseFiles)
-
-router.post('/',createCaseFile)
-
-router.delete('/:id', deleteCaseFile)
-
-router.patch('/:id', updateCaseFile)
+const express = require("express");
+const { CaseFile } = require("../models/caseFileModel.js");
+const { createCaseFile,
+         getCaseFiles,
+         getCaseFileById,
+         updateCaseFileById,
+         deleteCaseFileById,   
+        } = require("../controllers/CaseFileController.js");
 
 
 
 
-module.exports = router
+const router = express.Router(); 
+
+router.post("/create", createCaseFile);
+router.get("/", getCaseFiles);
+router.get("/:id", getCaseFileById);
+router.put("/:id", updateCaseFileById);
+router.delete("/:id", deleteCaseFileById);
+
+
+
+
+
+module.exports = { caseFileRouter: router};

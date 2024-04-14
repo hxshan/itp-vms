@@ -1,137 +1,184 @@
-const CaseFile = require('../models/caseFileModel')
-const mongoose = require('mongoose')
+const CaseFile = require("../models/caseFileModel");
 
 
-//get all case files
-const getCaseFiles = async (req,res) => {
-    const caseFiles = await CaseFile.find({}).sort({createdAt:-1})
+//create Case File
+ const createCaseFile = async (req, res) => {
 
-    res.status(200).json({caseFiles})
-}
+        try{
+            if(
+                !req.body.caseTitle ||
+                !req.body.location ||
+                !req.body.timeOfIncident ||
+                !req.body.licencePlate ||
+                !req.body.currentCondition ||
+                !req.body.passengerCount ||
+                !req.body.incidentDescription ||
+                !req.body.severity ||
+                !req.body.injuriesDiscription ||
+                !req.body.status
 
-//get single case file by id
-const getCaseFileById = async (req,res) => {
-    const {id} = req.params
 
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(404).json({message:'Invalid Case File ID'})
-    }
-
-    const caseFile = await CaseFile.findById(id)
-
-    if (!caseFile) {
-        return res.status(404).json({message:'Case File Not Found'})
-        
-    }
-
-    res.status(200).json({caseFile})
-}
-
-//create new case file
-
-const createCaseFile = async (req,res) => {
-    try{
-    const{
-        caseTitle,
-        caseType,
-        caseDesc,
-        caseStatus,
-        casePriority,
-        caseAssignedTo,
-        caseAssignedBy,
-        caseDueDate,
-        caseClosedDate,
-        caseFileImage,
-        caseFileDoc,
-        caseFileVideo,
-        caseFileAudio,
-        caseFileLocation,
-        caseFileDate
-    } = req.body
-
-    const newCaseFile = new CaseFile({
-        caseTitle,
-        caseType,
-        caseDesc,
-        caseStatus,
-        casePriority,
-        caseAssignedTo,
-        caseAssignedBy,
-        caseDueDate,
-        caseClosedDate,
-        caseFileImage,
-        caseFileDoc,
-        caseFileVideo,
-        caseFileAudio,
-        caseFileLocation,
-        caseFileDate
-    });
-
-    await newCaseFile.save()
-
-    res.status(201).json({message:'Case File Created Successfully'});
-
-    }catch(error){
-        console.error('Error Creating New Case File: ', error);
-        res.status(500).json({message:'Server Error'});
-    }
-
-}
-
-//delete case file 
-const deleteCaseFile = async (req,res) => {
-    try{
-    const {id} = req.params
-
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(404).json({message:'No Case File Found'})
-    }
-
-    const caseFile = await CaseFile.findOneAndDelete({_id:id})
-
-    if (!caseFile) {
-        return res.status(404).json({message:'Case File Not Found'})
-        
-    }
-
-    res.status(200).json({message:'Case File Deleted Successfully'})
-    }catch(error){
-        console.error('Error Deleting Case File: ', error);
-        res.status(500).json({message:'Server Error'});
+            ){
+                return res.status(400).send("Missing required fields");
+            }
     
-    }
-}
+            const newCaseFile = {
+                caseTitle: req.body.caseTitle,
+                location: req.body.location,
+                timeOfIncident: req.body.timeOfIncident,
+                licencePlate: req.body.licencePlate,
+                currentCondition: req.body.currentCondition,
+                passengerCount: req.body.passengerCount,
+                incidentDescription: req.body.incidentDescription,
+                severity: req.body.severity,
+                injuriesDiscription: req.body.injuriesDiscription,
+                status : req.body.status || "incomplete",
+                driverID: req.body.driverID,
+                driverName: req.body.driverName,
+                driverLicenceNumber: req.body.driverLicenceNumber,
+                witnessesContactInformation: req.body.witnessesContactInformation,
+                witnessesStatement: req.body.witnessesStatement,
+                emergencyServicesContacted: req.body.emergencyServicesContacted,
+                emergencyServicesResponseTime: req.body.emergencyServicesResponseTime,
+                emergencyServicesActionsTaken: req.body.emergencyServicesActionsTaken,
+                photographicEvidence: req.body.photographicEvidence,
+                insuranceCompaniesContactInfo: req.body.insuranceCompaniesContactInfo,
+                insuranceStatus: req.body.insuranceStatus,
+                policeReport : req.body.policeReport
+                
 
-//update caseFile
+            };
+    
+            const createdCaseFile = await CaseFile.create(newCaseFile);
+            
+            return res.status(201).send(createdCaseFile);
+                
+        }catch(error){
+            console.log("Error creating case file", error);
+            return res.status(500).send("Internal server error");
+        }
+    
+};
 
-const updateCaseFile = async (req,res) => {
-    try{
-    const {id} = req.params
-    const {caseTitle,caseType,caseDesc,caseStatus,casePriority,caseAssignedTo,caseAssignedBy,caseDueDate,caseClosedDate,caseFileImage,caseFileDoc,caseFileVideo,caseFileAudio,caseFileLocation,caseFileDate} = req.body
 
-    const caseFile = await CaseFile.findAndUpdate({_id:id},{...req.body},{new:true})
-
-    if (!caseFile) {
-        return res.status(404).json({message:'Case File Not Found'})
+//fetch all case files
+const getCaseFiles = async (req, res) => {
+    
+        try{
+            const caseFiles = await CaseFile.find({});
+            return res.status(200).send(caseFiles);
         
-    }
+        }catch(error){
+            console.log("Error getting case files", error);
+            return res.status(500).send("Internal server error");
+        
+        }
+        
+    };
 
-    res.status(200).json({message:'Case File Updated Successfully'})
-}catch(error){
-    console.error('Error Updating Case File: ', error);
-    res.status(500).json({message:'Server Error'});
+ const getCaseFileById = async (req, res) => {
+    
+        try{
+        
+            const { id} = req.params;
+            const caseFile = await CaseFile.findById(id);
+            return res.status(200).send(caseFile);
+        
+        }catch(error){
+            console.log("Error getting case files", error);
+            return res.status(500).send("Internal server error");
+        
+        }
+        
+};
 
-}
+ const updateCaseFileById = async (req, res) => {
+    
 
+        const { id } = req.params;
+        const  { caseTitle, 
+                 location, 
+                 timeOfIncident, 
+                 passengerCount, 
+                 licencePlate, 
+                 currentCondition, 
+                 driverID, 
+                 driverName, 
+                 driverLicenceNumber,  
+                 status, 
+                 incidentDescription , 
+                 severity,
+                 injuriesDiscription,
+                 witnessesContactInformation,
+                 witnessesStatement,
+                 emergencyServicesContacted,
+                 emergencyServicesResponseTime,
+                 emergencyServicesActionsTaken,
+                 photographicEvidence,
+                 insuranceCompaniesContactInfo,
+                 insuranceStatus,
+                 policeReport} = req.body;
+        
+        try{
+            
+        
+           
+        
+            const updatedCaseFile = await CaseFile.findByIdAndUpdate(id, { 
+                caseTitle,
+                location, 
+                 timeOfIncident, 
+                 passengerCount, 
+                 licencePlate, 
+                 currentCondition, 
+                 driverID, 
+                 driverName, 
+                 driverLicenceNumber,  
+                 status, 
+                 incidentDescription , 
+                 severity,
+                 injuriesDiscription,
+                 witnessesContactInformation,
+                 witnessesStatement,
+                 emergencyServicesContacted,
+                 emergencyServicesResponseTime,
+                 emergencyServicesActionsTaken,
+                 photographicEvidence,
+                 insuranceCompaniesContactInfo,
+                 insuranceStatus,
+                 policeReport
+            
+        }, { new: true });
+        
+            if(!updatedCaseFile){
+                return res.status(404).send("Case file not found");
+            }
+        
+            return res.status(200).send({ message: "Case file updated successfully"});
+        }catch(error){
+            console.log("Error updating case file", error);
+            return res.status(500).send("Internal server error");
+        }
+        
+        
+};
 
-}
+ const deleteCaseFileById = async (req, res) => {
+    
+        try{
+            const { id } = req.params;
+            const deletedCaseFile = await CaseFile.findByIdAndDelete(id);
+        
+            if(!deletedCaseFile){
+                return res.status(404).send("Case file not found");
+            }
+        
+            return res.status(200).send({ message: "Case file deleted successfully"});
+        }catch(error){
+            console.log("Error deleting case file", error);
+            return res.status(500).send("Internal server error");
+        }
+        
+};
 
-
-
-module.exports = {
-    getCaseFiles,
-    getCaseFileById,
-    createCaseFile,
-    deleteCaseFile,
-    updateCaseFile
-}
+module.exports = {createCaseFile, getCaseFiles, getCaseFileById, updateCaseFileById, deleteCaseFileById};

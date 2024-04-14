@@ -37,12 +37,6 @@ const validateFormFirstPage = (FormData) => {
         return error
     }
     
-    if (FormData.vehicleSubcategory  === '') {
-        error.vehicleSubcategory = 'Please Enter vehicle Subcategory'
-        alert('Please Enter vehicleSubcategory')
-        return error
-    }
-    
     if (FormData.passengerCount  === '') {
         error.passengerCount = 'Please Enter passenger Count'
         alert('Please Enter Passenger Count')
@@ -82,18 +76,31 @@ const validateFormSecondPage = (FormData) => {
         alert('Please Enter End Point')
         return error
     }
+
+    if (FormData.startTime  === '') {
+        error.startTime = 'Please Enter Start Time'
+        alert('Please Enter Start Time')
+        return error
+    }
     
-    if (FormData.distence  === '') {
-        error.distence = 'Please Enter distence'
-        alert('Please Enter Distence')
+    if (FormData.estimatedDistance  === '') {
+        error.estimatedDistance = 'Please Enter distance'
+        alert('Please Enter distance')
         return error
     }
 
-    if (FormData.distence  <= 0) {
-        error.distence = 'Please Enter valid distence'
-        alert('Please Enter valid Distence')
+    if (FormData.estimatedDistance  <= 0) {
+        error.estimatedDistance = 'Please Enter valid estimatedDistance'
+        alert('Please Enter valid distance')
         return error
     }
+
+
+    return error
+}
+
+const validateFormtthirddPage = (FormData) => {
+    const error = {};
 
     if (FormData.cusName  === '') {
         error.cusName = 'Please Enter Customer Name'
@@ -184,9 +191,9 @@ const validateForm = (FormData) => {
         return error
     }
     
-    if (FormData.distence  === '') {
-        error.startDate = 'Please Enter distence'
-        alert('Please Enter Distence')
+    if (FormData.distance  === '') {
+        error.startDate = 'Please Enter distance'
+        alert('Please Enter distance')
         return error
     }
     if (FormData.cusName  === '') {
@@ -216,4 +223,4 @@ const validateForm = (FormData) => {
 
 */
 
-export { validateFormFirstPage, validateFormSecondPage};
+export { validateFormFirstPage, validateFormSecondPage, validateFormtthirddPage};
