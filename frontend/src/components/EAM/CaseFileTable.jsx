@@ -1,8 +1,7 @@
 import React, { useEffect, useState} from "react";
 import  axios  from "axios";
 import Spinner from "./Spinner";
-import { Link } from "react-router-dom";
-import ViewCaseFile from "./ViewCaseFile";
+import ViewCaseFile from "./viewCaseFile";
 
 
 
