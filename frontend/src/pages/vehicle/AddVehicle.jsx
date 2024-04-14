@@ -100,7 +100,7 @@ const AddVehicle = () => {
           <p className="flex flex-col items-center justify-center h-screen text-center">Loading... Please check your internet connection.</p>
         ) : (
 
-        <div className="place-content-center mt-8 bg-cover bg-center bg-white ">
+        <div className="place-content-center mt-8 bg-cover bg-center">
 
             <div className='flex flex-row justify-between'>
             <h1 className="text-2xl font-bold">Add Vehicle Details</h1>
@@ -133,7 +133,7 @@ const AddVehicle = () => {
             </div>   
             </form>
             {formState.category && (
-                <form className="mx-1 mt-5 px-8 pt-6 pb-8 shadow-xl bg-white rounded pad" onSubmit={handleSubmit}>
+                <form className="mx-1 mt-5 mb-10 px-8 pt-6 pb-8 shadow-xl bg-white rounded pad" onSubmit={handleSubmit}>
                     
                     {/* Render appropriate form based on selected category */}
                     {formState.category === 'car' && <CarForm formState={formState} setFormState={setFormState} />}

@@ -85,7 +85,7 @@ const VehicleSearch = () => {
 
 
   return (
-    <div className='w-full place-content-center space-y-4 mt-8 bg-cover bg-center bg-white mb-10'>
+    <div className='w-full place-content-center space-y-4 mt-8 bg-cover bg-center mb-10'>
       
         <div className="border-b-4 border-black w-full"></div>
         <div className='text-2xl font-bold text-black mt-4'>Search Vehicle</div>
@@ -112,6 +112,7 @@ const VehicleSearch = () => {
             <th className='border border-white p-2'>Vehicle Type</th>
             <th className='border border-white p-2'>Vehicle Model</th>
             <th className='border border-white p-2'>Vehicle Register</th>
+            <th className='border border-white p-2'>Vehicle State</th>
             <th className='border border-white p-2'>Actions</th>
             
           </tr>
@@ -124,6 +125,7 @@ const VehicleSearch = () => {
                 <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{vehicle.vehicleType}</td>
                 <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{vehicle.vehicleModel}</td>
                 <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{vehicle.vehicleRegister}</td>
+                <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200"><span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded -full ${vehicle.statusVehicle=='Active'?'text-green-500 bg-green-100': vehicle.statusVehicle=='Deactive'?'text-red-600 bg-red-100':'text-orange-600 bg-orange-100'}`}>{vehicle.statusVehicle.toUpperCase()}</span></td>
                 <td className="px-2 py-2 whitespace-nowrap border-r border-gray-200 flex justify-center">
                         <button className="my-1 mx-1 bg-blue-700 text-white py-1 px-4 rounded-md text-sm"
                         id={vehicle._id}

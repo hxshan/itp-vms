@@ -1,16 +1,21 @@
 import React from 'react'
+import { ReactToPrint } from 'react-to-print';
 
 const NewlyAddedTable = ({ category, categoryData }) => {
+
+  const componentRef = React.createRef();
 
   if (categoryData.length === 0) {
     return <p className='mt-6 p-3 font-medium text-sm text-white bg-red-500 rounded-md pad mb-10'>Vehicles not found. </p>;
   }
 
   return (
-  <div className='flex flex-col p-5 bg-white mb-10'> 
+  <div className='flex flex-col p-0 mb-10'> 
     <div className='mt-4' key={category}>
+    <div ref={componentRef}>
+      <div className='p-4'>
       <h2 className='mb-2 text-xl font-bold text-black'>New added vehicles</h2>
-      <table className='w-full border-collapse border-spacing-2 border-black rounded-md pad shadow-xl p-5'>
+      <table className='w-full border-collapse border-spacing-2 border-black rounded-md pad shadow-xl p-5 mb-3'>
         <thead className='bg-gray-800 text-white'>
           <tr>
             <th className='border border-white p-2'>Vehicle Type</th>
@@ -40,6 +45,20 @@ const NewlyAddedTable = ({ category, categoryData }) => {
           ))}
         </tbody>
       </table>
+      <div className='flex justify-end mt-4'>
+        <ReactToPrint
+                    trigger={() => (
+                        <button
+                            className="mx-2 px-3 py-1 rounded-md bg-red-500 text-white text-sm text-bold"
+                        >
+                            {category.charAt(0).toUpperCase() + category.slice(1)} Vehicle Table Report
+                        </button>
+                    )}
+                    content={() => componentRef.current}
+                />
+         </div>
+      </div>
+      </div>
     </div>
   </div>
   );
