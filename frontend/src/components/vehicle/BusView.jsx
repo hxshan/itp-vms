@@ -1,8 +1,10 @@
 import React from 'react'
 
 const BusView = ({formData}) => {
+ 
   return (
-    <div className='space-y-8'>
+   
+    <div className='space-y-8 p-8'>
         <h1 className="text-xl font-bold">View Bus Details</h1>   
              
             <div className='flex flex-row'>
@@ -123,6 +125,7 @@ const BusView = ({formData}) => {
     </div>
 
     </div>
+    
   )
 }
 

@@ -1,9 +1,11 @@
 
-import { useEffect, useState } from "react";
+import React,{ useEffect, useState } from "react";
 import { useParams } from 'react-router-dom';
 import axios from "@/api/axios";
 import { ToastContainer, toast } from 'react-toastify';
+import { ReactToPrint } from 'react-to-print';
 import { useNavigate} from 'react-router-dom'
+
 import CarView from '../../components/vehicle/CarView'
 import VanView from '../../components/vehicle/VanView'
 import BusView from '../../components/vehicle/BusView'
@@ -17,6 +19,7 @@ const VehicleViewControl = () => {
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
+    const componentRef = React.createRef();
     
     const [formData, setFormData] = useState({
       category: '',
@@ -96,15 +99,29 @@ const VehicleViewControl = () => {
 
 
   return (
-    <div className="space-y-3 m-1 mt-5 mb-10 p-4  pad shadow-xl bg-white rounded ">
+    <div className="space-y-3 m-1 mt-5 mb-10 p-4  pad shadow-xl bg-white rounded">
       <ToastContainer />  
+      
       {data && (
         <>
-          
+             <div ref={componentRef}>
              {renderFormComponent()} 
+             </div>       
             
-          <div className="flex flex-row justify-start">
-            <button className="mx-2 bg-red-600 py-2 px-4 rounded-md text-white text-sm font-bold mt-2" type="button" onClick={handleCancel}>Cancel</button>
+          <div className="flex flex-row justify-end">
+            
+            <ReactToPrint
+                    trigger={() => (
+                        <button
+                            className="mx-2 bg-red-600 py-2 px-4 rounded-md text-white text-sm font-bold mt-2"
+                        >
+                            Generate a Report
+                        </button>
+                    )}
+                    content={() => componentRef.current}
+                />
+            <button className="mx-2 bg-blue-600 py-2 px-4 rounded-md text-white text-sm font-bold mt-2" type="button" onClick={handleCancel}>Cancel</button>
+                
           </div>
         </>
       )}
