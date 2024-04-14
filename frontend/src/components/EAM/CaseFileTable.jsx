@@ -1,95 +1,112 @@
-import React, {useState, useEffect} from "react";
-import axios from "@/api/axios";
-import { useHistory } from "react-router-dom";
-import { error } from "console";
+import React, { useEffect, useState} from "react";
+import  axios  from "axios";
+import Spinner from "./Spinner";
+import { Link } from "react-router-dom";
+import ViewCaseFile from "./ViewCaseFile";
+
+
 
 const CaseFileTable = () => {
     const [caseFiles, setCaseFiles] = useState([]);
-
-    const history = useHistory();
-
-    useEffect(() => {
-        //fetch data from backend
-
-        axios.get('/api/casefile')
-        .then(Response => {
-            setCaseFiles(Response.data)
-        })
-
-        .catch(error =>{
-            console.error('Error fetching data:', error);
-        });
-        
-    }, []);
-
-    const handleEdit = (id) => {
-
-        history.push('/');//redirect to edit page need to create edit page first 
-        console.log('Edit:', id);
-    };
-
-    const handleDelete = (id) => {
-        if(window.confirm("Are you sure you want to delete this case file?")){
-            axios.delete(`/api/casefile/${id}`)
-            .then(Response => {
-                setCaseFiles(caseFiles.filter((caseFile) => caseFile._id !== id));
-                console.log('Case file deleted successfully:', Response.data);
-            })
-            .catch(error => {
-                console.error('Error deleting case file:', error);
-            });
-        }
-    };
-
-    const handleView = (id) => {
-        history.push();//redirect to view page need to create view page first
-        console.log('View:', id);
-    };
+    const [loading, setLoading] = useState(true);
     
+
+    // Fetch case files
+    useEffect(() => {
+        setLoading(true);
+        axios
+            .get('http://localhost:3000/api/caseFiles')
+            .then((response) => {
+                setCaseFiles(response.data);
+                setLoading(false);
+            })
+            .catch((error) => {
+                console.log("Error fetching case files", error);
+                setLoading(false);
+            });
+
+        }, []);
+
+        const deleteCaseFile = async (id) => {
+            if(confirm("Are you sure you want to delete this case file?")){
+                setLoading(true);
+                axios
+                 .delete(`http://localhost:3000/api/caseFiles/${id}`)
+                 .then(() => {
+                        setCaseFiles(caseFiles.filter((caseFile) => caseFile._id !== id));
+                        setLoading(false);
+                        alert("Case file deleted successfully!");
+                 })
+                 .catch((error) => {
+                     console.log("Error deleting case file", error);
+                     setLoading(false);
+                 });
+            }
+        }
+
+        const [viewCaseFile, setViewCaseFile] = useState(false);
+        const [viewCaseFileData, setViewCaseFileData] = useState(null);
+
+        const handleView = (id) => {
+            const selected = caseFiles.find((caseFile) => caseFile._id === id);
+            setViewCaseFileData(selected);
+            setViewCaseFile(true);
+        };
+
+  
+
     return (
-        <div className="w-full flex items-center">
-            <table className='w-full border-separate border-spacing-2'>
-                <thead>
-                    <tr>
-                        <th className='border border-slate-700 rounded-md'>No</th>
-                        <th className='border border-slate-700 rounded-md'>Case Name</th>
-                        <th className='border border-slate-700 rounded-md'>Case Type</th>
-                        <th className='border border-slate-700 rounded-md'>Options</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {caseFiles && caseFiles.length > 0 ?
-                        (caseFiles.map((caseFile ,index) => (
-                            <tr key={caseFile._id} className='h-8 '>
-                                <td className='border border-slate-700 rounded-md text-center'>
-                                    {index+1}
-                                </td>
-                                <td className='border border-slate-700 rounded-md text-center'>
-                                    {caseFile.name}
-                                </td>
-                                <td className='border border-slate-700 rounded-md text-center'>
-                                    {caseFile.type}
-                                </td>
-                                <td className='border border-slate-700 rounded-md text-center'>
-                                    <div className="flex justify-center gap-x-4">
-                                        <button onClick={() => handleView(caseFile._id)} className='border bg-blue-500 text-zinc-50 rounded-lg pr-3 pl-3 p-2'>View </button>
-                                        <button onClick={() => handleEdit(caseFile._id)} className='border bg-green-500 text-zinc-50 rounded-lg pr-3 pl-3 p-2'>Edit </button>
-                                        <button onClick={() => handleDelete(caseFile._id)} className='border bg-red-500 text-zinc-50 rounded-lg pr-3 pl-3 p-2'>Delete </button>
-                                    </div>
-                                </td>
-                            </tr>
-                        ))): (
+        <div className="container mx-auto">
+          
+            {loading ? (
+                <Spinner />
+            ) : (
+                <div className="mt- 10" >
+                    <table className="min-w-full divide-y divide-gray-200" >
+                        <thead className="bg-gray-50">
                             <tr>
-                                <td colSpan="4" className='text-center'>
-                                    No Case Files available
-                                </td>
+                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Title</th>
+                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Location</th>
+                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Time Of Incident</th>
+                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Passenger Count</th>
+                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Severity</th>
+                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                             </tr>
-                        )}
-                </tbody>
-            </table>
+                        </thead>
+                        <tbody className="bg-white divide-y divide-gray-200">
+                            {caseFiles.map((caseFile) => (
+                                <tr key={caseFile._id}>
+                                    <td className="px-6 py-4 whitespace-nowrap">{caseFile.caseTitle}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap">{caseFile.location}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap">{caseFile.timeOfIncident}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-center">{caseFile.passengerCount}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap">{caseFile.severity}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap">{caseFile.status}</td>
+
+                                    <td className="px-6 py-4 whitespace-nowrap">
+                                       <div className="flex">
+                                        
+                                            <button className="px-2 py-1 bg-[#D4D800] text-white rounded-md mr-2" onClick={() => handleView(caseFile._id)}>
+                                                View
+                                            </button>
+                                        
+                                        
+                                            <button className="hidden xl:grid px-2 py-1 bg-[#A90000] text-white rounded-md" onClick={() => deleteCaseFile(caseFile._id)}>
+                                                Delete
+                                            </button>  
+                                            </div>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                    { viewCaseFile && <ViewCaseFile setViewCaseFile = {setViewCaseFile} viewCaseFileData = {viewCaseFileData}/>}
+                </div>
+            )}
         </div>
 
     );
-};
-    
+}
+
 export default CaseFileTable;

@@ -7,6 +7,7 @@ import VehicleDashboard from "./pages/vehicle/VehicleDashboard";
 
 
 import CaseFileForm from "./components/EAM/CaseFileForm";
+import EAMDashboard  from "./pages/EAM/EAMDashboard";
 import { CreateMaintainceForm } from "./components/VR/CreateMaintainceForm";
 
 import AddVehicle from "./pages/vehicle/AddVehicle";
@@ -24,6 +25,7 @@ import { VehicleServiceList } from "./components/VR/VehicleServiceList";
 import ClientDashboard from "./pages/contract/ClientDashboard";
 import ViewContract from "./pages/contract/ViewContract";
 import ContractEditForm from "./pages/contract/ContractEditForm";
+import CaseFileTable from "./components/EAM/CaseFileTable";
 import { UserProfile } from "./pages/admin";
 import {HireDashboard, CreateHire, EditHire, HireRates} from "./pages/hires/hires"
 import AddClient from "./pages/contract/AddClient";
@@ -68,17 +70,19 @@ function App() {
             />
             <Route path="/admin/roles" element={<Roles />} />
             <Route path="/admin/roles/:id" element={<EditRoles />} />
+     
+            <Route path="/emergency" element={<EAMDashboard />} />
+            <Route path="/emergency/create" element={<CaseFileForm />} />
+            <Route path="/emergency/CaseFileTable" element={<CaseFileTable />} />
 
             <Route path="/user/:id" element={<UserProfile/>}/>
-
-
             <Route path="/hires">
               <Route index={true} element={<HireDashboard />} />
               <Route path="add" element={<CreateHire />}/>
               <Route path="edit/:id" element={<EditHire />}/>
               <Route path="rates" element={<HireRates />}/>
             </Route>
-            <Route path="/emergency" element={<CaseFileForm />} />
+
             <Route path="vehicle">
               <Route index={true} element={<VehicleDashboard />} />
               <Route path="add" element={<AddVehicle />} />
