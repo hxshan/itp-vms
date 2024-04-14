@@ -5,6 +5,8 @@ import useAxios from "@/hooks/useAxios";
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from "react";
 
+import { ClipLoader } from "react-spinners";
+
 const HireDashboard = () => {
     const navigate = useNavigate();
 
@@ -41,7 +43,13 @@ const HireDashboard = () => {
       }
 
     if (loading) {
-        return <p>Loading...</p>;
+        return (
+            <div className="flex justify-center items-center h-screen">
+              <div className="sweet-loading">
+                <ClipLoader color="#10971D" loading={true}  size={50} />
+              </div>
+            </div>
+          );
     }
 
     return (

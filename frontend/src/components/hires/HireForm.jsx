@@ -4,6 +4,8 @@ import axios from '@/api/axios';
 import useAxios from '@/hooks/useAxios'
 import {useNavigate} from "react-router-dom";
 
+import { ClipLoader } from "react-spinners";
+
 const Form = () => { 
   const [step, setStep] = useState(1);
 
@@ -357,7 +359,13 @@ const [vehicleRates, Verror, Vloading, VaxiosFetch] = useAxios();
     }, [step, vehicleType])
 
     if (loading || vehiclesLoading|| DriversLoading || Vloading) {
-      return <p>Loading...</p>;
+      return (
+        <div className="flex justify-center items-center h-screen">
+          <div className="sweet-loading">
+            <ClipLoader color="#10971D" loading={true}  size={50} />
+          </div>
+        </div>
+      );
     }
   
 

@@ -4,6 +4,9 @@ import axios from "@/api/axios";
 
 import PropTypes from 'prop-types';
 
+import Swal from 'sweetalert2';
+
+
 const HireList = ({ hireData, searchTerm, searchType }) => {
     const [viewHire, setViewHire] = useState(false);
     const [viewHireData, setViewHireData] = useState(null);
@@ -18,6 +21,16 @@ const HireList = ({ hireData, searchTerm, searchType }) => {
     };
 
     const deleteHire = async (id) => {
+
+        const result = await Swal.fire({
+            title: 'Are you sure?',
+            text: 'Are you sure you want to delete this record?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Confirm!'
+        });
          /*
     const deleteHire = async (id) => {
         try {
@@ -30,7 +43,7 @@ const HireList = ({ hireData, searchTerm, searchType }) => {
             console.error('Error deleting hire: ' + error);
         }
     };*/
-        if (window.confirm("Are you sure you want to delete this record?")) {
+        if (result.isConfirmed) {
             try {
                 await axios.delete(`/hire/${id}`);
                 window.location.reload()
