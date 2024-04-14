@@ -97,6 +97,7 @@ const hireSchema = new mongoose.Schema({
 },
   finalTotal: {
     type: Number, 
+    default: null
 },
   advancedPayment: {
     type : Number,
@@ -104,15 +105,19 @@ const hireSchema = new mongoose.Schema({
 },
   intialOdometerReading: {
     type: Number, 
+    default: null
 },
   intialOdometerPic: {
     type:String, 
+    default: null
 },
   finalOdometerReading: {
   type: Number, 
+  default: null
 },
   finalOdometerPic: {
     type:String, 
+    default: null
 }
 });
 
