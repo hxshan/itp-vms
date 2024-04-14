@@ -100,7 +100,7 @@ const hireSchema = new mongoose.Schema({
 },
   advancedPayment: {
     type : Number,
-    required: true
+    required: true 
 },
   intialOdometerReading: {
     type: Number, 
