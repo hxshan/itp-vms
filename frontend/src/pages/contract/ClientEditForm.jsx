@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import useAxios from "@/hooks/useAxios";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "@/api/axios";
-import { ToastContainer, toast } from 'react-toastify';
+import useAxios from "@/hooks/useAxios";
 import { formatVal } from "./constants";
+import { ToastContainer, toast } from 'react-toastify';
 
+const ClientEditForm = () => {
+  const params = useParams();
 
-
-const AddClient = () => {
   const navigate = useNavigate();
 
-  const [openComp, setopenComp] = useState(false);
+  const clientID = params.id;
 
   const [clientData, setclientData] = useState({
     firstName: "",
@@ -32,60 +32,36 @@ const AddClient = () => {
     Comp_Address: "",
   });
 
+  const [client, clientError, clientLoading, ClientFetch] = useAxios();
+  const [updateRES, updateError, updateLoading , UpdateFetch] = useAxios();
 
-  const [client, error, isLoading, FetchClient] = useAxios();
+  
 
-  useEffect(()=>{
-    if(!isLoading){
-      if(error){
-        alert(error)
-      }else if(client.message === "client created succesfully" ){
-        navigate('/client')
-      }else{
-        console.log(client)
-      }
-    }
-  },[isLoading])
+  const [formatDOB, setformatDOB] = useState("");
+  const [openComp, setopenComp] = useState(false);
 
-  const handleInput = (e) => {
-    const { name, value } = e.target;
-
-    if (name === "Comp_Available") {
-      const isCompanyAvailable = value === "true";
-
-      if (!isCompanyAvailable) {
-        setclientData({
-          ...clientData,
-          Comp_Available: "false",
-          Comp_Name: "",
-          Reg_Num: "",
-          Tax_Num: "",
-          Legal_struc: "",
-          Comp_Email: "",
-          Comp_Phone: "",
-          Comp_Address: "",
-        });
-        setopenComp(false);
-      } else {
-        setopenComp(true);
-        setclientData({
-          ...clientData,
-          Comp_Available: "true",
-        });
-      }
-    } else {
-      setclientData({
-        ...clientData,
-        [name]: value,
-      });
-    }
+  const getClient = () => {
+    ClientFetch({
+      axiosInstance: axios,
+      method: "GET",
+      url: `/contract/getClient/${clientID}`,
+    });
   };
 
+  const updatClient = async () =>{
+    await UpdateFetch({
+        axiosInstance: axios,
+      method: "PATCH",
+      url: `/contract/updateClient/${clientID}`,
+      requestConfig:{
+        data:clientData,
+       }
+    })
+  }
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async(e)=>{
+    e.preventDefault()
 
-    
 
     if (!clientData.firstName || !clientData.firstName.match(formatVal.nameReg)) {
         toast.error("Invalid First Name");
@@ -127,10 +103,7 @@ const AddClient = () => {
     } else if (!clientData.Address) {
         toast.error("Enter Address");
         return;
-    } else if (!clientData.Comp_Available) {
-        toast.error("Choose Company Availability");
-        return;
-    } else if (!clientData.Comp_Available) {
+    } else if (clientData.Comp_Available) {
         if (!clientData.Comp_Name) {
             toast.error("Enter Company Name");
             return;
@@ -155,35 +128,122 @@ const AddClient = () => {
         }
     }
 
+    const confirm = window.confirm("Are u sure to update Client ?")
+
+    if(confirm){
+      await updatClient()
+    }else{
+      return;
+    }
+   
+  }
+
+  useEffect(()=>{
+    if(!updateLoading){
+      if(updateError){
+        alert(updateError)
+      }else if(updateRES.message === "there is no client" ){
+        alert("Client does not exist")
+      }else if(updateRES.message === "client fields are not filled"){
+        alert("Client fields are not filled")
+      }else if(updateRES.message === "company fields are not filled"){
+        alert("Client fields are not filled")
+      }else if(updateRES.message === "successful"){
+        alert("Client updated successfull")
+        navigate(`/viewClient/${clientID}`)
+      }else if(updateRES.message === "failed"){
+        alert(`No values found changed "Redirecting to Client page" `)
+        navigate(`/viewClient/${clientID}`)
+      }
+    }
+  },[updateLoading])
+
+  useEffect(() => {
+    if (client) {
+      setclientData({
+        firstName: client.firstName,
+        lastName: client.lastName,
+        gender: client.gender,
+        dob: client.dob,
+        phoneNumber: client.phoneNumber,
+        nicNumber: client.nicNumber,
+        email: client.email,
+        licenceNumber: client.licenceNumber,
+        Address: client.Address,
+        Comp_Available: client.Comp_Available,
+        Comp_Name: client.Comp_Name,
+        Reg_Num: client.Reg_Num,
+        Tax_Num: client.Tax_Num,
+        Legal_struc: client.Legal_struc,
+        Comp_Email: client.Comp_Email,
+        Comp_Phone: client.Comp_Phone,
+        Comp_Address: client.Comp_Address,
+      });
+      if (client.dob) {
+        setformatDOB(new Date(client.dob).toISOString().split("T")[0]);
+      }
+      if (client.Comp_Available) {
+        setopenComp(true);
+      } else {
+        setopenComp(false);
+      }
+    }
+  }, [client]);
+
+  console.log(clientData.Comp_Available)
+
+  useEffect(() => {
+    if (clientData.dob) {
+      setformatDOB(new Date(clientData.dob).toISOString().split("T")[0]);
+    }
+  }, [clientData]);
+
+  const HandleInput = (e) => {
+    const { name, value } = e.target;
+
+    if (name === "Comp_Available") {
+      if (value === "true") {
+        setopenComp(true);
+        setclientData({
+            ...clientData,
+            Comp_Available: true
+        })
+      } else {
+        setopenComp(false);
+        setclientData({
+          ...clientData,
+          Comp_Available:false,
+          Comp_Name:'',
+          Reg_Num: '',
+          Tax_Num: '',
+          Legal_struc: '',
+          Comp_Email: '',
+          Comp_Phone: '',
+          Comp_Address: '',
+        });
+      }
+    }else{
+        setclientData({
+            ...clientData,
+            [name]: value,
+          });  
+    }
 
     
-      
-         await FetchClient({
-          axiosInstance: axios,
-          method: "POST",
-          url: `/contract/createClient`,
-          requestConfig: {
-            data: { ...clientData },
-          },
-        })
-
-        
-
-        
-
   };
 
-  
-
-
+  console.log(clientData)
+  useEffect(() => {
+    getClient();
+  }, []);
 
   return (
     <div className="w-full flex flex-col justify-center items-center py-5">
       <div className="flex items-center justify-center mb-4">
-        <p className=" text-[50px] font-bold ">ADD CLIENT</p>
+        <p className=" text-[50px] font-bold ">EDIT CLIENT</p>
         <ToastContainer/>
       </div>
-      <p>{error}</p>
+
       <div className="bg-[#D9D9D9] w-[90%] h-fit rounded-lg py-8 flex justify-evenly ">
         <div>
           <div className="flex gap-4 mb-3">
@@ -193,7 +253,8 @@ const AddClient = () => {
                 type="text"
                 className="w-[220px]  rounded-lg  bg-white border-none p-2"
                 name="firstName"
-                onChange={handleInput}
+                value={clientData.firstName}
+                onChange={HandleInput}
               />
             </div>
 
@@ -203,7 +264,8 @@ const AddClient = () => {
                 type="text"
                 className="w-[220px]  rounded-lg  bg-white border-none p-2"
                 name="lastName"
-                onChange={handleInput}
+                value={clientData.lastName}
+                onChange={HandleInput}
               />
             </div>
           </div>
@@ -214,9 +276,9 @@ const AddClient = () => {
               <select
                 className="w-[220px]  rounded-lg  bg-white border-none p-2"
                 name="gender"
-                onChange={handleInput}
+                value={clientData.gender}
+                onChange={HandleInput}
               >
-                <option className="hidden">please select</option>
                 <option value="Male">Male</option>
                 <option value="Female">Female</option>
               </select>
@@ -228,7 +290,8 @@ const AddClient = () => {
                 type="date"
                 className="w-[150px] h-10 rounded-lg  bg-white border-none px-2"
                 name="dob"
-                onChange={handleInput}
+                value={formatDOB}
+                onChange={HandleInput}
               />
             </div>
           </div>
@@ -240,7 +303,8 @@ const AddClient = () => {
                 type="text"
                 className="w-[220px]  rounded-lg  bg-white border-none p-2"
                 name="phoneNumber"
-                onChange={handleInput}
+                value={clientData.phoneNumber}
+                onChange={HandleInput}
               />
             </div>
 
@@ -250,7 +314,8 @@ const AddClient = () => {
                 type="text"
                 className="w-[220px]  rounded-lg  bg-white border-none p-2"
                 name="nicNumber"
-                onChange={handleInput}
+                value={clientData.nicNumber}
+                onChange={HandleInput}
               />
             </div>
           </div>
@@ -262,7 +327,8 @@ const AddClient = () => {
                 type="text"
                 className="w-[220px]  rounded-lg  bg-white border-none p-2"
                 name="email"
-                onChange={handleInput}
+                value={clientData.email}
+                onChange={HandleInput}
               />
             </div>
             <div className="flex flex-col gap-1">
@@ -272,7 +338,8 @@ const AddClient = () => {
                 className="w-[220px]  rounded-lg  bg-white border-none p-2"
                 placeholder="optional"
                 name="licenceNumber"
-                onChange={handleInput}
+                value={clientData.licenceNumber}
+                onChange={HandleInput}
               />
             </div>
           </div>
@@ -282,13 +349,9 @@ const AddClient = () => {
             <textarea
               className="h-[200px] w-[456px]  border-none rounded-lg mt-1"
               name="Address"
-              onChange={handleInput}
+              value={clientData.Address}
+              onChange={HandleInput}
             ></textarea>
-          </div>
-
-          <div className="flex flex-col gap-1 mb-4">
-            <label>Upload NIC</label>
-            <input type="file" />
           </div>
         </div>
 
@@ -300,11 +363,11 @@ const AddClient = () => {
                 <select
                   className="w-[120px]  rounded-lg  bg-white border-none p-2"
                   name="Comp_Available"
-                  onChange={handleInput}
+                  value={clientData.Comp_Available}
+                  onChange={HandleInput}
                 >
-                  <option className="hidden">please select</option>
-                  <option value="true">Yes</option>
-                  <option value="false">No</option>
+                  <option value={true}>Yes</option>
+                  <option value={false}>No</option>
                 </select>
               </div>
 
@@ -316,7 +379,8 @@ const AddClient = () => {
                       type="text"
                       className="w-[220px]  rounded-lg  bg-white border-none p-2"
                       name="Comp_Name"
-                      onChange={handleInput}
+                      value={clientData.Comp_Name}
+                      onChange={HandleInput}
                     />
                   </div>
 
@@ -326,7 +390,8 @@ const AddClient = () => {
                       type="text"
                       className="w-[220px]  rounded-lg  bg-white border-none p-2"
                       name="Reg_Num"
-                      onChange={handleInput}
+                      value={clientData.Reg_Num}
+                      onChange={HandleInput}
                     />
                   </div>
                 </div>
@@ -338,7 +403,8 @@ const AddClient = () => {
                       type="text"
                       className="w-[220px]  rounded-lg  bg-white border-none p-2"
                       name="Tax_Num"
-                      onChange={handleInput}
+                      value={clientData.Tax_Num}
+                      onChange={HandleInput}
                     />
                   </div>
                   <div className="flex flex-col gap-1">
@@ -346,11 +412,10 @@ const AddClient = () => {
                     <select
                       className="w-[220px]  rounded-lg  bg-white border-none p-2"
                       name="Legal_struc"
-                      onChange={handleInput}
+                      value={clientData.Legal_struc}
+                      onChange={HandleInput}
                     >
-                      <option className="hidden" value="">
-                        please select
-                      </option>
+                        <option value="" className="hiddden">Please select</option>
                       <option value="Sole Proprietorship">
                         Sole Proprietorship
                       </option>
@@ -383,7 +448,8 @@ const AddClient = () => {
                       type="text"
                       className="w-[220px]  rounded-lg  bg-white border-none p-2"
                       name="Comp_Email"
-                      onChange={handleInput}
+                      value={clientData.Comp_Email}
+                      onChange={HandleInput}
                     />
                   </div>
 
@@ -393,7 +459,8 @@ const AddClient = () => {
                       type="text"
                       className="w-[220px]  rounded-lg  bg-white border-none p-2"
                       name="Comp_Phone"
-                      onChange={handleInput}
+                      value={clientData.Comp_Phone}
+                      onChange={HandleInput}
                     />
                   </div>
                 </div>
@@ -403,25 +470,18 @@ const AddClient = () => {
                   <textarea
                     className="h-[200px] w-[456px]  border-none rounded-lg mt-1"
                     name="Comp_Address"
-                    onChange={handleInput}
+                    value={clientData.Comp_Address}
+                    onChange={HandleInput}
                   ></textarea>
                 </div>
               </div>
             </div>
           </div>
           <div className="flex justify-end gap-4">
-            <button
-              className=" bg-green-600 px-5 py-2 rounded-xl w-[120px] "
-              onClick={handleSubmit}
-            >
-              Add
+            <button className=" bg-green-600 px-5 py-2 rounded-xl w-[120px] " onClick={handleSubmit}>
+              Submit
             </button>
-            <button
-              className=" bg-orange-600 px-5 py-2 rounded-xl w-[120px] "
-              onClick={() => {
-                navigate(`/client`);
-              }}
-            >
+            <button className=" bg-orange-600 px-5 py-2 rounded-xl w-[120px] " onClick={()=>{navigate(`/viewClient/${clientID}`)}}>
               Cancel
             </button>
           </div>
@@ -431,4 +491,4 @@ const AddClient = () => {
   );
 };
 
-export default AddClient;
+export default ClientEditForm;

@@ -3,13 +3,29 @@ import useAxios from "@/hooks/useAxios";
 import { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom'
 import axios from "@/api/axios";
+import AddContractpopup from "./AddContractpopup";
+
 
 const ContractDasboard = () => {
 
 
   const navigate = useNavigate();
 
+  
+  const [openAddcont,setopenAddcont] = useState(false);
+  const [AllClients,setAllClients] = useState([])
+  const [searchError,setSearchError] = useState('');
+
   const [data, error, loading, axiosFetch] = useAxios()
+  const [clients,clientError, clientLoading, clientsFetch] = useAxios();
+
+  const getallClients = ()=>{
+    clientsFetch({
+      axiosInstance: axios,
+      method: "GET",
+      url: `/contract/getClients`,
+    });
+  }
 
   const getContracts =()=>{
     axiosFetch({
@@ -18,6 +34,7 @@ const ContractDasboard = () => {
      url: `/contract/getAllContracts`,
    });
  }
+
   
 
 
@@ -33,7 +50,18 @@ const ContractDasboard = () => {
   };
 
   const handleSearch = () => {
-    console.log(Search);
+    const filteredContracts = allContracts.filter(contract =>
+      contract.clientID.nicNumber.toLowerCase().includes(Search.toLowerCase()) ||
+      contract.clientID.firstName.toLowerCase().includes(Search.toLowerCase()) ||
+      contract.clientID.lastName.toLowerCase().includes(Search.toLowerCase()) ||
+      contract.clientID.email.toLowerCase().includes(Search.toLowerCase())
+    );
+  
+    if (filteredContracts.length > 0) {
+      setSearchError(`${filteredContracts.length} items found.`);
+    } else {
+      setSearchError("No items found.");
+    }
   };
 
   useEffect(() => {
@@ -45,33 +73,93 @@ const ContractDasboard = () => {
     }
   }, [data]);
 
+  useEffect(() => {
+    if (clientError) {
+      alert(clientError);
+    } else if (clients) {
+      const availableClients = clients.filter(client => client.Contract_Available === "unAvailable");
+      setAllClients(availableClients);
+    }
+  }, [clients]);
+
   useEffect(()=>{
     getContracts()
+    getallClients()
   },[])
+
 
   const titles = [
     { name: "Client NIC", width: "w-[200px]" },
     { name: "Client Name", width: "w-[200px]" },
     { name: "Email", width: "w-[200px]" },
-    { name: "Time", width: "w-[200px]" },
-    { name: "Status", width: "w-[200px]" },
+    { name: "Time", width: "w-[240px]" },
+    { name: "Status", width: "w-[240px]" },
     { name: "Options", width: "w-[200px]" },
   ];
 
+  const calculateTimeDiff = (startDate, endDate) => {
+    const startDateTime = new Date(startDate);
+    let endDateTime = new Date(endDate);
+    const currentDateTime = new Date();
 
-  if(loading){
+    endDateTime = new Date(endDateTime.getTime() - (5*60*60*1000) - (30*60*1000));
+    startDateTime.setHours(startDateTime.getHours() - 5);
+    startDateTime.setMinutes(startDateTime.getMinutes() - 30);
+    
+    if (startDateTime > currentDateTime) {
+      return "Pending Start";
+    } else if (endDateTime < currentDateTime) {
+      return "Expired";
+    } else {
+      const diffMilliseconds = endDateTime - currentDateTime;
+      const days = Math.floor(diffMilliseconds / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diffMilliseconds % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+     // const minutes = Math.floor((diffMilliseconds % (1000 * 60 * 60)) / (1000 * 60));
+     // const seconds = Math.floor((diffMilliseconds % (1000 * 60)) / 1000);
+    // ${minutes} minutes ${seconds} seconds
+      return `${days} days ${hours} hours`;
+    }
+  };
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      SetallContracts((prevContracts) => {
+        return prevContracts.map((contract) => {
+          return {
+            ...contract,
+            timeLeft: calculateTimeDiff(contract.contract_SD, contract.contract_ED),
+          };
+        });
+      });
+    }, 1000*60);
+
+    return () => clearInterval(intervalId);
+  }, []);
+  
+
+
+  if(loading && clientLoading){
     return(
       <h1>Loading ...</h1>
     )
   }
 
+  
+
   return (
+    <div>
+      <AddContractpopup isOpen={openAddcont} TogleOpen={()=>{setopenAddcont(!openAddcont)}} clients={AllClients}/>
     <div className="w-full h-full py-5">
+      
       <div className="flex items-center justify-center ">
         <h1 className=" text-[50px] font-bold ">Contract Dashboard</h1>
       </div>
+      <div className='flex justify-end'>
+        <button className=" bg-red-500 px-5 py-2 rounded-xl " onClick={()=>{setopenAddcont(!openAddcont)}} >Add Contract</button>
+        </div>
 
-      <div className="flex items-center justify-center my-12">
+
+      
+      <div className="flex items-center justify-center mb-5">
         <input
           type="text"
           className="bg-slate-400 px-4 py-3 rounded-l-md focus:outline-none w-[500px] placeholder-gray-950 text-[18px]"
@@ -85,6 +173,10 @@ const ContractDasboard = () => {
         >
           Search
         </button>
+      </div>
+
+      <div className=" text-blue-500 font-semibold mb-5">
+        <p>{searchError ? searchError : "Search something"}</p>
       </div>
 
       <div className="flex flex-col justify-center">
@@ -101,15 +193,17 @@ const ContractDasboard = () => {
       </div>
 
       <div className="flex flex-col items-center ">
-        {allContracts
+        {allContracts && allContracts.length > 0  ? allContracts
           .filter((item) => {
             const searchLowerCase = Search.toLowerCase();
             const firstNameLowerCase = item.clientID.firstName.toLowerCase();
+            const lastNameLowerCase = item.clientID.lastName.toLowerCase();
             const nicNumber = item.clientID.nicNumber.toString();
             const email = item.clientID.email.toLowerCase();
             return (
               searchLowerCase === "" ||
               firstNameLowerCase.includes(searchLowerCase) ||
+              lastNameLowerCase.includes(searchLowerCase) ||
               nicNumber.includes(searchLowerCase) ||
               email.includes(searchLowerCase)
             );
@@ -124,20 +218,23 @@ const ContractDasboard = () => {
                 {item.clientID.firstName} {item.clientID.lastName}
               </p>
               <p className="w-[200px]">{item.clientID.email}</p>
-              <p className="w-[200px]">null</p>
-              <p className="w-[200px]">null</p>
+              <p className="w-[200px] ml-6 text-red-500 font-semibold">{calculateTimeDiff(item.contract_SD, item.contract_ED)}</p>
+              <p className="w-[200px] ml-6 text-green-500 font-semibold">{item.Status}</p>
 
               <div className="flex justify-center items-center w-[200px] gap-3">
-                <button className=" bg-yellow-300 px-5 py-2 rounded-xl" onClick={()=> navigate(`/viewContract/${item._id}`)}>
+                <button className={` ${item.Status === "Terminated" ? " bg-orange-400 w-[140px] " : "bg-yellow-300"}  px-5 py-2 rounded-xl`} onClick={()=> navigate(`/viewContract/${item._id}`)}>
                   View
                 </button>
-                <button className=" bg-green-600 px-5 py-2 rounded-xl" onClick={()=> navigate(`/EditContract/${item._id}`)}>
+                <button className={` ${item.Status === "Terminated" ? "hidden": ""} bg-green-600 px-5 py-2 rounded-xl`} onClick={()=> navigate(`/EditContract/${item._id}`)}>
                   Edit
                 </button>
               </div>
             </div>
-          ))}
+          )):(<div className="mt-10 font-bold text-red-500">
+            <p>No contracts available</p>
+            </div>)}
       </div>
+    </div>
     </div>
   );
 };

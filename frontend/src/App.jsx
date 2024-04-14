@@ -30,9 +30,13 @@ import { UserProfile } from "./pages/admin";
 import {HireDashboard, CreateHire, EditHire, HireRates} from "./pages/hires/hires"
 import AddClient from "./pages/contract/AddClient";
 import { View } from '../src/components/VR/View';
+
+import ViewClient from "./pages/contract/ViewClient";
+import ClientEditForm from "./pages/contract/ClientEditForm";
 import UserReport from "./components/admin/UserReport";
 import { EditUserForm } from "./components/admin";
 import EditUser from "./pages/admin/EditUser";
+
 
 function App() {
   const { user, loading } = useAuthContext();
@@ -93,7 +97,7 @@ function App() {
               <Route path="view/:id" element={<VehicleViewControl />} />
               <Route path="report" element={<VehReport />} />
             </Route>
-            <Route path="/Contract/:id" element={<AddContract />}/>
+            
             <Route path="/Vrform" element={<CreateMaintainceForm />}/>
             <Route path="/driver" element={<DriverDashboard />} />
             <Route path="/driver/TripPage" element={<TripPage />} />
@@ -104,16 +108,21 @@ function App() {
               path="/vehiclemaintain/edit/:id"
               element={<EditMaintainceOrder />}
             />
+
             <Route path="/Contract/Dashbored" element={<ContractDasboard />} />
-
-
+            <Route path="/Contract/:id" element={<AddContract />}/>
             <Route path="/client" element={<ClientDashboard/>}/>
             <Route path="/viewContract/:id" element={<ViewContract/>}/>
             <Route path="/EditContract/:id" element={<ContractEditForm/>}/>
+
+            <Route path="/EditClient/:id" element={<ClientEditForm/>}/>
+            <Route path="/addClient" element={<AddClient/>}/>
+            <Route path="/viewClient/:id" element={<ViewClient/>}/>
+              
+
             <Route path="/finance/financeDashboard" element={<FinanceDashboard />} />
             <Route path="/finance/expenseTracking" element={<ExpenseTracking />} />
             <Route path="/finance/IncomeTracking" element={<IncomeTracking  />} />       
-
             <Route path="/addClient" element={<AddClient/>}/>
 
             <Route
