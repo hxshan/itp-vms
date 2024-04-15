@@ -104,7 +104,7 @@ const AddVehicle = () => {
 
             <div className='flex flex-row justify-between'>
             <h1 className="text-2xl font-bold">Add Vehicle Details</h1>
-            <button className='px-3 py-1 rounded-md bg-actionBlue text-white text-sm text-bold' onClick={() => navigate('/vehicles')}>Dashboard</button>
+            <button className='px-3 py-1 rounded-md bg-actionBlue text-white text-sm text-bold' onClick={() => navigate('/vehicle')}>Dashboard</button>
             </div>
 
             <form className="space-y-3 m-1 mt-5 p-4  pad shadow-xl bg-white rounded " onSubmit={handleSubmit}>
