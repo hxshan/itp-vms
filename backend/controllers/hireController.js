@@ -132,10 +132,11 @@ const editHire = async (req, res) => {
     estimatedTotal,
     finalTotal,
     advancedPayment,
-    hireStatus
+    hireStatus,
   } = req.body.data;
   try {
-    const hire = await Hire.findByIdAndUpdate(id, { startDate,
+    const hire = await Hire.findByIdAndUpdate(id, { 
+      startDate,
       endDate,
       vehicleType,
       vehicleSubcategory,
@@ -159,7 +160,8 @@ const editHire = async (req, res) => {
       estimatedTotal,
       finalTotal,
       advancedPayment,
-      hireStatus }, { new: true });
+      hireStatus,
+ }, { new: true });
     if (!hire) {
       return res.status(404).json({ message: 'Hire not found' });
     }
