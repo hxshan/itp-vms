@@ -29,6 +29,7 @@ import {HireDashboard, CreateHire, EditHire, HireRates} from "./pages/hires/hire
 import AddClient from "./pages/contract/AddClient";
 import { View } from '../src/components/VR/View';
 import {Servicenote} from '../src/components/VR/Servicenote';
+import {Requestfromdriver} from'../src/components/VR/Requestfromdriver'
 
 
 function App() {
@@ -112,7 +113,9 @@ function App() {
               path="/VehicleService"
               element={<VehicleService />}
             />
+              <Route path="/requestmaintains" element={<Requestfromdriver />} />
           </Routes>
+        
           
         </div>
       </main>

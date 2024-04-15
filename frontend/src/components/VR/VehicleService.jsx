@@ -6,7 +6,7 @@ import { ReactToPrint } from 'react-to-print';
 
 const VehicleService = () => {
   const [data, error, loading, axiosFetch] = useAxios();
-  const [rangeend, setRangeend] = useState(5000);
+  const [rangeend, setRangeend] = useState(50000);
   const [search, setSearch] = useState('');
   const [applyFilter, setApplyFilter] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -41,7 +41,7 @@ const VehicleService = () => {
   }, []);
 
   if (loading) {
-    return <p className="flex flex-col items-center justify-center h-screen text-center text-lg font-bold text-black">Loading...</p>;
+    return <p className="flex flex-col items-center justify-center h-screen text-center text-3xl font-bold text-black">Loading...</p>;
   }
   if (error) {
     return <p>Unexpected Error has occurred!</p>;
