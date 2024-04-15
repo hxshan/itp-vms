@@ -4,7 +4,10 @@ import axios from "@/api/axios";
 
 import PropTypes from 'prop-types';
 
-const HireList = ({ hireData, searchTerm, searchType }) => {
+import Swal from 'sweetalert2';
+
+
+const HireList = ({ hireData, searchTerm, searchType, showDropdown }) => {
     const [viewHire, setViewHire] = useState(false);
     const [viewHireData, setViewHireData] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
@@ -18,6 +21,16 @@ const HireList = ({ hireData, searchTerm, searchType }) => {
     };
 
     const deleteHire = async (id) => {
+
+        const result = await Swal.fire({
+            title: 'Are you sure?',
+            text: 'Are you sure you want to delete this record?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Confirm!'
+        });
          /*
     const deleteHire = async (id) => {
         try {
@@ -30,7 +43,7 @@ const HireList = ({ hireData, searchTerm, searchType }) => {
             console.error('Error deleting hire: ' + error);
         }
     };*/
-        if (window.confirm("Are you sure you want to delete this record?")) {
+        if (result.isConfirmed) {
             try {
                 await axios.delete(`/hire/${id}`);
                 window.location.reload()
@@ -55,6 +68,28 @@ const HireList = ({ hireData, searchTerm, searchType }) => {
         setResults(result);
     }, [hireData, searchTerm, searchType]);
 
+    //Filter Function
+
+    const [showFilter, setShowFilter] = useState(false);
+    const [filterCategory, setFilterCategory] = useState('');
+
+    const filterByStatus = (status) => {
+        const filteredData = hireData.filter((hire) => hire.hireStatus === status);
+        setResults(filteredData);
+        setShowFilter(false);
+        
+    };
+
+    const resetFilter = () => {
+        setResults(hireData);
+        setFilterCategory('')
+    };
+
+    const toggleFilter = (category) => {
+        setShowFilter(!showFilter); // Toggle the filter dropdown visibility
+        setFilterCategory(category); // Reset filter status
+    };
+
     // Get current items
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -64,30 +99,69 @@ const HireList = ({ hireData, searchTerm, searchType }) => {
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
     return (
-        <div className="w-full h-full bg-white">
-            <div className="w-full h-full flex px-2 py-[20px] justify-center align-center xl:px-[60px] xl:py-[50px] ">
-                <table className="w-full text-center ">
+        <div className=" mt-5">
+
+            {showDropdown && (
+                <div className="flex justify-between flex-wrap w-full h-full p-4 bg-slate-400 mb-5 rounded-md">
+                    <div className="flex justify-end ">
+                        <div className="relative">
+                            <label htmlFor="status" className="mr-2">
+                                Status:
+                            </label>
+                            <select 
+                                id="status" 
+                                className="px-4  bg-white border rounded-md"
+                                onChange={(e) => filterByStatus(e.target.value)}
+                            >
+                                <option value="">Select</option>
+                                <option value="Active">Active</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Cancelled">Cancelled</option>
+                                <option value="Completed">Completed</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <button 
+                            className="px-2 py-1 bg-actionRed text-white rounded-md"
+                            onClick={resetFilter}
+                        >
+                            Reset
+                        </button>
+                    </div>
+
+
+                </div>
+                
+            )}
+
+            
+
+
+            <div className="shadow overflow-hidden border-b border-gray-200 rounded-lg ">
+                <table className="min-w-full divide-y divide-gray-200">
                     {/* Table header */}
-                    <thead className="border-b-2 border-black">
+                    <thead className="bg-secondary">
                         <tr>
-                            <th className="px-4 py-2">Vehicle No</th>
-                            <th className="px-4 py-2">Start Date</th>
-                            <th className="px-4 py-2">End Date</th>
-                            <th className="px-4 py-2">Cus Mobile</th>
-                            <th className="px-4 py-2">Status</th>
-                            <th className="px-4 py-2">Actions</th>
+                            <th className="relative px-6 py-3 border-r border-white text-white">Vehicle No</th>
+                            <th className="relative px-6 py-3 border-r border-white text-white">Start Date</th>
+                            <th className="relative px-6 py-3 border-r border-white text-white">End Date</th>
+                            <th className="relative px-6 py-3 border-r border-white text-white">Cus Mobile</th>
+                            <th className="relative px-6 py-3 border-r border-white text-white">Status</th>
+                            <th className="relative px-6 py-3 border-r border-white text-white">Actions</th>
                         </tr>
                     </thead>
                     {/* Table body */}
                     <tbody>
                         {currentItems.map((hire) => (
-                            <tr key={hire._id} className="border-b-2 border-black">
-                                <td className="px-4 py-2"> {hire.vehicle?.vehicleRegister || 'N/A'}</td>
+                            <tr key={hire._id} className="bg-white border-t border-gray-200">
+                                <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200"> {hire.vehicle?.vehicleRegister || 'N/A'}</td>
 
-                                <td className="px-4 py-2">{new Date(hire.startDate).toLocaleDateString()}</td>
-                                <td className="px-4 py-2">{new Date(hire.endDate).toLocaleDateString()}</td>
-                                <td className="px-4 py-2">{hire.cusMobile}</td>
-                                <td className="px-4 py-2">{hire.hireStatus}</td>
+                                <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{new Date(hire.startDate).toLocaleDateString()}</td>
+                                <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{new Date(hire.endDate).toLocaleDateString()}</td>
+                                <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{hire.cusMobile}</td>
+                                <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{hire.hireStatus}</td>
                                 <td className="px-4 py-4 flex justify-between items-baseline">
                                     <button className="px-2 py-1 bg-actionBlue text-white rounded-md mr-2" onClick={() => handleView(hire._id)}>View</button>
                                     <button className="hidden xl:grid px-2 py-1 bg-actionRed text-white rounded-md" onClick={() => deleteHire(hire._id)}>Delete</button>

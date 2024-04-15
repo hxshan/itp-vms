@@ -5,6 +5,10 @@ import useAxios from "@/hooks/useAxios";
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from "react";
 
+import { ClipLoader } from "react-spinners";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 const HireDashboard = () => {
     const navigate = useNavigate();
 
@@ -32,6 +36,14 @@ const HireDashboard = () => {
         fetchHires();
     }, []);
 
+    //Filter function Dropdown
+
+    const [showDropdown, setShowDropdown] = useState(false);
+
+    const toggleDropdown = () => {
+        setShowDropdown(!showDropdown);
+    };
+
     
 
     if(error){
@@ -41,7 +53,13 @@ const HireDashboard = () => {
       }
 
     if (loading) {
-        return <p>Loading...</p>;
+        return (
+            <div className="flex justify-center items-center h-screen">
+              <div className="sweet-loading">
+                <ClipLoader color="#10971D" loading={true}  size={50} />
+              </div>
+            </div>
+          );
     }
 
     return (
@@ -54,20 +72,32 @@ const HireDashboard = () => {
                 <div className="flex justify-between items-baseline px-5 pt-5 xl:px-14">
                     <SearchHire onSearch={handleSearch} />
 
-                    <div className="pt-[10px]">
-                        <button className="px-4 py-2 text-white bg-actionBlue rounded-md hover:bg-gray-800 focus:outline-none" onClick={()=>{navigate('/hires/add')}}>
-                            Add
-                        </button>
-                    </div>
+                    <div className="flex justify-between items-baseline">
+                        <div className="mr-8">
+                            <button 
+                                className="px-4 py-2 text-white bg-actionBlue rounded-md hover:bg-gray-800 focus:outline-none"
+                                onClick={toggleDropdown}
+                            >
+                                Filter
+                            </button>
+                        </div>
 
+                        <div className="pt-[10px]">
+                            <button className="px-4 py-2 text-white bg-actionBlue rounded-md hover:bg-gray-800 focus:outline-none" onClick={()=>{navigate('/hires/add')}}>
+                                Add
+                            </button>
+                        </div>
+                    </div>
                 </div>
 
                 <div>
-                    <HireList hireData={hireData.slice().reverse()} searchTerm={searchTerm} searchType={searchType} axiosFetch={axiosFetch}/>
+                    <HireList hireData={hireData.slice().reverse()} searchTerm={searchTerm} searchType={searchType} axiosFetch={axiosFetch} showDropdown={showDropdown}/>
                 </div>
                 
 
             </div>
+
+            <ToastContainer />
             
         </div>
     )
