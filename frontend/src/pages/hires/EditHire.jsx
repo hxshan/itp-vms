@@ -41,7 +41,7 @@ const EditHire = () => {
     const [availableDrivers, setavailableDrivers] = useState(["Chamara" , "Jonny", "Danny", "Chanchala"])
 
     const [response, error, loading, axiosFetch] = useAxios()
-
+    const [incomeData, incomeError, incomeLoading, incomeAxiosFetch] = useAxios()
     const handleEdit = async (e) => {
         e.preventDefault();
       
@@ -68,6 +68,10 @@ const EditHire = () => {
           hireStatus,
           finalTotal
         };
+
+
+       
+        
       
         const swalWithBootstrapButtons = Swal.mixin({
             customClass: {
@@ -131,6 +135,44 @@ const EditHire = () => {
               });
             }
           });
+            console.log("Response:", response.data);
+
+            if (hireStatus === "Active") {
+                // Create income object
+                console.log('cameeee Data:');
+                const incomeData = {
+                  date: new Date(),
+                  vehicle: viewHireData.vehicle, // Assuming viewHireData contains vehicle details
+                  recordedBy: viewHireData.driver, // Change to the actual recorded user ID
+                  source: 'Hire',
+                  hirePayment: {
+                    customerName: viewHireData.cusName,
+                    hirePaymentType: 'Advance', // Assuming it's an advance payment
+                    hire: viewHireData._id,
+                  },
+                  description: 'Income generated from active hire',
+                  amount: viewHireData.advancedPayment,
+                  paymentMethod: 'Cash', // Example payment method
+                  status: 'Pending', // Income status
+                  comments: 'Income generated from advance of active hire',
+                };
+    
+                await incomeAxiosFetch({
+                    axiosInstance:axios,
+                    method:'PATCH',
+                    url:`/income`,
+                    requestConfig:{
+                        data:{
+                        ...incomeData
+                      }
+                    }
+                  })
+            }
+          } catch (error) {
+            console.error("Error:", error);
+            alert("An error occurred. Please try again.");
+          }
+        }
       };
 
       const cancel = () => {

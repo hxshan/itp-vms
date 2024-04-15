@@ -126,9 +126,9 @@ const Navbar = () => {
                   {isOpen.finance && (
                       <div className="ml-6">
 
-                          <button className="w-full py-2 px-4 text-start hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => navigate('/Finance/ Finance Dashboard')}>Sub Fun</button>
-                          <button className="w-full py-2 px-4 text-start hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => navigate('/Finance/Expense Tracking')}>Sub Fun</button>
-                          <button className="w-full py-2 px-4 text-start hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => navigate('/Finance/Income Tracking')}>Sub Fun</button>
+                          <button className="w-full py-2 px-4 text-start hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => navigate('/finance/financeDashboard')}>Finance Dashboard</button>
+                          <button className="w-full py-2 px-4 text-start hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => navigate('/finance/expenseTracking')}>Expense Tracking</button>
+                          <button className="w-full py-2 px-4 text-start hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => navigate('/finance/incomeTracking')}>Income Tracking</button>
                       </div>
                   )}
               </div>
