@@ -124,7 +124,7 @@ function App() {
 
             <Route path="/finance/financeDashboard" element={<FinanceDashboard />} />
             <Route path="/finance/expenseTracking" element={<ExpenseTracking />} />
-            <Route path="/finance/IncomeTracking" element={<IncomeTracking  />} />       
+            <Route path="/finance/incomeTracking" element={<IncomeTracking  />} />       
             <Route path="/addClient" element={<AddClient/>}/>
 
             <Route
