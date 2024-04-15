@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import useAxios from '@/hooks/useAxios';
 import axios from '@/api/axios';
-import { FaCalendarAlt } from 'react-icons/fa';
+import { FaCalendarAlt, FaCheckCircle  } from 'react-icons/fa';
 import TripCard from './UpcomingTrip';
 import TripDetailCard from './TripDetailCard';
 import { useAuthContext } from "@/hooks/useAuthContext";
@@ -11,6 +11,7 @@ const Dashboard = () => {
   const [upcomingTrips, setUpcomingTrips] = useState([]);
   const [pastTrips, setPastTrips] = useState([]);
   const { user } = useAuthContext()
+  const [pasTripData,pastTripError, pastTripLoading, pastTripAxiosFetch] = useAxios();
 
   const [tripData,tripError, tripLoading, tripAxiosFetch] = useAxios();
 
@@ -35,13 +36,23 @@ useEffect(() => {
 }, [userID]);
 console.log(tripData)
 
+useEffect(() => {
+  if(userID) {
+    pastTripAxiosFetch({
+      axiosInstance: axios,
+      method: "GET",
+      url: `/hire/past/${userID}`, 
+    });
+  }
+}, [userID]);
+
   useEffect(() => {
     if (tripData && tripData.length > 0) {
       
       const currentDate = new Date();
 
       console.log(currentDate)
-      const past = [];
+      
       const upcoming = [];
 
       
@@ -55,7 +66,24 @@ console.log(tripData)
        console.log((trip.hireStatus === "Active" ||trip.hireStatus === "Ongoing"), trip.hireStatus)
          if (tripStartDateTime > currentDate && (trip.hireStatus === "Active" ||trip.hireStatus === "Ongoing")) {
           upcoming.push(trip);
-      } else if (tripStartDateTime < currentDate && 
+      } 
+      
+      });
+
+     
+      setUpcomingTrips(upcoming);
+    }
+  }, [tripData]);
+
+  useEffect(() => {
+    if (pasTripData && pasTripData.length > 0) {
+    
+
+      const past = [];
+
+      pasTripData.forEach(trip => {
+        
+       if (
                  (trip.hireStatus === "Completed" || 
                   trip.hireStatus === "Ended" || 
                   trip.hireStatus === "Cancelled")) {
@@ -65,9 +93,9 @@ console.log(tripData)
       });
 
       setPastTrips(past);
-      setUpcomingTrips(upcoming);
+     
     }
-  }, [tripData]);
+  }, [pasTripData]);
   // Select the very next trip
   const nextTrip = upcomingTrips.length > 0 ? upcomingTrips[0] : null;
 
@@ -105,19 +133,11 @@ console.log(tripData)
   <div className="lg:w-1/2 lg:ml-4 mt-4 lg:mt-0">
     <div className="flex flex-col items-start mt-4 mb-4">
       <div className="flex items-center">
-        <FaCalendarAlt className="text-gray-500 mr-2" />
+        <FaCheckCircle  className="text-gray-500 mr-2" />
         <h2 className="text-xl lg:text-2xl font-bold">Your Past Trips</h2>
       </div>
       <div className="max-h-96 overflow-y-auto scrollbar-thin scrollbar-thumb-blue-400 scrollbar-track-gray-200 mt-2">
-      {pastTrips
-        .slice() // Create a shallow copy to avoid mutating the original array
-        .sort((a, b) => {
-          const dateA = new Date(a.startDate + 'T' + a.startTime);
-          const dateB = new Date(b.startDate + 'T' + b.startTime);
-          // Sort in descending order (most recent first)
-          return dateB - dateA;
-        })
-        .map((trip) => (
+      {pastTrips.map((trip) => (
           <TripDetailCard trip={trip} key={trip._id} />
         ))}
       </div>

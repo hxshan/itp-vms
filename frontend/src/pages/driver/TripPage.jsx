@@ -1,11 +1,40 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import useAxios from '@/hooks/useAxios';
+import axios from '@/api/axios';
+
 import { useLocation } from 'react-router-dom';
 import { EndTripForm, EmergencyReportForm } from '@/components/driver';
 import {  FaTimes } from 'react-icons/fa';
 
 const TripPage = () => {
   const location = useLocation();
-  const trip = location.state.trip;
+  const tripID = location.state.tripID;
+  const [trip,tripError, tripLoading, tripAxiosFetch] = useAxios();
+ 
+
+  
+  
+console.log(tripID)
+  
+const getData = () => {
+  tripAxiosFetch({
+    axiosInstance: axios,
+    method: "GET",
+    url: `/hire/driver/trip/${tripID}`, // Use userID variable dynamically
+  });
+};
+
+
+
+useEffect(() => {
+  getData();
+}, []);
+
+
+
+
+
+
 
   console.log(trip)
 

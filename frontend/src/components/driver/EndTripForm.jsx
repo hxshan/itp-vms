@@ -5,6 +5,8 @@ import TripReceipt from './TripReciept';
 
 const EndTripForm = ({ trip }) => {
 
+  console.log(trip)
+
   
   
   const [mileage, setMileage] = useState('');
@@ -26,10 +28,30 @@ const EndTripForm = ({ trip }) => {
 
 
   useEffect(() => {
-    const currentDate = new Date().toISOString().split('T')[0];
-    const currentTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); // Get current time in HH:MM format
-    setEndDate(currentDate);
-    setEndTime(currentTime);
+    const updateDateTime = () => {
+      const currentDate = new Date().toISOString().split('T')[0];
+      const currentTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      setEndDate(currentDate);
+      setEndTime(currentTime);
+    };
+
+    updateDateTime(); // Initial call to set date and time
+
+    // Update date every day at midnight
+    const dateIntervalId = setInterval(() => {
+      updateDateTime();
+    }, 1000 * 60 * 60 * 24); // 24 hours
+
+    // Update time every second
+    const timeIntervalId = setInterval(() => {
+      const newTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      setEndTime(newTime);
+    }, 1000); // 1000 milliseconds = 1 second
+
+    return () => {
+      clearInterval(dateIntervalId);
+      clearInterval(timeIntervalId);
+    };
   }, []);
 
 
@@ -79,11 +101,14 @@ const EndTripForm = ({ trip }) => {
     }
   
     // Check if mileage is greater than the last recorded mileage
+    console.log(parseInt(mileage))
+    console.log(trip.vehicle.lastMileage)
     if (parseInt(mileage) <= trip.vehicle.lastMileage) {
+      console.log(trip.vehicle.lastMileage)
       setFormError('Mileage should be greater than the last recorded mileage');
       return;
-    }
-    setFormError('');
+    }else{
+      setFormError('');
     await updateAxiosFetch({
       axiosInstance: axios,
       method: 'PATCH',
@@ -107,6 +132,8 @@ const EndTripForm = ({ trip }) => {
     }
 
     setTripEnded(true);
+    }
+    
   };
 
 
@@ -158,6 +185,38 @@ const EndTripForm = ({ trip }) => {
           className="mt-1 p-2 w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
         />
       </div>
+     
+      <div className="mb-4 flex gap-4">
+  <div>
+    <label htmlFor="endDate" className="block text-sm font-medium text-gray-700">
+      End Date:
+    </label>
+    <input
+      type="date"
+      id="endDate"
+      value={endDate}
+      onChange={(e) => setEndDate(e.target.value)}
+      readOnly
+      required
+      className="mt-1 p-2 w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+    />
+  </div>
+  <div>
+    <label htmlFor="endTime" className="block text-sm font-medium text-gray-700">
+      End Time:
+    </label>
+    <input
+      type="time"
+      id="endTime"
+      value={endTime}
+      onChange={(e) => setEndTime(e.target.value)}
+      readOnly
+      required
+      className="mt-1 p-2 w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+    />
+  </div>
+</div>
+
       <div className="mb-4">
         <label htmlFor="mileage" className="block text-sm font-medium text-gray-700">
           Ending Mileage:
@@ -167,34 +226,6 @@ const EndTripForm = ({ trip }) => {
           id="mileage"
           value={mileage}
           onChange={(e) => setMileage(e.target.value)}
-          required
-          className="mt-1 p-2 w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-        />
-      </div>
-      <div className="mb-4">
-        <label htmlFor="startDate" className="block text-sm font-medium text-gray-700">
-          End Date:
-        </label>
-        <input
-          type="date"
-          id="endDate"
-          value={endDate}
-          onChange={(e) => setEndDate(e.target.value)}
-          readOnly
-          required
-          className="mt-1 p-2 w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-        />
-      </div>
-      <div className="mb-4">
-        <label htmlFor="startTime" className="block text-sm font-medium text-gray-700">
-          End Time:
-        </label>
-        <input
-          type="time"
-          id="endTime"
-          value={endTime}
-          onChange={(e) => setEndTime(e.target.value)}
-          readOnly
           required
           className="mt-1 p-2 w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
         />
@@ -212,6 +243,7 @@ const EndTripForm = ({ trip }) => {
         />
         
       </div>
+      {formError && <p className="text-red-500">{formError}</p>}
       <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">
         End Trip
       </button>

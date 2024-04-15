@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { ReactToPrint } from 'react-to-print';
 import useAxios from '@/hooks/useAxios';
 import axios from '@/api/axios';
 import { useAuthContext } from "@/hooks/useAuthContext";
@@ -13,6 +14,7 @@ const PastTripTable = () => {
 
   const [currentDateTime, setCurrentDateTime] = useState(new Date());
   const [selectedTrip, setSelectedTrip] = useState(null); 
+  const componentRef = React.createRef();
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -52,10 +54,15 @@ const PastTripTable = () => {
   const columns = ["Date", "Start Time", "End Time", "Start Location", "End Location", "Fare", "Actions"];
 
   const filteredData = data.filter((trip) =>
-    Object.values(trip).some((value) =>
-      value.toString().toLowerCase().includes(searchTerm.toLowerCase())
-    )
-  );
+  new Date(trip.startDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }).toLowerCase().includes(searchTerm.toLowerCase()) ||
+  new Date(trip.endDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }).toLowerCase().includes(searchTerm.toLowerCase()) ||
+  trip.startTime.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  trip.endTime.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  trip.startPoint.city.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  trip.endPoint.toLowerCase().includes(searchTerm.toLowerCase())  ||
+  trip.finalTotal.toString().includes(searchTerm.toLowerCase())
+);
+
 
   if (loading) {
     return <p>Loading...</p>;
@@ -75,25 +82,42 @@ const PastTripTable = () => {
 
   return (
     <div className="overflow-x-auto">
-      <div className="mb-4">
+      <div className="flex justify-between mb-4">
+     <div>
         <input
-          type="text"
-          placeholder="Search..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 mr-2 w-full md:w-auto"
-        />
-        <button className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600" onClick={() => setSearchTerm('')}>Clear</button>
-      </div>
+      type="text"
+      placeholder="Search..."
+      value={searchTerm}
+      onChange={(e) => setSearchTerm(e.target.value)}
+      className="rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 mr-2 w-full md:w-auto"
+    />
+    <button className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600" onClick={() => setSearchTerm('')}>Clear</button>
+  </div>
+  <ReactToPrint
+  trigger={() => (
+    <button className="bg-gray-400 hover:bg-blue-600 text-white py-2 px-4 rounded shadow-md transition duration-300 ease-in-out">
+      Generate Past Trip Table
+    </button>
+  )}
+  content={() => componentRef.current}
+/>
+
+</div>
+
       <div className="overflow-x-auto">
+      <div ref={componentRef} className="print:border print:border-gray-800 print:border-4 print:p-8">
+
         <table className="w-full divide-y divide-gray-200">
-          <thead className="bg-gray-100">
+        <thead className="bg-gray-100">
             <tr>
-              {columns.map((col, index) => (
-                <th key={index} className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  {col}
-                </th>
-              ))}
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Start Date</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">End Date</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Start Time</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">End Time</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Start Location</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">End Location</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fare (Rs)</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider print:hidden">Actions</th>
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
@@ -101,12 +125,13 @@ const PastTripTable = () => {
               filteredData.map((trip, index) => (
                 <tr key={index}>
                   <td className="px-6 py-4 whitespace-nowrap">{new Date(trip.startDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</td>
+                  <td className="px-6 py-4 whitespace-nowrap">{new Date(trip.endDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</td>
                   <td className="px-6 py-4 whitespace-nowrap">{trip.startTime}</td>
                   <td className="px-6 py-4 whitespace-nowrap">{trip.endTime}</td>
                   <td className="px-6 py-4 whitespace-nowrap">{trip.startPoint.city}</td>
                   <td className="px-6 py-4 whitespace-nowrap">{trip.endPoint}</td>
                   <td className="px-6 py-4 whitespace-nowrap">{trip.finalTotal}</td>
-                  <td className="px-6 py-4 whitespace-nowrap">
+                  <td className="px-6 py-4 whitespace-nowrap print:hidden">
                     {canEditTrip(trip.endDate, trip.endTime) && (
                       <button className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 mr-2">Edit</button>
                     )}
@@ -121,6 +146,7 @@ const PastTripTable = () => {
             )}
           </tbody>
         </table>
+        </div>
       </div>
       {selectedTrip && (
         <TripSummary trip={selectedTrip} onClose={handleCloseSummary} />

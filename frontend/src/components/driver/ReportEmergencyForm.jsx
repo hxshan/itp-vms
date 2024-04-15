@@ -1,18 +1,25 @@
-// EmergencyReportForm.js
-
-import React, { useState } from 'react';
-
+import useAxios from "@/hooks/useAxios";
+import axios from "@/api/axios";
+import { useState } from "react";
+import { ReactToPrint } from 'react-to-print';
 const EmergencyReportForm = ({ trip }) => {
   const [emergencyDetails, setEmergencyDetails] = useState({
-    date: new Date().toISOString().slice(0, 10),
-    time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
+    caseTitle: '',
+    timeOfIncident: new Date(),
+    driverID: trip.driver._id,
     driverName: trip.driver.firstName,
-    vehicleNumber: trip.vehicle.vehicleRegister,
-    vehicleName: trip.vehicle.vehicleType,
+    driverLicenceNumber: trip.driver.licenceNumber,
+    licencePlate: trip.vehicle.vehicleRegister,
+    passengerCount: trip.passengerCount,
     location: '',
-    emergencyType: '',
-    description: ''
+    incidentDescription: '',
+    hire: trip._id,
+    severity: ''
   });
+
+  const [successMessage, setSuccessMessage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [emergencyData, emergencyError, emergencyLoading, emergencyAxiosFetch] = useAxios();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -22,61 +29,101 @@ const EmergencyReportForm = ({ trip }) => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission, e.g., send data to backend
-    console.log(emergencyDetails);
-    // Clear form fields
-    setEmergencyDetails({
-      date: new Date().toISOString().slice(0, 10),
-      time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
-      driverName: trip.driver.firstName,
-      vehicleNumber: trip.vehicle.vehicleRegister,
-      vehicleName: trip.vehicle.vehicleType,
-      location: '',
-      emergencyType: '',
-      description: ''
-    });
+    try {
+      await emergencyAxiosFetch({
+        axiosInstance: axios,
+        method: 'POST',
+        url: '/caseFiles/driverCreateEmergency/',
+        requestConfig: {
+          data: emergencyDetails
+        }
+      });
+      setSuccessMessage("Emergency report submitted successfully");
+      // Clear form fields on successful submission
+      setEmergencyDetails({
+        ...emergencyDetails,
+        location: '',
+        incidentDescription: '',
+        passengerCount: trip.passengerCount, // Reset passenger count to default
+        severity:''
+      });
+    } catch (error) {
+      console.error("Error creating emergency report:", error);
+      setErrorMessage("Failed to submit emergency report. Please try again later.");
+    }
   };
 
   return (
     <div className="container mx-auto">
       <h2 className="text-2xl font-bold mb-4">Emergency Report Form</h2>
+      {errorMessage && <p className="text-red-500">{errorMessage}</p>}
+      {successMessage && <p className="text-green-500">{successMessage}</p>}
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label htmlFor="location" className="block font-medium text-gray-700">Location</label>
-          <input 
-            type="text" 
-            id="location" 
-            name="location" 
-            value={emergencyDetails.location} 
-            onChange={handleChange} 
-            className="mt-1 p-2 border border-gray-300 rounded-md w-full" 
+          <label htmlFor="caseTitle" className="block font-medium text-gray-700">Case Title</label>
+          <input
+            type="text"
+            id="caseTitle"
+            name="caseTitle"
+            value={emergencyDetails.caseTitle}
+            onChange={handleChange}
+            className="mt-1 p-2 border border-gray-300 rounded-md w-full"
             required
           />
         </div>
         <div>
-          <label htmlFor="emergencyType" className="block font-medium text-gray-700">Type of Emergency</label>
-          <input 
-              type="text" 
-              id="emergencyType" 
-              name="emergencyType"
-              value={emergencyDetails.emergencyType} 
-              onChange={handleChange} 
-              className="mt-1 p-2 border border-gray-300 rounded-md w-full" 
-              required 
-         />
+          <label htmlFor="location" className="block font-medium text-gray-700">Location</label>
+          <input
+            type="text"
+            id="location"
+            name="location"
+            value={emergencyDetails.location}
+            onChange={handleChange}
+            className="mt-1 p-2 border border-gray-300 rounded-md w-full"
+            required
+          />
         </div>
         <div>
           <label htmlFor="description" className="block font-medium text-gray-700">Description</label>
-          <textarea 
-             id="description" 
-             name="description" 
-             value={emergencyDetails.description} 
-             onChange={handleChange} 
-             className="mt-1 p-2 border border-gray-300 rounded-md w-full" rows="4" 
-             required>
-        </textarea>
+          <textarea
+            id="description"
+            name="incidentDescription"
+            value={emergencyDetails.incidentDescription}
+            onChange={handleChange}
+            className="mt-1 p-2 border border-gray-300 rounded-md w-full"
+            rows="4"
+            required
+          />
+        </div>
+        <div>
+          <label htmlFor="severity" className="block font-medium text-gray-700">Severity</label>
+          <select
+            id="severity"
+            name="severity"
+            value={emergencyDetails.severity}
+            onChange={handleChange}
+            className="mt-1 p-2 border border-gray-300 rounded-md w-full"
+            required
+          >
+            <option value="">Select Severity</option>
+            <option value="minor">Minor</option>
+            <option value="moderate">Moderate</option>
+            <option value="severe">Severe</option>
+          </select>
+        </div>
+        <div>
+          <label htmlFor="passengerCount" className="block font-medium text-gray-700">Passenger Count</label>
+          <input
+            type="number"
+            id="passengerCount"
+            name="passengerCount"
+            value={emergencyDetails.passengerCount}
+            onChange={handleChange}
+            className="mt-1 p-2 border border-gray-300 rounded-md w-full"
+            required
+          />
         </div>
         <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Submit</button>
       </form>

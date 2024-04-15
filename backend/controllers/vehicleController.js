@@ -258,15 +258,20 @@ const recoverVehicle = async (req, res, next) => {
 
 const updateMileage = async (req, res, next) => {
     try {
-        const vehicleId = req.params.id;
-        const { mileage } = req.body; 
+        
+        const  vehicleId  = req.body.data._id;
+        const  Mileage  = req.body.data.lastMileage;
 
+
+        console.log(Mileage)
+        
+        
         if (!vehicleId) {
             return next(new HttpError("Vehicle ID is missing.", 400));
         }
         
         // Update the status of the vehicle to 'Active' and set the mileage
-        const updatedVehicle = await Vehicles.findByIdAndUpdate(vehicleId, {  lastMileage: mileage});
+        const updatedVehicle = await Vehicles.findByIdAndUpdate(vehicleId, { lastMileage:Mileage});
 
         if (!updatedVehicle) {
             return next(new HttpError("Vehicle not found.", 404));

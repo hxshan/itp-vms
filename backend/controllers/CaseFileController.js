@@ -181,4 +181,50 @@ const getCaseFiles = async (req, res) => {
         
 };
 
-module.exports = {createCaseFile, getCaseFiles, getCaseFileById, updateCaseFileById, deleteCaseFileById};
+const driverCreateEmergency = async (req, res) => {
+    try {
+      const {
+        caseTitle,
+        timeOfIncident,
+        driverID,
+        driverName,
+        driverLicenceNumber,
+        licencePlate,
+        passengerCount,
+        location,
+        incidentDescription,
+        hire, 
+        severity
+      } = req.body.data;
+
+      console.log(req.body)
+  
+      if (!caseTitle || !timeOfIncident || !driverID || !driverName || !driverLicenceNumber || !licencePlate || !passengerCount || !location || !incidentDescription || !hire || !severity) {
+        return res.status(400).send("Missing required fields");
+      }
+  
+      const newCaseFile = {
+        caseTitle,
+        timeOfIncident,
+        driverID,
+        driverName,
+        driverLicenceNumber,
+        licencePlate,
+        passengerCount,
+        location,
+        incidentDescription,
+        hire,
+        severity
+      };
+  
+      const createdCaseFile = await CaseFile.create(newCaseFile);
+      return res.status(201).send(createdCaseFile);
+    } catch (error) {
+      console.error("Error creating case file", error);
+      return res.status(500).send("Internal server error");
+    }
+  };
+  
+
+
+module.exports = {createCaseFile, getCaseFiles, getCaseFileById, updateCaseFileById, deleteCaseFileById, driverCreateEmergency};
