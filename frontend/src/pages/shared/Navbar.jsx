@@ -67,8 +67,8 @@ const Navbar = () => {
                   </button>
                   {isOpen.maintenance && (
                       <div className="ml-6">
-                          <button className="w-full py-2 px-4 text-start hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() =>navigate('/Mdashboard')}>Schedule Maintenance</button>
-                          <button className="w-full py-2 px-4 text-start hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => navigate('/VehicleService')}>Record Maintenance</button>
+                          <button className="w-full py-2 px-4 text-start hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() =>navigate('/Mdashboard')}>Maintenance Records</button>
+                          <button className="w-full py-2 px-4 text-start hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => navigate('/VehicleService')}>Service Records</button>
                           <button className="w-full py-2 px-4 text-start hover:bg-gray-700 focus:outline-none focus:bg-gray-700" onClick={() => navigate('/VehicleServiceList')}>View Maintenance Logs</button>
                       </div>
                   )}

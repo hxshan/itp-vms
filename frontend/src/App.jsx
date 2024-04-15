@@ -30,6 +30,7 @@ import AddClient from "./pages/contract/AddClient";
 import { View } from '../src/components/VR/View';
 import {Servicenote} from '../src/components/VR/Servicenote';
 
+
 function App() {
   const { user, loading } = useAuthContext();
 
@@ -93,6 +94,7 @@ function App() {
             <Route path="/Mdashboard" element={<MaintainceDashboard />} />
             <Route path="/view/:id" element={<View />} />
             <Route path="/addnote/:id" element={<Servicenote />} />
+           
             <Route
               path="/vehiclemaintain/edit/:id"
               element={<EditMaintainceOrder />}
@@ -111,6 +113,7 @@ function App() {
               element={<VehicleService />}
             />
           </Routes>
+          
         </div>
       </main>
     </>

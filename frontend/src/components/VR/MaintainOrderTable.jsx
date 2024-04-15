@@ -8,12 +8,12 @@ export const MaintainOrderTable = () => {
     const [data, error, loading, axiosFetch] = useAxios();
     const [maintains, setMaintains] = useState([]);
     const currentDate = new Date();
-    const [startDate, setStartDate] = useState('');
-    const [endDate, setEndDate] = useState('');
+    const [startDate, setStartDate] = useState(currentDate);
+    const [endDate, setEndDate] = useState(currentDate);
     const [applyFilter, setApplyFilter] = useState(false);
     const [applyFilter2, setApplyFilter2] = useState(false);
     const [search, setSearch] = useState('');
-    
+
 
     const getData = async () => {
         await axiosFetch({
@@ -34,8 +34,8 @@ export const MaintainOrderTable = () => {
 
     const resetState = () => {
         setSearch('');
-        setStartDate('');
-        setEndDate('');
+        setStartDate(currentDate);
+        setEndDate(currentDate);
         setApplyFilter(false);
         getData();
     };
@@ -52,7 +52,7 @@ export const MaintainOrderTable = () => {
         filterData(startDate, endDate);
     };
     const filterData = (start, end) => {
-        if (!start || !end) return; // If start or end date is not selected, return all data
+        if (!start || !end) return;
 
         const filteredData = maintains.filter(item => {
             const itemDate = new Date(item.vrsdate);
@@ -77,65 +77,66 @@ export const MaintainOrderTable = () => {
     const componentRef = React.createRef();
 
     return (
-        <div className="w-full flex flex-col items-center">
+        <div className="w-full flex flex-col items-center md:w-full">
             <div className="flex flex-col ">
-                <div className="flex gap-7 items-center mb-3 ">
-                <form>
+                <div className="flex gap-7 items-center mb-3  flex-col md:flex-row">
+                    <form>
+                        <input
+                            type='search'
+                            placeholder='Search By Number'
+                            className='p-2 rounded-lg text-center font-semibold bg-slate-50 outline-none'
+                            onChange={(e) => setSearch(e.target.value)} />
+                    </form>
                     <input
-                        type='search'
-                        placeholder='Type or Number'
-                        className='p-2 rounded-lg text-center font-semibold bg-slate-50 outline-none'
-                        onChange={(e) => setSearch(e.target.value)} />
-                </form>
-               
-                <input
-                    type="date"
-                    value={startDate}
-                    onChange={(e) => setStartDate(new Date(e.target.value))}
-                    className="p-2 rounded-lg text-center font-semibold bg-slate-50 outline-none"
-                />
-                <input
-                    type="date"
-                    value={endDate}
-                    onChange={(e) => setEndDate(new Date(e.target.value))}
-                    className="p-2 rounded-lg text-center font-semibold bg-slate-50 outline-none"
-                />
-                 <button
-                    type="button"
-                    className="bg-red-500 text-white rounded-lg px-4 py-2"
-                    onClick={resetState}
-                >
-                    Reset
-                </button>
+                        type="date"
+                        value={startDate}
+                        onChange={(e) => setStartDate(new Date(e.target.value))}
+                        className="p-2 rounded-lg text-center font-semibold bg-slate-50 outline-none"
+                    />
+                    <input
+                        type="date"
+                        value={endDate}
+                        onChange={(e) => setEndDate(new Date(e.target.value))}
+                        className="p-2 rounded-lg text-center font-semibold bg-slate-50 outline-none"
+                    />
+                    <button
+                        type="button"
+                        className="bg-red-500 text-white rounded-lg px-4 py-2"
+                        onClick={resetState}
+                    >
+                        Reset
+                    </button>
                 </div>
                 <div className="flex gap-7 items-center mb-3 justify-evenly">
-                <button
-                    className="bg-blue-500 text-white rounded-lg px-4 py-2"
-                    onClick={handleFilterClick2}
-                >
-                    Apply Filter
-                </button>
-                <button
-                    className="bg-blue-500 text-white rounded-lg px-4 py-2"
-                    onClick={handleFilterClick}
-                >
-                    {applyFilter ? "Done" : "All Records"}
-                </button>
-                <ReactToPrint
-                    trigger={() => (
-                        <button
-                            className="bg-blue-500 text-white rounded-lg px-4 py-2"
-                        >
-                            Generate a Report
-                        </button>
-                    )}
-                    content={() => componentRef.current}
-                />
+                    <button
+                        className="bg-blue-500 text-white rounded-lg px-4 py-2"
+                        onClick={handleFilterClick2}
+                    >
+                        Apply Filter
+                    </button>
+                    <button
+                        className="bg-blue-500 text-white rounded-lg px-4 py-2"
+                        onClick={handleFilterClick}
+                    >
+                        {applyFilter ? "Done" : "All Records"}
+                    </button>
+                    <ReactToPrint
+                        trigger={() => (
+                            <button
+                                className="bg-blue-500 text-white rounded-lg px-4 py-2"
+                            >
+                                Generate a Report
+                            </button>
+                        )}
+                        content={() => componentRef.current}
+                    />
                 </div>
             </div>
-
             <div ref={componentRef}>
-                <table className='border-separate border-spacing-2 mb-16'>
+                <div className="flex justify-center items-center gap-3 bg-slate-50 shadow-lg rounded-md" >  <h1 className="text-center font-semibold text-2xl mb-3"> Date Range :  From {new Date(startDate).toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' })}</h1>
+                    <h1 className="text-center font-semibold text-2xl mb-3"> to {new Date(endDate).toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' })}</h1>
+                </div>
+                <table className='border-separate border-spacing-2 mb-16 shadow-xl rounded-lg'>
                     <thead>
                         <tr>
                             <th className='border border-slate-700 rounded-md p-2'>No</th>
@@ -149,17 +150,13 @@ export const MaintainOrderTable = () => {
                         {maintains && maintains.length > 0 ? (
                             maintains.filter((item) => {
                                 return search.toLowerCase() === '' ? item : item.vrvehicleRegister.toLowerCase().includes(search)
-                                    || search.toUpperCase() === '' ? item : item.vrvehicleRegister.toUpperCase().includes(search)
-                                    // Aftrer adding catagory
-                                    // || serach.toUpperCase() === '' ? item : item.category.toUpperCase().includes(serach)
-                                    // ||serach.toLowerCase() === '' ? item : item.category.toLowerCase().includes(serach)
-                                    ;
+                                    || search.toUpperCase() === '' ? item : item.vrvehicleRegister.toUpperCase().includes(search);
                             }).map((item, index) => {
                                 const sDate = new Date(item.vrsdate);
                                 const eDate = new Date(item.vrsdate);
-                                if (applyFilter && 
+                                if (applyFilter &&
                                     !(sDate < currentDate && eDate < currentDate)
-                                    ) {
+                                ) {
                                     return null;
                                 }
                                 return (

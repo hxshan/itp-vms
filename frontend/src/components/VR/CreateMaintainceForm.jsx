@@ -24,7 +24,7 @@ export const CreateMaintainceForm = () => {
 
     const [formdata, setFormdata] = useState({
         //type change into category
-        
+
         vehicleRegister: '',
         vrissue: '',
         vrcost: '',
@@ -41,13 +41,11 @@ export const CreateMaintainceForm = () => {
             alert('Please fill in all required fields.');
             return;
         }
-        // Assuming you want to submit formdata somewhere using Axios
+
         axios.post('http://localhost:3000/api/vehiclemaintain/createmainform', formdata)
             .then(response => {
                 console.log('Submission successful:', response);
-                // Optionally, you can reset the form after successful submission
                 setFormdata({
-                   
                     vehicleRegister: '',
                     vrissue: '',
                     vrcost: '',
@@ -61,24 +59,24 @@ export const CreateMaintainceForm = () => {
             })
             .catch(error => {
                 console.error('Error submitting form:', error);
-                // Handle errors here
+
             });
     };
 
 
     const validateForm = () => {
         return (
-           
+
             validateVehicleId(formdata.vehicleRegister) &&
             validateVehicleIssue(formdata.vrissue) &&
             validateVehicleCost(formdata.vrcost) &&
-            validateAdditionalInfo(formdata.vraddit)&&
+            validateAdditionalInfo(formdata.vraddit) &&
             // validateSDate(formdata.vrsdate)&&
-            validateEDate(formdata.vrsdate,formdata.vredate)
+            validateEDate(formdata.vrsdate, formdata.vredate)
         );
     };
     const handlechange = (e) => {
-       
+
         if (e.target.id === 'vehicleRegister' || e.target.id === 'vrissue' || e.target.id === 'vrcost' || e.target.id === 'vraddit' || e.target.id === 'vrsdate' || e.target.id === 'vredate') {
             setFormdata({
                 ...formdata,
@@ -108,7 +106,7 @@ export const CreateMaintainceForm = () => {
                 <form className='flex flex-col gap-4 md:flex-row' onSubmit={handleSubmit}>
                     <div className="w-full">
 
-                       
+
                         <div className='flex flex-col gap-5 mt-9'>
                             <label className='  font-semibold  '>Vehicle Number</label>
                             <input
@@ -116,7 +114,7 @@ export const CreateMaintainceForm = () => {
                                 id='vehicleRegister'
                                 placeholder='AAA1234 OR AA-1234 OR 12-1234'
                                 className='border p-2 rounded-lg'
-                                maxLength='8'
+                                maxLength='7'
                                 required
                                 onChange={handlechange}
                                 value={formdata.vehicleRegister} />
@@ -168,19 +166,19 @@ export const CreateMaintainceForm = () => {
                                     className='rounded-lg p-2'
                                     id='vredate'
                                     onChange={handlechange}
-                                    value={formdata.vredate } />
+                                    value={formdata.vredate} />
                             </div>
                             <div className='flex gap-4 justify-between items-center'>
-                            <label className='  font-semibold'>Availability :</label>
-                            <select
-                                id='availability'
-                                className='rounded-lg p-2'
-                                onChange={handlechange}
-                                value={formdata.availability}>
-                                <option value='available'>Available</option>
-                                <option value='Unavailable'>Unavailable</option>
-                            </select>
-                        </div>
+                                <label className='  font-semibold'>Availability :</label>
+                                <select
+                                    id='availability'
+                                    className='rounded-lg p-2'
+                                    onChange={handlechange}
+                                    value={formdata.availability}>
+                                    <option value='available'>Available</option>
+                                    <option value='Unavailable'>Unavailable</option>
+                                </select>
+                            </div>
                         </div>
                         <p className='font-medium'>
                             Format Images :

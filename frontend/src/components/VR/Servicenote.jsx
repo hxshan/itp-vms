@@ -7,14 +7,13 @@ import { Serviceview } from './Serviceview';
 export const Servicenote = () => {
     const [data, error, loading, axiosFetch] = useAxios();
     const { id } = useParams();
-    
     const [vehinumber, setVehinumber] = useState('');
     const [lastmilage, setLastmilage] = useState('');
-    
+
     useEffect(() => {
         axios.get(`http://localhost:3000/api/vehicle/${id}`)
             .then(response => {
-                
+
                 setVehinumber(response.data.vehicleRegister)
                 setLastmilage(response.data.lastMileage)
             })
@@ -27,30 +26,28 @@ export const Servicenote = () => {
     const currentDate = new Date().toISOString().split('T')[0];
 
     const [formdata, setFormdata] = useState({
-        vehicleRegister: vehinumber, // Pre-fill with vehinumber
+        vehicleRegister: vehinumber,
         servicedate: currentDate,
         lastmilage: lastmilage,
         Snote: '',
         Scost: '',
     });
 
-    // Update formdata.vehicleRegister when vehinumber changes
     useEffect(() => {
         setFormdata(prevState => ({
             ...prevState,
             vehicleRegister: vehinumber,
-            lastmilage:lastmilage
+            lastmilage: lastmilage
 
         }));
-    }, [vehinumber,lastmilage]);
+    }, [vehinumber, lastmilage]);
 
     const handleSubmit = () => {
-        // Ensure vehicleRegister is not empty
         if (!formdata.vehicleRegister) {
             console.error('Vehicle register is empty');
-            return; // Exit early if vehicleRegister is empty
+            return;
         }
-    
+
         axios.post(`http://localhost:3000/api/vehicleService/addservicenote`, formdata)
             .then(response => {
                 console.log('Submission successful:', response);
@@ -60,7 +57,7 @@ export const Servicenote = () => {
                     servicedate: '',
                     lastmilage: lastmilage,
                     Scost: '',
-                    
+
                 });
                 navigate('/VehicleService');
             })
@@ -79,18 +76,21 @@ export const Servicenote = () => {
     return (
         <main className='w-full flex flex-col justify-center items-center bg-slate-200'>
             <Serviceview />
-            <h1 className='text-3xl font-semibold my-9'>
-                Add Service Note
-            </h1>
-            
-            <div className="sm:w-3/4 bg-slate-300 p-10 flex flex-col rounded-2xl">
+            <div className="sm:w-1/2 bg-slate-300 p-10 flex flex-col rounded-2xl ">
+                <h1 className='text-3xl font-semibold text-center '>
+                    Add Service Note
+                </h1>
                 <form className='flex flex-col gap-4 md:flex-row' onSubmit={handleSubmit}>
                     <div className="w-full">
                         <div className='flex flex-col gap-5 mt-9'>
-                            <label className='font-semibold'>Vehicle Number</label>
-                            <span>{vehinumber}</span>
-                            <label className='font-semibold'>Last-Milage :</label>
-                            <span>{lastmilage}</span>
+                            <div className="flex justify-center gap-3">
+                                <label className='font-semibold'>Vehicle Number : </label>
+                                <span>{vehinumber}</span>
+                            </div>
+                            <div className="flex justify-center gap-3">
+                                <label className='font-semibold'>Last-Milage : </label>
+                                <span> {lastmilage}km</span>
+                            </div>
                             <label className='font-semibold'>Date :</label>
                             <input
                                 type="date"
@@ -99,7 +99,6 @@ export const Servicenote = () => {
                                 required
                                 onChange={handlechange}
                                 value={formdata.servicedate} />
-                           
                             <label className='font-semibold'>Service Note :</label>
                             <textarea
                                 type="text"
