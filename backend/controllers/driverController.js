@@ -1,28 +1,25 @@
 const Hire = require("../models/hireModel")
-const {v4: uuid} = require('uuid')
 const mongoose = require('mongoose');
 
-//find hire by driver id
+// Find hires by driver id
 const getHiresByDriverId = async (req, res) => {
     // Extract the driver id from request parameters
-    const { driverId }  = req.params;
-  
-  console.log('driverId' )
-  
+    const { driverId } = req.params;
+
     // Check if the provided driverId is a valid MongoDB ObjectId
     if (!mongoose.Types.ObjectId.isValid(driverId)) {
         return res.status(400).json({ error: 'Invalid driver id' });
     }
-  
+
     try {
         // Find hires where the driver matches the provided driverId
         const hires = await Hire.find({ driver: driverId }).populate('vehicle').populate('driver').sort({ startDate: 1, startTime: 1 });
-  
+
         // If no hires are found, return a 404 Not Found response with an error message
         if (hires.length === 0) {
             return res.status(404).json({ error: 'No hires found for the specified driver' });
         }
-  
+
         // If hires are found, return a 200 OK response with the hire data
         res.status(200).json(hires);
     } catch (error) {
@@ -30,63 +27,87 @@ const getHiresByDriverId = async (req, res) => {
         console.error('Error fetching hires by driver id:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
-  };
-  
-  
-  //startTripForm Edit
-  const updateHireDriver = async (req, res) => {
+};
+
+
+// Update hire driver
+const updateHireDriver = async (req, res) => {
     const { id } = req.params;
-  
-    const hirbyid = await Hire.findById(id)
-    console.log(hirbyid)
+
+    // Validate if the hire ID is a valid MongoDB ObjectId
     if (!mongoose.Types.ObjectId.isValid(id)) {
-      return res.status(400).json({ error: 'Invalid hire ID' });
+        return res.status(400).json({ error: 'Invalid hire ID' });
     }
-  
+
     try {
-      const hire = await Hire.findByIdAndUpdate(id, req.body.data, { new: true });
-  
-      console.log(hire)
-  
-      if (!hire) {
-        return res.status(404).json({ error: 'Hire not found' });
-      }
-  
-      res.status(200).json({ message: 'Hire updated successfully', hire });
+        // Find the hire by ID
+        const hire = await Hire.findById(id);
+
+        // If hire not found, return 404 Not Found
+        if (!hire) {
+            return res.status(404).json({ error: 'Hire not found' });
+        }
+
+        // Update the hire with the provided data
+        const updatedHire = await Hire.findByIdAndUpdate(id, req.body.data, { new: true });
+
+        // Return success message and updated hire data
+        res.status(200).json({ message: 'Hire updated successfully', hire: updatedHire });
     } catch (error) {
-      console.error('Error updating hire:', error);
-      res.status(500).json({ error: 'Internal server error' });
+        console.error('Error updating hire:', error);
+        res.status(500).json({ error: 'Internal server error' });
     }
-  };
-  
-  const getPastTripsForDriver = async (req, res) => {
+};
+
+// Get past trips for driver
+const getPastTripsForDriver = async (req, res) => {
     try {
-      const { driverId } = req.params;
-  
-      console.log('insode det by past')
-      // Check if the provided driverId is a valid MongoDB ObjectId
-      if (!mongoose.Types.ObjectId.isValid(driverId)) {
-        return res.status(400).json({ error: 'Invalid driver id' });
-      }
-      
-  
-      console.log(driverId)
-      const currentDate = new Date();
-  
-      const pastTrips = await Hire.find({
-        driver: driverId,
-        hireStatus: { $in: ['Cancelled', 'Completed'] }
-      }).sort({ endDate: -1 , endTime: -1}).populate('vehicle').populate('driver');
-  
-      if (pastTrips.length === 0) {
-        return res.status(404).json({ error: 'No past trips found for the specified driver' });
-      }
-  
-      res.status(200).json(pastTrips);
+        const { driverId } = req.params;
+
+        // Validate if the driver ID is a valid MongoDB ObjectId
+        if (!mongoose.Types.ObjectId.isValid(driverId)) {
+            return res.status(400).json({ error: 'Invalid driver id' });
+        }
+
+        const currentDate = new Date();
+
+        // Find past trips for the specified driver where hireStatus is either 'Cancelled' or 'Completed'
+        const pastTrips = await Hire.find({
+            driver: driverId,
+            hireStatus: { $in: ['Cancelled', 'Completed'] }
+        }).sort({ endDate: -1, endTime: -1 }).populate('vehicle').populate('driver');
+
+        // If no past trips found, return 404 Not Found
+        if (pastTrips.length === 0) {
+            return res.status(404).json({ error: 'No past trips found for the specified driver' });
+        }
+
+        // Return past trips data
+        res.status(200).json(pastTrips);
     } catch (error) {
-      console.error('Error fetching past trips for driver:', error);
-      res.status(500).json({ error: 'Internal server error' });
+        console.error('Error fetching past trips for driver:', error);
+        res.status(500).json({ error: 'Internal server error' });
     }
-  };
-  
-  module.exports = {getHiresByDriverId, updateHireDriver, getPastTripsForDriver}
+};
+
+//getHireByHireID
+const getSingleHire = async (req, res)=>{
+    const {id} = req.params
+
+  console.log('in get single')
+    if(!mongoose.Types.ObjectId.isValid(id)){
+        return res.status(400).json({error: 'invalid id'})
+    }
+
+    const hire = await Hire.findById(id).populate('vehicle').populate('driver')
+    console.log(hire)
+    if(!hire)
+    {
+        return res.status(400).json({error: 'No such hire'})
+    }
+
+   
+    res.status(200).json(hire)
+
+}
+module.exports = { getHiresByDriverId, updateHireDriver, getPastTripsForDriver, getSingleHire };

@@ -131,4 +131,40 @@ const deletemaintain = async (req , res) =>{
     }
 }
 
-module.exports = {createmaintain, getallmaintains, getonemaintain , editmaintain , deletemaintain}
+const driverMaintenanceRequest = async (req, res) => {
+    console.log('came in to driver')
+    try {
+        // Check if all required fields are provided in the request body
+        const requiredFields = ['vrvehicleRegister', 'vrissue'];
+        const missingFields = requiredFields.filter(field => !req.body[field]);
+        if (missingFields.length > 0) {
+            return res.status(400).send({ message: `Missing required fields: ${missingFields.join(', ')}` });
+        }
+
+        // Find the vehicle based on the provided vehicleRegisterNumber
+        const vehicle = await Vehicles.findOne({ vehicleRegister: req.body.vrvehicleRegister});
+
+        if (!vehicle) {
+            return res.status(400).send({ message: "Invalid vehicle register number provided." });
+        }
+
+        // Create the maintenance request object
+        const maintenanceRequest = {
+            vehicleRegister: vehicle._id,
+            vrvehicleRegister: req.body.vrvehicleRegister,
+            vrissue: req.body.vrissue,
+            vrsdate: new Date(), // Set the start date of maintenance request to current date
+            availability: 'unavailable' // Set availability to 'unavailable' by default
+        };
+
+        // Create a new maintenance request record
+        const newMaintenanceRequest = await vehicleMaintain.create(maintenanceRequest);
+
+        return res.status(201).send(newMaintenanceRequest);
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).send({ message: 'Internal server error' });
+    }
+};
+
+module.exports = {createmaintain, getallmaintains, getonemaintain , editmaintain , deletemaintain, driverMaintenanceRequest}

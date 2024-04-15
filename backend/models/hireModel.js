@@ -57,7 +57,7 @@ const hireSchema = new mongoose.Schema({
   },
   endTime: { 
     type: String, 
-    default: '' 
+    default: null 
   },
   tripType: { 
     type: Boolean, 
