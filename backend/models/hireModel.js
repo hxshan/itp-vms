@@ -57,7 +57,7 @@ const hireSchema = new mongoose.Schema({
   },
   endTime: { 
     type: String, 
-    default: '' 
+    default: null 
   },
   tripType: { 
     type: Boolean, 
@@ -69,11 +69,11 @@ const hireSchema = new mongoose.Schema({
 },
   actualDistance: { 
     type: Number, 
-  
+    default: null
   },
   actualTimeTaken: { 
     type: String, 
-  
+    default: null
   },
   cusName: { 
     type: String, 
