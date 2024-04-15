@@ -9,7 +9,8 @@ const {
   ,updateUserPersonal,
   deleteContact,
   updateContact,
-  updateDocuments} = require('../controllers/userController')
+  updateDocuments,
+  getUserDetailsFull} = require('../controllers/userController')
 const Auth =require('../middleware/Auth')
 
 
@@ -45,7 +46,7 @@ const upload = multer({ storage });
 router.get('/',Auth,getAllUsers)
 router.get('/drivers',getDrivers)
 router.get('/:id',getUserById)
-
+router.get('/report/:id',getUserDetailsFull)
 //POST
 router.post('/',upload.fields([{name:'nicDocument',maxCount:1},{name:'licenceDoc',maxCount:1},{name:'empPhoto',maxCount:1}]),createUser)
 

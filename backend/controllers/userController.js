@@ -2,6 +2,8 @@ const bcrypt = require("bcrypt");
 const User = require("../models/userModel");
 const EmergencyContact = require("../models/emergencyContactModel");
 const Role = require("../models/roleModel");
+const Hire = require("../models/hireModel")
+const EmpRecord = require('../models/employeeRecordModel')
 
 //TODO:add validation use REGEX 
 const createUser = async (req, res) => {
@@ -329,7 +331,7 @@ const getUserById = async (req,res)=>{
   try{
     const {id} = req.params;
   
-    const user = await User.findById(id).populate('emergencyContacts').exec()
+    const user = await User.findById(id).populate('emergencyContacts').populate('role').exec()
     if(!user) return res.status(404).json({message:'User Not Found'})
     return res.status(200).json(user)
   }catch(error){
@@ -338,6 +340,32 @@ const getUserById = async (req,res)=>{
   }
     
 }
+
+const getUserDetailsFull = async (req,res)=>{
+  try{
+    const {id} = req.params;
+  
+    const user = await User.findById(id).populate('emergencyContacts').populate('role').exec()
+    if(!user) return res.status(404).json({message:'User Not Found'})
+
+    const userHires = await Hire.find({driver:user._id})
+    let totalHire= 0
+    let completedHires = 0
+    let pendingHires = 0
+    
+    if(userHires.length){
+       totalHire= userHires.length
+       completedHires = userHires.filter((hire)=>{ return hire.hireStatus == "Completed"})
+       pendingHires = userHires.filter((hire)=>{return hire.status == "Pending"})
+    }
+    const records = await EmpRecord.find({userId:user._id})
+    const userDetail={totalHire,completedHires,pendingHires,records,personal:user}
+    return res.status(200).json(userDetail)
+  }catch(error){
+    // console.log(error);
+    return res.status(404).json({message:JSON.stringify(error.message)})
+  }
+} 
 
 
 //TODO:add validation use REGEX
@@ -368,7 +396,8 @@ const resetPassword = async(req,res)=>{
   }
 }
 
-module.exports = { 
+module.exports = {
+  getUserDetailsFull, 
   createUser, 
   getAllUsers,
   getUserById,
