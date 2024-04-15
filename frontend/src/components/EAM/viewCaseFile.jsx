@@ -1,124 +1,167 @@
-import React from 'react';
-import EditCaseFileForm from './EditCaseFileForm';
-import { useState } from 'react';
+import React, { useRef } from 'react';
+import axios  from 'axios';
+import { useParams } from 'react-router-dom';
+import { useState , useEffect} from 'react';
 import propTypes from 'prop-types';
+import BackButton from './BackButton';
+import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import Spinner from './Spinner';
+import ReactToPrint from 'react-to-print';
 
-const ViewCaseFile = ({ setViewCaseFile, viewCaseFileData }) => {
-  ViewCaseFile.propTypes = {
-    setViewCaseFile: propTypes.func.isRequired,
-    viewCaseFileData: propTypes.object.isRequired
-  };
+
+
+const ViewCaseFile = () => {
+
+
+  const [caseFile, setCaseFile] = useState({});
+  const [loading, setLoading] = useState(false);
+  const { id } = useParams();
+  const navigate = useNavigate();
 
   const cancel = () => {
-    setViewCaseFile(false);
+    navigate('/emergency');
   };
 
-  const [showEditCaseFileForm, setShowEditCaseFileForm] = useState(false);
-  const editCaseFile = () => {
-    setShowEditCaseFileForm(true);
-  };
+  useEffect (() => {
+    setLoading(true);
+    axios
+      .get(`http://localhost:3000/api/caseFiles/${id}`)
+      .then((responce) => {
+        setCaseFile(responce.data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        setLoading(false);
+        console.error('Error fetching case file', error);
+      });
+
+  }, [id]);
+
+  const ref = useRef(null);
+
+ 
 
   return(
-    <div>
-      {showEditCaseFileForm ? (
-        <EditCaseFileForm setViewCaseFile={setViewCaseFile} viewCaseFileData={viewCaseFileData} />
-      ):(
+    
+    <div className="bg-gray-100 min-h-screen flex flex-col items-center justify-center">
+     <BackButton />
 
-      <div className=" absolute bg-white border-2 border-[#0E6300] w-[75%] mb-6 top-11 right-11 xl:top-5">
-        <div className=' xl:flex xl:flex-col justify-between mx-10 my-5'>
-          <div className='mr-[20px]'>
-              <h1 className='text-2xl underline font-bold mb-6'>Case File Details</h1>
-                <div className=' xl:flex justify-between'>
+      <div className="container mx-auto py-8">
+        <div className='className="bg-white rounded-lg shadow-lg p-8"'>
+        { loading ? (
+          <Spinner />
+        ) : (
+
+         
+        
+        <div className="p-8">
+           <div ref={ref} className='mx-10 my-5'>
+          
+              <h1 className="text-3xl font-semibold mb-8">Case File Details</h1>
+
+                <div className="flex justify-between mb-8">
                   <div>
-                    <p className='className= text-lg font-semibold leading-8'>Case File ID:  {viewCaseFileData._id } </p>
-                    <p className='className= text-lg font-semibold leading-8'>Case Title: {viewCaseFileData.caseTitle} </p>
-                    <p className='className= text-lg font-semibold leading-8'>Location: {viewCaseFileData.location} </p>
-                    <p className='className= text-lg font-semibold leading-8'>Time of Incident: {viewCaseFileData.timeOfIncident} </p>
+                    <p className="text-lg font-semibold mb-2">Case File ID:  {caseFile._id } </p>
+                    <p className="text-lg font-semibold mb-2">Case Title: {caseFile.caseTitle} </p>
+                    <p className="text-lg font-semibold mb-2">Location: {caseFile.location} </p>
+                    <p className="text-lg font-semibold mb-2">Time of Incident: {new Date (caseFile.timeOfIncident).toLocaleDateString} </p>
                     </div>
                   <div>
-                  <p className='className= text-lg font-semibold leading-8'>Licence Plate: {viewCaseFileData.licencePlate} </p>
-                    <p className='className= text-lg font-semibold leading-8'>Current Condition: {viewCaseFileData.currentCondition} </p>
+                  <p className="text-lg font-semibold mb-2">Licence Plate: {caseFile.licencePlate} </p>
+                    <p className="text-lg font-semibold mb-2">Current Condition: {caseFile.currentCondition} </p>
                     
                    
-                    <p className='className= text-lg font-semibold leading-8'>Status: {viewCaseFileData.status} </p>
+                    <p className="text-lg font-semibold mb-2">Status: {caseFile.status} </p>
                   </div>
 
                   
                 </div>
 
-          </div>
+          
 
-          <div className='mr-[20px] mt-10'>
-            <h1 className='text-2xl underline font-semibold text-center mb-5'>Driver Details</h1>
+          <div className="p-8">
+            <h1 className="text-3xl font-semibold mb-8">Driver Details</h1>
               
                 
-                  <p className='className= text-lg font-semibold leading-8'>Driver ID: {viewCaseFileData.driverId} </p>
-                  <p className='className= text-lg font-semibold leading-8'>Driver Name: {viewCaseFileData.driverName} </p>
-                  <p className='className= text-lg font-semibold leading-8'>Deiver Licence Number: {viewCaseFileData.driverLicenceNumber} </p>
-                
-              
-          </div>
-
-          <div className='mr-[20px] mt-10'>
-            <h1 className='text-2xl underline font-semibold text-center mb-5'>Incident Details</h1>
-              
-                  <p className='className= text-lg font-semibold leading-8'>Severity: {viewCaseFileData.severity} </p>
-                  <p className='className= text-lg font-semibold leading-8'>Passenger Count: {viewCaseFileData.passengerCount} </p>
-                  <p className='className= text-lg font-semibold leading-8'>Incident Description: {viewCaseFileData.incidentDescription} </p>
-                  <p className='className= text-lg font-semibold leading-8'>Injures: {viewCaseFileData.injuriesDiscription} </p>
-                  <p className='className= text-lg font-semibold leading-8'>Licence Number: {viewCaseFileData.licenceNumber} </p>
+                  <p className="text-lg font-semibold mb-2">Driver ID: {caseFile.driverId} </p>
+                  <p className="text-lg font-semibold mb-2">Driver Name: {caseFile.driverName} </p>
+                  <p className="text-lg font-semibold mb-2">Deiver Licence Number: {caseFile.driverLicenceNumber} </p>
                 
               
           </div>
 
-          <div className='mr-[20px] mt-10'>
-            <h1 className='text-2xl underline font-semibold text-center mb-5'>Emergency Details</h1>
+          <div className="p-8">
+            <h1 className="text-3xl font-semibold mb-8">Incident Details</h1>
               
-                  <p className='className= text-lg font-semibold leading-8'>Emergency Services Contacted: {viewCaseFileData.emergencyServicesContacted} </p>
-                  <p className='className= text-lg font-semibold leading-8'>Emergency Services Response Time: {viewCaseFileData.emergencyServicesResponseTime} </p>
-                  <p className='className= text-lg font-semibold leading-8'>Emergency Services Actions Taken: {viewCaseFileData.emergencyServicesActionsTaken} </p>
+                  <p className="text-lg font-semibold mb-2">Severity: {caseFile.severity} </p>
+                  <p className="text-lg font-semibold mb-2">Passenger Count: {caseFile.passengerCount} </p>
+                  <p className="text-lg font-semibold mb-2">Incident Description: {caseFile.incidentDescription} </p>
+                  <p className="text-lg font-semibold mb-2">Injures: {caseFile.injuriesDiscription} </p>
+                  <p className="text-lg font-semibold mb-2">Licence Number: {caseFile.licenceNumber} </p>
+                
+              
+          </div>
+
+          <div className="p-8">
+            <h1 className="text-3xl font-semibold mb-8">Emergency Details</h1>
+              
+                  <p className="text-lg font-semibold mb-2">Emergency Services Contacted: {caseFile.emergencyServicesContacted} </p>
+                  <p className="text-lg font-semibold mb-2">Emergency Services Response Time: {caseFile.emergencyServicesResponseTime} </p>
+                  <p className="text-lg font-semibold mb-2">Emergency Services Actions Taken: {caseFile.emergencyServicesActionsTaken} </p>
                  
                 
               
           </div>
 
-          <div className='mr-[20px] mt-10'>
-            <h1 className='text-2xl underline font-semibold text-center mb-5'>Witness Information / plice Report</h1>
+          <div className="p-8">
+            <h1 className="text-3xl font-semibold mb-8">Witness Information / plice Report</h1>
               
-                  <p className='className= text-lg font-semibold leading-8'>Witnesses Contact Information: {viewCaseFileData.witnessesContactInformation} </p>
-                  <p className='className= text-lg font-semibold leading-8'>Witnesses Statement: {viewCaseFileData.witnessesStatement} </p>
-                  <p className='className= text-lg font-semibold leading-8'>Photographic Evidence: {viewCaseFileData.photographicEvidence} </p>
-                  <p className='className= text-lg font-semibold leading-8'>Police Report: {viewCaseFileData.policeReport} </p>
+                  <p className="text-lg font-semibold mb-2">Witnesses Contact Information: {caseFile.witnessesContactInformation} </p>
+                  <p className="text-lg font-semibold mb-2">Witnesses Statement: {caseFile.witnessesStatement} </p>
+                  <p className="text-lg font-semibold mb-2">Photographic Evidence: {caseFile.photographicEvidence} </p>
+                  <p className="text-lg font-semibold mb-2">Police Report: {caseFile.policeReport} </p>
                
                 
               
           </div>
 
-          <div className='mr-[20px] mt-10'>
-            <h1 className='text-2xl underline font-semibold text-center mb-5'>Insurance Details</h1>
+          <div className="p-8">
+            <h1 className="text-3xl font-semibold mb-8">Insurance Details</h1>
               
-                  <p className='className= text-lg font-semibold leading-8'>Insurance Companies ContactInfo: {viewCaseFileData.insuranceCompaniesContactInfo} </p>
-                  <p className='className= text-lg font-semibold leading-8'>Insurance Status: {viewCaseFileData.insuranceStatus} </p>
-                  <p className='className= text-lg font-semibold leading-8'>Emergency Services Actions Taken: {viewCaseFileData.emergencyServicesActionsTaken} </p>
+                  <p className="text-lg font-semibold mb-2">Insurance Companies ContactInfo: {caseFile.insuranceCompaniesContactInfo} </p>
+                  <p className="text-lg font-semibold mb-2">Insurance Status: {caseFile.insuranceStatus} </p>
+                  <p className="text-lg font-semibold mb-2">Emergency Services Actions Taken: {caseFile.emergencyServicesActionsTaken} </p>
                  
                 
               
           </div>
 
-
+          </div>
           <div className='mr-[20px] mt-10 flex justify-between items-baseline'>
-            <button className='px-4 py-2 bg-[#D4D800] text-white rounded-md mr-2' onClick={editCaseFile}>Edit</button>
+            < Link to={`/emergency/edit/${caseFile._id}`} className='px-4 py-2 bg-[#D4D800] text-white rounded-md mr-2'>Edit</Link>
+
+            <ReactToPrint
+              bodyClass='print-case-file'
+              content={() => ref.current}
+              trigger={() => (
+                <button className='px-4 py-2 text-white bg-actionBlue hover:bg-gray-800 focus:outline-none rounded-md mr-4'>Print</button>
+              )}
+              />
+           
             <button className='px-4 py-2 bg-[#A90000] text-white rounded-md' onClick={cancel}>Cancel</button>
           </div>
         </div>
+        )}
       </div>
-      )}
+      
     </div>
-  )
+  </div>
+  );
+};
 
 
 
-}
 
 export default ViewCaseFile;
    

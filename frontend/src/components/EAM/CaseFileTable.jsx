@@ -1,8 +1,8 @@
 import React, { useEffect, useState} from "react";
 import  axios  from "axios";
 import Spinner from "./Spinner";
-import ViewCaseFile from "./viewCaseFile";
 
+import { Link } from "react-router-dom";
 
 
 const CaseFileTable = () => {
@@ -43,15 +43,9 @@ const CaseFileTable = () => {
             }
         }
 
-        const [viewCaseFile, setViewCaseFile] = useState(false);
-        const [viewCaseFileData, setViewCaseFileData] = useState(null);
+       
 
-        const handleView = (id) => {
-            const selected = caseFiles.find((caseFile) => caseFile._id === id);
-            setViewCaseFileData(selected);
-            setViewCaseFile(true);
-        };
-
+        
   
 
     return (
@@ -85,13 +79,13 @@ const CaseFileTable = () => {
 
                                     <td className="px-6 py-4 whitespace-nowrap">
                                        <div className="flex">
-                                        
-                                            <button className="px-2 py-1 bg-[#D4D800] text-white rounded-md mr-2" onClick={() => handleView(caseFile._id)}>
+                                            <Link to={`/emergency/view/${caseFile._id}`} className="my-1 mx-1 bg-blue-700 text-white py-1 px-4 rounded-md text-sm" >
+                                           
                                                 View
-                                            </button>
+                                            
+                                            </Link>
                                         
-                                        
-                                            <button className="hidden xl:grid px-2 py-1 bg-[#A90000] text-white rounded-md" onClick={() => deleteCaseFile(caseFile._id)}>
+                                            <button className="my-1 mx-1 bg-red-700 text-white py-1 px-4 rounded-md text-sm" onClick={() => deleteCaseFile(caseFile._id)}>
                                                 Delete
                                             </button>  
                                             </div>
@@ -100,7 +94,7 @@ const CaseFileTable = () => {
                             ))}
                         </tbody>
                     </table>
-                    { viewCaseFile && <ViewCaseFile setViewCaseFile = {setViewCaseFile} viewCaseFileData = {viewCaseFileData}/>}
+                    
                 </div>
             )}
         </div>
