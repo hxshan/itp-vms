@@ -78,24 +78,6 @@ fetchData();
     });
   };
 
-  const handleUpdateVehicle = async (e) => {
-    e.preventDefault();
-    if (confirm("Are you sure you want to update the following vehicle?")) {
-      try {
-        await axios.patch(`/vehicle/${id}`, formData);
-
-        alert('Vehicle updated successfully!');
-        
-        navigate('/vehicle')
-
-        setData(formData);
-
-      } catch (error) {
-        toast.error('Failed to update vehicle. Please try again later.');
-      }
-    }
-  };
-
   const renderFormComponent = () => {
     switch (formData.category) {
       case 'car':
@@ -116,6 +98,54 @@ fetchData();
   const handleCancel = () => {
     navigate(-1); 
   };
+
+
+  const handleUpdateVehicle = async (e) => {
+    e.preventDefault();
+    const { vehicleType: currentVehicleType, vehicleRegister: currentVehicleRegister } = data;
+    const { vehicleType, vehicleRegister } = formData;
+    
+  
+    const vehicleTypeChanged = vehicleType !== currentVehicleType;
+    const vehicleRegisterChanged = vehicleRegister !== currentVehicleRegister;
+  
+ 
+    if (vehicleTypeChanged && !vehicleType) {
+      toast.error('Please provide vehicle type.');
+      return;
+    }
+  
+    if (vehicleRegisterChanged && !vehicleRegister) {
+      toast.error('Please provide vehicle register.');
+      return;
+    }
+  
+    try {
+      if (vehicleTypeChanged || vehicleRegisterChanged) {
+        const response = await axios.get(`/vehicle/check?vehicleType=${vehicleType}&vehicleRegister=${vehicleRegister}`);
+        if (response.data.exists) {
+          toast.error('Vehicle type and register already exist in the database.');
+          return;
+        }
+      }
+    } catch (error) {
+      console.error('Error checking vehicle existence:', error);
+      toast.error('Failed to check vehicle existence. Please try again later.');
+      return;
+    }
+  
+    if (confirm("Are you sure you want to update the following vehicle?")) {
+      try {
+        await axios.patch(`/vehicle/${id}`, formData);
+        alert('Vehicle updated successfully!');
+        navigate('/vehicle');
+        setData(formData);
+      } catch (error) {
+        toast.error('Failed to update vehicle. Please try again later.');
+      }
+    }
+  };
+  
 
 
   return (
