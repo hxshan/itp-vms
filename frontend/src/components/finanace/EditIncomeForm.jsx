@@ -6,21 +6,21 @@ import { jwtDecode } from 'jwt-decode';
 
 const EditIncomeForm = ({ income, onSave, onCancel }) => {
   // State to hold edited income data
+  console.log(income)
   const [editedIncome, setEditedIncome] = useState({ ...income });
+  console.log(editedIncome)
+  const [contractData, contracterror, contractloading, contractaxiosFetch] = useAxios();
+  const [vehicleData, vehicleerror, vehicleloading, vehicleAxiosFetch] = useAxios();
+  const [tripData, triperror, triploading, tripaxiosFetch] = useAxios();
   const [vehicleOptions, setVehicleOptions] = useState([]);
   const [tripOptions, setTripOptions] = useState([]);
   const [contractOptions, setContractOptions] = useState([]);
   const [inputRentalType, setInputRentalType] = useState('');
-  const [vehicleData, vehicleerror, vehicleloading, vehicleAxiosFetch] = useAxios();
-  const [tripData, triperror, triploading, tripaxiosFetch] = useAxios();
-  const [contractData, contracterror, contractloading, contractaxiosFetch] = useAxios();
+  const[defaultHire, setDefaultHire] = useState({...income})
   const { user } = useAuthContext();
 
   const [name, setName] = useState('');
 
-  console.log(editedIncome)
-
-  console.log(editedIncome.hirePayment.hireAmount)
   useEffect(() => {
     const decodedToken = jwtDecode(user?.accessToken);
     setName(decodedToken?.UserInfo?.name);
@@ -33,6 +33,9 @@ const EditIncomeForm = ({ income, onSave, onCancel }) => {
       setEditedIncome({ ...editedIncome, date: dateString });
     }
   }, [income]);
+
+  
+
 
   const getVehicleData = () => {
     vehicleAxiosFetch({
@@ -68,6 +71,7 @@ const EditIncomeForm = ({ income, onSave, onCancel }) => {
    
   }
 
+  
 
   useEffect(() => {
  
@@ -107,16 +111,29 @@ const EditIncomeForm = ({ income, onSave, onCancel }) => {
   // Function to handle changes in form fields
   const handleChange = (e) => {
     const { name, value } = e.target;
+
+    console.log(name, value)
     setEditedIncome(prevState => ({
       ...prevState,
       [name]: value
     }));
 
+    console.log(editedIncome)
+    // if(name === hirePaymentType)
+    // {
+    //   setEditedIncome({...editedIncome, hirePayment.hirePaymentType: value})
+    // }
+    
+    console.log(editedIncome)
+
     if (name === 'vehicle') {
       getTripData(value);
+      setDefaultHire({hirePayment: ''});
+      
     }
 
     if (name === 'contract') {
+      getContractData(value);
       const selectedContract = contractData.find(contract => contract._id === value);
       if (selectedContract) {
         setInputRentalType(selectedContract.Payment_Plan);
@@ -127,12 +144,20 @@ const EditIncomeForm = ({ income, onSave, onCancel }) => {
   // Function to handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSave({...editedIncome, editedBy: name});
+  
+    const formData = {
+      ...editedIncome,
+      editedBy: name
+    };
+    
+    console.log(editedIncome)
+    onSave(formData);
   };
+  
 
   return (
     <div className="fixed inset-0 flex justify-center items-center bg-gray-900 bg-opacity-75 z-50">
-      <div className="bg-white rounded-lg p-8 max-w-md w-full">
+  <div className="bg-white rounded-lg p-8 max-w-md w-full sm:w-3/4 lg:w-1/2 xl:max-w-lg xl:max-h-full overflow-y-auto">
         <h2 className="text-2xl font-bold mb-4">Edit income</h2>
         <form onSubmit={handleSubmit}>
           {/* Date */}
@@ -156,7 +181,7 @@ const EditIncomeForm = ({ income, onSave, onCancel }) => {
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="vehicle"
               name="vehicle"
-              value={editedIncome.vehicle._id}
+              value={editedIncome.vehicle ? editedIncome.vehicle._id : ''}
               onChange={handleChange}
             >
               {vehicleOptions.map(option => (
@@ -178,12 +203,12 @@ const EditIncomeForm = ({ income, onSave, onCancel }) => {
               value={editedIncome.source}
               onChange={handleChange}
             >
-              <option value="Hire Payment">Hire Income</option>
-              <option value="Rental Payment">Rental Income</option>
+              <option value="Hire Income">Hire Income</option>
+              <option value="Rental Income">Rental Income</option>
             </select>
           </div>
           {/* Conditional Fields */}
-          {editedIncome.source === "Hire Payment" && (
+          {editedIncome.source === "Hire Income" && editedIncome.hirePayment &&(
             <>
               {/* Hire */}
               <div className="mb-4">
@@ -197,6 +222,10 @@ const EditIncomeForm = ({ income, onSave, onCancel }) => {
                   value={editedIncome.hire}
                   onChange={handleChange}
                 >
+                  <option value={defaultHire.hirePayment.hire ? defaultHire.hirePayment.hire._id : ''}>
+  {defaultHire.hirePayment.hire ? `${defaultHire.hirePayment.hire.startPoint.city} - ${defaultHire.hirePayment.hire.endPoint}  (Start Date -${new Date(defaultHire.hirePayment.hire.startDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}) (Start time - ${defaultHire.hirePayment.hire.startTime}) (Driver - ${defaultHire.hirePayment.hire.driver.firstName})` : 'Select a hire'}
+</option>
+
                   {tripOptions.map(option => (
                     <option key={option.value} value={option.value}>
                       {option.label}
@@ -216,6 +245,9 @@ const EditIncomeForm = ({ income, onSave, onCancel }) => {
                   value={editedIncome.hirePaymentType}
                   onChange={handleChange}
                 >
+                   <option value={defaultHire.hirePayment.hire ? defaultHire.hirePayment.hire._id : ''}>
+  {defaultHire.hirePayment.hire ? `${defaultHire.hirePayment.hirePaymentType}` : 'Select a hire'}
+</option>
                   <option value="Final Payment">Final Payment</option>
                   <option value="Advance Payment">Advance Payment</option>
                 </select>
@@ -234,7 +266,7 @@ const EditIncomeForm = ({ income, onSave, onCancel }) => {
           </div>
             </>
           )}
-          {editedIncome.source === "Rental Payment" && (
+          {editedIncome.source === "Rental Income"   &&(
             <>
               {/* Contract */}
               <div className="mb-4">
@@ -275,7 +307,7 @@ const EditIncomeForm = ({ income, onSave, onCancel }) => {
               id="rentalAmount"
               type="number"
               name="rentalAmount"
-              value={editedIncome.hirePayment.rentalAmount}
+              value={editedIncome.contractIncome.rentalAmount}
               onChange={handleChange}
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             />
@@ -308,6 +340,24 @@ const EditIncomeForm = ({ income, onSave, onCancel }) => {
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             />
           </div>
+          {/* Status */}
+<div className="mb-4">
+  <label htmlFor="status" className="block text-gray-700 text-sm font-bold mb-2">
+    Status:
+  </label>
+  <select
+    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+    id="status"
+    name="status"
+    value={editedIncome.status}
+    onChange={handleChange}
+  >
+    <option value="Pending">Pending</option>
+    <option value="Received">Received</option>
+    <option value="Confirmed">Confirmed</option>
+  </select>
+</div>
+
           {/* Comments */}
           <div className="mb-4">
             <label htmlFor="comments" className="block text-sm font-medium text-gray-700">Comments</label>
@@ -319,17 +369,7 @@ const EditIncomeForm = ({ income, onSave, onCancel }) => {
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             ></textarea>
           </div>
-          <div className="mb-4">
-            <label htmlFor="recordedBy" className="block text-sm font-medium text-gray-700">Edited By</label>
-            <input
-              id="editedBy"
-              type="text"
-              name="editedBy"
-              value={name}
-              readOnly
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            />
-          </div>
+  
           {/* Submit Button */}
           <div className="flex justify-end">
             <button
