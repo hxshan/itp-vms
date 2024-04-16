@@ -69,13 +69,11 @@ const getPastTripsForDriver = async (req, res) => {
             return res.status(400).json({ error: 'Invalid driver id' });
         }
 
-        const currentDate = new Date();
+       
 
         // Find past trips for the specified driver where hireStatus is either 'Cancelled' or 'Completed'
-        const pastTrips = await Hire.find({
-            driver: driverId,
-            hireStatus: { $in: ['Cancelled', 'Completed'] }
-        }).sort({ endDate: -1, endTime: -1 }).populate('vehicle').populate('driver');
+        const pastTrips = await Hire.find({driver: driverId,hireStatus: 
+                        { $in: ['Cancelled','Completed'] }}).sort({ endDate: -1, endTime: -1 }).populate('vehicle').populate('driver');
 
         // If no past trips found, return 404 Not Found
         if (pastTrips.length === 0) {
@@ -110,4 +108,34 @@ const getSingleHire = async (req, res)=>{
     res.status(200).json(hire)
 
 }
-module.exports = { getHiresByDriverId, updateHireDriver, getPastTripsForDriver, getSingleHire };
+
+// Find hires by driver id
+const getHiresByVehicleId = async (req, res) => {
+    // Extract the driver id from request parameters
+    const { vehicleId } = req.params;
+
+    // Check if the provided driverId is a valid MongoDB ObjectId
+    if (!mongoose.Types.ObjectId.isValid(vehicleId)) {
+        return res.status(400).json({ error: 'Invalid vehicle id' });
+    }
+
+    try {
+        // Find hires where the driver matches the provided driverId
+        const hires = await Hire.find({ vehicle : vehicleId }).populate('vehicle').populate('driver').sort({ startDate: 1, startTime: 1 });
+
+        // If no hires are found, return a 404 Not Found response with an error message
+        if (hires.length === 0) {
+            return res.status(404).json({ error: 'No hires found for the specified vehicle' });
+        }
+
+        // If hires are found, return a 200 OK response with the hire data
+        res.status(200).json(hires);
+        console.log(hires)
+    } catch (error) {
+        // Handle any errors that occur during the database operation
+        console.error('Error fetching hires by vehicle id:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
+module.exports = { getHiresByDriverId, updateHireDriver, getPastTripsForDriver, getSingleHire, getHiresByVehicleId };
