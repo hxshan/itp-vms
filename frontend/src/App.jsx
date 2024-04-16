@@ -18,7 +18,7 @@ import VehicleViewControl from "./pages/vehicle/VehicleViewControl";
 import VehReport from "./pages/vehicle/VehReport";
 
 import AddContract from "./pages/contract/AddContract";
-import { AdminDashboard, Roles, EditRoles } from "./pages/admin";
+import { AdminDashboard, Roles, EditRoles,UserProfile,Users, DriverPerformance} from "./pages/admin";
 import { MaintainceDashboard } from "./pages/Maintains/MaintainceDashboard";
 import { EditMaintainceOrder } from "./components/VR/EditMaintainceOrder";
 import ContractDasboard from "./pages/contract/ContractDasboard";
@@ -29,7 +29,7 @@ import ClientDashboard from "./pages/contract/ClientDashboard";
 import ViewContract from "./pages/contract/ViewContract";
 import ContractEditForm from "./pages/contract/ContractEditForm";
 import CaseFileTable from "./components/EAM/CaseFileTable";
-import { UserProfile } from "./pages/admin";
+
 import {HireDashboard, CreateHire, EditHire, HireRates} from "./pages/hires/hires"
 import AddClient from "./pages/contract/AddClient";
 import { View } from '../src/components/VR/View';
@@ -40,7 +40,6 @@ import {Requestfromdriver} from'../src/components/VR/Requestfromdriver'
 import ViewClient from "./pages/contract/ViewClient";
 import ClientEditForm from "./pages/contract/ClientEditForm";
 import UserReport from "./components/admin/UserReport";
-import { EditUserForm } from "./components/admin";
 import EditUser from "./pages/admin/EditUser";
 import PrintReport from "./pages/contract/PrintReport";
 import GenerateReport from "./pages/contract/GenerateReport";
@@ -84,11 +83,14 @@ function App() {
                 )
               }
             />
-            <Route path="/admin/userreport/:id" element={<UserReport/>}/>
+            
             <Route path="/admin/roles" element={<Roles />} />
             <Route path="/admin/roles/:id" element={<EditRoles />} />
-
             <Route path="/admin/edituser/:id" element={<EditUser/>}/>
+            <Route path="/admin/users" element={<Users/>}/>
+            <Route path="/admin/drivers" element={<DriverPerformance/>}/>
+            <Route path="/admin/userreport/:id" element={<UserReport/>}/>
+
 
             <Route path="/emergency" element={<EAMDashboard />} />
             <Route path="/emergency/create" element={<CaseFileForm />} />

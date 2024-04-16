@@ -6,8 +6,14 @@ import EditRoleForm from "./EditRoleForm";
 import EditUserForm from "./EditUserForm";
 import EditUserEmergencyForm from "./EditUserEmergencyForm";
 import EditUserDocuments from "./EditUserDocuments";
+import DriverTable from "./DriverTable";
+import DriverRecordTable from "./DriverRecordTable";
+import AddDriverRecordForm from "./AddDriverRecordForm";
 
 export {
+    AddDriverRecordForm,
+    DriverRecordTable,
+    DriverTable,
     EditUserDocuments,
     EditUserEmergencyForm,
     EditUserForm,

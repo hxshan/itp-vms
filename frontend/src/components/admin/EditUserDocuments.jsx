@@ -2,6 +2,8 @@ import {useEffect,useState} from "react";
 import axios from "@/api/axios";
 import useAxios from "@/hooks/useAxios";
 import { useParams } from "react-router-dom";
+import Swal from "sweetalert2";
+
 
 
 const EditUserDocuments = () => {
@@ -12,32 +14,48 @@ const EditUserDocuments = () => {
 
   const {id} = useParams()
 
-
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (!licenceDoc && !empPhoto && !nicDocument){
+      Swal.fire({
+        title: "No Changes",
+        text: "No files were uploaded!",
+        icon: "warning"
+      });
+      return
+    }
+
     const formDataToSend = new FormData();
+
     formDataToSend.append('licenceDoc', licenceDoc);
     formDataToSend.append('empPhoto', empPhoto);
+    formDataToSend.append('nicDocument',nicDocument);
     
     axiosupdatedFetch({
       axiosInstance: axios,
       method: 'PATCH',
-      url: `/user/${id}`,
+      url: `/user/editdocs/${id}`,
       data: formDataToSend,
       headers: {
         'Content-Type': 'multipart/form-data',
       },
     });
+
+    if(!usererror){
+      Swal.fire({
+        title: "Success",
+        text: "Documents are updated Successfully",
+        icon: "success"
+      });
+    }
+
   }
 
   return (
     <div className="bg-white p-8 my-8 shadow-xl rounded ">
-        <form>
+        <form onSubmit={(e)=>handleSubmit(e)}>
         <h2 className="font-bold text-2xl w-fit mb-8">Edit User Documents</h2>
-
-
         <div className="col-span-1 w-full flex flex-col mb-4 ">
         <label
           className="block text-gray-700 text-md font-bold mb-2"
@@ -57,7 +75,7 @@ const EditUserDocuments = () => {
           onChange={(e) => {
             setEmpPhoto(e.target.files[0]);
           }}
-          required
+          
         />
       </div>
       
@@ -76,7 +94,7 @@ const EditUserDocuments = () => {
           onChange={(e) => {
             setNicDocument(e.target.files[0]);
           }}
-          required
+          
         />
       </div>
 
@@ -97,7 +115,7 @@ const EditUserDocuments = () => {
           onChange={(e) => {
             setLicenceDocument(e.target.files[0]);
           }}
-          required
+          
         />
       </div>
         <div className="w-full flex justify-end">

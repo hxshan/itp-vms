@@ -7,7 +7,7 @@ const AdminDashboard = () => {
   
     <div className="container mx-auto pb-10 min-h-full">
       <h1 className="text-2xl font-bold underline mt-4 mb-8">Dashboard</h1>
-      
+
       <UserTable/>
       <CreateUserForm/>
      </div>

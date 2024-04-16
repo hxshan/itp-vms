@@ -2,11 +2,12 @@ const bcrypt = require("bcrypt");
 const User = require("../models/userModel");
 const EmergencyContact = require("../models/emergencyContactModel");
 const Role = require("../models/roleModel");
+const Hire = require("../models/hireModel")
+const EmpRecord = require('../models/employeeRecordModel')
 
 //TODO:add validation use REGEX 
 const createUser = async (req, res) => {
   try {
-    
     const {
       firstName,
       middleName,
@@ -47,9 +48,9 @@ const createUser = async (req, res) => {
     }
 
     const nicDocumentPath = req.files.nicDocument[0].path||null;
-    
     const empPhotoName=req.files.empPhoto[0].filename;
-    console.log(empPhotoName)
+
+    // console.log(empPhotoName)
     //match front and back names
     const user = new User({
       firstName,
@@ -90,14 +91,14 @@ const createUser = async (req, res) => {
       return res.status(500).json({ message: err.message });
     }
 
-    console.log(user)
+    // console.log(user)
     await user.save();
-    console.log('saved')
+    // console.log('saved')
 
 
     return res.status(200).json({ message: "User created succesfully" });
   } catch (err) {
-    console.log(err);
+    // console.log(err);
     return res.status(500).json({ message: err.message });
   }
 };
@@ -155,7 +156,7 @@ const updateUserPersonal = async(req,res) =>{
 
     return res.status(200).json({ message: "User Updated succesfully" });
   } catch (err) {
-    console.log(err);
+    // console.log(err);
     return res.status(500).json({ message: err.message });
   }
 
@@ -172,8 +173,11 @@ const deleteContact = async(req,res) =>{
     
     const deleteContact = await EmergencyContact.findByIdAndDelete(ContactId);
     if(!deleteContact) return res.status(500).json({ message: 'Delete Failed' });
+    
+    const newContactArr = user.emergencyContacts.filter((id)=>{
+      return id.toString() !== deleteContact._id.toString()
+    })
 
-    const newContactArr= user.emergencyContacts.filter(contact=>contact !== ContactId)
     const updatedUser = await User.findByIdAndUpdate(id,{emergencyContacts:newContactArr})
 
     if(!updatedUser) return res.status(500).json({ message: 'Update Failed' });
@@ -207,9 +211,13 @@ const updateContact = async(req,res) =>{
           return newContact._id
          }
     });
-   
+   //Change This to not update with Null
     const emergencyContactIds = await Promise.all(emergencyContactPromises);
-    emergencyContactIds.forEach(ContactId => {
+    let filteredid=emergencyContactIds.filter((id)=>id!=null)
+
+    // console.log(filteredid)
+
+    filteredid.forEach(ContactId => {
       if(ContactId != null){
         contacts.push(ContactId)
       }
@@ -228,6 +236,49 @@ const updateContact = async(req,res) =>{
   }
 }
 
+const updateDocuments = async(req,res) =>{
+
+  const { id } = req.params
+
+  try{
+
+    const user = await User.findById(id).exec()
+    if(!user) return res.status(400).json({message:'User not found'})
+
+    //TODO: make this shorter with the ? for now keep it so it works
+    let  newNicDocumentName =user.nicDocument
+    let newEmpPhotoName =user.empPhoto
+    let newLicenceName =user.licenceDoc||null
+
+    if(req?.files?.empPhoto !== undefined)
+     newEmpPhotoName=req.files.empPhoto[0].filename
+    else
+      newEmpPhotoName=user?.empPhoto||null
+
+    if(req.files?.nicDocument !== undefined)
+      newNicDocumentName=req.files.nicDocument[0].filename
+    else
+      newNicDocumentName=user?.empPhoto||null
+
+    if(req.files?.licenceDoc !== undefined)
+      newLicenceName=req.files.licenceDoc[0].filename 
+    else
+      newLicenceName=user?.licenceDoc ||null;
+
+
+    const updatedUser = await User.findByIdAndUpdate(id,{nicDocument:newNicDocumentName,empPhoto:newEmpPhotoName,licenceDoc:newLicenceName})
+
+    if(!updatedUser) return res.status(500).json({message:'Update failed'})
+    
+    return res.status(200).json({message:'Success'})
+  }catch(error){
+    // console.log(error)
+    return res.status(500).json({message:JSON.stringify(error)})
+  }
+
+}
+
+
 const getAllUsers = async (req, res) => {
   try {
     let users = await User.find().populate("role");
@@ -245,7 +296,7 @@ const getAllUsers = async (req, res) => {
 
 const setUserAsDeleted=async (req,res)=>{
   const {id}=req.params
-  console.log(id)
+  // console.log(id)
   try{
     const updateduser= await User.findByIdAndUpdate(id,{status:'deleted'})
     if(!updateduser) return res.status(500).json({ message: "Update Failed" });
@@ -269,7 +320,7 @@ const getDrivers= async (req,res)=>{
     return res.status(200).json(drivers);  
 
   }catch(error){
-    console.log(error)
+    // console.log(error)
   }
   
 }
@@ -279,16 +330,54 @@ const getUserById = async (req,res)=>{
   try{
     const {id} = req.params;
   
-    const user = await User.findById(id).populate('emergencyContacts').exec()
+    const user = await User.findById(id).populate('emergencyContacts').populate('role').exec()
     if(!user) return res.status(404).json({message:'User Not Found'})
     return res.status(200).json(user)
   }catch(error){
-    console.log(error);
+    // console.log(error);
     return res.status(404).json({message:JSON.stringify(error.message)})
   }
     
 }
 
+const getUserDetailsFull = async (req,res)=>{
+  try{
+    const {id} = req.params;
+  
+    const user = await User.findById(id).populate('emergencyContacts').populate('role').exec()
+    if(!user) return res.status(404).json({message:'User Not Found'})
+
+    const userHires = await Hire.find({driver:user._id})
+    let totalHire= 0
+    let completedHires = 0
+    let pendingHires = 0
+    
+    if(userHires.length){
+       totalHire= userHires.length
+       completedHires = userHires.filter((hire)=>{ return hire.hireStatus == "Completed"})
+       pendingHires = userHires.filter((hire)=>{return hire.status == "Pending"})
+    }
+    const records = await EmpRecord.find({userId:user._id})
+    const userDetail={totalHire,completedHires,pendingHires,records,personal:user}
+    return res.status(200).json(userDetail)
+  }catch(error){
+    return res.status(404).json({message:JSON.stringify(error.message)})
+  }
+} 
+
+const getRecords = async (req,res) =>{
+  try{
+    const records = await EmpRecord.find()
+
+    if (!records) {
+      return res.json([{}]);
+    }
+    return res.status(200).json(records);
+
+  }catch(error){
+    return res.status(500).json({message:'Internal Server Error'})
+  }
+}
 
 //TODO:add validation use REGEX
 const resetPassword = async(req,res)=>{
@@ -318,7 +407,9 @@ const resetPassword = async(req,res)=>{
   }
 }
 
-module.exports = { 
+module.exports = {
+  getRecords,
+  getUserDetailsFull, 
   createUser, 
   getAllUsers,
   getUserById,
@@ -327,5 +418,6 @@ module.exports = {
   setUserAsDeleted,
   updateUserPersonal,
   deleteContact,
-  updateContact
+  updateContact,
+  updateDocuments,
 };

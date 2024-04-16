@@ -4,11 +4,15 @@ import axios from "@/api/axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
+import Swal from "sweetalert2";
+
+
 
 const CreateUserForm = () => {
   //Api Hooks
   const [roleData,roleError, roleloading, axiosFetch] = useAxios()
   const [user,usererror, userloading, useraxiosFetch,axiosupdatedFetch] = useAxios()
+  const [reload,setReload]=useState(0)
   const navigate = useNavigate()
 
   const getRoleData =()=>{
@@ -21,7 +25,7 @@ const CreateUserForm = () => {
 
   useEffect(()=>{
     getRoleData()
-  },[])
+  },[reload])
 
   useEffect(()=>{
     if(roleData && roleData.length > 0){
@@ -141,6 +145,16 @@ const CreateUserForm = () => {
         'Content-Type': 'multipart/form-data',
       },
     });
+
+    if(!error){  
+      Swal.fire({
+        title: "Success!",
+        text: "A new user has been created",
+        icon: "success"
+      });
+      setReload(reload+1)
+    }
+
   }
 
   const AddContact = () => {
@@ -164,8 +178,7 @@ const CreateUserForm = () => {
 
 
   return (
-    <div className="shadow-xl bg-white rounded flex flex-col items-center">
-      <h2 className="font-bold text-3xl w-fit mt-10">Add New User</h2>
+    <div className="shadow-xl bg-white rounded flex flex-col items-center mt-8">
       <ToastContainer/>
       <form onSubmit={handleSubmit} className="mt-6 px-8 pt-6 pb-8 mb-4 w-full">
         <div id="formPage-1" className={currentForm == 0 ? "" : "hidden"}>
