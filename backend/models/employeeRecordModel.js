@@ -17,6 +17,14 @@ const EmployeeRecordShema = new Schema({
      occurenceDate:{
         type:Date
      },
+
+     caseFile:{
+      type:mongoose.Schema.Types.ObjectId,
+      ref:'CaseFile'
+     },
+
+
+
      timestamp: {
       type: Date,
       default: Date.now
