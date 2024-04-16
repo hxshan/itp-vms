@@ -45,11 +45,14 @@ const NewlyAddedTable = ({ category, categoryData }) => {
           ))}
         </tbody>
       </table>
-      <div className='flex justify-end mt-4'>
+      </div>
+      </div>
+
+      <div className='flex justify-end mt-2'>
         <ReactToPrint
                     trigger={() => (
                         <button
-                            className="mx-2 px-3 py-1 rounded-md bg-red-500 text-white text-sm text-bold"
+                            className="m-0 px-3 py-1 rounded-md bg-actionRed text-white text-sm text-bold"
                         >
                             {category.charAt(0).toUpperCase() + category.slice(1)} Vehicle Table Report
                         </button>
@@ -58,8 +61,7 @@ const NewlyAddedTable = ({ category, categoryData }) => {
                 />
          </div>
       </div>
-      </div>
-    </div>
+      
   </div>
   );
 };

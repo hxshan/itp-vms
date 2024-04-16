@@ -113,14 +113,14 @@ const VehicleViewControl = () => {
             <ReactToPrint
                     trigger={() => (
                         <button
-                            className="mx-2 bg-red-600 py-2 px-4 rounded-md text-white text-sm font-bold mt-2"
+                            className="mx-2 bg-actionRed py-2 px-4 rounded-md text-white text-sm font-bold mt-2"
                         >
                             Generate a Report
                         </button>
                     )}
                     content={() => componentRef.current}
                 />
-            <button className="mx-2 bg-blue-600 py-2 px-4 rounded-md text-white text-sm font-bold mt-2" type="button" onClick={handleCancel}>Cancel</button>
+            <button className="mx-2 bg-actionBlue py-2 px-4 rounded-md text-white text-sm font-bold mt-2" type="button" onClick={handleCancel}>Cancel</button>
                 
           </div>
         </>
