@@ -79,51 +79,51 @@ export const EditMaintainceOrder = () => {
     };
 
     return (
-        <main className='w-full  flex flex-col justify-center items-center bg-slate-200'>
-            <h1 className='text-3xl font-semibold  my-9'>
+        <main className='w-full  flex flex-col justify-center items-center '>
+            <div className=" sm:w-3/4 bg-white p-10 flex flex-col rounded-2xl ">
+            <h1 className='font-bold text-xl'>
                 Edit Maintaince Form
             </h1>
-            <div className=" sm:w-3/4 bg-slate-300 p-10 flex flex-col rounded-2xl ">
                 <form className='flex flex-col gap-4 md:flex-row' onSubmit={handleSubmit}>
                     <div className="w-full">
                         <div className='flex flex-col gap-5 mt-9'>
-                            <label className='  font-semibold  '>Vehicle Number</label>
+                            <label className='block text-gray-700 text-md font-bold mb-2'>Vehicle Number</label>
                             <input
                                 type="text"
                                 id='vehicleRegister'
                                 placeholder='AAA1234 OR AA-1234 OR 12-1234'
-                                className='border p-2 rounded-lg'
+                                className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
                                 maxLength='7'
                                 required
                                 readOnly={(e) => setvehicleRegister(e.target.value)}
                                 value={vehicleRegister} />
-                            <label className='  font-semibold  '>Fault of the Vehicle</label>
+                            <label className='block text-gray-700 text-md font-bold mb-2'>Fault of the Vehicle</label>
                             <textarea
                                 type="text"
                                 id='vrissue'
                                 placeholder='Ex:- Front Arm Vibartion '
-                                className='border p-2 rounded-lg'
+                                className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
                                 required
                                 onChange={(e) => setVrissue(e.target.value)}
                                 value={vrissue} />
-                            <label className='  font-semibold  '>Estimated Cost</label>
+                            <label className='block text-gray-700 text-md font-bold mb-2'>Estimated Cost</label>
                             <input
                                 type="number"
                                 id='vrcost'
                                 placeholder='RS:-10,000'
-                                className='border p-2 rounded-lg'
+                                className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
                                 required
                                 onChange={(e) => setVrcost(e.target.value)}
                                 value={vrcost} />
                         </div>
                         <div className="flex flex-col gap-5 mt-5">
-                            <label className='  font-semibold  '>Additional Info</label>
+                            <label className='block text-gray-700 text-md font-bold mb-2'>Additional Info</label>
                             <textarea
                                 type="text"
                                 id='vraddit'
                                 placeholder='Additional Info'
 
-                                className='border p-4 rounded-lg'
+                                className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
                                 onChange={(e) => setVraddit(e.target.value)}
                                 value={vraddit} />
                         </div>
@@ -131,18 +131,18 @@ export const EditMaintainceOrder = () => {
                     <div className="mt-5 flex flex-col justify-center items-center w-full">
                         <div className="flex flex-col gap-5 mb-5 items-center">
                             <div className="flex items-center gap-4">
-                                <label className='  font-semibold' >Start Date :</label>
+                                <label className='  font-semibold' >StartDate:</label>
                                 <input type='date'
                                     id='vrsdate'
-                                    className='rounded-lg p-2'
+                                    className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
                                     readOnly
                                     value={vrsdate}
                                 />
                             </div>
-                            <div className="flex  items-center gap-4">
-                                <label className='  font-semibold'>End Date :</label>
+                            <div className="flex items-center gap-4">
+                                <label className='font-semibold'>EndDate:</label>
                                 <input type='date'
-                                    className='rounded-lg p-2'
+                                    className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
                                     id='vredate'
                                     onChange={(e) => setVredate(e.target.value)}
                                     value={vredate}
@@ -175,7 +175,7 @@ export const EditMaintainceOrder = () => {
                     </div>
                 </form>
                 <button onClick={handleSubmit}
-                    className='hover:opacity-80 mt-10 bg-slate-800 p-3 rounded-lg text-white font-bold'>
+                    className="bg-actionBlue py-2 px-3 rounded-md text-white font-bold mt-2">
                     Update Maintaince Order
                 </button>
 

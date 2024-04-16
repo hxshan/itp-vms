@@ -74,56 +74,57 @@ export const Servicenote = () => {
     };
 
     return (
-        <main className='w-full flex flex-col justify-center items-center bg-slate-200'>
+        <main className='shadow-xl rounded flex flex-col items-center mt-8'>
             <Serviceview />
-            <div className="sm:w-1/2 bg-slate-300 p-10 flex flex-col rounded-2xl ">
-                <h1 className='text-3xl font-semibold text-center '>
+            
+                
+                <form className='bg-white mt-6 px-8 pt-6 pb-8 mb-4 w-full' onSubmit={handleSubmit}>
+                <h1 className="font-bold text-2xl w-fit mt-5 mb-8">
                     Add Service Note
                 </h1>
-                <form className='flex flex-col gap-4 md:flex-row' onSubmit={handleSubmit}>
                     <div className="w-full">
                         <div className='flex flex-col gap-5 mt-9'>
-                            <div className="flex justify-center gap-3">
-                                <label className='font-semibold'>Vehicle Number : </label>
+                            <div className="flex  gap-3">
+                                <label className="block text-gray-700 text-md font-bold mb-2">Vehicle Number : </label>
                                 <span>{vehinumber}</span>
                             </div>
-                            <div className="flex justify-center gap-3">
-                                <label className='font-semibold'>Last-Milage : </label>
+                            <div className="flex  gap-3">
+                                <label className="block text-gray-700 text-md font-bold mb-2">Last-Milage : </label>
                                 <span> {lastmilage}km</span>
                             </div>
-                            <label className='font-semibold'>Date :</label>
+                            <label className="block text-gray-700 text-md font-bold mb-2">Date :</label>
                             <input
                                 type="date"
                                 id='servicedate'
-                                className='border p-2 rounded-lg'
+                                className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
                                 required
                                 onChange={handlechange}
                                 value={formdata.servicedate} />
-                            <label className='font-semibold'>Service Note :</label>
+                            <label className="block text-gray-700 text-md font-bold mb-2">Service Note :</label>
                             <textarea
                                 type="text"
                                 id='Snote'
                                 placeholder=' '
-                                className='border p-2 rounded-lg'
+                                className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
                                 required
                                 onChange={handlechange}
                                 value={formdata.Snote} />
-                            <label className='font-semibold'>Cost :</label>
+                            <label className="block text-gray-700 text-md font-bold mb-2">Cost :</label>
                             <input
                                 type="number"
                                 id='Scost'
                                 placeholder='RS:-10,000'
-                                className='border p-2 rounded-lg'
+                                className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
                                 required
                                 onChange={handlechange}
                                 value={formdata.Scost} />
                         </div>
                     </div>
                 </form>
-                <button onClick={handleSubmit} className='hover:opacity-80 mt-10 bg-slate-800 p-3 rounded-lg text-white font-bold'>
+                <button onClick={handleSubmit} className='bg-actionBlue py-2 px-6 rounded-md text-white font-bold mt-2"'>
                     Add Service Note
                 </button>
-            </div>
+            
         </main>
     );
 };
