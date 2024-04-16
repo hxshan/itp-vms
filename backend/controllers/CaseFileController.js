@@ -7,6 +7,7 @@ const CaseFile = require("../models/caseFileModel");
 
         try{
             if(
+                !req.body.caseType ||
                 !req.body.caseTitle ||
                 !req.body.location ||
                 !req.body.timeOfIncident ||
@@ -24,6 +25,7 @@ const CaseFile = require("../models/caseFileModel");
             }
     
             const newCaseFile = {
+                caseType: req.body.caseType,
                 caseTitle: req.body.caseTitle,
                 location: req.body.location,
                 timeOfIncident: req.body.timeOfIncident,
@@ -104,7 +106,9 @@ const getCaseFiles = async (req, res) => {
     
 
         const { id } = req.params;
-        const  { caseTitle, 
+        const  { 
+                caseType,
+                caseTitle, 
                  location, 
                  timeOfIncident, 
                  passengerCount, 
@@ -133,6 +137,7 @@ const getCaseFiles = async (req, res) => {
            
         
             const updatedCaseFile = await CaseFile.findByIdAndUpdate(id, { 
+                caseType,
                 caseTitle,
                 location, 
                  timeOfIncident, 

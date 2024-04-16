@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import  { useEffect } from 'react';
 import { useState } from 'react';
 import axios from 'axios';
 
@@ -11,7 +11,7 @@ const EditCaseFileForm = () => {
       const [timeOfIncident, setTimeOfIncident] = useState('');
       const [licencePlate, setLicencePlate] = useState('');
       const [currentCondition, setCurrentCondition] = useState('');
-      const [passengerCount, setPassengerCount] = useState(0);
+      const [passengerCount, setPassengerCount] = useState();
       const [status, setStatus] = useState('');
       const [incidentDescription, setIncidentDescription] = useState('');
       const [severity, setSeverity] = useState('');
@@ -220,8 +220,8 @@ const EditCaseFileForm = () => {
                 <label className="block text-gray-700 text-sm font-bold mb-2">Emergency Services Contacted: </label>
                 <select value={emergencyServicesContacted} name='emergencyServicesContacted' onChange={(e) => setEmergencyServicesContacted(e.target.value)}>
                 <option value="">Select Emergency Services Contacted</option>
-                <option value="true">Yes</option>
-                <option value="false">No</option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
 
                 </select>
                   
