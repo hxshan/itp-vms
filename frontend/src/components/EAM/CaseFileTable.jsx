@@ -118,11 +118,11 @@ const CaseFileTable = () => {
                                 <tr key={caseFile._id}>
                                     <td className="px-6 py-4 whitespace-nowrap">{caseFile.caseTitle}</td>
                                     <td className="px-6 py-4 whitespace-nowrap">{caseFile.location}</td>
-                                    <td className="px-6 py-4 whitespace-nowrap">{caseFile.timeOfIncident}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap">{new Date(caseFile.timeOfIncident).toLocaleDateString() }</td>
                                     <td className="px-6 py-4 whitespace-nowrap text-center">{caseFile.passengerCount}</td>
                                     <td className="px-6 py-4 whitespace-nowrap">{caseFile.severity}</td>
                                     <td className="px-6 py-4 whitespace-nowrap">
-                                    <div  className= {caseFile.status == 'completed' ? `w-full text-white bg-red-500 rounded-md py-1 px-4 `: `w-full text-white bg-green-500 rounded-md py-1 px-4 `}>
+                                    <div  className= {caseFile.status == 'completed' ? `w-full text-white bg-red-500 rounded-md py-1 px-5 `: `w-full text-white bg-green-500 rounded-md py-1 px-4 `}>
                                             {caseFile.status}
                                     </div>
 
