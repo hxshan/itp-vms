@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import useAxios from "@/hooks/useAxios";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "@/api/axios";
+import ReactToPrint from "react-to-print";
+
 
 
 const ViewContract = () => {
@@ -39,6 +41,8 @@ const ViewContract = () => {
     Amount_Payed: "loading",
     Status:"loading",
   });
+
+  const ref = useRef(null);
 
   const [clientData, setclientData] = useState({
     _id: "",
@@ -185,7 +189,7 @@ if (data) {
             </button>
         <button className={`${contractData.Status === "Terminated"? "hidden" : "" } bg-green-600 px-5 py-2 rounded-xl`} onClick={()=> navigate(`/EditContract/${contractData._id}`)}>Edit</button>
         </div>
-        <div className="flex justify-evenly">
+        <div className="flex justify-evenly" ref={ref}>
         <div >
           <div className=" w-fit h-fit  pb-8 rounded-xl">
             <div>
@@ -373,12 +377,12 @@ if (data) {
         </div>
       </div>
       <div className="flex justify-end mr-5 gap-4">
-            <button
+      <ReactToPrint bodyClass='print-agreement' content={()=>ref.current} trigger={()=>(<button
               className=" bg-blue-600 px-5 py-2 rounded-xl w-[120px] "
             >
               Print
-            </button>
-          </div>
+            </button>)}/>
+          </div> 
       </div>
     </div>
   );

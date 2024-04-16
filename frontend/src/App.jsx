@@ -42,6 +42,10 @@ import ClientEditForm from "./pages/contract/ClientEditForm";
 import UserReport from "./components/admin/UserReport";
 import { EditUserForm } from "./components/admin";
 import EditUser from "./pages/admin/EditUser";
+import PrintReport from "./pages/contract/PrintReport";
+import GenerateReport from "./pages/contract/GenerateReport";
+
+
 
 
 function App() {
@@ -125,10 +129,13 @@ function App() {
             <Route path="/client" element={<ClientDashboard/>}/>
             <Route path="/viewContract/:id" element={<ViewContract/>}/>
             <Route path="/EditContract/:id" element={<ContractEditForm/>}/>
+            <Route path="/Report" element={<GenerateReport/>}/>
+            <Route path="/PrintReport/:id" element={<PrintReport/>}/>
 
             <Route path="/EditClient/:id" element={<ClientEditForm/>}/>
             <Route path="/addClient" element={<AddClient/>}/>
             <Route path="/viewClient/:id" element={<ViewClient/>}/>
+    
               
 
             <Route path="/finance/financeDashboard" element={<FinanceDashboard />} />
