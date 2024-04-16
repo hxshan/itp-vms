@@ -36,9 +36,6 @@ const CaseFile = require("../models/caseFileModel");
                 severity: req.body.severity,
                 injuriesDiscription: req.body.injuriesDiscription,
                 status : req.body.status || "incomplete",
-                driverID: req.body.driverID,
-                driverName: req.body.driverName,
-                driverLicenceNumber: req.body.driverLicenceNumber,
                 witnessesContactInformation: req.body.witnessesContactInformation,
                 witnessesStatement: req.body.witnessesStatement,
                 emergencyServicesContacted: req.body.emergencyServicesContacted,
@@ -85,14 +82,14 @@ const getCaseFiles = async (req, res) => {
         
             const { id} = req.params;
             if(!mongoose.Types.ObjectId.isValid(id)){
-                return res.status(400).send("Invalid case file id");
+                return res.status(400).json("Invalid case file id");
             }
             const caseFile = await CaseFile.findById(id);
 
             if(!caseFile){
                 return res.status(404).send("Case file not found");
             }
-            return res.status(200).send(caseFile);
+            return res.status(200).json(caseFile);
         
         }catch(error){
             console.log("Error getting case files", error);
@@ -114,9 +111,7 @@ const getCaseFiles = async (req, res) => {
                  passengerCount, 
                  licencePlate, 
                  currentCondition, 
-                 driverID, 
-                 driverName, 
-                 driverLicenceNumber,  
+                 selectedDriver, 
                  status, 
                  incidentDescription , 
                  severity,
@@ -129,7 +124,7 @@ const getCaseFiles = async (req, res) => {
                  photographicEvidence,
                  insuranceCompaniesContactInfo,
                  insuranceStatus,
-                 policeReport} = req.body;
+                 policeReport} = req.body.data;
         
         try{
             
@@ -144,9 +139,7 @@ const getCaseFiles = async (req, res) => {
                  passengerCount, 
                  licencePlate, 
                  currentCondition, 
-                 driverID, 
-                 driverName, 
-                 driverLicenceNumber,  
+                 selectedDriver, 
                  status, 
                  incidentDescription , 
                  severity,
@@ -236,8 +229,40 @@ const driverCreateEmergency = async (req, res) => {
       console.error("Error creating case file", error);
       return res.status(500).send("Internal server error");
     }
+
+    
+   
   };
+  //fetch all driver alerts
+
+  const getDriverAlerts = async (req, res) => {
+    try{
+        const driverAlerts = await CaseFile.find({});
+        return res.status(200).send(driverAlerts);
+    }catch(error){
+        console.log("Error getting driver alerts", error);
+        return res.status(500).send("Internal server error");
+    }
+}
+
+    //get a specific driver alert by its id
+    const getDriverAlertById = async (req, res) => {
+        try{
+            const { id } = req.params;
+            if(!mongoose.Types.ObjectId.isValid(id)){
+                return res.status(400).send("Invalid driver alert id");
+            }
+            const driverAlert = await CaseFile.findById(id);
+            if(!driverAlert){
+                return res.status(404).send("Driver alert not found");
+            }
+            return res.status(200).send(driverAlert);
+        }catch(error){
+            console.log("Error getting driver alert", error);
+            return res.status(500).send("Internal server error");
+        }
+    }
   
 
 
-module.exports = {createCaseFile, getCaseFiles, getCaseFileById, updateCaseFileById, deleteCaseFileById, driverCreateEmergency};
+module.exports = {createCaseFile, getCaseFiles, getCaseFileById, updateCaseFileById, deleteCaseFileById, driverCreateEmergency, getDriverAlerts,getDriverAlertById};
