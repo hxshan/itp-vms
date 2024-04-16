@@ -1,6 +1,7 @@
-import React, { useEffect, useState} from "react";
+import  { useEffect, useState} from "react";
 import  axios  from "axios";
 import Spinner from "./Spinner";
+import CaseFileSearch from "./CaseFileSearch";
 
 import { Link } from "react-router-dom";
 
@@ -8,7 +9,9 @@ import { Link } from "react-router-dom";
 const CaseFileTable = () => {
     const [caseFiles, setCaseFiles] = useState([]);
     const [loading, setLoading] = useState(true);
-    
+
+    const [searchTerm, setSearchTerm] = useState("");
+    const [filterField, setFilterField] = useState("");
 
     // Fetch case files
     useEffect(() => {
@@ -43,17 +46,60 @@ const CaseFileTable = () => {
             }
         }
 
-       
+        const handleSearch = (e) => {
+            setSearchTerm(e.target.value);
+        };
 
+        const handleFilterChange = (e) => {
+            setFilterField(e.target.value);
+        }
+
+        const filteredCaseFiles = caseFiles.filter((caseFile) =>{
+                if(filterField === ''){
+                    return (
+                        caseFile.caseTitle.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                        caseFile.location.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                        caseFile.timeOfIncident.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                        caseFile.passengerCount.toString().includes(searchTerm) ||
+                        caseFile.severity.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                        caseFile.status.toLowerCase().includes(searchTerm.toLowerCase())
+                    );
+                }else{
+                    const fieldValue = caseFile[filterField];
+                    if(typeof fieldValue === 'string'){
+                        return fieldValue.toLowerCase().includes(searchTerm.toLowerCase());
+                    }else if(typeof fieldValue === 'number'){
+                        return fieldValue.toString().includes(searchTerm);
+                    }else{
+                        return false;
+                    }
+                    
+                }
+        });
+
+    
         
+
+     
+
+     
+
   
 
     return (
         <div className="container mx-auto">
+            <CaseFileSearch
+                searchTerm={searchTerm}
+                handleSearch={handleSearch}
+                filterField={filterField}
+                handleFilterChange={handleFilterChange}
+            />
           
             {loading ? (
                 <Spinner />
             ) : (
+
+                
                 <div className="mt- 10" >
                     <table className="min-w-full divide-y divide-gray-200" >
                         <thead className="bg-gray-50">
@@ -68,7 +114,7 @@ const CaseFileTable = () => {
                             </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200">
-                            {caseFiles.map((caseFile) => (
+                            {filteredCaseFiles.map((caseFile) => (
                                 <tr key={caseFile._id}>
                                     <td className="px-6 py-4 whitespace-nowrap">{caseFile.caseTitle}</td>
                                     <td className="px-6 py-4 whitespace-nowrap">{caseFile.location}</td>
@@ -101,6 +147,7 @@ const CaseFileTable = () => {
                     </table>
                     
                 </div>
+            
             )}
         </div>
 
