@@ -75,7 +75,12 @@ const CaseFileTable = () => {
                                     <td className="px-6 py-4 whitespace-nowrap">{caseFile.timeOfIncident}</td>
                                     <td className="px-6 py-4 whitespace-nowrap text-center">{caseFile.passengerCount}</td>
                                     <td className="px-6 py-4 whitespace-nowrap">{caseFile.severity}</td>
-                                    <td className="px-6 py-4 whitespace-nowrap">{caseFile.status}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap">
+                                    <div  className= {caseFile.status == 'completed' ? `w-full text-white bg-red-500 rounded-md py-1 px-4 `: `w-full text-white bg-green-500 rounded-md py-1 px-4 `}>
+                                            {caseFile.status}
+                                    </div>
+
+                                    </td>
 
                                     <td className="px-6 py-4 whitespace-nowrap">
                                        <div className="flex">

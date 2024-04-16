@@ -1,3 +1,4 @@
+const  mongoose  = require("mongoose");
 const CaseFile = require("../models/caseFileModel");
 
 
@@ -81,7 +82,14 @@ const getCaseFiles = async (req, res) => {
         try{
         
             const { id} = req.params;
+            if(!mongoose.Types.ObjectId.isValid(id)){
+                return res.status(400).send("Invalid case file id");
+            }
             const caseFile = await CaseFile.findById(id);
+
+            if(!caseFile){
+                return res.status(404).send("Case file not found");
+            }
             return res.status(200).send(caseFile);
         
         }catch(error){

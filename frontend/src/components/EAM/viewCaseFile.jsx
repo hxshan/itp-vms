@@ -1,8 +1,7 @@
-import React, { useRef } from 'react';
+import  { useRef } from 'react';
 import axios  from 'axios';
 import { useParams } from 'react-router-dom';
 import { useState , useEffect} from 'react';
-import propTypes from 'prop-types';
 import BackButton from './BackButton';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
@@ -33,7 +32,7 @@ const ViewCaseFile = () => {
       })
       .catch((error) => {
         setLoading(false);
-        console.error('Error fetching case file', error);
+        console.log('Error fetching case file', error);
       });
 
   }, [id]);
@@ -115,7 +114,7 @@ const ViewCaseFile = () => {
           </div>
 
           <div className="p-8">
-            <h1 className="text-3xl font-semibold mb-8">Witness Information / plice Report</h1>
+            <h1 className="text-3xl font-semibold mb-8">Witness Information / police Report</h1>
               
                   <p className="text-lg font-semibold mb-2">Witnesses Contact Information: {caseFile.witnessesContactInformation} </p>
                   <p className="text-lg font-semibold mb-2">Witnesses Statement: {caseFile.witnessesStatement} </p>

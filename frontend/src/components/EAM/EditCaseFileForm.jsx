@@ -1,36 +1,71 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useState } from 'react';
-import axios from '@/api/axios';
-import propTypes from 'prop-types';
+import axios from 'axios';
 
-const EditCaseFileForm = ({ setViewCaseFile, viewCaseFileData }) => {
-      const [caseTitle, setCaseTitle] = useState(viewCaseFileData.caseTitle);
-      const [location, setLocation] = useState(viewCaseFileData.location);
-      const [timeOfIncident, setTimeOfIncident] = useState(viewCaseFileData.timeOfIncident);
-      const [licencePlate, setLicencePlate] = useState(viewCaseFileData.licencePlate);
-      const [currentCondition, setCurrentCondition] = useState(viewCaseFileData.currentCondition);
-      const [passengerCount, setPassengerCount] = useState(viewCaseFileData.passengerCount);
-      const [status, setStatus] = useState(viewCaseFileData.status);
-      const [incidentDescription, setIncidentDescription] = useState(viewCaseFileData.incidentDescription);
-      const [severity, setSeverity] = useState(viewCaseFileData.severity);
-      const [injuriesDiscription, setInjuriesDiscription] = useState(viewCaseFileData.injuriesDiscription);
-      const [driverLicenceNumber, setDriverLicenceNumber] = useState(viewCaseFileData.driverLicenceNumber || '');
-      const [driverId, setDriverId] = useState(viewCaseFileData.driverId || '');
-      const [driverName, setDriverName] = useState(viewCaseFileData.driverName || '');
-      const [witnessesContactInformation, setWitnessesContactInformation] = useState(viewCaseFileData.witnessesContactInformation || '');
-      const [witnessesStatement, setWitnessesStatement] = useState(viewCaseFileData.witnessesStatement || '');
-      const [emergencyServicesContacted, setEmergencyServicesContacted] = useState(viewCaseFileData.emergencyServicesContacted || 'false');
-      const [emergencyServicesResponseTime, setEmergencyServicesResponseTime] = useState(viewCaseFileData.emergencyServicesResponseTime || '');
-      const [emergencyServicesActionsTaken, setEmergencyServicesActionsTaken] = useState(viewCaseFileData.emergencyServicesActionsTaken || '');
-      const [photographicEvidence, setPhotographicEvidence] = useState(viewCaseFileData.photographicEvidence || '');
-      const [insuranceCompaniesContactInfo, setInsuranceCompaniesContactInfo] = useState(viewCaseFileData.insuranceCompaniesContactInfo   || '');
-      const [insuranceStatus, setInsuranceStatus] = useState(viewCaseFileData.insuranceStatus || 'pending');
-      const [policeReport, setPoliceReport] = useState(viewCaseFileData.policeReport || '');
+import { useNavigate , useParams } from 'react-router-dom';
+import Spinner from '@/components/EAM/Spinner';
 
-      EditCaseFileForm.propTypes = {
-        setViewCaseFile: propTypes.func.isRequired,
-        viewCaseFileData: propTypes.object.isRequired
-      };
+const EditCaseFileForm = () => {
+      const [caseTitle, setCaseTitle] = useState('');
+      const [location, setLocation] = useState('');
+      const [timeOfIncident, setTimeOfIncident] = useState('');
+      const [licencePlate, setLicencePlate] = useState('');
+      const [currentCondition, setCurrentCondition] = useState('');
+      const [passengerCount, setPassengerCount] = useState(0);
+      const [status, setStatus] = useState('');
+      const [incidentDescription, setIncidentDescription] = useState('');
+      const [severity, setSeverity] = useState('');
+      const [injuriesDiscription, setInjuriesDiscription] = useState('');
+      const [driverLicenceNumber, setDriverLicenceNumber] = useState('');
+      const [driverId, setDriverId] = useState('');
+      const [driverName, setDriverName] = useState( '');
+      const [witnessesContactInformation, setWitnessesContactInformation] = useState('');
+      const [witnessesStatement, setWitnessesStatement] = useState('');
+      const [emergencyServicesContacted, setEmergencyServicesContacted] = useState('');
+      const [emergencyServicesResponseTime, setEmergencyServicesResponseTime] = useState( '');
+      const [emergencyServicesActionsTaken, setEmergencyServicesActionsTaken] = useState( '');
+      const [photographicEvidence, setPhotographicEvidence] = useState('');
+      const [insuranceCompaniesContactInfo, setInsuranceCompaniesContactInfo] = useState('');
+      const [insuranceStatus, setInsuranceStatus] = useState( '');
+      const [policeReport, setPoliceReport] = useState('');
+
+      const [loading, setLoading] = useState(false);
+
+
+      const navigate = useNavigate();
+      const { id } = useParams();
+
+      useEffect (() => {
+          setLoading(true);
+          axios
+            .get(`http://localhost:3000/api/caseFiles/${id}`)
+            .then((response) => {
+              const data = response.data;
+              setCaseTitle(data.caseTitle);
+              setLocation(data.location);
+              setTimeOfIncident(data.timeOfIncident);
+              setLicencePlate(data.licencePlate);
+              setCurrentCondition(data.currentCondition);
+              setPassengerCount(data.passengerCount);
+              setStatus(data.status);
+              setIncidentDescription(data.incidentDescription);
+              setSeverity(data.severity);
+              setInjuriesDiscription(data.injuriesDiscription);
+              setDriverLicenceNumber(data.driverLicenceNumber);
+              setDriverId(data.driverId);
+              setDriverName(data.driverName);
+              setWitnessesContactInformation(data.witnessesContactInformation);
+              setWitnessesStatement(data.witnessesStatement);
+              setEmergencyServicesContacted(data.emergencyServicesContacted);
+              setEmergencyServicesResponseTime(data.emergencyServicesResponseTime);
+              setEmergencyServicesActionsTaken(data.emergencyServicesActionsTaken);
+              setInsuranceCompaniesContactInfo(data.insuranceCompaniesContactInfo);
+              setInsuranceStatus(data.insuranceStatus);
+              setPoliceReport(data.policeReport);
+              setLoading(false);
+
+            });
+      }, [id])
 
       const handleEdit =  async() => {
         const updatedCaseFile = {
@@ -61,19 +96,20 @@ const EditCaseFileForm = ({ setViewCaseFile, viewCaseFileData }) => {
               if(confirm){
                 try{
                   await
-                    axios.put(`http://localhost:3000/api/caseFiles/${viewCaseFileData._id}`, updatedCaseFile);
+                    axios.put(`http://localhost:3000/api/caseFiles/${id}`, updatedCaseFile);
                   
                 } catch (error) {
                   console.log("Error updating case file", error);
                 } finally {
-                  setViewCaseFile(false);
+                  setLoading(false);
+                  navigate('/emergency');
                 }                
               }
 
         };
 
         const cancel = () => {
-          setViewCaseFile(false);
+          navigate('/emergency/view/:id');
         };
 
         
@@ -91,9 +127,11 @@ const EditCaseFileForm = ({ setViewCaseFile, viewCaseFileData }) => {
 
     return (
           <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+            <h1 className="text-2xl underline font-bold text-center mb-5">Edit Case File</h1>
+            
+            {loading ?  <Spinner /> : ''}
+              
             <form>
-              <h1 className="text-2xl underline font-bold text-center mb-5">Edit Case File</h1>
-
               <div className="mb-4">
                 <label className="block text-gray-700 text-sm font-bold mb-2">Case Title</label>
                 <input type="text" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" value={caseTitle}  name="caseTitle" onChange={(e) => setCaseTitle(e.target.value)} />
