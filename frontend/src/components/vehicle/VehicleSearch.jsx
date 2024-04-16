@@ -135,8 +135,8 @@ const VehicleSearch = () => {
               <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{vehicle.vehicleType}</td>
               <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{vehicle.vehicleModel}</td>
               <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{vehicle.vehicleRegister}</td>
-              <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">
-                <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${vehicle.statusVehicle === 'Active' ? 'text-green-500 bg-green-100' : vehicle.statusVehicle === 'Deactive' ? 'text-red-600 bg-red-100' : 'text-orange-600 bg-orange-100'}`}>
+              <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200 text-center">
+                <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-md ${vehicle.statusVehicle === 'Active' ? 'text-green-500 bg-green-100' : vehicle.statusVehicle === 'Deactive' ? 'text-red-600 bg-red-100' : 'text-orange-600 bg-orange-100'}`}>
                   {vehicle.statusVehicle.toUpperCase()}
                 </span>
               </td>
