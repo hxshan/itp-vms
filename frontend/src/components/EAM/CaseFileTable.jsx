@@ -1,14 +1,17 @@
-import React, { useEffect, useState} from "react";
+import  { useEffect, useState} from "react";
 import  axios  from "axios";
 import Spinner from "./Spinner";
-import ViewCaseFile from "./viewCaseFile";
+import CaseFileSearch from "./CaseFileSearch";
 
+import { Link } from "react-router-dom";
 
 
 const CaseFileTable = () => {
     const [caseFiles, setCaseFiles] = useState([]);
     const [loading, setLoading] = useState(true);
-    
+
+    const [searchTerm, setSearchTerm] = useState("");
+    const [filterField, setFilterField] = useState("");
 
     // Fetch case files
     useEffect(() => {
@@ -43,23 +46,60 @@ const CaseFileTable = () => {
             }
         }
 
-        const [viewCaseFile, setViewCaseFile] = useState(false);
-        const [viewCaseFileData, setViewCaseFileData] = useState(null);
-
-        const handleView = (id) => {
-            const selected = caseFiles.find((caseFile) => caseFile._id === id);
-            setViewCaseFileData(selected);
-            setViewCaseFile(true);
+        const handleSearch = (e) => {
+            setSearchTerm(e.target.value);
         };
+
+        const handleFilterChange = (e) => {
+            setFilterField(e.target.value);
+        }
+
+        const filteredCaseFiles = caseFiles.filter((caseFile) =>{
+                if(filterField === ''){
+                    return (
+                        caseFile.caseTitle.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                        caseFile.location.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                        caseFile.timeOfIncident.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                        caseFile.passengerCount.toString().includes(searchTerm) ||
+                        caseFile.severity.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                        caseFile.status.toLowerCase().includes(searchTerm.toLowerCase())
+                    );
+                }else{
+                    const fieldValue = caseFile[filterField];
+                    if(typeof fieldValue === 'string'){
+                        return fieldValue.toLowerCase().includes(searchTerm.toLowerCase());
+                    }else if(typeof fieldValue === 'number'){
+                        return fieldValue.toString().includes(searchTerm);
+                    }else{
+                        return false;
+                    }
+                    
+                }
+        });
+
+    
+        
+
+     
+
+     
 
   
 
     return (
         <div className="container mx-auto">
+            <CaseFileSearch
+                searchTerm={searchTerm}
+                handleSearch={handleSearch}
+                filterField={filterField}
+                handleFilterChange={handleFilterChange}
+            />
           
             {loading ? (
                 <Spinner />
             ) : (
+
+                
                 <div className="mt- 10" >
                     <table className="min-w-full divide-y divide-gray-200" >
                         <thead className="bg-gray-50">
@@ -74,24 +114,29 @@ const CaseFileTable = () => {
                             </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200">
-                            {caseFiles.map((caseFile) => (
+                            {filteredCaseFiles.map((caseFile) => (
                                 <tr key={caseFile._id}>
                                     <td className="px-6 py-4 whitespace-nowrap">{caseFile.caseTitle}</td>
                                     <td className="px-6 py-4 whitespace-nowrap">{caseFile.location}</td>
-                                    <td className="px-6 py-4 whitespace-nowrap">{caseFile.timeOfIncident}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap">{new Date(caseFile.timeOfIncident).toLocaleDateString() }</td>
                                     <td className="px-6 py-4 whitespace-nowrap text-center">{caseFile.passengerCount}</td>
                                     <td className="px-6 py-4 whitespace-nowrap">{caseFile.severity}</td>
-                                    <td className="px-6 py-4 whitespace-nowrap">{caseFile.status}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap">
+                                    <div  className= {caseFile.status == 'completed' ? `w-full text-white bg-red-500 rounded-md py-1 px-5 `: `w-full text-white bg-green-500 rounded-md py-1 px-4 `}>
+                                            {caseFile.status}
+                                    </div>
+
+                                    </td>
 
                                     <td className="px-6 py-4 whitespace-nowrap">
                                        <div className="flex">
-                                        
-                                            <button className="px-2 py-1 bg-[#D4D800] text-white rounded-md mr-2" onClick={() => handleView(caseFile._id)}>
+                                            <Link to={`/emergency/view/${caseFile._id}`} className="my-1 mx-1 bg-blue-700 text-white py-1 px-4 rounded-md text-sm" >
+                                           
                                                 View
-                                            </button>
+                                            
+                                            </Link>
                                         
-                                        
-                                            <button className="hidden xl:grid px-2 py-1 bg-[#A90000] text-white rounded-md" onClick={() => deleteCaseFile(caseFile._id)}>
+                                            <button className="my-1 mx-1 bg-red-700 text-white py-1 px-4 rounded-md text-sm" onClick={() => deleteCaseFile(caseFile._id)}>
                                                 Delete
                                             </button>  
                                             </div>
@@ -100,8 +145,9 @@ const CaseFileTable = () => {
                             ))}
                         </tbody>
                     </table>
-                    { viewCaseFile && <ViewCaseFile setViewCaseFile = {setViewCaseFile} viewCaseFileData = {viewCaseFileData}/>}
+                    
                 </div>
+            
             )}
         </div>
 
