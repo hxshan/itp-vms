@@ -8,7 +8,6 @@ const EmpRecord = require('../models/employeeRecordModel')
 //TODO:add validation use REGEX 
 const createUser = async (req, res) => {
   try {
-    
     const {
       firstName,
       middleName,
@@ -362,11 +361,23 @@ const getUserDetailsFull = async (req,res)=>{
     const userDetail={totalHire,completedHires,pendingHires,records,personal:user}
     return res.status(200).json(userDetail)
   }catch(error){
-    // console.log(error);
     return res.status(404).json({message:JSON.stringify(error.message)})
   }
 } 
 
+const getRecords = async (req,res) =>{
+  try{
+    const records = await EmpRecord.find()
+
+    if (!records) {
+      return res.json([{}]);
+    }
+    return res.status(200).json(records);
+
+  }catch(error){
+    return res.status(500).json({message:'Internal Server Error'})
+  }
+}
 
 //TODO:add validation use REGEX
 const resetPassword = async(req,res)=>{
@@ -397,6 +408,7 @@ const resetPassword = async(req,res)=>{
 }
 
 module.exports = {
+  getRecords,
   getUserDetailsFull, 
   createUser, 
   getAllUsers,

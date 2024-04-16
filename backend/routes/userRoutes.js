@@ -10,7 +10,8 @@ const {
   deleteContact,
   updateContact,
   updateDocuments,
-  getUserDetailsFull} = require('../controllers/userController')
+  getUserDetailsFull,
+  getRecords} = require('../controllers/userController')
 const Auth =require('../middleware/Auth')
 
 
@@ -45,6 +46,7 @@ const upload = multer({ storage });
 //GET
 router.get('/',Auth,getAllUsers)
 router.get('/drivers',getDrivers)
+router.get('/drivers/records',getRecords)
 router.get('/:id',getUserById)
 router.get('/report/:id',getUserDetailsFull)
 //POST
