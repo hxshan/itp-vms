@@ -34,12 +34,11 @@ const UserReport = () => {
     return <p>Unexpected Error Occurrend!</p>;
   }
 
-  //<img src={`http://localhost:3000/employee_picture/${image}`} alt="image"/>
   return (
     <div className="w-full bg-white  rounded-lg shadow-md mb-12 pb-8">
       <div ref={ref} className=" flex flex-col p-12 mt-8">
         <h1 className="text-2xl w-full text-center font-bold mb-8">
-          Comprehensive User Report
+          Comprehensive {user?.personal?.role?.name == 'DRIVER'?'Driver':'User'}  Report
         </h1>
         <div className="flex gap-14 mb-4">
           <div className="w-[30%] h-[30%] rounded-md mr-4">
@@ -112,13 +111,17 @@ const UserReport = () => {
          
         </div>
 
-        <div className="my-4 pt-4 border-t-2 border-gray-600">
-          <h3 className="text-lg font-bold mb-2">Driver Details</h3>
-          {/* 
-          remider to add a chart and the hire data if its a driver along with the report
-          */}
+        {
+          user?.personal?.role?.name ==='DRIVER' && 
 
+          <div className="my-4 pt-4 border-t-2 border-gray-600">
+            <h3 className="text-lg font-bold mb-2">Driver Details</h3>
+            {/* 
+              remider to add a chart and the hire data if its a driver along with the report
+            */}
         </div>
+        }
+        
       </div>
       <div className="w-full flex justify-end">
         <ReactToPrint

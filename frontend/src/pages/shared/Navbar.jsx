@@ -41,7 +41,6 @@ const Navbar = () => {
       </div>
     );
   }
-  console.log(user.permissions);
   return (
     <div className="h-screen fixed z-10 top-0 left-0 flex w-20 lg:w-60">
       <div className=" bg-secondary text-white w-64 h-full flex flex-col items-start text-sm pt-[90px]">
