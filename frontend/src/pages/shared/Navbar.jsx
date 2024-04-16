@@ -70,7 +70,7 @@ const Navbar = () => {
                 </button>
                 <button
                   className="w-full py-2 px-4 text-start hover:bg-gray-700 focus:outline-none focus:bg-gray-700"
-                  onClick={() => handleItemClick("User Management", "Sub Fun")}
+                  onClick={() => navigate('/admin/users')}
                 >
                   Manage Users
                 </button>
@@ -84,9 +84,9 @@ const Navbar = () => {
                 </button>
                 <button
                   className="w-full py-2 px-4 text-start hover:bg-gray-700 focus:outline-none focus:bg-gray-700"
-                  onClick={() => handleItemClick("User Management", "Sub Fun")}
+                  onClick={() => navigate('/admin/drivers')}
                 >
-                  Sub Fun
+                  Driver Performance
                 </button>
                 <button
                   className="w-full py-2 px-4 text-start hover:bg-gray-700 focus:outline-none focus:bg-gray-700"

@@ -178,8 +178,7 @@ const CreateUserForm = () => {
 
 
   return (
-    <div className="shadow-xl bg-white rounded flex flex-col items-center">
-      <h2 className="font-bold text-3xl w-fit mt-10">Add New User</h2>
+    <div className="shadow-xl bg-white rounded flex flex-col items-center mt-8">
       <ToastContainer/>
       <form onSubmit={handleSubmit} className="mt-6 px-8 pt-6 pb-8 mb-4 w-full">
         <div id="formPage-1" className={currentForm == 0 ? "" : "hidden"}>

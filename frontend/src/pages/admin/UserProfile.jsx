@@ -76,7 +76,7 @@ const UserProfile = () => {
       <ToastContainer/>
       <div className="w-fit h-fit relative p-10 flex flex-col items-center rounded-md border-2 border-gray-300 shadow-lg bg-white">
         <div className="flex h-[10rem] w-[10rem] mb-8">
-          <img className="w-full h-full" src={user_pfp} alt="profile image" />
+          <img className="w-full h-full" src={data.empPhoto?data.empPhoto:user_pfp} alt="profile image" />
         </div>
         <div className="flex flex-col gap-12 py-4">
           <div className="w-full flex items-center gap-8">
