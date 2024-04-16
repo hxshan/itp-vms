@@ -6,15 +6,15 @@ const Hire = require('../models/hireModel');
 const user = require('../models/userModel')
 const mongoose = require('mongoose')
 
-//get all expense
+//get all 
 const getAllIncome = async(req,res) => {
-    const incomes= await Income.find({}).populate('vehicle').populate('hirePayment.hire').populate('recordedBy')
+    const incomes= await Income.find({}).populate('vehicle').populate('hirePayment.hire').populate('recordedBy').populate('contractIncome.contract')
     
     .populate('contractIncome.contract').sort({ createdAt: -1 });
     res.status(200).json(incomes)
 }
 
-//get a single expense
+//get a single 
 
 const getIncome = async (req, res)=>{
     const {id} = req.params
@@ -24,7 +24,7 @@ const getIncome = async (req, res)=>{
         return res.status(400).json({error: 'invalid id'})
     }
 
-    const income = await Income.findById(id)
+    const income = await Income.findById(id).populate('vehicle').populate('hirePayment.hire').populate('recordedBy').populate('contractIncome.contract')
     console.log(income)
     if(!income)
     {

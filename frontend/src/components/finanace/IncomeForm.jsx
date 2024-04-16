@@ -13,12 +13,11 @@ const IncomeForm = ({ onFormSubmit }) => {
     source: '',
     hirePaymentType: '',
     hire: '',
-    hireAmount:'',
-    rentalType: '',
-    contract: '',
-    rentalAmount:'',
+    hireAmount:0,
+    rentalType: 'Monthly',
+    contract: '661cd658794fd56195d8d2b2',
+    rentalAmount:0,
     description: '',
-    amount: 0,
     paymentMethod: '',
     status: 'Pending',
     comments: ''
@@ -183,6 +182,7 @@ const IncomeForm = ({ onFormSubmit }) => {
       console.error("Error creating income:", error);
       alert("An error occurred. Please try again.");
     }
+    console.log(formData)
   };
   
 
@@ -355,6 +355,22 @@ const IncomeForm = ({ onFormSubmit }) => {
             className="border px-3 py-2 rounded-md w-full"
           />
         </div>
+        {/* Status */}
+<div className="mb-4">
+  <label htmlFor="status" className="block font-semibold mb-1">Status</label>
+  <select
+    id="status"
+    name="status"
+    value={incomeData.status}
+    onChange={handleChange}
+    className="border px-3 py-2 rounded-md w-full"
+  >
+    <option value="Pending">Pending</option>
+    <option value="Received">Received</option>
+    <option value="Confirmed">Confirmed</option>
+  </select>
+</div>
+
         {/* Comments */}
         <div className="mb-4">
           <label htmlFor="comments" className="block font-semibold mb-1">Comments</label>

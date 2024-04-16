@@ -70,7 +70,7 @@ const EditExpenseForm = ({ expense, onSave, onCancel }) => {
 
   return (
     <div className="fixed inset-0 flex justify-center items-center bg-gray-900 bg-opacity-75 z-50">
-      <div className="bg-white rounded-lg p-8 max-w-md w-full">
+  <div className="bg-white rounded-lg p-8 max-w-md w-full sm:w-3/4 lg:w-1/2 xl:max-w-lg xl:max-h-full overflow-y-auto">
         <h2 className="text-2xl font-bold mb-4">Edit Expense</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
