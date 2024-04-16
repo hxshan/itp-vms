@@ -256,6 +256,34 @@ const recoverVehicle = async (req, res, next) => {
     }
 }
 
+const updateMileage = async (req, res, next) => {
+    try {
+        
+        const  vehicleId  = req.body.data._id;
+        const  Mileage  = req.body.data.lastMileage;
+
+
+        console.log(Mileage)
+        
+        
+        if (!vehicleId) {
+            return next(new HttpError("Vehicle ID is missing.", 400));
+        }
+        
+        // Update the status of the vehicle to 'Active' and set the mileage
+        const updatedVehicle = await Vehicles.findByIdAndUpdate(vehicleId, { lastMileage:Mileage});
+
+        if (!updatedVehicle) {
+            return next(new HttpError("Vehicle not found.", 404));
+        }
+
+        res.status(200).json({ message: `Vehicle with ID ${vehicleId} activated successfully.` });
+    } catch (error) {
+        return next(new HttpError(error.message, 500));
+    }
+}
+
+
 
 
 //DELETE:api/vehicle
@@ -354,5 +382,5 @@ const getVehicles = async (req, res, next) => {
 }
 
 
-module.exports = {addVehicle,editVehicle,changeStatusVehicle,getVehicle,getVehicles,recoverVehicle,deletePost}
+module.exports = {addVehicle,editVehicle,changeStatusVehicle,getVehicle,getVehicles,recoverVehicle,deletePost,updateMileage}
 

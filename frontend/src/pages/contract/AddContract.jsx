@@ -1,7 +1,22 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import useAxios from '@/hooks/useAxios';
+import { useNavigate, useParams } from 'react-router-dom';
+import axios from "@/api/axios";
+import { ToastContainer, toast } from 'react-toastify';
+import { vehicalInstance } from './constants';
 
 
 const AddContract = () => {
+
+    const params = useParams();
+
+    const navigate = useNavigate()
+
+    const clientID = params.id;
+
+    const Insu_pov = /^[a-zA-Z]+(?: [a-zA-Z]+)*$/
+    const pol_num = /^[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*$/
+    const cov_num = /^\d+(\.\d+)?$/
 
 const [clientdet,setClientdet]  = useState({  
     id:"loading",
@@ -25,25 +40,244 @@ const [endDate, setEndDate] = useState('');
 const [estimatedDuration,setestimatedDuration] = useState('pending');
 
 const [ContractData,setContractData] = useState({
+    clientID:"",
     Vehical_Type:"",
-    Vehical_Inst:"",
-    Start_Date:startDate,
-    End_Date:endDate,
-    Estimated_duration:estimatedDuration
+    Vehical:"",
+    contract_SD:"",
+    contract_ED:"",
+    Insurance_Source:"",
+    Insurace_provider:"",
+    Policy_Number:"",
+    Coverage_Type:"",
+    Coverage_Amount:"",
+    Deductible:"",
+    Insurance_SD:"",
+    Insurance_ED:"",
+    Insurance_notes:"",
+    Payment_Amount:"",
+    Payment_Plan:"",
+    Payment_Date:"",
+    Amount_Payed:"",
 })
+console.log(ContractData)
+const [client,clientError,clientLoading,clientFetch] = useAxios();
+const [contract,conError,conLoading,conFetch] = useAxios();
 
-const CalculateTime = () =>{
-    const startDatevalue = new Date(startDate);
-    const endDatevalue = new Date(endDate);
 
-    if (!isNaN(startDatevalue) && !isNaN(endDatevalue)) {
-        const timeDiff = endDatevalue - startDatevalue;
-        const yearsDiff = timeDiff / (1000 * 60 * 60 * 24 * 365.25);
-        const estimatedYears = Math.round(yearsDiff);
+const [EstimatedTime,setEstimatedTime] = useState('');
 
-        setestimatedDuration(estimatedYears > 0 ? `${estimatedYears} year(s)` : 'Pending');
+const getClient = ()=>{
+    clientFetch({
+    axiosInstance: axios,
+     method: "GET",
+     url: `/contract/getClient/${clientID}`,
+    })
+}
+
+const HandleInput = (e)=>{
+    const {name,value} = e.target;
+
+    if(name === "contract_SD" || name === "contract_ED"){
+        if(name === "contract_SD" && ContractData.contract_ED){
+            const result = inRange(value,ContractData.contract_ED)
+            if(result === 'INRANGE'){
+                setEstimatedTime(calculateDateDiff(new Date(value),new Date(ContractData.contract_ED)))
+            }else{
+                setEstimatedTime(result)
+            }
+        }else if(name === "contract_ED" && ContractData.contract_SD){
+            const result = inRange(ContractData.contract_SD,value)
+            if(result === 'INRANGE'){
+                setEstimatedTime(calculateDateDiff(new Date(ContractData.contract_SD),new Date(value)))
+            }else{
+                setEstimatedTime(result)
+            }
+        }
+    }
+
+    
+
+    setContractData({
+        ...ContractData,
+        [name] : value
+    })
+}
+
+const calculateDateDiff = (startDate,endDate)=>{
+
+    const diffTime = Math.abs(endDate.getTime() - startDate.getTime())
+    var diffDays = Math.ceil(diffTime/(1000 * 60 * 60 * 24));
+
+    let output = [];
+
+    
+    if (diffDays >= 365) {
+        const diffYears = Math.floor(diffDays / 365);
+        output.push(`${diffYears} year${diffYears !== 1 ? 's' : ''}`);
+        diffDays -= diffYears * 365;
+    }
+
+    if (diffDays >= 30) {
+        const diffMonths = Math.floor(diffDays / 30);
+        output.push(`${diffMonths} month${diffMonths !== 1 ? 's' : ''}`);
+        diffDays -= diffMonths * 30;
+    }
+
+    if (diffDays > 0) {
+        output.push(`${diffDays} day${diffDays !== 1 ? 's' : ''}`);
+    }
+    
+    return output.join(' and ');
+}
+
+
+const inRange = (startDate,endDate) =>{
+    const tommorow = new Date();
+    tommorow.setDate(tommorow.getDate() + 1);
+    const minstartDate = tommorow.toISOString().split('T')[0];
+
+    if(startDate < minstartDate){
+        return "Contract start date cannot be current date or past dates"
+    }else if(endDate < minstartDate){
+        return "Contract end date connot be lower than contract start date"
+    }else if(startDate > endDate){
+        return "contract start date cannot be greater than contract end date"
+    }else if(startDate === endDate){
+        return "contract end date should be one day after Contract start date"
+    }else{
+        return "INRANGE"
     }
 }
+
+
+
+const HandleSubmit = async (e)=>{
+   
+    const tommorow = new Date();
+    tommorow.setDate(tommorow.getDate() + 1);
+    const minstartDate = tommorow.toISOString().split('T')[0];
+
+    e.preventDefault();
+    
+
+    if (!ContractData.Vehical_Type) {
+        toast.error("Please select vehical type");
+        return;
+    }else if(!ContractData.contract_SD){
+        toast.error("Invalid contract start date")
+        return;
+    }else if(!ContractData.contract_ED){
+        toast.error("Invalid contract end date")
+        return;
+    }else if(ContractData.contract_SD < minstartDate){
+        toast.error("Contract start date cannot be current date or past dates ")
+        return;
+    }else if(ContractData.contract_ED < minstartDate){
+        toast.error("Contract end date connot be lower than contract start date")
+        return;
+    }else if(ContractData.contract_SD > ContractData.contract_ED ){
+        toast.error("contract start date cannot be greater than contract end date")
+        return
+    }else if(ContractData.contract_SD === ContractData.contract_ED ){
+        toast.error("contract end date should be one day after Contract start date")
+        return
+    }else if(!ContractData.Vehical){
+        toast.error("please select vehical")
+        return;
+    }else if(!ContractData.Insurance_Source){
+        toast.error("please select Insurance source")
+        return;
+    }else if(!ContractData.Insurace_provider || !ContractData.Insurace_provider.match(Insu_pov)){
+        toast.error("Invalid insurance provider")
+        return;
+    }else if(!ContractData.Policy_Number || !ContractData.Policy_Number.match(pol_num)){
+        toast.error("Invalid policy number")
+        return;
+    }else if(!ContractData.Coverage_Type){
+        toast.error("please select coverage type")
+        return;
+    }else if(!ContractData.Coverage_Amount || !ContractData.Coverage_Amount.match(cov_num)){
+        toast.error("Invalid coverage amount")
+        return;
+    }else if(!ContractData.Deductible || !ContractData.Deductible.match(cov_num)){
+        toast.error("Invalid detuctible amount")
+        return;
+    }else if(!ContractData.Insurance_SD){
+        toast.error("Enter isurance start date")
+        return;
+    }else if(!ContractData.Insurance_ED){
+        toast.error("Enter insurance end date")
+        return;
+    }else if(ContractData.Insurance_ED < minstartDate){
+        toast.error("Insurance end date connot be lower than Insurance start date")
+        return;
+    }else if(ContractData.Insurance_SD > ContractData.Insurance_ED ){
+        toast.error("Insurance start date cannot be greater than Insurance end date")
+        return
+    }else if(ContractData.contract_SD === ContractData.Insurance_ED ){
+        toast.error("Insurance end date should be one day after Insurance start date")
+        return
+    }else if(!ContractData.Payment_Amount || !ContractData.Payment_Amount.match(cov_num)){
+        toast.error("Invalid payment amount")
+        return;
+    }else if(!ContractData.Payment_Plan){
+        toast.error("please select payment plan")
+        return;
+    }else if(!ContractData.Payment_Date){
+        toast.error("please enter payment date")
+        return;
+    }else if(!ContractData.Amount_Payed || !ContractData.Amount_Payed.match(cov_num)){
+        toast.error("Invalid amount payed")
+        return;
+    }
+
+    await conFetch({
+        axiosInstance: axios,
+        method: "POST",
+        url: `/contract/${clientID}/create`,
+        requestConfig: {
+            data: { ...ContractData },
+          },
+    });
+
+
+}
+
+useEffect(()=>{
+    if(!conLoading){
+      if(conError){
+        alert(conError)
+      }else if(contract.message === "client dosent exist" ){
+        alert("Client does not exist")
+      }else if(contract.message === "An active contract exists for this client"){
+        alert("An active contract exists for this client")
+      }else if(contract.message === "contract created successfully"){
+        alert("Contract created successfully")
+        navigate(`/viewClient/${clientID}`)
+      }
+    }
+  },[conLoading])
+
+useEffect(()=>{
+    if(client){
+        setClientdet({
+            first_name:client.firstName,
+            last_name:client.lastName,
+            number:client.phoneNumber,
+            email:client.email,
+            client_NIC:client.nicNumber
+        })
+
+        setContractData({
+            ...ContractData,
+            clientID:client._id
+        })
+    }
+},[client])
+
+useEffect(()=>{
+    getClient();
+},[])
 
 
 const vehicals = [
@@ -65,94 +299,6 @@ const vehicals = [
     }
 ]
 
-const vehicalInstance = [
-    {"_id":"6172361123",
-    "type":"Abulance",
-    "vehicalID":"1111111",
-    "name":"ambulance 1",
-    "year":"loading",
-    "VIN":"loading",
-    "model":"loading"},
-
-    {"_id":"34234123",
-    "type":"Abulance",
-    "vehicalID":"1111111",
-    "name":"ambulance 2",
-    "year":"loading",
-    "VIN":"loading",
-    "model":"loading"},
-
-    {"_id":"567456456",
-    "type":"Bus",
-    "vehicalID":"2222222",
-    "name":"Bus 1",
-    "year":"loading",
-    "VIN":"loading",
-    "model":"loading"},
-
-    {"_id":"8967456456",
-    "type":"Bus",
-    "vehicalID":"2222222",
-    "name":"Bus 2",
-    "year":"loading",
-    "VIN":"loading",
-    "model":"loading"},
-
-    {"_id":"75467456",
-    "type":"Car",
-    "vehicalID":"3333333",
-    "name":"Car 1",
-    "year":"loading",
-    "VIN":"loading",
-    "model":"loading"},
-
-    {"_id":"6172361123",
-    "type":"Car",
-    "vehicalID":"3333333",
-    "name":"Car 2",
-    "year":"loading",
-    "VIN":"loading",
-    "model":"loading"},
-
-    {"_id":"435234",
-    "type":"Van",
-    "vehicalID":"4444444",
-    "name":"Van 1",
-    "year":"loading",
-    "VIN":"loading",
-    "model":"loading"},
-
-    {"_id":"61723623523423123",
-    "type":"Van",
-    "vehicalID":"4444444",
-    "name":"Van 2",
-    "year":"loading",
-    "VIN":"loading",
-    "model":"loading"}
-]
-
-const HandleInput = (e)=>{
-    const {name,value} = e.target;
-
-    setContractData({
-        ...ContractData,
-        [name] : value
-    })
-}
-
-//const HandleDateInput = (e)=>{
-  //  const {name,value} = e.target;
-
-   // if(name === "startdate"){
- //       setStartDate(value)
- //   }else if(name === "enddate"){
-  //      setEndDate(value);
- //       if(startDate != ''){
-  //          CalculateTime(); 
-   //     }
- //   }
-
-//}
 
 
 
@@ -163,6 +309,7 @@ const HandleInput = (e)=>{
         <div className='flex items-center justify-center mb-4'>
             <p className=' text-[50px] font-bold '>ADD CONTRACT</p>
         </div>
+        <ToastContainer/>
         <div className='bg-[#D9D9D9] w-[90%] h-fit rounded-lg py-8 flex justify-evenly'>
         
         <div>
@@ -182,7 +329,7 @@ const HandleInput = (e)=>{
 
 
         <div className='flex flex-col gap-3'>
-        <div className='flex gap-28 mt-3'>
+        <div className='flex gap-10 mt-3'>
         <div>
             <p>Client email</p>
             <p className=' text-[#000ac2] font-semibold'>{clientdet.email}</p>
@@ -221,22 +368,18 @@ const HandleInput = (e)=>{
             <div className='flex mt-3 gap-12'>
             <div className='flex flex-col gap-1'>
                 <label>Start date</label>
-                <input type='date' className='w-[150px] h-10 rounded-lg  bg-white border-none px-2' name='startdate' onChange={(e) => {
-                            setStartDate(e.target.value);
-                            CalculateTime();}}/>
+                <input type='date' className='w-[150px] h-10 rounded-lg  bg-white border-none px-2' name='contract_SD' onChange={HandleInput} />
             </div>
 
             <div className='flex flex-col gap-1'>
                 <label>End date</label>
-                <input type='date' className='w-[150px] h-10 rounded-lg  bg-white border-none px-2 ' name='enddate' onChange={(e) => {
-                            setEndDate(e.target.value);
-                            CalculateTime();}}/>
+                <input type='date' className='w-[150px] h-10 rounded-lg  bg-white border-none px-2 ' name='contract_ED' onChange={HandleInput}/>
             </div>
             </div>
             
             <div className='flex flex-col mt-3'>
             <p>Estimated duration</p>
-            <p>{ContractData.Estimated_duration}</p>
+            <p className={`text-[#000ac2] ${EstimatedTime ? ' text-red-500':''} font-bold`}>{EstimatedTime ? EstimatedTime:'please choose dates'}</p>
             </div>
             </div>
 
@@ -249,7 +392,7 @@ const HandleInput = (e)=>{
 
             <div className='flex flex-col gap-1 mt-3'>
                 <p>Vehical Instance</p>
-                <select name='Vehical_Inst' onChange={HandleInput} className='w-[150px]  rounded-lg  bg-white border-none p-2'>
+                <select name='Vehical' onChange={HandleInput} className='w-[150px]  rounded-lg  bg-white border-none p-2'>
                     <option className='hidden' >please select</option>
                     {vehicalInstance.map((item,index)=>(
                         <option value={item._id} className={`${item.vehicalID === ContractData.Vehical_Type?'':'hidden' }`}>{item.name}</option>
@@ -285,63 +428,63 @@ const HandleInput = (e)=>{
 
             <div className='flex flex-col gap-1 mt-3'>
                 <label>Insurance source</label>
-                <select className='w-[150px]  rounded-lg  bg-white border-none p-2'>
-                    <option className='hidden'>please select</option>
-                    <option>Client</option>
-                    <option>Company</option>
+                <select className='w-[150px]  rounded-lg  bg-white border-none p-2' name='Insurance_Source' onChange={HandleInput}>
+                    <option className='hidden' value="" >please select</option>
+                    <option value="Client" >Client</option>
+                    <option value="Company" >Company</option>
                 </select>
             </div>
             
             <div className='flex gap-4 mt-3'>
             <div className='flex flex-col gap-1'>
                <label>Name of Insurance provider</label>
-               <input type='text' className='w-[220px]  rounded-lg  bg-white border-none p-2'/> 
+               <input type='text' className='w-[220px]  rounded-lg  bg-white border-none p-2' name='Insurace_provider' onChange={HandleInput}/> 
             </div>
 
             <div className='flex flex-col gap-1'>
                <label>Policy number</label>
-               <input type='text' className='w-[220px]  rounded-lg  bg-white border-none p-2'/> 
+               <input type='text' className='w-[220px]  rounded-lg  bg-white border-none p-2' name='Policy_Number' onChange={HandleInput}/> 
             </div>
             </div>
 
             <div className='flex flex-col mt-3 gap-1'>
                <label>Coverage Type</label>
 
-               <select className='w-[150px]  rounded-lg  bg-white border-none p-2'>
-                <option className='hidden'>please select</option>
-                <option>Liability</option>
-                <option>comprehensive</option>
-                <option>collision</option>
+               <select className='w-[150px]  rounded-lg  bg-white border-none p-2' name='Coverage_Type' onChange={HandleInput}>
+                <option className='hidden' value="" >please select</option>
+                <option value="Liability" >Liability</option>
+                <option value="comprehensive" >comprehensive</option>
+                <option value="collision" >collision</option>
                </select>
             </div>
 
             <div className='flex gap-4 mt-3'>
             <div className='flex flex-col gap-1'>
                 <label>Coverage amount</label>
-                <input type='text' className='w-[220px]  rounded-lg  bg-white border-none p-2'/>
+                <input type='text' className='w-[220px]  rounded-lg  bg-white border-none p-2' name='Coverage_Amount' onChange={HandleInput}/>
             </div>
 
             <div className='flex flex-col gap-1'>
                 <label>Deductible</label>
-                <input type='text' className='w-[220px]  rounded-lg  bg-white border-none p-2'/>
+                <input type='text' className='w-[220px]  rounded-lg  bg-white border-none p-2' name='Deductible' onChange={HandleInput}/>
             </div>
             </div>
 
             <div className='flex gap-4 mt-3'>
             <div className='flex flex-col gap-1'>
                 <label>Start date</label>
-                <input type='date' className='w-[150px] h-10 rounded-lg  bg-white border-none px-2 '/>
+                <input type='date' className='w-[150px] h-10 rounded-lg  bg-white border-none px-2 ' name='Insurance_SD' onChange={HandleInput}/>
             </div>
 
             <div className='flex flex-col gap-1'>
                 <label>End date</label>
-                <input type='date' className='w-[150px] h-10 rounded-lg  bg-white border-none px-2 '/>
+                <input type='date' className='w-[150px] h-10 rounded-lg  bg-white border-none px-2 ' name='Insurance_ED' onChange={HandleInput}/>
             </div>
             </div>
 
             <div className='flex flex-col mt-3'>
                 <label>Additianol notes</label>
-                <textarea className='h-[200px] w-[456px]  border-none rounded-lg mt-1'></textarea>
+                <textarea className='h-[200px] w-[456px]  border-none rounded-lg mt-1' name='Insurance_notes' onChange={HandleInput}></textarea>
             </div>
         </div>
         <div className='  w-fit h-fit rounded-xl '>
@@ -351,35 +494,53 @@ const HandleInput = (e)=>{
 
             <div className='flex flex-col mt-3 gap-1'>
                 <label>Amount</label>
-                <input type='text' className='w-[220px]  rounded-lg  bg-white border-none p-2'/>
+                <input type='text' className='w-[220px]  rounded-lg  bg-white border-none p-2' name='Payment_Amount' onChange={HandleInput}/>
             </div>
             
             <div className='flex gap-12 mt-3'>
             <div className='flex flex-col gap-1'>
                 <label>Payment plan</label>
-                <select className='w-[150px]  rounded-lg  bg-white border-none p-2'>
-                    <option className='hidden'>Please select</option>
-                    <option>upFront</option>
-                    <option>Monthly</option>
+                <select className='w-[150px]  rounded-lg  bg-white border-none p-2' name='Payment_Plan' onChange={HandleInput}>
+                    <option className='hidden' value="" >Please select</option>
+                    <option value="upFront">upFront</option>
+                    <option value="Monthly" >Monthly</option>
                 </select>
             </div>
 
             <div className='flex flex-col gap-1'>
                 <label>Payment date</label>
-                <input type='date' className='w-[150px]  rounded-lg  bg-white border-none p-2'/>
+                <input type='date' className='w-[150px]  rounded-lg  bg-white border-none p-2' name='Payment_Date' onChange={HandleInput}/>
             </div>
             </div>
 
             <div className='flex flex-col mt-3 gap-1'>
                 <label>Amount payed</label>
-                <input type='text' className='w-[220px]  rounded-lg  bg-white border-none p-2'/>
+                <input type='text' className='w-[220px]  rounded-lg  bg-white border-none p-2' name='Amount_Payed' onChange={HandleInput}/>
             </div>
 
             <div className='flex flex-col mt-3 gap-1'>
                 <p>Amount Due</p>
                 <p>Loading</p>
             </div>
+
+           
         </div>
+        <div className="flex justify-end gap-4">
+            <button
+              className=" bg-green-600 px-5 py-2 rounded-xl w-[120px] "
+              onClick={HandleSubmit}
+            >
+              Add
+            </button>
+            <button
+              className=" bg-orange-600 px-5 py-2 rounded-xl w-[120px] "
+              onClick={() => {
+                navigate(`/viewClient/${clientID}`);
+              }}
+            >
+              Cancel
+            </button>
+          </div>
         </div>
       
 

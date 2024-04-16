@@ -1,8 +1,12 @@
 import { useEffect, useState } from 'react';
-import {validateFormFirstPage, validateFormSecondPage} from './Validation';
+import {validateFormFirstPage, validateFormSecondPage, validateFormtthirddPage} from './Validation';
 import axios from '@/api/axios';
 import useAxios from '@/hooks/useAxios'
 import {useNavigate} from "react-router-dom";
+
+import { ClipLoader } from "react-spinners";
+import Swal from 'sweetalert2';
+
 
 const Form = () => { 
   const [step, setStep] = useState(1);
@@ -12,15 +16,17 @@ const Form = () => {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [vehicleType, setVehicleType] = useState('');
-  const [vehicleSubcategory, setVehicleSubcategory] = useState('');
   const [passengerCount, setPassengerCount] = useState(1);
   const [airCondition, setAirCondition] = useState(false);
   const [vehicle, setVehicle] = useState('')
   const [driver, setDriver] = useState('')
-  const [startPoint, setStartPoint] = useState('')
+  const [startPointNo, setStartPointNo] = useState('')
+  const [startPointStreet, setStartPointSteet] = useState('')
+  const [startPointCity, setStartPointCity] = useState('')
   const [endPoint, setEndPoint] = useState('')
+  const [startTime, setStartTime] = useState('')
   const [tripType, setTripType] = useState(false)
-  const [distence, setSetDistence] = useState('')
+  const [estimatedDistance, setEstimatedDistance] = useState('')
   const [cusName, setCusName] = useState('')
   const [cusEmail, setCusEmail] = useState('')
   const [cusMobile, setCusMobile] = useState('')
@@ -34,15 +40,17 @@ const Form = () => {
     startDate,
     endDate,
     vehicleType,
-    vehicleSubcategory,
     airCondition,
     passengerCount,
     vehicle,
     driver,
-    startPoint,
+    startPointNo,
+    startPointStreet,
+    startPointCity,
     endPoint,
+    startTime,
     tripType,
-    distence,
+    estimatedDistance,
     cusName, cusEmail, cusMobile, cusNic,
     estimatedTotal,
     finalTotal: null,
@@ -54,13 +62,10 @@ const Form = () => {
   //Handle Submit
   const submit =async (e) => {
 
-    e.preventDefault()
+    e.preventDefault(tripType) 
   
     const confirm = window.confirm("Are you sure")
     if(confirm){
-      navigate('/hires', { replace: true, state: { forceRefresh: true } });
-
-      
       await axiosFetch({
         axiosInstance:axios,
         method:'POST',
@@ -75,22 +80,28 @@ const Form = () => {
       if(error){
         alert(error)
       }
+      else {
+        Swal.fire({
+          icon: 'success',
+          title: 'Success',
+          text: 'Hire added successfully!',
+          timer: 1500,
+          showConfirmButton: false
+      }).then(() => {
+          navigate('/hires', { replace: true, state: { forceRefresh: true } });
+      });
+      }
 
       //axios.post('http://localhost:3000/api/hire/add', formData)
     }
     
   }
 
-  if (loading) {
-    return <p>Loading...</p>;
-  }
-
   //Fetch Vehicle Data
   const [vehiclesData, vehiclesError, vehiclesLoading, axiosFetchVehicles] = useAxios()
 
   const [vehcleTypes, setVehcleTypes] = useState(["Car", "Van" , "Bus", "Plane"])
-  const [vehcleSubTypes, setVehcleSubTypes] = useState(["Maruti" , "C200"])
-  const [availableDrivers, setavailableDrivers] = useState(["Chamara" , "Jonny", "Danny", "Chanchala"])
+  
 
   const fetchVehicleDetails = async () => {
     axiosFetchVehicles({
@@ -102,7 +113,7 @@ const Form = () => {
 
   if(vehiclesError){
     return(
-      <p>Can not Fetch Data</p>
+      <p>Can not Vehicle Fetch Data</p>
     )
   }
 
@@ -122,14 +133,61 @@ const Form = () => {
       alert("No vehicles Available")
     }
 
+    if(vehiclesError){
+    return(
+      <p>Can not Fetch Data</p>
+    )
+  }
+
 
   }
 
-  
+  // Fetch user data
+  /*
+  const [RoleData, RoleError, RoleLoading, axiosFetchRoles] = useAxios()
+
+  const fetchRoleDetails = async () => {
+    console.log('Fetching Role data')
+    axiosFetchRoles({
+          axiosInstance: axios,
+          method: "GET",
+          url: "/role/",
+      });
+  };
+
+  if(RoleError){
+    return(
+      <p>Can not Fetch Role Data</p>
+    )
+  }
+  const driverRoleId = RoleData ?.find(role => role.name.toLowerCase() === 'driver')?._id
+  console.log(driverRoleId)
+*/
+  //Fetch Drivers
+  const [DriversData, DriversError, DriversLoading, axiosFetchDrivers] = useAxios()
+  //const [availableDrivers, setavailableDrivers] = useState(["Chamara" , "Jonny", "Danny", "Chanchala"])
+
+  const filterDrivers = () => {
+    console.log('Filter Drivers')
+    axiosFetchDrivers({
+      axiosInstance: axios,
+      method: "GET",
+      url: "/user/drivers",
+  });
+  }
+
+  if(DriversError) {
+    <p>Can not Fetch Driver Data</p>
+  }
+
+  console.log(DriversData)
+
+  // Handle Cancel button
   const cancel = () => {
     navigate('/hires')
   }
   
+  //Handle Steps
   const handleNextStep = (e) => {
     e.preventDefault()
 
@@ -150,8 +208,15 @@ const Form = () => {
     }
 
     if(step == 3) {
+      errors = validateFormtthirddPage(formData)
+      if(Object.keys(errors).length === 0) {
         setStep(step + 1);
+      }
     }
+
+    if(step == 4) {
+      setStep(step + 1);
+  }
   };
 
   const handlePrevStep = () => {
@@ -179,8 +244,7 @@ const fetchVehicleData = async () => {
 )}
 */
 
-//Calculate total
-
+//Fetch Vehicle Rates
 const [vehicleRates, Verror, Vloading, VaxiosFetch] = useAxios();
 
 
@@ -213,12 +277,14 @@ const [vehicleRates, Verror, Vloading, VaxiosFetch] = useAxios();
         fetchVehicleRates();
     }, []);*/
 
+    //Calculate total Fare
     const calculateEstimatedFare = async () => {
       try {
-          if (!vehicleType || !distence) {
-              console.log("Vehicle type or distance not selected");
+          if (!vehicleType || !estimatedDistance) {
+              console.log("Vehicle type or estimatedDistance not selected");
               return { estimatedFare: 0, advancedPay: 0 };
           }
+          
   
           console.log("Calculating estimated fare...");
   
@@ -238,11 +304,11 @@ const [vehicleRates, Verror, Vloading, VaxiosFetch] = useAxios();
               return { estimatedFare: 0, advancedPay: 0 };
           }
   
-          const { baseRate, baseDistence, additionalRate } = selectedVehicleRate;
-          let estimatedFare = baseRate;
+          const { baseDistence, baseRate, additionalRate,acBaseRate, acAdditionalRate } = selectedVehicleRate;
+          let estimatedFare = airCondition ? acBaseRate : baseRate
           let advancedPay = 0;
   
-          let estimatedDistence = distence;
+          let estimatedDistence = estimatedDistance;
   
           if (tripType) {
               estimatedDistence *= 2;
@@ -251,7 +317,7 @@ const [vehicleRates, Verror, Vloading, VaxiosFetch] = useAxios();
           const baseDistance = baseDistence;
           const additionalDistance = Math.max(estimatedDistence - baseDistance, 0);
   
-          estimatedFare += additionalDistance * additionalRate;
+          estimatedFare += additionalDistance * (airCondition ? acAdditionalRate : additionalRate);
           advancedPay = estimatedFare * 0.1;
   
           estimatedFare = parseFloat(estimatedFare.toFixed(2));
@@ -260,9 +326,9 @@ const [vehicleRates, Verror, Vloading, VaxiosFetch] = useAxios();
           console.log("Catogory : " + selectedVehicleRate.vehicleCatagory)
           console.log("Estimated Fare : " + estimatedFare)
           console.log("Advanced Payment: " + advancedPay)
-          console.log("Base Distence : " +  baseDistance)
+          console.log("Base estimatedDistance : " +  baseDistance)
   
-          return { estimatedFare, advancedPay, additionalRate };
+          return { estimatedFare, advancedPay, additionalRate, estimatedDistence };
       } catch (error) {
           console.error('Error calculating estimated fare:', error);
           return { estimatedFare: 0, advancedPay: 0 };
@@ -271,7 +337,7 @@ const [vehicleRates, Verror, Vloading, VaxiosFetch] = useAxios();
   
 
   useEffect(() => {
-    if (step === 4) {
+    if (step === 5) {
       const calculateFare = async () => {
         const { estimatedFare, advancedPay } = await calculateEstimatedFare();
         setEstimatedTotal(estimatedFare);
@@ -279,10 +345,12 @@ const [vehicleRates, Verror, Vloading, VaxiosFetch] = useAxios();
       };
       calculateFare();
     }
-  }, [step, vehicleType, distence, tripType]);
+  }, [step, vehicleType, estimatedDistance, tripType, airCondition]);
 
   useEffect(() => {
       fetchVehicleRates();
+      //fetchRoleDetails()
+      filterDrivers()
 
       console.log("Vehicle Rates")
       console.log(vehicleRates)
@@ -299,61 +367,51 @@ const [vehicleRates, Verror, Vloading, VaxiosFetch] = useAxios();
         filterVehicles()
       }
     }, [step, vehicleType])
+
+    if (loading || vehiclesLoading|| DriversLoading || Vloading) {
+      return (
+        <div className="flex justify-center items-center h-screen">
+          <div className="sweet-loading">
+            <ClipLoader color="#10971D" loading={true}  size={50} />
+          </div>
+        </div>
+      );
+    }
   
 
-  return (
-    <div className="w-full h-full flex bg-gray-200 px-2 py-[20px] justify-center align-center xl:px-[60px] xl:py-[50px]">
-        <form className="w-full h-full bg-white px-3 py-5 xl:px-10">
-          {/* Form */}
-          {step === 1 && (
-            <div className="mt-10  w-full border-2 border-black pt-5 px-4 xl:px-12 xl:py-10">
-
-              {/* Date Section */}
-              <div className='flex flex-col justify-between align-baseline mt-3 xl:flex-row'> 
-
-                <div className="mb-10 flex justify-between align-baseline xl:flex-1 xl:mr-14">
-                      <label htmlFor="startDate" 
-                      className="block font-medium text-black mr-[10px] text-base">
-                        Start Date
-                      </label>
-
-                      <input type="date" id="startDate" 
-                        name="startDate" value={startDate} 
-                        onChange={(e) => setStartDate(e.target.value)} 
-                        className='border-2 rounded border-black px-5'
-                        required
-                      />
+    return (
+      <div >
+          <form className="w-full h-full bg-white px-3 py-5 xl:px-10">
+            {/* Form */}
+            {step === 1 && (
+              <div className="mt-10 w-full border-2 border-black pt-5 px-4 xl:px-12 xl:py-10">
+  
+                {/* Date Section */}
+                <div className='grid grid-cols-1 xl:grid-cols-2 gap-8'> 
+  
+                  <div className="mb-5">
+                    <label htmlFor="startDate" className="block font-medium text-black text-base mb-2">
+                      Start Date
+                    </label>
+                    <input type="date" id="startDate" name="startDate" value={startDate} onChange={(e) => setStartDate(e.target.value)} className='border-2 rounded border-black px-5 w-full' required />
                   </div>
-
-                  <div className="mb-10 flex justify-between align-baseline flex-1">
-
-                      <label htmlFor="endDate" 
-                      className="block font-medium text-black mr-[10px] text-base">
-                        End Date
-                      </label>
-
-                      <input type="date" id="endDate" 
-                        name="endDate" value={endDate} 
-                        onChange={(e) => setEndDate(e.target.value)} 
-                        className='border-2 rounded border-black px-5'
-                        required
-                        />
+  
+                  <div className="mb-5">
+                    <label htmlFor="endDate" className="block font-medium text-black text-base mb-2">
+                      End Date
+                    </label>
+                    <input type="date" id="endDate" name="endDate" value={endDate} onChange={(e) => setEndDate(e.target.value)} className='border-2 rounded border-black px-5 w-full' required />
                   </div>
+  
+                </div>
+  
+                {/* Vehicle Section */}
 
-              </div>
-
-              {/* Vehicle Section */}
-              <div className='flex flex-col justify-between align-baseline '> 
-
-                <div className='flex flex-col justify-between align-baseline xl:flex-row'>
-                  <div className="mb-10 flex justify-between align-baseline xl:flex-1 xl:mr-14">
-
-                      <label htmlFor="vehicleType" 
-                      className="block font-medium text-black mr-[10px] text-base">
-                        Vehicle Type
-                      </label>
-
-                      <select id="vehicleType" name="vehicleType" 
+                  <div className="mb-5">
+                    <label htmlFor="vehicleType" className="block font-medium text-black text-base mb-2">
+                      Vehicle Type
+                    </label>
+                    <select id="vehicleType" name="vehicleType" 
                       value={vehicleType} onChange={(e) => setVehicleType(e.target.value)} 
                       className='border-2 rounded border-black px-14'
                       required
@@ -363,283 +421,161 @@ const [vehicleRates, Verror, Vloading, VaxiosFetch] = useAxios();
                             <option key={type.id} value={type}>{type}</option>
                           ))}
                       </select>
+                  </div>
+                <div className='grid grid-cols-1 xl:grid-cols-2 gap-8 mt-5'> 
 
-                      </div>
+                  <div className="mb-5">
+                    <label htmlFor="airCondition" className="block font-medium text-black text-base mb-2">
+                      Air Condition
+                    </label>
+                    <input type="checkbox" id="airCondition" name="airCondition" checked={airCondition} onChange={(e) => setAirCondition(e.target.checked)} className='' required />
+                  </div>
 
-                      <div className="mb-10 flex justify-between align-baseline xl:flex-1">
-                      <label htmlFor="vehicleSubcategory" 
-                      className="block font-medium text-black mr-[10px] text-base">
-                        Vehicle Subcategory
-                      </label>
-
-                      <select id="vehicleSubcategory" name="vehicleSubcategory" 
-                      value={vehicleSubcategory} onChange={(e) => setVehicleSubcategory(e.target.value)} 
-                      className='border-2 rounded border-black px-14' required>
-                          <option value="">Select......</option>
-                          {vehcleSubTypes.map((type) => (
-                            <option key={type.id} value={type}>{type}</option>
-                          ))}
-                      </select>
-                      </div>
-
+                  {/* Passenger Count */}
+                  <div className='mb-5'>
+                    <label htmlFor="passengerCount" className="block font-medium text-black text-base mb-2">
+                      No of Passengers
+                    </label>
+                    <input type="number" id="passengerCount" name="passengerCount" value={passengerCount} onChange={(e) => setPassengerCount(e.target.value)} className='border-2 rounded border-black px-5 w-full' required />
+                  </div>
+  
+  
                 </div>
+  
                 
-
-                <div className="mb-10 flex justify-start align-baseline">
-
-                      <label htmlFor="airCondition" 
-                      className="block font-medium text-black text-base mr-8">
-                        Air Condition
-                      </label>
-
-                      <input type="checkbox" id="airCondition" name="airCondition" 
-                      checked={airCondition} onChange={(e) => setAirCondition(e.target.checked)} 
-                      className=''
-                      required
-                      />
-
-                  </div>
-
               </div>
-
-
-              {/* Passenger Count */}
-              <div>
-
-                <div className="mb-10 flex justify-between align-baseline xl:justify-start">
-
-                  <label htmlFor="passengerCount" 
-                  className="block font-medium text-black mr-[5px] text-base xl:mr-7">
-                    No of Passengers
-                  </label>
-
-                  <input type="number" id="passengerCount" name="passengerCount" 
-                  value={passengerCount}
-                  onChange={(e) => setPassengerCount(e.target.value)} 
-                  className='border-2 rounded border-black'
-                  required
-                  />
-
-                </div> 
-
-              </div>     
-
-            </div>
-          )}
-
+            )}
+  
             {/*Section 2 */}
-          {step === 2 && (
-            
-            <div className="mt-5 px-2">
-              {/* Vehicle and driver section */}
-              <div className='flex justify-between align-baseline mb-5 '>
-                  <div className=" flex flex-col justify-between align-baseline xl:flex-1 xl:mr-14 xl:flex-row">
-
-                    <label htmlFor="AssignVehicle" 
-                      className="block font-medium text-black mr-[10px] text-base">
-                        Select Vehicle
+            {step === 2 && (
+              
+              <div className="mt-5 px-2">
+  
+                {/* Vehicle and driver section */}
+                <div className='grid grid-cols-1 xl:grid-cols-2 gap-8 mb-8'>
+  
+                  <div className="mb-5">
+                    <label htmlFor="vehicle" className="block font-medium text-black text-base mb-2">
+                      Select Vehicle
                     </label>
-
-                    <select id="vehicle" name="vehicle" 
-                      value={vehicle} onChange={(e) => setVehicle(e.target.value)} 
-                      className='border-2 rounded border-black px-14'
-                      required
-                      >
-                        <option value="">Select Vehicle</option>
-                        {filteredVehicles.map((vehicle) => (
-                          <option key={vehicle.id} value={vehicle._id}>{vehicle.vehicleRegister}</option>
-                        ))}
-                    </select>
-
-                  </div>
-
-                  <div className=" flex flex-col justify-between align-baseline xl:flex-1 xl:flex-row">
-                    <label htmlFor="assignDriver" 
-                      className="block font-medium text-black mr-[10px] text-base">
-                        Select Driver
-                    </label>
-
-                    <select id="driverList" name="driverList" 
-                      value={driver} onChange={(e) => setDriver(e.target.value)} 
-                      className='border-2 rounded border-black px-14'
-                      required
-                      >
-                        <option value="">Select Driver</option>
-                          {availableDrivers.map((type) => (
-                            <option key={type.id} value={type}>{type}</option>
-                          ))}
+                    <select id="vehicle" name="vehicle" value={vehicle} onChange={(e) => setVehicle(e.target.value)} className='border-2 rounded border-black px-5 w-full' required>
+                      <option value="">Select Vehicle</option>
+                      {filteredVehicles.map((vehicle) => (
+                        <option key={vehicle.id} value={vehicle._id}>{vehicle.vehicleRegister}</option>
+                      ))}
                     </select>
                   </div>
-
-              </div>
-
-              {/* Trip details */}
-              <div className=' border-b-2 border-black xl:flex xl:flex-col xl:justify-between xl:align-baseline'>
-
-                <div className='flex justify-between align-baseline mb-5'>
-                  <div className=" flex flex-col justify-between align-baseline mr-2 xl:flex-row xl:flex-1 xl:mr-14">
-
-                    <label htmlFor="startPoint" 
-                    className="block font-medium text-black  text-base xl:mr-7">
-                      Starting Point
+  
+                  <div className="mb-5">
+                    <label htmlFor="driver" className="block font-medium text-black text-base mb-2">
+                      Select Driver
                     </label>
+                    <select id="driver" name="driver" value={driver} onChange={(e) => setDriver(e.target.value)} className='border-2 rounded border-black px-5 w-full' required>
+                      <option value="">Select Driver</option>
+                      {DriversData.map((driver) => (
+                        <option key={driver.id} value={driver._id}>{driver.firstName} {driver.lastName}</option>
+                      ))}
+                    </select>
+                  </div>
+  
+                </div>
+  
+                {/* Trip details */}
+                <div className='grid grid-cols-1 xl:grid-cols-3 gap-8'>
+  
+                  <div className="mb-5">
+                    <label htmlFor="startPointNo" className="block font-medium text-black text-base mb-2">
+                      Start Point No
+                    </label>
+                    <input type="text" id="startPointNo" name="startPointNo" value={startPointNo} onChange={(e) => setStartPointNo(e.target.value)} placeholder='House Number' className='border-2 rounded border-black px-5 w-full' required />
+                  </div>
+  
+                  <div className="mb-5">
+                    <label htmlFor="startPointStreet" className="block font-medium text-black text-base mb-2">
+                      Start Point Street
+                    </label>
+                    <input type="text" id="startPointStreet" name="startPointStreet" value={startPointStreet} onChange={(e) => setStartPointSteet(e.target.value)} placeholder='Street' className='border-2 rounded border-black px-5 w-full' required />
+                  </div>
+  
+                  <div className="mb-5">
+                    <label htmlFor="startPointCity" className="block font-medium text-black text-base mb-2">
+                      Start Point City
+                    </label>
+                    <input type="text" id="startPointCity" name="startPointCity" value={startPointCity} onChange={(e) => setStartPointCity(e.target.value)} placeholder='City' className='border-2 rounded border-black px-5 w-full' required />
+                  </div>
+                </div>
 
-                    <input type="text" id="startPoint" name="startPoint" 
-                    value={startPoint}
-                    onChange={(e) => setStartPoint(e.target.value)} 
-                    placeholder='From'
-                    className='border-2 rounded border-black px-4'
-                    required
-                    />
-
-                  </div> 
-
-                  <div className=" flex flex-col justify-between align-baseline xl:flex-row xl:flex-1">
-
-                    <label htmlFor="endPoint" 
-                    className="block font-medium text-black mr-[5px] text-base xl:mr-7">
+                <div className='grid grid-cols-1 xl:grid-cols-2 gap-8 mb-8'>
+                  <div className="mb-5">
+                    <label htmlFor="endPoint" className="block font-medium text-black text-base mb-2">
                       End Point
                     </label>
-
-                    <input type="text" id="endPoint" name="endPoint" 
-                    value={endPoint}
-                    onChange={(e) => setEndPoint(e.target.value)} 
-                    placeholder='To'
-                    className='border-2 rounded border-black px-4'
-                    required
-                    />
-
+                    <input type="text" id="endPoint" name="endPoint" value={endPoint} onChange={(e) => setEndPoint(e.target.value)} placeholder='Destination' className='border-2 rounded border-black px-5 w-full' required />
                   </div>
-                  
-                </div>
-
-                <div  className='flex justify-between align-baseline xl:justify-start'>  
-
-                  <div className="mb-6 flex justify-start align-baseline xl:mr-16">
-
-                    <label htmlFor="tripType" 
-                    className="block font-medium text-black text-base mr-8">
+  
+                  <div className="mb-5">
+                    <label htmlFor="startTime" className="block font-medium text-black text-base mb-2">
+                      Start Time
+                    </label>
+                    <input type="time" id="startTime" name="startTime" value={startTime} onChange={(e) => setStartTime(e.target.value)} className='border-2 rounded border-black px-5 w-full' required />
+                  </div>
+  
+                  <div className="mb-5">
+                    <label htmlFor="tripType" className="block font-medium text-black text-base mb-2">
                       Round Trip
                     </label>
-
-                    <input type="checkbox" id="roundtrip" name="roundtrip" 
-                    checked={tripType} onChange={(e) => setTripType(e.target.checked)} 
-                    className=''
-                    required
-                    />
-
+                    <input type="checkbox" id="tripType" name="tripType" checked={tripType} onChange={(e) => setTripType(e.target.checked)} className='' required />
+                  </div>
+  
+                  <div className="mb-5">
+                    <label htmlFor="estimatedDistance" className="block font-medium text-black text-base mb-2">
+                      Estimated Distance
+                    </label>
+                    <input type="number" id="estimatedDistance" name="estimatedDistance" value={estimatedDistance} onChange={(e) => setEstimatedDistance(e.target.value)} placeholder='Estimate Distance' className='border-2 rounded border-black px-5 w-full' required />
+                  </div>
+                </div>
+  
+              </div>
+            )}
+  
+            {step === 3 && (
+                <div className='mt-7'> 
+                    <div className='grid grid-cols-1 xl:grid-cols-2 gap-8'>
+  
+                        <div className="mb-5">
+                            <label htmlFor="cusName" className="block font-medium text-black text-base mb-2">
+                                Name
+                            </label>
+                            <input type="text" id="cusName" name="cusName" value={cusName} onChange={(e) => setCusName(e.target.value)} placeholder='Customer Name' className='border-2 rounded border-black px-5 w-full' required />
+                        </div>
+  
+                        <div className="mb-5">
+                            <label htmlFor="cusEmail" className="block font-medium text-black text-base mb-2">
+                                Email
+                            </label>
+                            <input type="email" id="cusEmail" name="cusEmail" value={cusEmail} onChange={(e) => setCusEmail(e.target.value)} placeholder='Customer Email' className='border-2 rounded border-black px-5 w-full' required />
+                        </div>
+  
+                        <div className="mb-5">
+                            <label htmlFor="cusMobile" className="block font-medium text-black text-base mb-2">
+                                Mobile
+                            </label>
+                            <input type="tel" id="cusMobile" name="cusMobile" value={cusMobile} onChange={(e) => setCusMobile(e.target.value)} placeholder='Customer Mobile No' className='border-2 rounded border-black px-5 w-full' required />
+                        </div>
+  
+                        <div className="mb-5">
+                            <label htmlFor="cusNic" className="block font-medium text-black text-base mb-2">
+                                Nic
+                            </label>
+                            <input type="text" id="cusNic" name="cusNic" value={cusNic} onChange={(e) => setCusNic(e.target.value)} placeholder='Customer NIC' className='border-2 rounded border-black px-5 w-full' required />
+                        </div>
+  
                     </div>
-
-                    <div className="mb-6 flex justify-between align-baseline xl:justify-start">
-
-                    <label htmlFor="distence" 
-                    className="block font-medium text-black mr-[5px] text-base xl:mr-7">
-                      Distence
-                    </label>
-
-                    <input type="number" id="distence" name="distence" 
-                    value={distence}
-                    onChange={(e) => setSetDistence(e.target.value)} 
-                    placeholder='Estimate Distence'
-                    className='border-2 rounded border-black px-4'
-                    required
-                    />
-
-                  </div>
-
                 </div>
-                
-
-                
-
-              </div>
-
-              {/* Customer Details */}
-              <div className='mt-7'> 
-                <div className=''> 
-                  <div className="mb-7 flex justify-start align-baseline xl:justify-start">
-
-                    <label htmlFor="cusName" 
-                    className="block mr-7 font-medium text-black text-base ">
-                      Name
-                    </label>
-
-                    <input type="text" id="cusName" name="cusName" 
-                    value={cusName}
-                    onChange={(e) => setCusName(e.target.value)} 
-                    placeholder='Customer Name'
-                    className='border-2 rounded border-black w-[100%] px-2 xl:px-4'
-                    required
-                    />
-
-                  </div>
-
-                  <div className="mb-7 flex jjustify-start align-baseline xl:justify-start">
-
-                    <label htmlFor="cusEmail" 
-                    className="block font-medium text-black mr-7 text-base xl:mr-7">
-                      Email
-                    </label>
-
-                    <input type="email" id="cusEmail" name="cusEmail" 
-                    value={cusEmail}
-                    onChange={(e) => setCusEmail(e.target.value)} 
-                    placeholder='Customer Email'
-                    className='border-2 rounded border-black w-[100%] px-2 xl:px-4'
-                    required
-                    />
-
-                  </div>
-
-                </div>
-
-                <div className='flex justify-between'>
-
-                  <div className="mb-5  flex flex-col justify-between align-baseline xl:flex-row xl:flex-1 xl:mr-14">
-
-                    <label htmlFor="cusMobile" 
-                    className="block font-medium text-black mr-[5px] text-base xl:mr-7">
-                      Mobile
-                    </label>
-
-                    <input type="tel" id="cusMobile" name="cusMobile" 
-                    value={cusMobile}
-                    onChange={(e) => setCusMobile(e.target.value)} 
-                    placeholder='Customer Mobile No'
-                    className='border-2 px-2 rounded border-black xl:px-4'
-                    required
-                    />
-
-                  </div>
-
-                  <div className="mb-5  flex flex-col justify-between align-baseline xl:flex-row xl:flex-1">
-
-                    <label htmlFor="cusNic" 
-                    className="block font-medium text-black mr-[5px] text-base xl:mr-7">
-                      Nic
-                    </label>
-
-                    <input type="text" id="cusNic" name="cusNic" 
-                    value={cusNic}
-                    onChange={(e) => setCusNic(e.target.value)} 
-                    placeholder='Customer NIC'
-                    className='border-2 px-2 rounded border-black xl:px-4
-                    required
-                    '
-                    />
-
-                  </div> 
-                  
-                </div>
-              </div>
-              
-
-
-            </div>
-          )}
-
+            )}
+  
             {/* Confirmation */}
-          {step === 3 && (
+          {step === 4 && (
             <div>
               <div className="mt-3 px-4">
                 <h2 className="text-2xl font-semibold text-center mb-4 underline ">Confirmation</h2>
@@ -651,20 +587,21 @@ const [vehicleRates, Verror, Vloading, VaxiosFetch] = useAxios();
                   <p className=' text-lg font-semibold leading-8'>Start Date : &nbsp;&nbsp; {startDate}</p>
                   <p className=' text-lg font-semibold leading-8'>End Date : &nbsp;&nbsp; {endDate}</p>
                   <p className=' text-lg font-semibold leading-8'>Vehicle Type : &nbsp;&nbsp; {vehicleType}</p>
-                  <p className=' text-lg font-semibold leading-8'>Vehicle Sub-Catagory : &nbsp;&nbsp; {vehicleSubcategory}</p>
                   <p className=' text-lg font-semibold leading-8'>Air Condition : &nbsp;&nbsp; {airCondition ? 'With Air Condition' : 'Without Air Condition'}</p>
                   <p className=' text-lg font-semibold leading-8'>No of Passengers : &nbsp;&nbsp; {passengerCount}</p>
                   <p className=' text-lg font-semibold leading-8'>Assigned Vehicle : &nbsp;&nbsp; {vehicle}</p>
+                  <p className=' text-lg font-semibold leading-8'>Assigned Vehicle Model : &nbsp;&nbsp; {vehicle}</p>
                   <p className=' text-lg font-semibold leading-8'>Assigned Driver : &nbsp;&nbsp; {driver}</p>
 
                 </div>
 
                 <div className='mr-[20px]'>
 
-                  <p className='text-lg font-semibold leading-8'>Start Point :&nbsp;&nbsp;{startPoint}</p>
+                  <p className='text-lg font-semibold leading-8'>Start Point :&nbsp;&nbsp;{startPointNo} {startPointStreet} {startPointCity}</p>
                   <p className=' text-lg font-semibold leading-8'>End Point : &nbsp;&nbsp; {endPoint}</p>
+                  <p className=' text-lg font-semibold leading-8'>Start Time : &nbsp;&nbsp; {startTime}</p>
                   <p className=' text-lg font-semibold leading-8'>Round Trip : &nbsp;&nbsp; {tripType ? 'Yes' : 'No'}</p>
-                  <p className=' text-lg font-semibold leading-8'>Distence : &nbsp;&nbsp; {distence}</p>
+                  <p className=' text-lg font-semibold leading-8'>Estimated Distance : &nbsp;&nbsp; {estimatedDistance}</p>
                   <p className=' text-lg font-semibold leading-8'>Customer Name : &nbsp;&nbsp; {cusName}</p>
                   <p className=' text-lg font-semibold leading-8'>Customer Email : &nbsp;&nbsp; {cusEmail}</p>
                   <p className=' text-lg font-semibold leading-8'>Customer Mobile : &nbsp;&nbsp; {cusMobile}</p>
@@ -676,8 +613,8 @@ const [vehicleRates, Verror, Vloading, VaxiosFetch] = useAxios();
             </div>
           )}
 
-            {/* Receipt */}
-          {step === 4 && (
+          {/* Receipt */}
+          {step === 5 && (
             <div>
               <div className="mt-3 px-4">
                 <h2 className="text-2xl font-semibold text-center mb-4 underline ">Receipt</h2>
@@ -686,7 +623,7 @@ const [vehicleRates, Verror, Vloading, VaxiosFetch] = useAxios();
               <div className=' xl:flex justify-between'>
                 <div className='mr-[20px]'>
 
-                  <p className=' text-lg font-semibold leading-8'>Estimated Distence : &nbsp;&nbsp;{distence} Km</p>          
+                  <p className=' text-lg font-semibold leading-8'>Estimated distance : &nbsp;&nbsp;{estimatedDistance} Km</p>          
                   <p className=' text-lg font-semibold leading-8'>Estimated Total : &nbsp;&nbsp;Rs. {estimatedTotal}</p>
                 </div>
 
@@ -700,35 +637,33 @@ const [vehicleRates, Verror, Vloading, VaxiosFetch] = useAxios();
                 </div>
             </div>
           )}
-
-          <div className={`flex ali mt-8 px-4 justify-between`}>
-            {step === 1 && (
-              <button type='button' className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md mr-4 place-" onClick={cancel}>
-              Cancel
-            </button>
-            )} 
-            {step !== 1 && (
-              <button type='button' className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md mr-4 place-" onClick={handlePrevStep}>
-                Previous
-              </button>
-            )}
-            {step !== 4 ? (
-              <button type='button' className="px-4 py-2 text-white bg-black rounded-md hover:bg-gray-800 focus:outline-none" onClick={handleNextStep}>
-                Next
-              </button>
-            ) : (
-              <button type='submit' className="px-4 py-2 text-white bg-green-500 rounded-md hover:bg-green-600 focus:outline-none" onClick={submit}>
-                Submit
-              </button>
-            )}
-            
-          </div>
-
-        </form>
-        
-      
-    </div>
+  
+            <div className="flex mt-8 px-4 justify-between">
+              {step === 1 && (
+                <button type='button' className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md mr-4" onClick={cancel}>
+                  Cancel
+                </button>
+              )}
+              {step !== 1 && (
+                <button type='button' className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md mr-4" onClick={handlePrevStep}>
+                  Previous
+                </button>
+              )}
+              {step !== 5 ? (
+                <button type='button' className="px-4 py-2 text-white bg-actionBlue rounded-md hover:bg-gray-800 focus:outline-none" onClick={handleNextStep}>
+                  Next
+                </button>
+              ) : (
+                <button type='submit' className="px-4 py-2 text-white bg-actionGreen rounded-md hover:bg-green-600 focus:outline-none" onClick={submit}>
+                  Submit
+                </button>
+              )}
+            </div>
+          </form>
+      </div>
   );
+  
+  
 };
 
 export default Form;

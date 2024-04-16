@@ -1,12 +1,13 @@
 const express = require('express')  
-//const Auth = require('../middleware/Auth')
-const {createUser,getAllUsers,deleteUser,getUserById,resetPassword,getDrivers} = require('../controllers/userController')
-//const verifyJWT = require("../middleware/verifyJWT")
+const {createUser,getAllUsers,getUserById,resetPassword,getDrivers,setUserAsDeleted,updateUserPersonal,deleteContact,updateContact} = require('../controllers/userController')
 const Auth =require('../middleware/Auth')
+
+
 const router = express.Router()
 
 const multer = require('multer');
-// Set up Multer storage configuration
+
+
 const storage = multer.diskStorage({
 
   destination: (req, file, cb) => {
@@ -24,19 +25,27 @@ const storage = multer.diskStorage({
   },
 });
 
-// Initialize Multer with the storage configuration
+
 const upload = multer({ storage });
 
 
 
-
+//GET
 router.get('/',Auth,getAllUsers)
 router.get('/drivers',getDrivers)
 router.get('/:id',getUserById)
-router.patch('/password/:id',resetPassword)
 
+//POST
 router.post('/',upload.fields([{name:'nicDocument',maxCount:1},{name:'licenceDoc',maxCount:1},{name:'empPhoto',maxCount:1}]),createUser)
-//router.delete('/',deleteUser)
+
+//PATCH
+router.patch('/password/:id',resetPassword)
+router.patch('/delete/:id',setUserAsDeleted)
+router.patch('/personal/:id',updateUserPersonal)
+router.patch('/addcontacts/:id',updateContact)
+
+//DELETE
+router.patch('/contacts/:id',deleteContact)
 
 
 

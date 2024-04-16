@@ -2,6 +2,7 @@ import useAxios from '@/hooks/useAxios';
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from "@/api/axios";
+import { ToastContainer, toast } from 'react-toastify';
 
 
 const ContractEditForm = () => {
@@ -18,6 +19,37 @@ const ContractEditForm = () => {
   const [InsuranceED,setInsuranceED] = useState('');
   const [paymentDate,setpaymentDate] = useState('');
 
+  const [openTemination,setOpenTermination] = useState(false);
+
+  const [delContract,ContError,ContLoading,delFetch] = useAxios()
+
+  const DeleteContract = async () => {
+    await delFetch({
+        axiosInstance: axios,
+        method: "DELETE",
+        url: `/contract/deleteContract/${contractID}`,  
+    })
+  }
+
+
+  const HandleTerminate = ()=>{
+    const confirm = window.confirm("This contract will be terminated")
+
+      if(confirm){
+    
+        DeleteContract().then(function (res){
+          console.log(res)
+          
+         })
+
+        
+      }else{
+        return;
+      }
+  }
+
+  
+    const [EstimatedDays,setEstimatedDays] = useState('');
 
   const [contractData, setContractData] = useState({
     Vehical_Type:"",
@@ -37,6 +69,7 @@ const ContractEditForm = () => {
     Payment_Plan: "",
     Payment_Date: "",
     Amount_Payed: "",
+    Status:"",
   });
 
   const [clientData, setclientData] = useState({
@@ -52,11 +85,74 @@ const ContractEditForm = () => {
   const HandleInput = (e)=>{
     const {name,value} = e.target;
 
+    if(name === "contract_SD" || name === "contract_ED"){
+      if(name === "contract_SD" && contractData.contract_ED){
+          const result = inRange(value,contractData.contract_ED)
+          if(result === 'INRANGE'){
+            setEstimatedDays(calculateDateDiff(new Date(value),new Date(contractData.contract_ED)))
+          }else{
+            setEstimatedDays(result)
+          }
+      }else if(name === "contract_ED" && contractData.contract_SD){
+          const result = inRange(contractData.contract_SD,value)
+          if(result === 'INRANGE'){
+            setEstimatedDays(calculateDateDiff(new Date(contractData.contract_SD),new Date(value)))
+          }else{
+            setEstimatedDays(result)
+          }
+      }
+  }
+
+
     setContractData({
         ...contractData,
         [name]:value
     })
   }
+
+  const calculateDateDiff = (startDate,endDate)=>{
+
+    const diffTime = Math.abs(endDate.getTime() - startDate.getTime())
+    var diffDays = Math.ceil(diffTime/(1000 * 60 * 60 * 24));
+
+    let output = [];
+
+    
+    if (diffDays >= 365) {
+        const diffYears = Math.floor(diffDays / 365);
+        output.push(`${diffYears} year${diffYears !== 1 ? 's' : ''}`);
+        diffDays -= diffYears * 365;
+    }
+
+    if (diffDays >= 30) {
+        const diffMonths = Math.floor(diffDays / 30);
+        output.push(`${diffMonths} month${diffMonths !== 1 ? 's' : ''}`);
+        diffDays -= diffMonths * 30;
+    }
+
+    if (diffDays > 0) {
+        output.push(`${diffDays} day${diffDays !== 1 ? 's' : ''}`);
+    }
+    
+    return output.join(' and ');
+}
+
+const inRange = (startDate,endDate) =>{
+  const tommorow = new Date();
+  tommorow.setDate(tommorow.getDate() + 1);
+  const minstartDate = tommorow.toISOString().split('T')[0];
+
+if(endDate < minstartDate){
+      return "Contract end date connot be lower than contract start date"
+  }else if(startDate > endDate){
+      return "contract start date cannot be greater than contract end date"
+  }else if(startDate === endDate){
+      return "contract end date should be one day after Contract start date"
+  }else{
+      return "INRANGE"
+  }
+}
+
 
   
   const [Contract, error, loading, axiosFetch] = useAxios()
@@ -80,14 +176,145 @@ const ContractEditForm = () => {
      }
   })
  }
+
+ useEffect(()=>{
+    if(!ContLoading){
+      if(ContError){
+        alert(ContError)
+      }else if(delContract.message === "contract succesfully set to terminated" ){
+        alert("Contract Terminated")
+        navigate('/Contract/Dashbored')
+      }else if(delContract.message === "contract does not exist" ){
+        alert("contract does not exist")
+      }
+    }
+  },[ContLoading])
+
+  console.log(contractData.contract_ED)
+  console.log(formatED)
+
+  useEffect(()=>{
+    if(!updLoading){
+      if(updateError){
+        alert(updateError)
+      }else if(updateData.message === "no contract found" ){
+        alert("No contract found")
+      }else if(updateData.message === "success" ){
+        if(openTemination){
+          alert("Contract succesfully Renewed")
+          navigate(`/viewContract/${contractID}`)
+        }else{
+        alert("Contract updated succesfully")
+        navigate(`/viewContract/${contractID}`)
+        }
+      }else if(updateData.message === "failed"){
+        alert(`No changes detected "Redirecting to contract page" `)
+        navigate(`/viewContract/${contractID}`)
+      }
+    }
+  },[updLoading])
+
  const HandleSubmit = async(e)=>{
-  e.preventDefault()
-  await updateContract()
-  navigate(`/viewContract/${contractID}`)
+
+  let compareED
+
+  if(contractData.contract_ED === formatED){
+    compareED = true
+  }else{
+    compareED = false
+  }
+
+  const tommorow = new Date();
+    tommorow.setDate(tommorow.getDate() + 1);
+    const minstartDate = tommorow.toISOString().split('T')[0];
+
+    const Insu_pov = /^[a-zA-Z]+(?: [a-zA-Z]+)*$/
+    const pol_num = /^[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*$/
+    const cov_num = /^\d+(\.\d+)?$/
+
+    e.preventDefault();
+    
+
+    if (!contractData.Vehical_Type) {
+        toast.error("Please select vehical type");
+        return;
+    }else if(!contractData.contract_ED){
+        toast.error("Invalid contract end date")
+        return;
+    }else if(contractData.contract_ED < minstartDate){
+        toast.error("Contract end date connot be lower than contract start date")
+        return;
+    }else if(new Date(contractData.contract_SD).toISOString().split('T')[0] === new Date(contractData.contract_ED ).toISOString().split('T')[0]){
+        toast.error("contract end date should be one day after Contract start date")
+        return;
+    }else if(!contractData.Vehical){
+        toast.error("please select vehical")
+        return;
+    }else if(!contractData.Insurance_Source){
+        toast.error("please select Insurance source")
+        return;
+    }else if(!contractData.Insurace_provider || !contractData.Insurace_provider.match(Insu_pov)){
+        toast.error("Invalid insurance provider")
+        return;
+    }else if(!contractData.Policy_Number  || !contractData.Policy_Number.match(pol_num)){
+        toast.error("Invalid policy number")
+        return;
+    }else if(!contractData.Coverage_Type){
+        toast.error("please select coverage type")
+        return;
+    }else if(!contractData.Coverage_Amount  || !contractData.Coverage_Amount.match(cov_num)){
+        toast.error("Invalid coverage amount")
+        return;
+    }else if(!contractData.Deductible  || !contractData.Deductible.match(cov_num)){
+        toast.error("Invalid detuctible amount")
+        return;
+    }else if(!contractData.Insurance_SD){
+        toast.error("Enter isurance start date")
+        return;
+    }else if(!contractData.Insurance_ED){
+        toast.error("Enter insurance end date")
+        return;
+    }else if(contractData.Insurance_ED < minstartDate){
+        toast.error("Insurance end date connot be lower than Insurance start date")
+        return;
+    }else if(contractData.Insurance_SD > contractData.Insurance_ED ){
+        toast.error("Insurance start date cannot be greater than Insurance end date")
+        return
+    }else if(contractData.contract_SD === contractData.Insurance_ED ){
+        toast.error("Insurance end date should be one day after Insurance start date")
+        return
+    }else if(!contractData.Payment_Amount  || !contractData.Payment_Amount.match(cov_num)){
+        toast.error("Invalid payment amount")
+        return;
+    }else if(!contractData.Payment_Plan){
+        toast.error("please select payment plan")
+        return;
+    }else if(!contractData.Payment_Date){
+        toast.error("please enter payment date")
+        return;
+    }else if(!contractData.Amount_Payed || !contractData.Amount_Payed.match(cov_num)){
+        toast.error("Invalid amount payed")
+        return;
+    }
+
+    let confirmMsg 
+
+    if(openTemination){
+      confirmMsg = "Renew contract"
+    }else{
+      confirmMsg = "Update contract ?"
+    }
+
+    const confirm = window.confirm(confirmMsg)
+
+    if(confirm){
+      await updateContract()
+    }
+  
 }
 
 
- console.log(updateData)
+ 
 
   useEffect(() => {
     if (Contract) {
@@ -109,6 +336,7 @@ const ContractEditForm = () => {
         Payment_Plan: Contract.Payment_Plan,
         Payment_Date: Contract.Payment_Date,
         Amount_Payed: Contract.Amount_Payed,
+        Status:Contract.Status,
       });
       if(Contract.contract_SD){
         setformatSD(new Date(Contract.contract_SD).toISOString().split('T')[0]);
@@ -124,6 +352,18 @@ const ContractEditForm = () => {
       }
       if(Contract.Payment_Date){
         setpaymentDate(new Date(Contract.Payment_Date).toISOString().split('T')[0])
+      }
+
+      if(Contract.contract_ED && Contract.contract_SD){
+        setEstimatedDays(calculateDateDiff(new Date(Contract.contract_SD),new Date(Contract.contract_ED)))
+      }
+
+      if(Contract.Status){
+        if(Contract.Status === "waiting for termination"){
+            setOpenTermination(true)
+        }else{
+            setOpenTermination(false)
+        }
       }
 
     if(Contract.clientID){
@@ -162,7 +402,6 @@ const ContractEditForm = () => {
 
   
   
-  console.log(contractData);
 
   const vehicals = [
     {
@@ -190,8 +429,10 @@ const ContractEditForm = () => {
     <div className='flex items-center justify-center mb-4'>
         <p className=' text-[50px] font-bold '>EDIT CONTRACT</p>
     </div>
-    <div className='bg-[#D9D9D9] w-[90%] h-fit rounded-lg py-8 flex justify-evenly'>
+    <ToastContainer/>
+    <div className='bg-[#D9D9D9] w-[90%] h-fit rounded-lg py-8 flex flex-col'>
     
+    <div className='flex justify-evenly'>
     <div>
     <div className=' w-fit h-fit  pb-8 rounded-xl'>
     <div>
@@ -209,7 +450,7 @@ const ContractEditForm = () => {
 
 
     <div className='flex flex-col gap-3'>
-    <div className='flex gap-28 mt-3'>
+    <div className='flex gap-12 mt-3'>
     <div>
         <p>Client email</p>
         <p className=' text-[#000ac2] font-semibold'>{clientData.email}</p>
@@ -246,8 +487,8 @@ const ContractEditForm = () => {
         <div>
         <div className='flex mt-3 gap-12'>
         <div className='flex flex-col gap-1'>
-            <label>Start date</label>
-            <input type='date' className='w-[150px] h-10 rounded-lg  bg-white border-none px-2' name='contract_SD' value={formatSD}  onChange={HandleInput} />
+            <label className=' text-red-500'>* Start date</label>
+            <p>{formatSD}</p>
         </div>
 
         <div className='flex flex-col gap-1'>
@@ -258,6 +499,16 @@ const ContractEditForm = () => {
         
         <div className='flex flex-col mt-3'>
         <p>Estimated duration</p>
+        <p className=' text-red-500 font-bold'>{EstimatedDays ? EstimatedDays : ''}</p>
+        </div>
+
+        <div className='flex flex-col gap-1'>
+            <label >Status</label>
+            <p>{contractData.Status}</p>
+        </div>
+
+        <div className={` ${openTemination ? "": "hidden" }`}>
+            <button onClick={HandleTerminate} className=" bg-red-600 px-5 py-2 rounded-xl">Terminate</button>
         </div>
         </div>
 
@@ -371,12 +622,25 @@ const ContractEditForm = () => {
             <p>Loading</p>
         </div>
     </div>
-    <button onClick={HandleSubmit} className=" bg-yellow-600 px-5 py-2 rounded-xl w-[100px] mt-4" >Submit</button>
     </div>
+    </div>
+    <div className="flex justify-end gap-4 mx-12">
+            <button
+              className=" bg-green-600 px-5 py-2 rounded-xl w-[120px] "
+              onClick={HandleSubmit}
+            >
+              Submit
+            </button>
+            <button
+              className=" bg-orange-600 px-5 py-2 rounded-xl w-[120px] "
+              onClick={() => {
+                navigate(`/viewContract/${contractID}`);
+              }}
+            >
+              Cancel
+            </button>
+          </div>
   
-
-
-    
     </div>
 </div>
   )

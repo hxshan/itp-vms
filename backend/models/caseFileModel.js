@@ -1,25 +1,142 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
-const Schema = mongoose.Schema
+const caseFileSchema = new mongoose.Schema(
+    {
 
-const caseFileSchema = new Schema({
-    caseTitle : {type:String,required:true},
-    caseType : {type:String,required:true},
-    caseDesc : {type:String,required:true},
-    caseStatus : {type:String,required:true},
-    casePriority : {type:String,required:true},
-    caseAssignedTo : {type:String,required:true},
-    caseAssignedBy : {type:String,required:true},
-    caseDueDate : {type:Date,required:true},
-    caseClosedDate : {type:Date,required:true},
-    caseFileImage : {type:String,required:true},
-    caseFileDoc : {type:String,required:true},
-    caseFileVideo : {type:String,required:true},
-    caseFileAudio : {type:String,required:true},
-    caseFileLocation : {type:String,required:true},
-    caseFileDate : {type:Date,required:true},
-},
+        caseType: {
+            type: String,
+            enum:["accident", "emergency", "other"],
+        },
+        caseTitle : {
+            type:String,
+            
+        },
+       
+        location : {
+            type:String,
+            
+        },
 
-{timestamps:true})
+        timeOfIncident:{
+            type:Date,
+            
+        },
 
-module.exports = mongoose.model('CaseFile',caseFileSchema)
+        
+
+        
+           
+            licencePlate : {
+                type: String,
+                
+            },
+            currentCondition : {
+                type: String,
+                
+            },
+    
+           
+                driverID: {
+                    type: String,
+                    
+                
+                },
+                 driverName: {
+                    type: String,
+                   
+                },
+                driverLicenceNumber: {
+                    type: String,
+                    
+                },
+                hire: {
+                type: mongoose.Schema.Types.ObjectId, 
+                ref: 'Hire',
+                },
+           
+                passengerCount: {
+                    type: Number,
+                    required: true
+                
+                },
+        
+            
+            status: {
+                type: String,
+                enum: ["completed", "incomplete"],
+                default: "incomplete"
+            },
+
+           
+              incidentDescription: {
+                    type: String,
+                   
+                },
+                severity: {
+                    type: String,
+                    enum: ["minor", "moderate" , "severe"],
+                    
+                },
+               
+                    injuriesDiscription : {
+                        type: String,
+                        
+                    
+                    },
+               
+        
+          
+            witnessesContactInformation: { 
+                    type: String 
+                },
+                witnessesStatement: { 
+                    type: String 
+                },
+          
+
+            
+                emergencyServicesContacted: { 
+                   type: String,
+                   enum:["Yes", "No"],
+                },
+                emergencyServicesResponseTime: { 
+                    type: String 
+                },
+                emergencyServicesActionsTaken: { 
+                    type: String 
+                },
+            
+
+            photographicEvidence: {
+                type: String,
+            },
+
+            
+               
+                insuranceCompaniesContactInfo: { 
+                    type: String 
+                },
+                insuranceStatus: {
+                    type: String,
+                    enum: ["pending", "completed"],
+                    default: "pending"
+                    
+                },
+        
+
+            policeReport: {
+                type: String, // link to the document
+            }
+
+        },
+    
+        
+       
+    
+    {
+        timestamps:{ currentTime: () => Date.now() + 5.5 * 60 * 60 * 1000 }
+    }
+
+);
+ const CaseFile = mongoose.model("CaseFile", caseFileSchema);
+ module.exports = CaseFile;

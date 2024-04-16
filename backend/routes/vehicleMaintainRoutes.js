@@ -1,10 +1,11 @@
 const express = require('express')
 
-const { createmaintain ,getallmaintains, getonemaintain, editmaintain , deletemaintain } = require('../controllers/vehicemaintainController')
+const { createmaintain ,getallmaintains, getonemaintain, editmaintain , deletemaintain, driverMaintenanceRequest } = require('../controllers/vehicemaintainController')
 
 const router = express.Router()
 
 router.post('/createmainform', createmaintain)
+router.post('/driverMaintenanceRequest',driverMaintenanceRequest)
 router.get('/allmaintains', getallmaintains)
 router.get('/:id',getonemaintain)
 router.put('/:id', editmaintain)

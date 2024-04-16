@@ -87,7 +87,7 @@ const UserProfile = () => {
                 readOnly={true}
                 value={data?.firstName||''}
                 name="firstName"
-                className="outline-none border py-1 px-1 bg-gray-100 border-black rounded-md"
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-200"
               />
             </div>
             <div className="w-full flex flex-col">
@@ -97,7 +97,7 @@ const UserProfile = () => {
                 value={data?.lastName||''}
                 readOnly={true}
                 name="lastName"
-                className="outline-none border py-1 px-1 bg-gray-100 border-black rounded-md"
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-200"
               />
             </div>
           </div>
@@ -109,7 +109,7 @@ const UserProfile = () => {
                 value={data?.email||''}
                 readOnly={true}
                 name="email"
-                className="outline-none border py-1 px-1 bg-gray-100 border-black rounded-md"
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-200"
               />
             </div>
             <div className="w-full flex flex-col">
@@ -119,7 +119,7 @@ const UserProfile = () => {
                 value={data?.phoneNumber||''}
                 readOnly={true}
                 name="phoneNumber"
-                className="outline-none border py-1 px-1 bg-gray-100 border-black rounded-md"
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-200"
               />
             </div>
           </div>

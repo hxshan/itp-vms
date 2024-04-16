@@ -1,7 +1,7 @@
 import axios from '@/api/axios';
 import useAxios from "@/hooks/useAxios";
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 
 const EditForm = ({ setShowEditForm, viewHireData }) => {
@@ -73,10 +73,104 @@ const EditForm = ({ setShowEditForm, viewHireData }) => {
 
       //axios.post(`http://localhost:3000/api/hire/edit/${viewHireData._id}`, editedData)
     }
+
+    if (hireStatus === "Active") {
+      // Create income object
+      console.log('cameeee Data:');
+      const incomeData = {
+        date: new Date(),
+        vehicle: viewHireData.vehicle, // Assuming viewHireData contains vehicle details
+        recordedBy: 'YourUserId', // Change to the actual recorded user ID
+        source: 'Hire',
+        hirePayment: {
+          customerName: viewHireData.cusName,
+          hirePaymentType: 'Advance', // Assuming it's an advance payment
+          hire: viewHireData._id,
+        },
+        description: 'Income generated from active hire',
+        amount: 10000,
+        paymentMethod: 'Cash', // Example payment method
+        status: 'Pending', // Income status
+        comments: 'Income generated automatically from active hire',
+      };
+
+      // Send the income data to create income object
+       axios.post('http://localhost:3000/api/income', incomeData);
+    }
+
   
   };
 
-  if(loading){
+  
+
+  //Fetch Vehicle Data
+  const [vehiclesData, vehiclesError, vehiclesLoading, axiosFetchVehicles] = useAxios()
+
+  const [vehcleTypes, setVehcleTypes] = useState(["Car", "Van" , "Bus", "Plane"])
+  
+
+  const fetchVehicleDetails = async () => {
+    axiosFetchVehicles({
+          axiosInstance: axios,
+          method: "GET",
+          url: "/vehicle/",
+      });
+  };
+
+  if(vehiclesError){
+    return(
+      <p>Can not Vehicle Fetch Data</p>
+    )
+  }
+
+  //Filter Vehicles
+  const [filteredVehicles, setFilteredVehicles] = useState([]);
+  
+  const filterVehicles = () => {
+    console.log("Filter Vehicles")
+
+    console.log("Selected Vehicle : " + vehicleType)
+    const selectedVehicles = vehiclesData.vehicles.filter((vehicle) => vehicle.category.toLowerCase() === vehicleType.toLowerCase());
+    console.log(selectedVehicles)
+
+    setFilteredVehicles(selectedVehicles); 
+    if(selectedVehicles.length === 0 ){
+      console.log("No vehicles Available")
+      alert("No vehicles Available")
+    }
+
+    if(vehiclesError){
+    return(
+      <p>Can not Fetch Data</p>
+    )
+  }
+
+
+  }
+
+  //Fetch Drivers
+  const [DriversData, DriversError, DriversLoading, axiosFetchDrivers] = useAxios()
+  //const [availableDrivers, setavailableDrivers] = useState(["Chamara" , "Jonny", "Danny", "Chanchala"])
+
+  const filterDrivers = () => {
+    console.log('Filter Drivers')
+    axiosFetchDrivers({
+      axiosInstance: axios,
+      method: "GET",
+      url: "/user/drivers",
+  });
+  }
+
+  if(DriversError) {
+    <p>Can not Fetch Driver Data</p>
+  }
+
+  useEffect(() => {
+    filterVehicles()
+    filterDrivers()
+  })
+
+  if(loading || vehiclesLoading || DriversLoading){
     return(
       <h1>Loading ...</h1>
     )

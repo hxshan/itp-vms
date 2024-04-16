@@ -4,6 +4,8 @@ import useAxios from "@/hooks/useAxios";
 import EditHireRates from "@/components/hires/EditHireRates";
 import AddHireRate from '@/components/hires/AddHireRate'
 
+import { ClipLoader } from "react-spinners";
+
 const HireRates = () => {
     const [rates, error, loading, axiosFetch] = useAxios();
     const [editRates, setEditRates] = useState(false);
@@ -30,11 +32,6 @@ const HireRates = () => {
         return <p>Cannot Fetch Data</p>;
     }
 
-    if (loading) {
-        return <p>Loading...</p>;
-    }
-
-
     const handleEdit = (id) => {
         const selected = rates.find((rate) => rate._id === id)
         setEditHireData(selected)
@@ -45,6 +42,17 @@ const HireRates = () => {
         setShowAddForm(true);
     };
 
+    if (loading) {
+        return (
+            <div className="flex justify-center items-center h-screen">
+              <div className="sweet-loading">
+                <ClipLoader color="#10971D" loading={true}  size={50} />
+              </div>
+            </div>
+          );
+    }
+
+
     return (
         <div className="w-full h-full flex flex-col px-2 py-[20px] justify-center align-center xl:px-[60px] xl:py-[50px] ">
             <div className="text-center pt-[10px] pb-8 border-b-2 border-[#37A000] ">
@@ -53,7 +61,7 @@ const HireRates = () => {
 
             <div className="flex justify-end my-5">
                 <button
-                className="px-2 py-1 bg-[#D4D800] text-white rounded-md mr-2"
+                className="px-2 py-1 bg-actionBlue text-white rounded-md mr-2"
                 onClick={handleAddForm}
                 >
                     Add
@@ -67,6 +75,8 @@ const HireRates = () => {
                             <th className="px-4 py-2">Vehicle Category</th>
                             <th className="px-4 py-2">Base Rate</th>
                             <th className="px-4 py-2">Additional Rate</th>
+                            <th className="px-4 py-2">Base Rate(AC)</th>
+                            <th className="px-4 py-2">Additional Rate(AC)</th>
                             <th className="px-4 py-2">Action</th>
                         </tr>
                     </thead>
@@ -76,9 +86,11 @@ const HireRates = () => {
                                 <td className="px-4 py-2">{rate.vehicleCatagory}</td>
                                 <td className="px-4 py-2"> {rate.baseRate} </td>
                                 <td className="px-4 py-2"> {rate.additionalRate} </td>
+                                <td className="px-4 py-2"> {rate.acBaseRate} </td>
+                                <td className="px-4 py-2"> {rate.acAdditionalRate} </td>
                                 <td className="px-4 py-4 ">
                                     <button
-                                        className="px-2 py-1 bg-[#D4D800] text-white rounded-md mr-2"
+                                        className="px-2 py-1 bg-actionGreen text-white rounded-md mr-2"
                                         onClick={() => handleEdit(rate._id)}
                                     >
                                         Edit

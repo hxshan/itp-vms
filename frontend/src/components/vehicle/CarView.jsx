@@ -2,7 +2,7 @@ import React from 'react'
 
 const CarView = ({formData}) => {
   return (
-    <div className='space-y-8'>
+    <div className='space-y-8 p-8'>
         <h1 className="text-xl font-bold">View Car Details</h1>   
              
             <div className='flex flex-row'>

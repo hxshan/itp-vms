@@ -3,6 +3,9 @@ import { useNavigate } from "react-router-dom";
 import useAxios from "@/hooks/useAxios";
 import axios from "@/api/axios";
 import { ToastContainer, toast } from 'react-toastify';
+import { formatVal } from "./constants";
+
+
 
 const AddClient = () => {
   const navigate = useNavigate();
@@ -31,6 +34,18 @@ const AddClient = () => {
 
 
   const [client, error, isLoading, FetchClient] = useAxios();
+
+  useEffect(()=>{
+    if(!isLoading){
+      if(error){
+        alert(error)
+      }else if(client.message === "client created succesfully" ){
+        navigate('/client')
+      }else{
+        console.log(client)
+      }
+    }
+  },[isLoading])
 
   const handleInput = (e) => {
     const { name, value } = e.target;
@@ -70,18 +85,12 @@ const AddClient = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const emailReg=/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
-    const nameReg = /^[a-zA-Z]+$/;
-    const phoneReg = /^\d{10}$/;
-    const nicReg = /^\d{12}$/;
-    const licenseReg = /^[a-zA-Z0-9]+$/;
-    const regNumReg = /^[a-zA-Z0-9]+$/;
-    const taxNumReg = /^[a-zA-Z0-9]+$/;
+    
 
-    if (!clientData.firstName || !clientData.firstName.match(nameReg)) {
+    if (!clientData.firstName || !clientData.firstName.match(formatVal.nameReg)) {
         toast.error("Invalid First Name");
         return;
-    } else if (!clientData.lastName || !clientData.lastName.match(nameReg)) {
+    } else if (!clientData.lastName || !clientData.lastName.match(formatVal.nameReg)) {
         toast.error("Invalid Last Name");
         return;
     } else if (!clientData.gender) {
@@ -103,16 +112,16 @@ const AddClient = () => {
             return;
         }
     }
-    if (!clientData.phoneNumber || !clientData.phoneNumber.match(phoneReg)) {
+    if (!clientData.phoneNumber || !clientData.phoneNumber.match(formatVal.phoneReg)) {
         toast.error("Invalid Phone number");
         return;
-    } else if (!clientData.nicNumber || !clientData.nicNumber.match(nicReg)) {
+    } else if (!clientData.nicNumber || !clientData.nicNumber.match(formatVal.nicReg)) {
         toast.error("Invalid NIC number");
         return;
-    } else if (!clientData.email || !clientData.email.match(emailReg)) {
+    } else if (!clientData.email || !clientData.email.match(formatVal.emailReg)) {
         toast.error("Invalid Email Address");
         return;
-    } else if (clientData.licenceNumber && !clientData.licenceNumber.match(licenseReg)) {
+    } else if (clientData.licenceNumber && !clientData.licenceNumber.match(formatVal.licenseReg)) {
         toast.error("Invalid license number");
         return;
     } else if (!clientData.Address) {
@@ -121,23 +130,23 @@ const AddClient = () => {
     } else if (!clientData.Comp_Available) {
         toast.error("Choose Company Availability");
         return;
-    } else if (clientData.Comp_Available) {
+    } else if (!clientData.Comp_Available) {
         if (!clientData.Comp_Name) {
             toast.error("Enter Company Name");
             return;
-        } else if (!clientData.Reg_Num || !clientData.Reg_Num.match(regNumReg)) {
+        } else if (!clientData.Reg_Num || !clientData.Reg_Num.match(formatVal.regNumReg)) {
             toast.error("Invalid Registration number");
             return;
-        } else if (!clientData.Tax_Num || !clientData.Tax_Num.match(taxNumReg)) {
+        } else if (!clientData.Tax_Num || !clientData.Tax_Num.match(formatVal.taxNumReg)) {
             toast.error("Invalid Tax number");
             return;
         } else if (!clientData.Legal_struc) {
             toast.error("Please select Legal Structure");
             return;
-        } else if (!clientData.Comp_Email || !clientData.Comp_Email.match(emailReg)) {
+        } else if (!clientData.Comp_Email || !clientData.Comp_Email.match(formatVal.emailReg)) {
             toast.error("Invalid Company email");
             return;
-        } else if (!clientData.Comp_Phone || !clientData.Comp_Phone.match(phoneReg)) {
+        } else if (!clientData.Comp_Phone || !clientData.Comp_Phone.match(formatVal.phoneReg)) {
             toast.error("Invalid Company Phone number");
             return;
         } else if (!clientData.Comp_Address) {
@@ -148,7 +157,7 @@ const AddClient = () => {
 
 
     
-
+      
          await FetchClient({
           axiosInstance: axios,
           method: "POST",
@@ -156,7 +165,11 @@ const AddClient = () => {
           requestConfig: {
             data: { ...clientData },
           },
-        });
+        })
+
+        
+
+        
 
   };
 

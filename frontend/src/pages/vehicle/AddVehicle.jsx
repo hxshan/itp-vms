@@ -100,11 +100,11 @@ const AddVehicle = () => {
           <p className="flex flex-col items-center justify-center h-screen text-center">Loading... Please check your internet connection.</p>
         ) : (
 
-        <div className="place-content-center mt-8 bg-cover bg-center bg-white ">
+        <div className="place-content-center mt-8 bg-cover bg-center">
 
             <div className='flex flex-row justify-between'>
             <h1 className="text-2xl font-bold">Add Vehicle Details</h1>
-            <button className='px-3 py-1 rounded-md bg-blue-500 text-white text-sm text-bold' onClick={() => navigate('/vehicle')}>Dashboard</button>
+            <button className='px-3 py-1 rounded-md bg-actionBlue text-white text-sm text-bold' onClick={() => navigate('/vehicle')}>Dashboard</button>
             </div>
 
             <form className="space-y-3 m-1 mt-5 p-4  pad shadow-xl bg-white rounded " onSubmit={handleSubmit}>
@@ -133,7 +133,7 @@ const AddVehicle = () => {
             </div>   
             </form>
             {formState.category && (
-                <form className="mx-1 mt-5 px-8 pt-6 pb-8 shadow-xl bg-white rounded pad" onSubmit={handleSubmit}>
+                <form className="mx-1 mt-5 mb-10 px-8 pt-6 pb-8 shadow-xl bg-white rounded pad" onSubmit={handleSubmit}>
                     
                     {/* Render appropriate form based on selected category */}
                     {formState.category === 'car' && <CarForm formState={formState} setFormState={setFormState} />}
@@ -149,12 +149,12 @@ const AddVehicle = () => {
                         </div>
 
                         <div className='m-0 pb-1'>
-                            <button className=" mx-2 bg-red-600 py-2 px-6 rounded-md text-white font-bold mt-2" onClick={resetForm}>Reset</button>
-                            <button className="mx-2 bg-blue-600 py-2 px-6 rounded-md text-white font-bold mt-2" >Add vehicle</button>
+                            <button className=" mx-2 bg-actionRed py-2 px-6 rounded-md text-white font-bold mt-2" onClick={resetForm}>Reset</button>
+                            <button className="mx-2 bg-actionBlue py-2 px-6 rounded-md text-white font-bold mt-2" >Add vehicle</button>
                         </div>
                         
                     </div>
-                    {error &&<p className='mt-3 p-3 font-medium text-sm text-white bg-red-500 rounded-md pad'>{error}</p>}
+                    {error &&<p className='mt-3 p-3 font-medium text-sm text-white bg-actionBlue rounded-md pad'>{error}</p>}
                 </form>      
             )}
 

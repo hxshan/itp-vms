@@ -17,10 +17,6 @@ const hireSchema = new mongoose.Schema({
     type: String, 
     required: true 
 },
-  vehicleSubcategory: { 
-    type: String, 
-    required: true 
-},
   passengerCount: { 
     type: Number, 
     required: true 
@@ -30,29 +26,55 @@ const hireSchema = new mongoose.Schema({
     required: true 
 },
   vehicle: { 
-    type: String, 
-    required: true 
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: 'Vehicles',
 },
   driver: { 
-    type: String, 
-    required: true 
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: 'User', 
 },
   startPoint: { 
-    type: String, 
-    required: true 
+    no: {
+      type: String,
+      required: true
+    },
+    street: {
+      type: String,
+      required: true
+    },
+    city: {
+      type: String,
+      required: true
+    }
 },
   endPoint: { 
     type: String, 
     required: true 
 },
+  startTime: { 
+    type: String, 
+    required: true 
+  },
+  endTime: { 
+    type: String, 
+    default: null 
+  },
   tripType: { 
     type: Boolean, 
     required: true 
 },
-  distence: { 
+  estimatedDistance: { 
     type: Number, 
     required: true 
 },
+  actualDistance: { 
+    type: Number, 
+    default: null
+  },
+  actualTimeTaken: { 
+    type: String, 
+    default: null
+  },
   cusName: { 
     type: String, 
     required: true 
@@ -75,11 +97,28 @@ const hireSchema = new mongoose.Schema({
 },
   finalTotal: {
     type: Number, 
+    default: null
 },
   advancedPayment: {
     type : Number,
-    required: true
+    required: true 
 },
+  intialOdometerReading: {
+    type: Number, 
+    default: null
+},
+  intialOdometerPic: {
+    type:String, 
+    default: null
+},
+  finalOdometerReading: {
+  type: Number, 
+  default: null
+},
+  finalOdometerPic: {
+    type:String, 
+    default: null
+}
 });
 
 module.exports = mongoose.model('Hire', hireSchema);

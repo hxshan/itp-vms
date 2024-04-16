@@ -1,6 +1,6 @@
 import React from 'react'
 
-const BusEditForm = () => {
+const BusEditForm = ({ formData, handleInputChange }) => {
   return (
     <div className='space-y-8'>
     <h1 className="text-xl font-bold">Edit Bus Details</h1>   

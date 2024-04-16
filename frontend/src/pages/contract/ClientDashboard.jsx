@@ -10,6 +10,7 @@ const ClientDashboard = () => {
 
   const [allClients,setallClients] = useState([]);
   const [Search,setSearch] = useState("");
+  const [searchError,setSearchError] = useState('')
 
   const titles = [
     { name: "Client NIC", width: "w-[200px]" },
@@ -39,6 +40,21 @@ const ClientDashboard = () => {
       setSearch(value);
     }
     }
+
+    const handleSearch = () => {
+      const filteredContracts = allClients.filter(client =>
+          client.nicNumber.toLowerCase().includes(Search.toLowerCase()) ||
+          client.firstName.toLowerCase().includes(Search.toLowerCase()) ||
+          client.lastName.toLowerCase().includes(Search.toLowerCase()) ||
+          client.email.toLowerCase().includes(Search.toLowerCase())
+      );
+    
+      if (filteredContracts.length > 0) {
+        setSearchError(`${filteredContracts.length} items found.`);
+      } else {
+        setSearchError("No items found.");
+      }
+    };
 
  
 
@@ -70,7 +86,7 @@ const ClientDashboard = () => {
         <button className=" bg-red-500 px-5 py-2 rounded-xl " onClick={()=>{navigate(`/addClient`)}} >Add client</button>
         </div>
 
-        <div className="flex items-center justify-center mb-10">
+        <div className="flex items-center justify-center mb-5">
         <input
           type="text"
           className="bg-slate-400 px-4 py-3 rounded-l-md focus:outline-none w-[500px] placeholder-gray-950 text-[18px]"
@@ -80,12 +96,15 @@ const ClientDashboard = () => {
         />
         <button
           className="px-4 py-3 bg-slate-500 text-white rounded-r-md hover:bg-slate-600 focus:outline-none text-[18px]"
-          
+          onClick={handleSearch}
         >
           Search
         </button>
-
         
+      </div>
+
+      <div className=" text-blue-500 font-semibold mb-5">
+        <p>{searchError ? searchError : "Search something"}</p>
       </div>
      
 
@@ -103,15 +122,17 @@ const ClientDashboard = () => {
       </div>
 
       <div className="flex flex-col items-center w-full ">
-        {allClients
+        {allClients && allClients.length > 0 ? allClients
           .filter((item) => {
             const searchLowerCase = Search.toLowerCase();
             const firstNameLowerCase = item.firstName.toLowerCase();
+            const lastNameLowerCase = item.lastName.toLowerCase();
             const nicNumber = item.nicNumber.toString();
             const email = item.email.toLowerCase();
             return (
               searchLowerCase === "" ||
               firstNameLowerCase.includes(searchLowerCase) ||
+              lastNameLowerCase.includes(searchLowerCase) ||
               nicNumber.includes(searchLowerCase) ||
               email.includes(searchLowerCase)
             );
@@ -127,18 +148,20 @@ const ClientDashboard = () => {
               </p>
               <p className="w-[200px]">{item.email}</p>
               <p className="w-[200px]">{item.phoneNumber}</p>
-              <p className="w-[200px]">null</p>
+              <p className="w-[200px] text-green-500 font-bold">{item.status === "active" ? "Active" : "Offline"}</p>
 
               <div className="flex justify-center items-center w-[200px] gap-3  ">
-                <button className=" bg-yellow-300 px-5 py-2 rounded-xl" >
+                <button className=" bg-yellow-300 px-5 py-2 rounded-xl" onClick={()=>{navigate(`/viewClient/${item._id}`)}} >
                   View
                 </button>
-                <button className=" bg-green-600 px-5 py-2 rounded-xl">
+                <button className=" bg-green-600 px-5 py-2 rounded-xl" onClick={()=>{navigate(`/EditClient/${item._id}`)}}>
                   Edit
                 </button>
               </div>
             </div>
-          ))}
+          )):(<div className='mt-10 text-red-500 font-bold'>
+            <p>No clients available</p>
+          </div>)}
       </div>
 
 

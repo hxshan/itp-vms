@@ -12,7 +12,7 @@ const contractSchema = new Schema({
     },
     Vehical:{
         type:mongoose.Schema.Types.ObjectId,
-        ref:'Vehical' 
+        ref:'Vehicles' 
     },
     contract_SD:{
         type:Date,
@@ -27,16 +27,16 @@ const contractSchema = new Schema({
         type:String,
     },
     Policy_Number:{
-        type:Number,
+        type:String,
     },
     Coverage_Type:{
         type:String,
     },
     Coverage_Amount:{
-        type:Number,
+        type:String,
     },
     Deductible:{
-        type:Number,
+        type:String,
     },
     Insurance_SD:{
         type:Date,
@@ -48,7 +48,7 @@ const contractSchema = new Schema({
         type:String,
     },
     Payment_Amount:{
-        type:Number,
+        type:String,
     },
     Payment_Plan:{
         type:String,
@@ -57,8 +57,11 @@ const contractSchema = new Schema({
         type:Date,
     },
     Amount_Payed:{
-        type:Number,
+        type:String,
     },
+    Status:{
+        type:String,
+    }
 })
 
 module.exports = mongoose.model('Contract',contractSchema)

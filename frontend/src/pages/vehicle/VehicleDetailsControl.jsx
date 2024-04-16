@@ -78,24 +78,6 @@ fetchData();
     });
   };
 
-  const handleUpdateVehicle = async (e) => {
-    e.preventDefault();
-    if (confirm("Are you sure you want to update the following vehicle?")) {
-      try {
-        await axios.patch(`/vehicle/${id}`, formData);
-
-        alert('Vehicle updated successfully!');
-        
-        navigate('/vehicle')
-
-        setData(formData);
-
-      } catch (error) {
-        toast.error('Failed to update vehicle. Please try again later.');
-      }
-    }
-  };
-
   const renderFormComponent = () => {
     switch (formData.category) {
       case 'car':
@@ -118,6 +100,54 @@ fetchData();
   };
 
 
+  const handleUpdateVehicle = async (e) => {
+    e.preventDefault();
+    const { vehicleType: currentVehicleType, vehicleRegister: currentVehicleRegister } = data;
+    const { vehicleType, vehicleRegister } = formData;
+    
+  
+    const vehicleTypeChanged = vehicleType !== currentVehicleType;
+    const vehicleRegisterChanged = vehicleRegister !== currentVehicleRegister;
+  
+ 
+    if (vehicleTypeChanged && !vehicleType) {
+      toast.error('Please provide vehicle type.');
+      return;
+    }
+  
+    if (vehicleRegisterChanged && !vehicleRegister) {
+      toast.error('Please provide vehicle register.');
+      return;
+    }
+  
+    try {
+      if (vehicleTypeChanged || vehicleRegisterChanged) {
+        const response = await axios.get(`/vehicle/check?vehicleType=${vehicleType}&vehicleRegister=${vehicleRegister}`);
+        if (response.data.exists) {
+          toast.error('Vehicle type and register already exist in the database.');
+          return;
+        }
+      }
+    } catch (error) {
+      console.error('Error checking vehicle existence:', error);
+      toast.error('Failed to check vehicle existence. Please try again later.');
+      return;
+    }
+  
+    if (confirm("Are you sure you want to update the following vehicle?")) {
+      try {
+        await axios.patch(`/vehicle/${id}`, formData);
+        alert('Vehicle updated successfully!');
+        navigate('/vehicle');
+        setData(formData);
+      } catch (error) {
+        toast.error('Failed to update vehicle. Please try again later.');
+      }
+    }
+  };
+  
+
+
   return (
     <div className="space-y-3 m-1 mt-5 mb-10 p-4  pad shadow-xl bg-white rounded ">
       <ToastContainer />
@@ -127,12 +157,12 @@ fetchData();
             
              {renderFormComponent()} 
             <div className="flex flex-row justify-end">
-            <button className="mx-2 bg-blue-600 py-2 px-6 rounded-md text-white font-bold mt-2" type="submit">Update</button>
+            <button className="mx-2 bg-actionBlue py-2 px-6 rounded-md text-white font-bold mt-2" type="submit">Update</button>
             </div> 
             
           </form>
           <div className="flex flex-row justify-start">
-            <button className="mx-2 bg-red-600 py-2 px-4 rounded-md text-white text-sm font-bold mt-2" type="button" onClick={handleCancel}>Cancel</button>
+            <button className="mx-2 bg-actionRed py-2 px-4 rounded-md text-white text-sm font-bold mt-2" type="button" onClick={handleCancel}>Cancel</button>
           </div>
         </>
       )}

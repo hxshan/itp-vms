@@ -1,8 +1,10 @@
 import React from 'react'
+import PieChart from "../../components/vehicle/PieChart"
+
 
 const VehReport = () => {
   return (
-    <div>VehReport</div>
+    <PieChart />
   )
 }
 
