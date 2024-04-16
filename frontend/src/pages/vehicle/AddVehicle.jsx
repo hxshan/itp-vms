@@ -17,6 +17,7 @@ const AddVehicle = () => {
         vehicleRegister: '',
         vehicleModel: '',
         vehicleManuYear: '',
+        fuelType: '',
         engineCap: '',
         lastMileage: '',
         vehicleColour: '',

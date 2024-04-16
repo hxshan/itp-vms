@@ -21,6 +21,7 @@ const SummaryTable = ({ category, filteredData }) => {
             <th className='border border-white p-2'>Vehicle Type</th>
             <th className='border border-white p-2'>Vehicle Model</th>
             <th className='border border-white p-2'>Vehicle Register</th>
+            <th className='border border-white p-2'>Vehicle Fuel Type</th>
             <th className='border border-white p-2'>Add Date</th>
             <th className='border border-white p-2'>last Updated Date</th>
           </tr>
@@ -31,6 +32,7 @@ const SummaryTable = ({ category, filteredData }) => {
               <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{vehicle.vehicleType}</td>
               <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{vehicle.vehicleModel}</td>
               <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{vehicle.vehicleRegister}</td>
+              <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{vehicle.fuelType}</td>
               <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{new Date(vehicle.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' })}</td>
               <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{new Date(vehicle.updatedAt).toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' })}</td>
             </tr>
