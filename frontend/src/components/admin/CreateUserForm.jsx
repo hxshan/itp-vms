@@ -41,30 +41,30 @@ const CreateUserForm = () => {
     emergencyName: "",
     emergencyContact: "",
   };
-
+const personal={
+  firstName: "",
+  middleName: "",
+  lastName: "",
+  gender: "",
+  dob:"",
+  phoneNumber:"",
+  nicNumber: "",
+  role: "",
+  department: "",
+  jobTitle:"",
+  empDate: "",
+  baseSal: "",
+  licenceNum: "",
+  status: "",
+  email: "",
+  password: "",
+}
 
   //states
   const [roles, setRoles] = useState([]);
   const [isDriver, setIsDriver] = useState(null);
 
-  const [personalInfo, setPersonalInfo] = useState({
-    firstName: "",
-    middleName: "",
-    lastName: "",
-    gender: "",
-    dob:"",
-    phoneNumber:"",
-    nicNumber: "",
-    role: "",
-    department: "",
-    jobTitle:"",
-    empDate: "",
-    baseSal: "",
-    licenceNum: "",
-    status: "",
-    email: "",
-    password: "",
-  });
+  const [personalInfo, setPersonalInfo] = useState({...personal});
 
   const[nicDocument,setNicDocument]=useState(null);
   const[licenceDoc,setLicenceDocument]=useState(null);
@@ -145,16 +145,15 @@ const CreateUserForm = () => {
         'Content-Type': 'multipart/form-data',
       },
     });
-
-    if(!error){  
+    console.log('ran')
+    if(!usererror){  
       Swal.fire({
         title: "Success!",
         text: "A new user has been created",
         icon: "success"
-      });
-      setReload(reload+1)
+      });  
     }
-
+    setPersonalInfo(personal)
   }
 
   const AddContact = () => {

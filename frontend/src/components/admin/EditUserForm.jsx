@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
 import{ ClockLoader } from 'react-spinners'
+import Swal from "sweetalert2";
+import { data } from "autoprefixer";
 
 const EditUserForm = () => {
 
@@ -12,6 +14,7 @@ const EditUserForm = () => {
   const [roleData,roleError, roleloading, axiosFetch] = useAxios()
   const [user,usererror, userloading, useraxiosFetch,axiosupdatedFetch] = useAxios()
   const navigate = useNavigate()
+  const [reload,setReload]=useState(0)
   const {id} = useParams()
   
 
@@ -68,8 +71,8 @@ const getRoleData = async()=>{
       })
     }
     if(user && Object.keys(user).length !== 0){
-  
-        //let formatedDob=user.dob.toISOString().split('T')[0]
+      console.log(user)
+      
         setPersonalInfo({
             firstName:user.firstName,
             middleName: user.middleName,
@@ -78,7 +81,7 @@ const getRoleData = async()=>{
             dob:user.dob.split('T')[0],
             phoneNumber: user.phoneNumber ,
             nicNumber: user.nicNumber ,
-            role:user.role,
+            role:user.role._id,
             department: user.department,
             jobTitle: user.jobTitle,
             empDate: user.employmentDate.split('T')[0],
@@ -96,7 +99,7 @@ const getRoleData = async()=>{
   useEffect(()=>{
     getUserData()
     getRoleData()
-  },[])
+  },[reload])
 
 
   const formPageIncrement=()=>{
@@ -119,6 +122,7 @@ const getRoleData = async()=>{
   const handleSubmit = async (e) => {
     e.preventDefault();
     let emailReg=/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/
+
     if(!personalInfo.email.match(emailReg)){
       toast.error("Invalid Email Address")
       return
@@ -127,33 +131,26 @@ const getRoleData = async()=>{
       toast.error("All Employee details should be filled")
       return
     }
-    
 
-    const formDataToSend = new FormData();
-    formDataToSend.append('firstName', personalInfo.firstName);
-    formDataToSend.append('middleName', personalInfo.middleName);
-    formDataToSend.append('lastName', personalInfo.lastName);
-    formDataToSend.append('gender', personalInfo.gender);
-    formDataToSend.append('dob', personalInfo.dob);
-    formDataToSend.append('phoneNumber', personalInfo.phoneNumber);
-    formDataToSend.append('nicNumber', personalInfo.nicNumber);
-    formDataToSend.append('role', personalInfo.role);
-    formDataToSend.append('department', personalInfo.department);
-    formDataToSend.append('jobTitle', personalInfo.jobTitle);
-    formDataToSend.append('empDate', personalInfo.empDate);
-    formDataToSend.append('baseSal', personalInfo.baseSal);
-    formDataToSend.append('licenceNum', personalInfo.licenceNum);
-    formDataToSend.append('status', personalInfo.status);
-   
-    axiosupdatedFetch({
+    axiosFetch({
       axiosInstance: axios,
       method: 'PATCH',
       url: `/user/personal/${id}`,
-      data: formDataToSend,
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
+      requestConfig:{
+        data:{...personalInfo}
+      }
+    })
+    if(!usererror){
+      Swal.fire({
+        title: "Success",
+        text: "Updated",
+        icon: "success"
+      });
+      setCurrentForm(0)
+      setReload(reload+1)
+    }
+   
+
   }
   if(userloading){
     <div className="shadow-xl bg-white rounded flex flex-col items-center w-full h-[300px]">
