@@ -18,11 +18,11 @@ const IncomeTracking = () => {
 
   return (
     <div className="container mx-auto py-8">
-      <h1 className="text-3xl font-semibold mb-4">Income Tracking</h1>
+      <h1 className="font-bold text-xl underline mb-4">Income Tracking</h1>
       <div className="flex justify-end mb-4">
         <button
           onClick={toggleIncomeForm}
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-8 rounded"
         >
           {showIncomeForm ? 'X' : '+ Add Income'}
         </button>
