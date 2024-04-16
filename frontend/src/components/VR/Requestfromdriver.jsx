@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import axios from '@/api/axios';
 import useAxios from '@/hooks/useAxios';
 import { ReactToPrint } from 'react-to-print';
+import { ClockLoader } from "react-spinners";
 
 export const Requestfromdriver = () => {
     const [data, error, loading, axiosFetch] = useAxios();
@@ -41,7 +42,15 @@ export const Requestfromdriver = () => {
     };
 
     if (loading) {
-        return <p className="flex flex-col items-center justify-center h-screen text-center text-3xl font-bold text-black">Loading...</p>;
+        return (
+            <div className="w-full flex items-center justify-center h-full bg-white">
+              <ClockLoader
+                  color="#36d7b7"
+                  height={50}
+                  width={10}
+                />
+            </div>
+          );
     }
 
     const handleFilterClick = () => {
