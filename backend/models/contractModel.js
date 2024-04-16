@@ -61,6 +61,9 @@ const contractSchema = new Schema({
     },
     Status:{
         type:String,
+    },
+    DateCreated:{
+        type:Date,
     }
 })
 
