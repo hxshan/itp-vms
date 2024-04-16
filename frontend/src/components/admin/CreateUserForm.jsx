@@ -199,7 +199,7 @@ const personal={
                 type="text"
                 name="firstName"
                 id="firstName"
-                required
+                
               />
             </div>
             <div className="col-span-1 w-full flex flex-col mb-4 ">
@@ -232,7 +232,7 @@ const personal={
                 type="text"
                 name="lastName"
                 id="lastName"
-                required
+                
               />
             </div>
             <div className="col-span-1 w-full flex flex-col mb-4 ">
@@ -247,7 +247,7 @@ const personal={
                 name="gender"
                 value={personalInfo.gender}
                 onChange={handlePersonalChange}
-                required
+                
               >
                 <option value="">Select Gender </option>
                 <option value="Male">Male</option>
@@ -268,7 +268,7 @@ const personal={
                 id="dob"
                 value={personalInfo.dob}
                 onChange={handlePersonalChange}
-                required
+                
               />
             </div>
             <div className="col-span-1 w-full flex flex-col mb-4 ">
@@ -285,7 +285,7 @@ const personal={
                 id="phoneNumber"
                 value={personalInfo.phoneNumber}
                 onChange={handlePersonalChange}
-                required
+                
               />
             </div>
             <div className="col-span-1 w-full flex flex-col mb-4 ">
@@ -302,7 +302,7 @@ const personal={
                 id="nicNumber"
                 value={personalInfo.nicNumber}
                 onChange={handlePersonalChange}
-                required
+                
               />
             </div>
             <div className="col-span-1 w-full flex flex-col mb-4 ">
@@ -318,7 +318,7 @@ const personal={
                 name="nicDocument"
                 id="nicDocument"
                 onChange={(e)=>{setNicDocument(e.target.files[0])}}
-                required
+                
               />
             </div>
             <div className="col-span-1 w-full flex flex-col mb-4 ">
@@ -335,7 +335,7 @@ const personal={
                 name="empPhoto"
                 id="empPhoto"
                 onChange={(e)=>{setEmpPhoto(e.target.files[0])}}
-                required
+                
               />
             </div>
             <div className="grid grid-cols-2 col-span-2 w-full ">
@@ -472,7 +472,7 @@ const personal={
                 id="baseSal"
                 value={personalInfo.baseSal}
                 onChange={handlePersonalChange}
-                required
+                
               />
             </div>
             {

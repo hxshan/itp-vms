@@ -70,13 +70,13 @@ const UserProfile = () => {
       <p>{error}</p>
     )
   } 
-
+console.log(data)
   return (
     <div className="container w-full flex justify-center pt-14 min-h-full">
       <ToastContainer/>
       <div className="w-fit h-fit relative p-10 flex flex-col items-center rounded-md border-2 border-gray-300 shadow-lg bg-white">
-        <div className="flex h-[10rem] w-[10rem] mb-8">
-          <img className="w-full h-full" src={data.empPhoto?data.empPhoto:user_pfp} alt="profile image" />
+        <div className="flex h-[10rem] w-[10rem] mb-8 rounded-full overflow-hidden">
+          <img className="w-full h-full" src={data.empPhoto?`http://localhost:3000/employee_picture/${data.empPhoto}`:user_pfp} alt="profile image" />
         </div>
         <div className="flex flex-col gap-12 py-4">
           <div className="w-full flex items-center gap-8">
