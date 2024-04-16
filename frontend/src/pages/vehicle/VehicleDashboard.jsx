@@ -166,37 +166,37 @@ const VehicleDashboard = () => {
              
              <div className='ml-6 grow flex flex-col space-y-2'>
              <div className='text-black text-sm font-bold mb-2'>Vehicle count summary</div> 
-             <div className=" m-0 p-2  bg-gradient-to-r from-green-700 to-green-400 rounded-md pad">
-               <div className="text-xs text-white font-semibold rounded-md pad">Totol vehicle count added in the system<h1 className='text-yellow-500 text-xl'>{data.vehiclesCount}</h1> </div>
+             <div className=" m-0 p-2  bg-gradient-to-r from-navHoverGreen to-actionGreen rounded-md pad">
+               <div className="text-xs text-white font-semibold rounded-md pad">Totol vehicle count added in the system<h1 className='text-white text-2xl'>{data.vehiclesCount}</h1> </div>
              </div>
-             <div className=" m-0 p-2 bg-gradient-to-r from-green-700 to-green-400 rounded-md pad">
+             <div className=" m-0 p-2 bg-gradient-to-r from-navHoverGreen to-actionGreen rounded-md pad">
               <div className='flex flex-reo justify-between '>
                <div className="text-xs text-white font-semibold rounded-md pad">Totol car count added in the system<h1 className='text-white-500 text-xl'>{data.carCount}</h1></div>
-                    <div className='ml-2 text-2xl place-content-center text-yellow-400 font-bold'>{carPercentage.toFixed(2)}% </div> 
+                    <div className='ml-2 text-2xl place-content-center text-white font-bold'>{carPercentage.toFixed(2)}% </div> 
               </div>
              </div>
-             <div className=" m-0 p-2 bg-gradient-to-r from-green-700 to-green-400 rounded-md pad">
+             <div className=" m-0 p-2 bg-gradient-to-r from-navHoverGreen to-actionGreen rounded-md pad">
              <div className='flex flex-reo justify-between'>
                <div className="text-xs text-white font-semibold rounded-md pad">Totol van count added in the system<h1 className='text-white-500 text-xl'> {data.vanCount}</h1></div>
-               <div className='ml-2 text-2xl place-content-center text-yellow-400 font-bold'>{vanPercentage.toFixed(2)}% </div> 
+               <div className='ml-2 text-2xl place-content-center text-white font-bold'>{vanPercentage.toFixed(2)}% </div> 
               </div> 
              </div>
-             <div className=" m-0 p-2 bg-gradient-to-r from-green-700 to-green-400 rounded-md pad">
+             <div className=" m-0 p-2 bg-gradient-to-r from-navHoverGreen to-actionGreen rounded-md pad">
               <div className='flex flex-reo justify-between'>
                <div className="text-xs text-white font-semibold rounded-md pad">Totol bus count added in the system<h1 className='text-white-500 text-xl'>{data.busCount}</h1></div>
-               <div className='ml-2 text-2xl place-content-center text-yellow-400 font-bold'>{busPercentage.toFixed(2)}% </div> 
+               <div className='ml-2 text-2xl place-content-center text-white font-bold'>{busPercentage.toFixed(2)}% </div> 
               </div> 
              </div>
-             <div className=" m-0 p-2 bg-gradient-to-r from-green-700 to-green-400 rounded-md pad">
+             <div className=" m-0 p-2 bg-gradient-to-r from-navHoverGreen to-actionGreen rounded-md pad">
              <div className='flex flex-reo justify-between '>
                <div className="text-xs text-white font-semibold rounded-md pad">Totol lorry count added in the system<h1 className='text-white-500 text-xl'>{data.lorryCount}</h1></div>
-               <div className='ml-2 text-2xl place-content-center text-yellow-400 font-bold'>{lorryPercentage.toFixed(2)}% </div> 
+               <div className='ml-2 text-2xl place-content-center text-white font-bold'>{lorryPercentage.toFixed(2)}% </div> 
               </div> 
              </div>
-             <div className=" m-0 p-2  bg-gradient-to-r from-green-700 to-green-400 rounded-md pad">
+             <div className=" m-0 p-2  bg-gradient-to-r from-navHoverGreen to-actionGreen rounded-md pad">
              <div className='flex flex-reo justify-between'>
                <div className="text-xs text-white font-semibold rounded-md pad">Totol truck count added in the system<h1 className='text-white-500 text-xl'>{data.truckCount}</h1></div>
-               <div className='ml-2 text-2xl place-content-center text-yellow-400 font-bold'>{truckPercentage.toFixed(2)}% </div> 
+               <div className='ml-2 text-2xl place-content-center text-white font-bold'>{truckPercentage.toFixed(2)}% </div> 
               </div> 
              </div>
              </div>
@@ -204,11 +204,11 @@ const VehicleDashboard = () => {
 
             
              <div className='mt-8 flex flex-row'>
-             <button className= "m-1 px-2 py-2 bg-blue-500 text-zinc-50 rounded-md text-sm font-semibold  hover:bg-slate-500 ease-in-out duration-300" onClick={() => navigate('add')}>Add vehicle</button>
-             <button className= "m-1 p-2 bg-blue-500 text-zinc-50 rounded-md text-sm font-semibold  hover:bg-slate-500 ease-in-out duration-300" onClick={() => setActiveComponent('search')}>Search vehicle</button>
-             <button className= "m-1 p-2 bg-blue-500 text-zinc-50 rounded-md text-sm font-semibold  hover:bg-red-500 ease-in-out duration-300" onClick={() => navigate('report')}>Report Generate</button>
-             <button className= "m-1 p-2 bg-blue-500 text-zinc-50 rounded-md text-sm font-semibold  hover:bg-slate-500 ease-in-out duration-300" onClick={() => setActiveComponent('summary')}>Vehicle Summary</button>
-             <button className= "m-1 p-2 bg-blue-500 text-zinc-50 rounded-md text-sm font-semibold  hover:bg-slate-500 ease-in-out duration-300" onClick={() => setActiveComponent('newAdded')}>Newly added</button> 
+             <button className= "m-1 px-2 py-2 bg-actionBlue text-zinc-50 rounded-md text-sm font-semibold  hover:bg-secondary ease-in-out duration-300" onClick={() => navigate('add')}>Add vehicle</button>
+             <button className= "m-1 p-2 bg-actionBlue text-zinc-50 rounded-md text-sm font-semibold  hover:bg-secondary ease-in-out duration-300" onClick={() => setActiveComponent('search')}>Search vehicle</button>  
+             <button className= "m-1 p-2 bg-secondary text-zinc-50 rounded-md text-sm font-semibold  hover:bg-navHoverGreen ease-in-out duration-300" onClick={() => setActiveComponent('summary')}>Vehicle Summary</button>
+             <button className= "m-1 p-2 bg-secondary text-zinc-50 rounded-md text-sm font-semibold  hover:bg-navHoverGreen ease-in-out duration-300" onClick={() => setActiveComponent('newAdded')}>Newly added</button> 
+             <button className= "m-1 p-2 bg-actionRed text-zinc-50 rounded-md text-sm font-semibold  hover:bg-secondary ease-in-out duration-300" onClick={() => navigate('report')}>Report Generate</button>
              </div>
 
           </div>

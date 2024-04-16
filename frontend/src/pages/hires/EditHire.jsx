@@ -5,6 +5,7 @@ import axios from '@/api/axios';
 import useAxios from "@/hooks/useAxios";
 
 import { ClipLoader } from "react-spinners";
+import Swal from 'sweetalert2';
 
 
 const EditHire = () => {
@@ -26,6 +27,7 @@ const EditHire = () => {
     const [startPointStreet, setStartPointSteet] = useState(viewHireData.startPoint.street)
     const [startPointCity, setStartPointCity] = useState(viewHireData.startPoint.city)
     const [endPoint, setEndPoint] = useState(viewHireData.endPoint);
+    const [startTime, setStartTime] = useState(viewHireData.startTime);
     const [tripType, setTripType] = useState(viewHireData.tripType);
     const [estimatedDistance, setEstimatedDistance] = useState(viewHireData.estimatedDistance);
     const [cusName, setCusName] = useState(viewHireData.cusName);
@@ -33,74 +35,157 @@ const EditHire = () => {
     const [cusMobile, setCusMobile] = useState(viewHireData.cusMobile);
     const [cusNic, setCusNic] = useState(viewHireData.cusNic);
     const [hireStatus, setHireStatus] = useState(viewHireData.hireStatus);
+    const [finalTotal, setfinalTotal] = useState(viewHireData.finalTotal);
 
     const [availableVehicles, setAvailableVehicles] = useState(["CHJ-2233", "CGF-5568"])
     const [availableDrivers, setavailableDrivers] = useState(["Chamara" , "Jonny", "Danny", "Chanchala"])
 
     const [response, error, loading, axiosFetch] = useAxios()
-
+    const [incomeData, incomeError, incomeLoading, incomeAxiosFetch] = useAxios()
     const handleEdit = async (e) => {
-        e.preventDefault();
-      
-        const editedData = {
-          startDate,
-          endDate,
-          vehicleType,
-          vehicleSubcategory,
-          airCondition,
-          passengerCount,
-          vehicle,
-          driver,
-          startPointNo,
-          startPointStreet,
-          startPointCity,
-          endPoint,
-          tripType,
-          estimatedDistance,
-          cusName,
-          cusEmail,
-          cusMobile,
-          cusNic,
-          hireStatus,
-        };
-      
-        const confirm = window.confirm("Are you sure?");
-        if (confirm) {
-          console.log('Edited Data:', editedData);
-          try {
-            //const response = await axios.put(`/hire/edit/${viewHireData._id}`, editedData);
-            await axiosFetch({
-                axiosInstance:axios,
-                method:'PUT',
-                url:`/hire/edit/${viewHireData._id}`,
-                requestConfig:{
-                    data:{
-                    ...editedData
+      e.preventDefault();
+      try {
+          const editedData = {
+              startDate,
+              endDate,
+              vehicleType,
+              vehicleSubcategory,
+              airCondition,
+              passengerCount,
+              vehicle,
+              driver,
+              startPointNo,
+              startPointStreet,
+              startPointCity,
+              endPoint,
+              startTime,
+              tripType,
+              estimatedDistance,
+              cusName,
+              cusEmail,
+              cusMobile,
+              cusNic,
+              hireStatus,
+              finalTotal
+          };
+  
+          const swalWithBootstrapButtons = Swal.mixin({
+              customClass: {
+                  confirmButton: "btn btn-success",
+                  cancelButton: "btn btn-danger"
+              },
+          });
+  
+          swalWithBootstrapButtons.fire({
+              title: "Are you sure?",
+              text: "You won't be able to revert this!",
+              icon: "warning",
+              showCancelButton: true,
+              confirmButtonText: "Yes, edit it!",
+              cancelButtonText: "No, cancel!",
+              reverseButtons: true
+          }).then(async (result) => {
+              if (result.isConfirmed) {
+                  try {
+                      const response = await axiosFetch({
+                          axiosInstance: axios,
+                          method: 'PUT',
+                          url: `/hire/edit/${viewHireData._id}`,
+                          requestConfig: {
+                              data: {
+                                  ...editedData
+                              }
+                          }
+                      });
+  
+                      if (response) {
+                          swalWithBootstrapButtons.fire({
+                              title: "Success",
+                              text: "Hire Edited successfully!",
+                              icon: "success",
+                              timer: 1500,
+                              showConfirmButton: false
+                          }).then(() => {
+                              navigate('/hires');
+                          });
+                      }
+  
+                  } catch (error) {
+                      console.error("Error:", error);
+                      swalWithBootstrapButtons.fire({
+                          title: "Error",
+                          text: error,
+                          icon: "error"
+                      });
                   }
-                }
+              } else if (
+                  result.dismiss === Swal.DismissReason.cancel
+              ) {
+                  swalWithBootstrapButtons.fire({
+                      title: "Cancelled",
+                      text: "Your operation has been cancelled.",
+                      timer: 1500,
+                      showConfirmButton: false,
+                      icon: "error"
+                  });
+              }
+          });
+  
+          console.log("Response:", response.data);
+  
+          if (hireStatus === "Active") {
+              // Create income object
+              console.log('cameeee Data:');
+              const incomeData = {
+                  date: new Date(),
+                  vehicle: viewHireData.vehicle, // Assuming viewHireData contains vehicle details
+                  recordedBy: viewHireData.driver, // Change to the actual recorded user ID
+                  source: 'Hire Income',
+                  hirePayment: {
+
+                      hirePaymentType: 'Advance Payment', // Assuming it's an advance payment
+                      hire: viewHireData._id,
+                      hireAmount:viewHireData.advancedPayment
+                  },
+                  description: 'Income generated from active hire',
+                  paymentMethod: 'Cash', // Example payment method
+                  status: 'Pending', // Income status
+                  comments: 'Income generated from advance of active hire',
+              };
+  
+              await incomeAxiosFetch({
+                  axiosInstance: axios,
+                  method: 'POST',
+                  url: `/income`,
+                  requestConfig: {
+                      data: {
+                          ...incomeData
+                      }
+                  }
               })
-
-              if(error){
-                alert(error)
-              }
-              if(response){
-                alert("successfully updated")
-                navigate('/hires')
-              }
-            console.log("Response:", response.data);
-          } catch (error) {
-            console.error("Error:", error);
-            alert("An error occurred. Please try again.");
           }
-        }
-
-      };
+      } catch (error) {
+          console.error("Error:", error);
+          alert("An error occurred. Please try again.");
+      }
+  };
+  
 
       const cancel = () => {
-        const confirmCancel = window.confirm("Are you sure you want to cancel?");
-        if (confirmCancel) {
-            navigate('/hires');
-        }
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'Are you sure you want to cancel?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Confirm!'
+        })
+        .then((result) => {
+            if(result.isConfirmed) {
+                navigate('/hires');
+            } 
+        }) 
     }
 
     //Fetch Vehicle Data
@@ -259,79 +344,103 @@ const EditHire = () => {
                         
                         <div>
                             <div className='flex justify-between align-baseline mb-7'>
-                            <div className=" flex flex-col justify-between align-baseline mr-2 xl:flex-row xl:flex-1 xl:mr-14">
+                                <div className=" flex flex-col justify-between align-baseline mr-2 xl:flex-row xl:flex-1 xl:mr-14">
 
-                                <label htmlFor="startPointNo" 
-                                className="block font-medium text-black  text-base xl:mr-7">
-                                No
-                                </label>
+                                    <label htmlFor="startPointNo" 
+                                    className="block font-medium text-black  text-base xl:mr-7">
+                                    No
+                                    </label>
 
-                                <input type="text" id="startPointNo" name="startPointNo" 
-                                value={startPointNo}
-                                onChange={(e) => setStartPointNo(e.target.value)} 
-                                placeholder='House Number'
-                                className='border-2 rounded border-black px-4'
-                                required
-                                />
+                                    <input type="text" id="startPointNo" name="startPointNo" 
+                                    value={startPointNo}
+                                    onChange={(e) => setStartPointNo(e.target.value)} 
+                                    placeholder='House Number'
+                                    className='border-2 rounded border-black px-4'
+                                    required
+                                    />
 
-                            </div> 
+                                </div> 
                             
 
-                            <div className=" flex flex-1 flex-col justify-between align-baseline xl:flex-row xl:flex-1">
+                                <div className=" flex flex-1 flex-col justify-between align-baseline xl:flex-row xl:flex-1">
 
-                                <label htmlFor="startPointStreet" 
-                                className="block font-medium text-black mr-[5px] text-base xl:mr-7">
-                                Street
-                                </label>
+                                    <label htmlFor="startPointStreet" 
+                                    className="block font-medium text-black mr-[5px] text-base xl:mr-7">
+                                    Street
+                                    </label>
 
-                                <input type="text" id="startPointStreet" name="startPointStreet" 
-                                value={startPointStreet}
-                                onChange={(e) => setStartPointSteet(e.target.value)} 
-                                placeholder='Street'
-                                className='border-2 rounded border-black px-4'
-                                required
-                                />
+                                    <input type="text" id="startPointStreet" name="startPointStreet" 
+                                    value={startPointStreet}
+                                    onChange={(e) => setStartPointSteet(e.target.value)} 
+                                    placeholder='Street'
+                                    className='border-2 rounded border-black px-4'
+                                    required
+                                    />
 
-                            </div>
+                                </div>
                             
                             </div>
 
                             <div className='flex justify-between align-baseline mb-7'>
-                            <div className=" flex  flex-col align-baseline xl:flex-row xl:flex-1">
+                                <div className=" flex  flex-col align-baseline xl:flex-row xl:flex-1">
 
-                                <label htmlFor="startPointCity" 
+                                    <label htmlFor="startPointCity" 
+                                    className="block font-medium text-black mr-[5px] text-base xl:mr-7">
+                                    City
+                                    </label>
+
+                                    <input type="text" id="startPointCity" name="startPointCity" 
+                                    value={startPointCity}
+                                    onChange={(e) => setStartPointCity(e.target.value)} 
+                                    placeholder='City'
+                                    className='border-2 rounded border-black px-4 ml-10'
+                                    required
+                                    />
+
+                                </div>
+                            </div>
+                        </div>
+
+                        
+
+                        <div className='flex justify-between align-baseline'>
+
+                            <div className=" flex flex-col  align-baseline xl:flex-row xl:flex-1">
+
+                                <label htmlFor="endPoint" 
                                 className="block font-medium text-black mr-[5px] text-base xl:mr-7">
-                                City
+                                End Point
                                 </label>
 
-                                <input type="text" id="startPointCity" name="startPointCity" 
-                                value={startPointCity}
-                                onChange={(e) => setStartPointCity(e.target.value)} 
-                                placeholder='City'
-                                className='border-2 rounded border-black px-4 ml-10'
+                                <input type="text" id="endPoint" name="endPoint" 
+                                value={endPoint}
+                                onChange={(e) => setEndPoint(e.target.value)} 
+                                placeholder='To'
+                                className='border-2 rounded border-black px-4'
                                 required
                                 />
 
                             </div>
+
+                            <div className=" flex flex-col ml-7  align-baseline xl:flex-row xl:flex-1">
+
+                                <label htmlFor="startTime" 
+                                className="block font-medium text-black mr-[5px] text-base xl:mr-7">
+                                Start Time
+                                </label>
+
+                                <input type="time" id="startTime" name="startTime" 
+                                value={startTime}
+                                onChange={(e) => setStartTime(e.target.value)} 
+                                className='border-2 rounded border-black px-4'
+                                required
+                                />
+
                             </div>
-                        </div>
-
-                        <div className=" flex flex-col  align-baseline xl:flex-row xl:flex-1">
-
-                            <label htmlFor="endPoint" 
-                            className="block font-medium text-black mr-[5px] text-base xl:mr-7">
-                            End Point
-                            </label>
-
-                            <input type="text" id="endPoint" name="endPoint" 
-                            value={endPoint}
-                            onChange={(e) => setEndPoint(e.target.value)} 
-                            placeholder='To'
-                            className='border-2 rounded border-black px-4'
-                            required
-                            />
 
                         </div>
+
+                        
 
                     </div>
                         
@@ -373,79 +482,99 @@ const EditHire = () => {
 
                     <div className='mt-7'> 
                         <div className=''> 
-                        <div className="mb-7 flex justify-start align-baseline xl:justify-start">
+                            <div className="mb-7 flex justify-start align-baseline xl:justify-start">
 
-                            <label htmlFor="cusName" 
-                            className="block mr-7 font-medium text-black text-base ">
-                            Name
-                            </label>
+                                <label htmlFor="cusName" 
+                                className="block mr-7 font-medium text-black text-base ">
+                                Name
+                                </label>
 
-                            <input type="text" id="cusName" name="cusName" 
-                            value={cusName}
-                            onChange={(e) => setCusName(e.target.value)} 
-                            placeholder='Customer Name'
-                            className='border-2 rounded border-black w-[100%] px-2 xl:px-4'
-                            required
-                            />
+                                <input type="text" id="cusName" name="cusName" 
+                                value={cusName}
+                                onChange={(e) => setCusName(e.target.value)} 
+                                placeholder='Customer Name'
+                                className='border-2 rounded border-black w-[100%] px-2 xl:px-4'
+                                required
+                                />
 
-                        </div>
+                            </div>
 
-                        <div className="mb-7 flex jjustify-start align-baseline xl:justify-start">
+                            <div className="mb-7 flex jjustify-start align-baseline xl:justify-start">
 
-                            <label htmlFor="cusEmail" 
-                            className="block font-medium text-black mr-7 text-base xl:mr-7">
-                            Email
-                            </label>
+                                <label htmlFor="cusEmail" 
+                                className="block font-medium text-black mr-7 text-base xl:mr-7">
+                                Email
+                                </label>
 
-                            <input type="email" id="cusEmail" name="cusEmail" 
-                            value={cusEmail}
-                            onChange={(e) => setCusEmail(e.target.value)} 
-                            placeholder='Customer Email'
-                            className='border-2 rounded border-black w-[100%] px-2 xl:px-4'
-                            required
-                            />
+                                <input type="email" id="cusEmail" name="cusEmail" 
+                                value={cusEmail}
+                                onChange={(e) => setCusEmail(e.target.value)} 
+                                placeholder='Customer Email'
+                                className='border-2 rounded border-black w-[100%] px-2 xl:px-4'
+                                required
+                                />
 
-                        </div>
+                            </div>
 
                         </div>
 
                         <div className='flex justify-between'>
 
-                        <div className="mb-5  flex flex-col justify-between align-baseline xl:flex-row xl:flex-1 xl:mr-14">
+                            <div className="mb-5  flex flex-col justify-between align-baseline xl:flex-row xl:flex-1 xl:mr-14">
 
-                            <label htmlFor="cusMobile" 
-                            className="block font-medium text-black mr-[5px] text-base xl:mr-7">
-                            Mobile
-                            </label>
+                                <label htmlFor="cusMobile" 
+                                className="block font-medium text-black mr-[5px] text-base xl:mr-7">
+                                Mobile
+                                </label>
 
-                            <input type="tel" id="cusMobile" name="cusMobile" 
-                            value={cusMobile}
-                            onChange={(e) => setCusMobile(e.target.value)} 
-                            placeholder='Customer Mobile No'
-                            className='border-2 px-2 rounded border-black xl:px-4'
-                            required
-                            />
+                                <input type="tel" id="cusMobile" name="cusMobile" 
+                                value={cusMobile}
+                                onChange={(e) => setCusMobile(e.target.value)} 
+                                placeholder='Customer Mobile No'
+                                className='border-2 px-2 rounded border-black xl:px-4'
+                                required
+                                />
 
+                            </div>
+
+                            <div className="mb-5  flex flex-col justify-between align-baseline xl:flex-row xl:flex-1">
+
+                                <label htmlFor="cusNic" 
+                                className="block font-medium text-black mr-[5px] text-base xl:mr-7">
+                                Nic
+                                </label>
+
+                                <input type="text" id="cusNic" name="cusNic" 
+                                value={cusNic}
+                                onChange={(e) => setCusNic(e.target.value)} 
+                                placeholder='Customer NIC'
+                                className='border-2 px-2 rounded border-black xl:px-4
+                                required
+                                '
+                                />
+
+                            </div> 
+                        
                         </div>
 
-                        <div className="mb-5  flex flex-col justify-between align-baseline xl:flex-row xl:flex-1">
+                        <div>
+                            <div className="mb-5  flex flex-col  align-baseline xl:flex-row xl:flex-1">
 
-                            <label htmlFor="cusNic" 
-                            className="block font-medium text-black mr-[5px] text-base xl:mr-7">
-                            Nic
-                            </label>
+                                <label htmlFor="finalTotal" 
+                                className="block font-medium text-black mr-[5px] text-base xl:mr-7">
+                                Final Fare
+                                </label>
 
-                            <input type="text" id="cusNic" name="cusNic" 
-                            value={cusNic}
-                            onChange={(e) => setCusNic(e.target.value)} 
-                            placeholder='Customer NIC'
-                            className='border-2 px-2 rounded border-black xl:px-4
-                            required
-                            '
-                            />
+                                <input type="number"  id="finalTotal" name="finalTotal" 
+                                value={finalTotal}
+                                onChange={(e) => setfinalTotal(e.target.value)} 
+                                placeholder='Rs. '
+                                className='border-2 px-2 ml-8 rounded border-black xl:px-4
+                                required
+                                '
+                                />
 
-                        </div> 
-                        
+                                </div>
                         </div>
                     </div>
 

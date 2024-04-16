@@ -4,7 +4,7 @@ import { useState,useEffect  } from "react";
 import { useAuthContext } from "@/hooks/useAuthContext";
 import { jwtDecode } from 'jwt-decode';
 
-const ExpenseForm = () => {
+const ExpenseForm = ({ onFormSubmit }) => {
   const [expenseData, setExpenseData] = useState({
     date: "",
     time:"",
@@ -167,6 +167,7 @@ useEffect(() => {
     }
     if(expensesData){
       alert("expense created succesfully")
+      onFormSubmit();
      
     }
   };

@@ -49,8 +49,10 @@ const caseFileSchema = new mongoose.Schema(
                     type: String,
                     
                 },
-           
-
+                hire: {
+                type: mongoose.Schema.Types.ObjectId, 
+                ref: 'Hire',
+                },
            
                 passengerCount: {
                     type: Number,

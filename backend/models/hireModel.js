@@ -57,7 +57,7 @@ const hireSchema = new mongoose.Schema({
   },
   endTime: { 
     type: String, 
-    default: '' 
+    default: null 
   },
   tripType: { 
     type: Boolean, 
@@ -69,11 +69,11 @@ const hireSchema = new mongoose.Schema({
 },
   actualDistance: { 
     type: Number, 
-  
+    default: null
   },
   actualTimeTaken: { 
     type: String, 
-  
+    default: null
   },
   cusName: { 
     type: String, 
@@ -97,22 +97,27 @@ const hireSchema = new mongoose.Schema({
 },
   finalTotal: {
     type: Number, 
+    default: null
 },
   advancedPayment: {
     type : Number,
-    required: true
+    required: true 
 },
   intialOdometerReading: {
     type: Number, 
+    default: null
 },
   intialOdometerPic: {
     type:String, 
+    default: null
 },
   finalOdometerReading: {
   type: Number, 
+  default: null
 },
   finalOdometerPic: {
     type:String, 
+    default: null
 }
 });
 
