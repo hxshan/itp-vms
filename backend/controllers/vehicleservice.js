@@ -3,7 +3,7 @@ const { Vehicles } = require('../models/vehicleModel')
 
 const addservice = async (req, res) => {
     try {
-        // Check if all required fields are provided in the request body
+        
         const requiredFields = ['vehicleRegister', 'servicedate', 'lastmilage', 'Snote', 'Scost'];
         const missingFields = requiredFields.filter(field => !req.body[field]);
 

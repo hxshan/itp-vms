@@ -114,7 +114,7 @@ export const CreateMaintainceForm = () => {
                                 id='vehicleRegister'
                                 placeholder='AAA1234 OR AA-1234 OR 12-1234'
                                 className='border p-2 rounded-lg'
-                                maxLength='7'
+                                maxLength='10'
                                 required
                                 onChange={handlechange}
                                 value={formdata.vehicleRegister} />

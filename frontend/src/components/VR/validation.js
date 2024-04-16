@@ -13,7 +13,7 @@ export const validateVehicleType = (category) => {
 
 // Function to validate vehicle ID
 export const validateVehicleId = (vehicleRegister) => {
-    if (vehicleRegister.length < 7) {
+    if (vehicleRegister.length < 10) {
         alert('Enter the valid vehicle number ');
         return false;
     }
