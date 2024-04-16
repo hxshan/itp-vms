@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import useAxios from '@/hooks/useAxios';
 import { ReactToPrint } from 'react-to-print';
+import { Link } from 'react-router-dom';
 
 export const Serviceview = () => {
   const [error, loading, axiosFetch] = useAxios();
@@ -30,7 +31,11 @@ export const Serviceview = () => {
       <div className="flex flex-col items-center">
         <h1 className='font-bold text-xl mb-6'>
           Past Service Records
-        </h1>  <ReactToPrint
+        </h1>
+        <Link to={`/VehicleService`}>
+          <button className="my-1 mx-1 bg-actionBlue text-white py-1 px-4 rounded-md text-sm">Back</button>
+        </Link>
+        <ReactToPrint
           trigger={() => (
             <button
               className="bg-actionRed text-white rounded-lg px-4 py-2"

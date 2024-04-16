@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 import {
     validateVehicleType,
     validateVehicleId,
@@ -81,9 +82,9 @@ export const EditMaintainceOrder = () => {
     return (
         <main className='w-full  flex flex-col justify-center items-center '>
             <div className=" sm:w-3/4 bg-white p-10 flex flex-col rounded-2xl ">
-            <h1 className='font-bold text-xl'>
-                Edit Maintaince Form
-            </h1>
+                <h1 className='font-bold text-xl'>
+                    Edit Maintaince Form
+                </h1>
                 <form className='flex flex-col gap-4 md:flex-row' onSubmit={handleSubmit}>
                     <div className="w-full">
                         <div className='flex flex-col gap-5 mt-9'>
@@ -131,18 +132,18 @@ export const EditMaintainceOrder = () => {
                     <div className="mt-5 flex flex-col justify-center items-center w-full">
                         <div className="flex flex-col gap-5 mb-5 items-center">
                             <div className="flex items-center gap-4">
-                                <label className='  font-semibold' >StartDate:</label>
+                                <label className='  font-semibold' >Start Date :</label>
                                 <input type='date'
                                     id='vrsdate'
-                                    className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+                                    className='shadow  rounded  text-gray-700 p-2'
                                     readOnly
                                     value={vrsdate}
                                 />
                             </div>
                             <div className="flex items-center gap-4">
-                                <label className='font-semibold'>EndDate:</label>
+                                <label className='font-semibold'>End Date :</label>
                                 <input type='date'
-                                    className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+                                    className='shadow  rounded  text-gray-700 p-2'
                                     id='vredate'
                                     onChange={(e) => setVredate(e.target.value)}
                                     value={vredate}
@@ -174,10 +175,16 @@ export const EditMaintainceOrder = () => {
                         </div>
                     </div>
                 </form>
-                <button onClick={handleSubmit}
-                    className="bg-actionBlue py-2 px-3 rounded-md text-white font-bold mt-2">
-                    Update Maintaince Order
-                </button>
+                <div className="flex justify-end  items-center mt-6">
+                    <button onClick={handleSubmit}
+                        className="bg-actionBlue py-2 px-3 rounded-md text-white font-bold mr-5">
+                        Update Maintaince Order
+                    </button>
+                    <Link to={`/Mdashboard`}>
+                        <button className="my-1 mx-1 text-white bg-actionGreen py-2 px-3 rounded-md font-bold">Back</button>
+                    </Link>
+                </div>
+
 
             </div>
         </main>

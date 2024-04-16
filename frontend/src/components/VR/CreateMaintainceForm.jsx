@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import useAxios from '@/hooks/useAxios';
-
+import { Link } from 'react-router-dom';
 import {
     validateVehicleType,
     // validateVehicleId,
@@ -152,17 +152,17 @@ export const CreateMaintainceForm = () => {
 
                         <div className="flex flex-col gap-5 mb-5 items-center">
                             <div className="flex items-center gap-4">
-                                <label className="block text-gray-700 text-md font-bold mb-2" >Start Date :</label>
+                                <label className=" text-gray-700 text-md font-bold" >Start Date :</label>
                                 <input type='date'
                                     id='vrsdate'
-                                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                    className="shadow  rounded  text-gray-700 p-2"
                                     onChange={handlechange}
                                     value={formdata.vrsdate} />
                             </div>
                             <div className="flex  items-center gap-4">
                                 <label className="block text-gray-700 text-md font-bold mb-2">End Date :</label>
                                 <input type='date'
-                                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                    className="shadow  rounded  text-gray-700 p-2"
                                     id='vredate'
                                     onChange={handlechange}
                                     value={formdata.vredate} />
@@ -171,7 +171,7 @@ export const CreateMaintainceForm = () => {
                                 <label className="block text-gray-700 text-md font-bold mb-2">Availability:</label>
                                 <select
                                     id='availability'
-                                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                    className="shadow  rounded  text-gray-700 p-2"
                                     onChange={handlechange}
                                     value={formdata.availability}>
                                     <option value='available'>Available</option>
@@ -204,11 +204,15 @@ export const CreateMaintainceForm = () => {
                         </div>
                     </div>
                 </form>
-                <button onClick={handleSubmit}
-                    className="bg-actionBlue py-2 px-3 rounded-md text-white font-bold mt-2">
-                    Add To Maintaince List
-                </button>
-
+                <div className="flex justify-end  items-center mt-6">
+                    <button onClick={handleSubmit}
+                        className="bg-actionBlue py-2 px-3 rounded-md text-white font-bold mr-5">
+                         Add To Maintaince List
+                    </button>
+                    <Link to={`/Mdashboard`}>
+                        <button className="my-1 mx-1 text-white bg-actionGreen py-2 px-3 rounded-md font-bold">Back</button>
+                    </Link>
+                </div>
             </div>
         </main>
 

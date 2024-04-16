@@ -19,7 +19,7 @@ export const View = () => {
 
     return (
         <div className="flex justify-center items-center mt-5 ">
-            <div className="flex flex-col border-2 md:w-[350px] shadow-2xl rounded-xl lg:w-[400px] w-full h-full p-5 items-center bg-white">
+            <div className="flex flex-col border-2 md:w-[350px] shadow-2xl rounded-xl lg:w-[400px]  p-5 items-center bg-white">
                 <div className="my-4 text-center">
                     <span className='text-xl mr-4 text-gray-900 font-semibold'>Vehicle Number :</span>
                     <span className='text-lg mr-4 text-gray-900 font-semibold'>{order.vrvehicleRegister}</span>
