@@ -4,6 +4,7 @@ import useAxios from "@/hooks/useAxios";
 import { useState } from "react";
 import axios from "@/api/axios";
 import { useNavigate } from 'react-router-dom';
+import { ClipLoader } from "react-spinners";
 
 
 
@@ -17,19 +18,26 @@ const GenerateReport = () => {
     const [maxContracts, setMaxContracts] = useState(0);
     const [allContracts,setAllContract] = useState([]);
     const [clients,setallClients] = useState([])
+    const [itemsPerPage] = useState(5); 
+    const [currentPage, setCurrentPage] = useState(1);
+    const [results, setResults] = useState([]);
+
+    const [Search,setSearch] = useState("");
+  const [searchError,setSearchError] = useState('')
 
     const [data, error, loading, axiosFetch] = useAxios();
     const [clientsdata, clienterror, clientloading, clientsFetch] = useAxios()
 
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentItems = results.slice(indexOfFirstItem, indexOfLastItem);
+
+    
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
 
-    const titles = [
-        { name: "Client NIC", width: "w-[200px]" },
-        { name: "Client Name", width: "w-[300px]" },
-        { name: "Email", width: "w-[300px]" },
-        { name: "Status", width: "w-[440px]" },
-        { name: "Options", width: "w-[400px]" },
-      ];
+
+    const titles = ["Client NIC", "Client Name" , "Email", "Phone number", "Status", "Options"]
 
     const getContracts = () => {
         axiosFetch({
@@ -47,7 +55,29 @@ const GenerateReport = () => {
        });
      }
 
-    console.log(clientsdata)
+     const handleInput = (e)=>{
+
+        const { name, value } = e.target;
+    
+        if (name === "searchData") {
+          setSearch(value);
+        }
+        }
+    
+        const handleSearch = () => {
+          const filteredContracts = clients.filter(client =>
+              client.nicNumber.toLowerCase().includes(Search.toLowerCase()) ||
+              client.firstName.toLowerCase().includes(Search.toLowerCase()) ||
+              client.lastName.toLowerCase().includes(Search.toLowerCase()) ||
+              client.email.toLowerCase().includes(Search.toLowerCase())
+          );
+        
+          if (filteredContracts.length > 0) {
+            setSearchError(`${filteredContracts.length} items found.`);
+          } else {
+            setSearchError("No items found.");
+          }
+        };
 
     useEffect(() => {
         getContracts();
@@ -60,6 +90,7 @@ const GenerateReport = () => {
         }
         else if (clientsdata) {
           setallClients(clientsdata);
+          setResults(clientsdata);
         }
       }, [clientsdata]);
 
@@ -166,14 +197,24 @@ const GenerateReport = () => {
         });
     };
 
+    if(loading || clientloading){
+        return(
+          <div className="flex justify-center items-center h-screen">
+            <div className="sweet-loading">
+              <ClipLoader color="#10971D" loading={true}  size={50} />
+            </div>
+          </div>
+        );
+      }
+
     return (
         <div className='flex flex-col justify-center '>
-            <div className="flex items-center justify-center mb-5">
+            <div className="flex items-center justify-center mb-5 border-b-2">
                 <h1 className=" text-[50px] font-bold ">Report</h1>
             </div>
 
             
-            <div className='w-full h-[700px]'>
+            <div className='w-full h-[500px]'>
             <canvas
                 id="contractHistogram"
                 ref={chartRef}
@@ -185,65 +226,87 @@ const GenerateReport = () => {
 
             <div>
 
-            <div className="flex items-left mb-5">
+            <div className="flex items-left mb-5 border-b-2">
         <h1 className=" text-[50px] font-bold ">clients</h1>
       </div>
 
-            <div className="flex flex-col justify-center">
-        <div className=" grid grid-cols-6 w-full ">
-          {titles.map((item, index) => (
-            <p
-              key={index}
-              className={`${item.width} text-center font-bold text-[18px] ml-4`}
-            >
-              {item.name}
-            </p>
-          ))}
-        </div>
+      <div className=" text-blue-500 font-semibold flex justify-between mb-4">
+        <p>{searchError ? searchError : "Search something"}</p>
+
+        <div className="flex items-center justify-center gap-3">
+        <input
+          type="text"
+          className="shadow appearance-none border rounded min-w-40 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          placeholder="Search"
+          name="searchData"
+          onChange={handleInput}
+        />
+        <button
+          className="px-4 py-1 rounded-md bg-actionBlue  text-white text-[16px]"
+          onClick={handleSearch}
+        >
+          Search
+        </button>
+        
+      </div>
       </div>
 
+      <table className="min-w-full divide-y divide-gray-200 mb-5">
+        <thead className="bg-secondary">
+          <tr>
+            {titles.map((col,index) => {
+              return <th className="px-6 py-3 border-r border-white text-left text-xs font-bold text-white uppercase tracking-wider" key={index}>{col}</th>
+            })}
+          </tr>
+        </thead>
+        <tbody>
+  {currentItems && currentItems.length > 0 ? currentItems
+    .filter((item) => {
+      const searchLowerCase = Search.toLowerCase();
+      const firstNameLowerCase = item.firstName.toLowerCase();
+      const lastNameLowerCase = item.lastName.toLowerCase();
+      const nicNumber = item.nicNumber.toString();
+      const email = item.email.toLowerCase();
+      return (
+        searchLowerCase === "" ||
+        firstNameLowerCase.includes(searchLowerCase) ||
+        lastNameLowerCase.includes(searchLowerCase) ||
+        nicNumber.includes(searchLowerCase) ||
+        email.includes(searchLowerCase)
+      );
+    })
+    .map((row) => {
+      return (
+        <tr className="bg-white border-t border-gray-200" key={row._id}>
+          <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">NIC {row.nicNumber}</td>
+          <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{row.firstName} {row.lastName}</td>
+          <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{row.email}</td>
+          <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{row.phoneNumber}</td>
+          <td className={`px-2 text-xs font-semibold text-center ${row.status=='active'?'text-green-500 bg-green-100': row.status=='inactive'?'text-red-600 bg-red-100':'text-orange-600 bg-orange-100'}`}>{row.status.toUpperCase()}</td>
+          <td className="px-6 py-2 whitespace-nowrap justify-center gap-3 flex">
+            <button className="bg-actionBlue text-white py-1 px-6 rounded-md" id={row._id} onClick={() => { navigate(`/viewClient/${row._id}`) }}>View</button>
+            <button className="bg-actionGreen text-white py-1 px-6 rounded-md" onClick={()=>{navigate(`/PrintReport/${row._id}`)}}>Generate</button>
+          </td>
+        </tr>
+      );
+    }) : (
+      <tr>
+        <td colSpan={currentItems.length}>No data available</td>
+      </tr>
+    )
+  }
+</tbody>
+      </table>
 
-            <div className="flex flex-col items-center ">
-        {clientsdata && clientsdata.length > 0  ? clientsdata
-          //.filter((item) => {
-          //  const searchLowerCase = Search.toLowerCase();
-          //  const firstNameLowerCase = item.clientID.firstName.toLowerCase();
-          //  const lastNameLowerCase = item.clientID.lastName.toLowerCase();
-          //  const nicNumber = item.clientID.nicNumber.toString();
-          //  const email = item.clientID.email.toLowerCase();
-          //  return (
-           //   searchLowerCase === "" ||
-           //   firstNameLowerCase.includes(searchLowerCase) ||
-           //   lastNameLowerCase.includes(searchLowerCase) ||
-           //   nicNumber.includes(searchLowerCase) ||
-           //   email.includes(searchLowerCase)
-//);
-        //  })
-          .map((item, index) => (
-            <div
-              key={index}
-              className="grid grid-cols-5 text-center w-full bg-[#D9D9D9] my-2 p-2 items-center rounded-xl  text-[15px]"
-            >
-              <p className="w-[200px] ">NIC{item.nicNumber}</p>
-              <p className="w-[200px]">
-                {item.firstName} {item.lastName}
-              </p>
-              <p className="w-[200px]">{item.email}</p>
-              <p className="w-[200px] ml-6 text-green-500 font-semibold">{item.status}</p>
+      <div className="flex justify-center my-6">
+                <ul className="flex list-none border border-gray-300 rounded-md">
+                    {Array.from({ length: Math.ceil(clients.length / itemsPerPage) }).map((_, index) => (
+                        <li key={index} className={`cursor-pointer px-4 py-2 ${currentPage === index + 1 ? 'bg-gray-200' : ''}`} onClick={() => paginate(index + 1)}>{index + 1}</li>
+                    ))}
+                </ul>
+            </div>
 
-              <div className="flex justify-center items-center w-[200px] gap-3">
-              <button
-              className={" bg-orange-400 w-[160px]   px-5 py-2 rounded-xl"}
-              onClick={()=>{navigate(`/PrintReport/${item._id}`)}}
-            >
-             Generate Report
-            </button>
-              </div>
-            </div>
-          )):(<div className="mt-10 font-bold text-red-500">
-            <p>No contracts available</p>
-            </div>)}
-            </div>
+
             </div>
         </div>
 

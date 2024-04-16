@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "@/api/axios";
 import useAxios from "@/hooks/useAxios";
 import ReactToPrint from "react-to-print";
+import { ClipLoader } from "react-spinners";
 
 
 
@@ -161,11 +162,16 @@ const ViewClient = () => {
 
     const ref = useRef(null);
 
-if(contLoading){
-  return(
-    <div>Loading</div>
-  )
-}
+
+    if(contLoading){
+      return(
+        <div className="flex justify-center items-center h-screen">
+          <div className="sweet-loading">
+            <ClipLoader color="#10971D" loading={true}  size={50} />
+          </div>
+        </div>
+      );
+    }
 
   return (
     <div className='flex flex-col   items-center'>
