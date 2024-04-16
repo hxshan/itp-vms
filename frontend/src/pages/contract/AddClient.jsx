@@ -174,24 +174,23 @@ const AddClient = () => {
   };
 
   
-
+ 
 
 
   return (
     <div className="w-full flex flex-col justify-center items-center py-5">
-      <div className="flex items-center justify-center mb-4">
+      <div className="flex items-center justify-center mb-4 border-b-2">
         <p className=" text-[50px] font-bold ">ADD CLIENT</p>
         <ToastContainer/>
       </div>
-      <p>{error}</p>
-      <div className="bg-[#D9D9D9] w-[90%] h-fit rounded-lg py-8 flex justify-evenly ">
+      <div className="shadow-xl bg-white w-[90%] h-fit rounded-lg py-8 flex justify-evenly ">
         <div>
           <div className="flex gap-4 mb-3">
             <div className="flex flex-col gap-1">
               <label>First Name</label>
               <input
                 type="text"
-                className="w-[220px]  rounded-lg  bg-white border-none p-2"
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 name="firstName"
                 onChange={handleInput}
               />
@@ -201,7 +200,7 @@ const AddClient = () => {
               <label>Last Name</label>
               <input
                 type="text"
-                className="w-[220px]  rounded-lg  bg-white border-none p-2"
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 name="lastName"
                 onChange={handleInput}
               />
@@ -212,7 +211,7 @@ const AddClient = () => {
             <div className="flex flex-col gap-1">
               <label>Gender</label>
               <select
-                className="w-[220px]  rounded-lg  bg-white border-none p-2"
+                className="shadow appearance-none border rounded w-[210px] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 name="gender"
                 onChange={handleInput}
               >
@@ -226,7 +225,7 @@ const AddClient = () => {
               <label>Date of Birth</label>
               <input
                 type="date"
-                className="w-[150px] h-10 rounded-lg  bg-white border-none px-2"
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 name="dob"
                 onChange={handleInput}
               />
@@ -238,7 +237,7 @@ const AddClient = () => {
               <label>Phone number</label>
               <input
                 type="text"
-                className="w-[220px]  rounded-lg  bg-white border-none p-2"
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 name="phoneNumber"
                 onChange={handleInput}
               />
@@ -248,7 +247,7 @@ const AddClient = () => {
               <label>NIC number</label>
               <input
                 type="text"
-                className="w-[220px]  rounded-lg  bg-white border-none p-2"
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 name="nicNumber"
                 onChange={handleInput}
               />
@@ -260,7 +259,7 @@ const AddClient = () => {
               <label>Email</label>
               <input
                 type="text"
-                className="w-[220px]  rounded-lg  bg-white border-none p-2"
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 name="email"
                 onChange={handleInput}
               />
@@ -269,7 +268,7 @@ const AddClient = () => {
               <label>licence number</label>
               <input
                 type="text"
-                className="w-[220px]  rounded-lg  bg-white border-none p-2"
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 placeholder="optional"
                 name="licenceNumber"
                 onChange={handleInput}
@@ -280,7 +279,7 @@ const AddClient = () => {
           <div className="flex flex-col mb-4">
             <label>Address</label>
             <textarea
-              className="h-[200px] w-[456px]  border-none rounded-lg mt-1"
+              className="h-[200px] w-[456px]  shadow appearance-none border rounded  py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               name="Address"
               onChange={handleInput}
             ></textarea>
@@ -298,7 +297,7 @@ const AddClient = () => {
               <div className="flex flex-col gap-1 mb-3">
                 <label>Company Available</label>
                 <select
-                  className="w-[120px]  rounded-lg  bg-white border-none p-2"
+                  className="shadow appearance-none border rounded w-[200px] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   name="Comp_Available"
                   onChange={handleInput}
                 >
@@ -314,7 +313,7 @@ const AddClient = () => {
                     <label>Company name</label>
                     <input
                       type="text"
-                      className="w-[220px]  rounded-lg  bg-white border-none p-2"
+                      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                       name="Comp_Name"
                       onChange={handleInput}
                     />
@@ -324,7 +323,7 @@ const AddClient = () => {
                     <label>Registration number</label>
                     <input
                       type="text"
-                      className="w-[220px]  rounded-lg  bg-white border-none p-2"
+                      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                       name="Reg_Num"
                       onChange={handleInput}
                     />
@@ -336,7 +335,7 @@ const AddClient = () => {
                     <label>Tax number</label>
                     <input
                       type="text"
-                      className="w-[220px]  rounded-lg  bg-white border-none p-2"
+                      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                       name="Tax_Num"
                       onChange={handleInput}
                     />
@@ -344,7 +343,7 @@ const AddClient = () => {
                   <div className="flex flex-col gap-1">
                     <label>Legal structure</label>
                     <select
-                      className="w-[220px]  rounded-lg  bg-white border-none p-2"
+                      className="shadow appearance-none border rounded w-[210px] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                       name="Legal_struc"
                       onChange={handleInput}
                     >
@@ -381,7 +380,7 @@ const AddClient = () => {
                     <label>Company email</label>
                     <input
                       type="text"
-                      className="w-[220px]  rounded-lg  bg-white border-none p-2"
+                      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                       name="Comp_Email"
                       onChange={handleInput}
                     />
@@ -391,7 +390,7 @@ const AddClient = () => {
                     <label>Company phone</label>
                     <input
                       type="text"
-                      className="w-[220px]  rounded-lg  bg-white border-none p-2"
+                      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                       name="Comp_Phone"
                       onChange={handleInput}
                     />
@@ -401,7 +400,7 @@ const AddClient = () => {
                 <div className="flex flex-col mb-4">
                   <label>Address</label>
                   <textarea
-                    className="h-[200px] w-[456px]  border-none rounded-lg mt-1"
+                    className="h-[200px] w-[456px]  shadow appearance-none border rounded  py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                     name="Comp_Address"
                     onChange={handleInput}
                   ></textarea>
@@ -411,13 +410,13 @@ const AddClient = () => {
           </div>
           <div className="flex justify-end gap-4">
             <button
-              className=" bg-green-600 px-5 py-2 rounded-xl w-[120px] "
+              className=" bg-actionBlue text-white px-5 py-2 rounded-xl w-[120px] font-bold "
               onClick={handleSubmit}
             >
               Add
             </button>
             <button
-              className=" bg-orange-600 px-5 py-2 rounded-xl w-[120px] "
+              className=" bg-actionRed text-white px-5 py-2 rounded-xl w-[120px] font-bold "
               onClick={() => {
                 navigate(`/client`);
               }}
