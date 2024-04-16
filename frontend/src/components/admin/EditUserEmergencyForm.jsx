@@ -2,7 +2,7 @@ import {useState,useEffect} from 'react'
 import useAxios from '@/hooks/useAxios';
 import { useParams } from 'react-router-dom';
 import axios from '@/api/axios';
-
+import { ToastContainer, toast } from 'react-toastify';
 
 const EditUserEmergencyForm = () => {
     const [user,usererror, userloading, useraxiosFetch] = useAxios()
@@ -86,6 +86,23 @@ const EditUserEmergencyForm = () => {
        
       const handleSubmit = (e) =>{
         e.preventDefault()
+
+        for (const contact of emergencyContacts) {
+          console.log(contact.number.length)
+          if(contact.name == ""){
+            toast.error("Fill Emergency Contact Name")
+            return
+          }
+          if(contact.number == ""){
+            toast.error("Fill Emergency Contact Number")
+            return
+          }
+          if(contact.number.length < 10 ){
+            toast.error("Invalid Emergency Contact Number")
+            return
+          }
+        }
+
         useraxiosFetch({
           axiosInstance: axios,
           method: "PATCH",
@@ -121,6 +138,7 @@ const EditUserEmergencyForm = () => {
 
   return (
     <div className="bg-white p-8 my-8 shadow-xl rounded ">
+      <ToastContainer/>
         <form onSubmit={(e)=>handleSubmit(e)}>
         <div className="grid grid-cols-2 col-span-2 w-full ">
               <div className="col-span-2 mt -10 flex justify-between mb-8 items-center">

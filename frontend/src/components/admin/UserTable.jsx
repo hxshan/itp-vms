@@ -6,7 +6,7 @@ import { ClockLoader } from 'react-spinners'
 import { useNavigate } from "react-router-dom";
 
 
-const UserTable = () => {
+const UserTable = ({reload,setReload}) => {
 const { user } = useAuthContext()
 const columns=["Name","Email","Role","Status"]
 const navigate=useNavigate()
@@ -14,7 +14,7 @@ const [search,setSearch]=useState('')
 const [statusFilter,setStatusFilter]=useState('')
 const [usersdata, error, loading, axiosFetch] = useAxios()
 const [users,setUsers]=useState([])
-const [reload,setReload]= useState(0)
+// const [reload,setReload]= useState(0)
 const [startIdx, setStartIdx] = useState(0);
 const [endIdx, setEndIdx] = useState(6);
 
