@@ -125,14 +125,7 @@ const Navbar = () => {
               >
                 Vehicle Reports
               </button>
-              <button
-                className="w-full py-2 px-4 text-start hover:bg-gray-700 focus:outline-none focus:bg-gray-700"
-                onClick={() =>
-                  handleItemClick("Vehicle Management", "View Vehicles")
-                }
-              >
-                Alers
-              </button>
+    
             </div>
           )}
         </div>

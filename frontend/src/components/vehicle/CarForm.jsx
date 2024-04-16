@@ -49,7 +49,7 @@ const CarForm = ({ formState, setFormState }) => {
             id="otherCarType" 
             type="text" 
             placeholder="Enter your car type" 
-            value={formState.otherCarType} 
+            value={formState.otherCarType === 'other' ? '' : formState.otherCarType} 
             onChange={handleChange} 
             name="otherCarType" 
             />
