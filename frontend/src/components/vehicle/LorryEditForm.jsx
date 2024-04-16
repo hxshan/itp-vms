@@ -76,6 +76,19 @@ const LorryEditForm = ({ formData, handleInputChange }) => {
     </div>
     </div>
 
+    <div className="grid grid-cols-2 gap-x-4">
+                        <div className="col-span-1 w-full flex flex-col mb-4 ">
+                        <label className='ml-2 mr-2 font-semibold text-base' htmlFor="lastMileage">Vehicle Fuel Type:</label>
+                        <select className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="fuelType" name="fuelType" value={formData.fuelType} onChange={handleInputChange} >
+                                    <option value="">Select</option>
+                                    <option value="petrol">Petrol</option> 
+                                    <option value="diesel">Diesel</option>                
+                                    <option value="electric">Electric</option>                
+                                    <option value="hybrid">Hybrid</option>                
+                        </select>
+                        </div>
+    </div>
+
     
     <div className='flex flex-row'>
           <h3 className='text-s font-bold'>Features</h3>

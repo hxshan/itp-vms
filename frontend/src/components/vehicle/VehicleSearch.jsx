@@ -135,8 +135,8 @@ const VehicleSearch = () => {
               <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{vehicle.vehicleType}</td>
               <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{vehicle.vehicleModel}</td>
               <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{vehicle.vehicleRegister}</td>
-              <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">
-                <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${vehicle.statusVehicle === 'Active' ? 'text-green-500 bg-green-100' : vehicle.statusVehicle === 'Deactive' ? 'text-red-600 bg-red-100' : 'text-orange-600 bg-orange-100'}`}>
+              <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200 text-center">
+                <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-md ${vehicle.statusVehicle === 'Active' ? 'text-green-500 bg-green-100' : vehicle.statusVehicle === 'Deactive' ? 'text-red-600 bg-red-100' : 'text-orange-600 bg-orange-100'}`}>
                   {vehicle.statusVehicle.toUpperCase()}
                 </span>
               </td>
@@ -158,13 +158,14 @@ const VehicleSearch = () => {
 
       {totalPages > 1 && (
         <div className="flex justify-center">
-          <button className="mx-2 bg-actionBlue py-1 px-3 rounded-3xl text-white text-xs font-bold hover:bg-" onClick={handlePrevPage} disabled={currentPage === 0}>Previous</button>
+          <button className=" bg-gray-200 py-2 px-4  text-black text-xs font-bold hover:bg-gray-300 rounded-s-full" onClick={handlePrevPage} disabled={currentPage === 0}>Previous</button>
+          
           {Array.from(Array(totalPages).keys()).map((pageIndex) => (
-            <button key={pageIndex} className={`mx-2 bg-white py-2 px-4 rounded-full text-black text-sm font-bold ${pageIndex === currentPage ? 'bg-actionBlue' : ''}`} onClick={() => handlePageClick(pageIndex)}>
+            <button key={pageIndex} className={` bg-null py-2 px-4 bg-gray-200  text-black text-sm font-bold ${pageIndex === currentPage ? 'bg-gray-300' : ''}`} onClick={() => handlePageClick(pageIndex)}>
               {pageIndex + 1}
             </button>
           ))}
-          <button className="mx-2 bg-actionBlue py-1 px-5 rounded-3xl text-white text-xs font-bold" onClick={handleNextPage} disabled={currentPage === totalPages - 4}>Next</button>
+          <button className="bg-gray-200 py-2 px-4  text-black text-xs font-bold hover:bg-gray-300 rounded-e-full" onClick={handleNextPage} disabled={currentPage === totalPages - 4}>Next</button>
         </div>
       )}
 

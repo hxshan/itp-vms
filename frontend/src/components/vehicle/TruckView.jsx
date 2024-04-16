@@ -64,6 +64,13 @@ const TruckView = ({formData}) => {
                         </div>
                         </div>  
 
+                        <div className="grid grid-cols-2 gap-x-4">
+                        <div className="col-span-1 w-full flex flex-col mb-4 ">    
+                        <label className="block text-gray-700 text-md font-bold mb-2" htmlFor="lastMileage">Vehicle Fuel Type:</label>
+                       <p>{formData.fuelType}</p>
+                        </div>
+                        </div>
+
                         <div className='flex flex-row'>
                         <h3 className='text-s font-bold'>Features</h3>
                         <div className="border-b-2 ml-2 border-black w-full"></div>

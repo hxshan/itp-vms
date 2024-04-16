@@ -6,6 +6,7 @@ const VehicleSchema = new mongoose.Schema(
     vehicleType: { type: String },
     vehicleRegister: { type: String },
     vehicleModel: { type: String },
+    fuelType: { type: String },
     vehicleManuYear: { type: Number },
     engineCap: { type: Number },
     lastMileage: { type: Number },

@@ -27,6 +27,7 @@ const VehicleViewControl = () => {
       vehicleRegister: '',
       vehicleModel: '',
       vehicleManuYear: '',
+      fuelType: '',
       engineCap: '',
       lastMileage: '',
       vehicleColour: '',

@@ -23,6 +23,7 @@ const [formData, setFormData] = useState({
   vehicleType: '',
   vehicleRegister: '',
   vehicleModel: '',
+  fuelType: '',
   vehicleManuYear: '',
   engineCap: '',
   lastMileage: '',

@@ -16,7 +16,7 @@ const NewlyAddedTable = ({ category, categoryData }) => {
       <div className='p-4'>
       <h2 className='mb-2 text-xl font-bold text-black'>New added vehicles</h2>
       <table className='w-full border-collapse border-spacing-2 border-black rounded-md pad shadow-xl p-5 mb-3'>
-        <thead className='bg-gray-800 text-white'>
+        <thead className='bg-secondary text-white'>
           <tr>
             <th className='border border-white p-2'>Vehicle Type</th>
             <th className='border border-white p-2'>Vehicle Model</th>
