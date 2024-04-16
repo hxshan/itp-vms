@@ -125,7 +125,7 @@ const TripReceipt = ({ trip }) => {
         recordedBy: trip.driver, // You can change this as needed
         source: "Hire Income",
         hirePayment: {
-          hirePaymentType: "Trip Final Payment",
+          hirePaymentType: "Final Payment",
           hire: trip._id,
         },
         amount: paymentDue,

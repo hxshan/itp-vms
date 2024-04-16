@@ -1,18 +1,22 @@
 import useAxios from "@/hooks/useAxios";
 import axios from "@/api/axios";
-import { useState,useEffect  } from "react";
+import { useState, useEffect } from "react";
+import { useAuthContext } from "@/hooks/useAuthContext";
+import { jwtDecode } from 'jwt-decode';
 
-const IncomeForm = () => {
+
+const IncomeForm = ({ onFormSubmit }) => {
   const [incomeData, setIncomeData] = useState({
     date: '',
-    vehicle:"",
+    vehicle: "",
     recordedBy: '',
     source: '',
     hirePaymentType: '',
     hire: '',
+    hireAmount:'',
     rentalType: '',
-    client: '',
     contract: '',
+    rentalAmount:'',
     description: '',
     amount: 0,
     paymentMethod: '',
@@ -20,32 +24,95 @@ const IncomeForm = () => {
     comments: ''
   });
 
-  const [incomesData,incomeserror,incomesloading, incomesaxiosFetch] = useAxios()
-  const [vehicleData,vehicleerror, vehicleloading, vehicleAxiosFetch] = useAxios()
+  const { user } = useAuthContext()
+  const [incomesData, incomeserror, incomesloading, incomesaxiosFetch] = useAxios();
+  const [contractData, contracterror, contractloading, contractaxiosFetch] = useAxios();
+  const [vehicleData, vehicleerror, vehicleloading, vehicleAxiosFetch] = useAxios();
+  const [tripData, triperror, triploading, tripaxiosFetch] = useAxios();
   const [vehicleOptions, setVehicleOptions] = useState([]);
+  const [tripOptions, setTripOptions] = useState([]);
+  const [contractOptions, setContractOptions] = useState([]);
+  const [inputRentalType, setInputRentalType] = useState('');
 
 
-  const getVehicleData =()=>{
+  const [userId, setUserId] = useState('');
+ 
+  useEffect(() => {
+    const decodedToken = jwtDecode(user?.accessToken);
+    setUserId(decodedToken?.UserInfo?.id);
+  }, [user]);
+
+
+  const getVehicleData = () => {
     vehicleAxiosFetch({
-     axiosInstance: axios,
-     method: "GET",
-     url: `/vehicle/`,
-   });
- }
-
- useEffect(() => {
-  getVehicleData();
-}, []); 
-
-useEffect(() => {
-  if (vehicleData && vehicleData.vehicles) {
-    const options = vehicleData.vehicles.map(vehicle => ({
-      value: vehicle._id,
-      label: `${vehicle.vehicleRegister} - ${vehicle.vehicleType}`,
-    }));
-    setVehicleOptions(options);
+      axiosInstance: axios,
+      method: "GET",
+      url: `/vehicle/`,
+    });
   }
-}, [vehicleData]);
+
+  useEffect(() => {
+    getVehicleData();
+  }, []);
+
+  useEffect(() => {
+    console.log('vehicle',vehicleData)
+    console.log('vehicle',vehicleData.vehicles)
+    if (vehicleData && vehicleData.vehicles) {
+      const options = vehicleData.vehicles.map(vehicle => ({
+        value: vehicle._id,
+        label: `${vehicle.vehicleRegister} - ${vehicle.vehicleType}`,
+      }));
+      setVehicleOptions(options);
+    }
+  }, [vehicleData]);
+
+  const getTripData = (vehicleId) => {
+   
+    tripaxiosFetch({
+      axiosInstance: axios,
+      method: "GET",
+      url: `/hire/vehicle/${vehicleId}`,
+    });
+   
+  }
+
+
+  useEffect(() => {
+ 
+    if (tripData ) {
+      const options = tripData.map(hire => ({
+        value: hire._id,
+        label: `${hire.startPoint.city} - ${hire.endPoint}  (Start Date -${new Date(hire.startDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}) (Start time - ${hire.startTime}) (Driver - ${hire.driver.firstName})`,
+      }));
+      setTripOptions(options);
+    }
+  }, [tripData]);
+
+  const getContractData = (vehicleId) => {
+   
+    contractaxiosFetch({
+      axiosInstance: axios,
+      method: "GET",
+      url: `/income/contract/${vehicleId}`,
+    });
+    
+  }
+
+
+  useEffect(() => {
+ 
+    if (contractData ) {
+      const options = contractData.map(contract => ({
+        value: contract._id,
+        label: `${contract.clientID.firstName} `,
+      }));
+      setContractOptions(options);
+      
+    }
+  }, [contractData]);
+
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -53,45 +120,71 @@ useEffect(() => {
       ...incomeData,
       [name]: value
     });
+
+    if (name === 'vehicle') {
+      getTripData(value);
+    }
+
+    if (name === 'contract') {
+      getContractData(value);
+
+      const selectedContract = contractData.find(contract => contract._id === value);
+    if (selectedContract) {
+      setInputRentalType(selectedContract.Payment_Plan);
+    }
+    }
+
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-
-    const formData = {
-      ...incomeData
-     
-    
-  };
-  console.log(formData)
-
+  
+    let formData = {
+      ...incomeData,
+      rentalType: inputRentalType,
+      recordedBy:  userId
+    };
+  
+    if (incomeData.source === "Hire Income") {
+      formData = {
+        ...formData,
+        hirePayment: {
+          hire: incomeData.hire,
+          hirePaymentType: incomeData.hirePaymentType,
+          hireAmount: incomeData.hireAmount
+        }
+      };
+    } else if (incomeData.source === "Rental Income") {
+      formData = {
+        ...formData,
+        contractIncome: {
+          contract: incomeData.contract,
+          rentalType: incomeData.rentalType,
+          rentalAmount: incomeData.rentalAmount
+        }
+      };
+    }
+  
     // Handle form submission here
     try {
-      console.log(formData)
-      incomesaxiosFetch({
-      axiosInstance:axios,
-      method:'POST',
-      url:'/income/',
-      requestConfig:{
-        data:{
-          ...formData
-          
+      await incomesaxiosFetch({
+        axiosInstance: axios,
+        method: 'POST',
+        url: '/income/',
+        requestConfig: {
+          data: {
+            ...formData
+          }
         }
-      
-      }
-    })
-  } catch (error) {
-    console.error("Error creating expense:", error);
-  }
-    if(incomeserror){
-      alert(usererror)
-    }
-    if(incomesData){
-      alert("expense created succesfully")
-     
+      });
+      alert("Income created successfully");
+      onFormSubmit();
+    } catch (error) {
+      console.error("Error creating income:", error);
+      alert("An error occurred. Please try again.");
     }
   };
+  
 
   return (
     <div className="bg-white border border-gray-300 p-6 rounded-md">
@@ -109,25 +202,22 @@ useEffect(() => {
             className="border px-3 py-2 rounded-md w-full"
           />
         </div>
+        {/* Vehicle */}
         <div className="mb-4">
-        <label htmlFor="vehicle" className="block text-gray-700 text-sm font-bold mb-2">
-          Vehicle:
-        </label>
-        <select
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          id="vehicle"
-          name="vehicle"
-          value={incomeData.vehicle}
-          onChange={handleChange}
-        >
-          <option value="">Select Vehicle</option>
-          {vehicleOptions.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
-      </div>
+          <label htmlFor="vehicle" className="block font-semibold mb-1">Vehicle</label>
+          <select
+            id="vehicle"
+            name="vehicle"
+            value={incomeData.vehicle}
+            onChange={handleChange}
+            className="border px-3 py-2 rounded-md w-full"
+          >
+            <option value="">Select Vehicle</option>
+            {vehicleOptions.map(option => (
+              <option key={option.value} value={option.value}>{option.label}</option>
+            ))}
+          </select>
+        </div>
         {/* Source */}
         <div className="mb-4">
           <label htmlFor="source" className="block font-semibold mb-1">Source</label>
@@ -139,44 +229,81 @@ useEffect(() => {
             className="border px-3 py-2 rounded-md w-full"
           >
             <option value="">Select Source</option>
-            <option value="Hire Payment">Hire Payment</option>
-            <option value="Rental Payment">Rental Payment</option>
+            <option value="Hire Income">Hire Income</option>
+            <option value="Rental Income">Rental Income</option>
           </select>
         </div>
-        {/* Hire Payment Fields */}
-        {incomeData.source === "Hire Payment" && (
+        {/* Conditional Fields */}
+        {incomeData.source === "Hire Income" && (
           <>
-            {/* Hire Payment Type */}
-            <div className="mb-4">
-              <label htmlFor="hirePaymentType" className="block font-semibold mb-1">Hire Payment Type</label>
-              <input
-                type="text"
-                id="hirePaymentType"
-                name="hirePaymentType"
-                value={incomeData.hirePaymentType}
-                onChange={handleChange}
-                className="border px-3 py-2 rounded-md w-full"
-              />
-            </div>
+            
             {/* Hire */}
             <div className="mb-4">
               <label htmlFor="hire" className="block font-semibold mb-1">Hire</label>
-              <input
-                type="text"
+              <select
                 id="hire"
                 name="hire"
                 value={incomeData.hire}
                 onChange={handleChange}
                 className="border px-3 py-2 rounded-md w-full"
-              />
+              >
+                <option value="">Select Hire</option>
+                {tripOptions.map(option => (
+                  <option key={option.value} value={option.value}>{option.label}</option>
+                ))}
+              </select>
             </div>
-            {/* Other Hire Payment Fields */}
-            {/* Add other hire payment fields here */}
+
+            {/* Hire Payment Type */}
+            <div className="mb-4">
+              <label htmlFor="hirePaymentType" className="block font-semibold mb-1">Hire Payment Type</label>
+              <select
+            id="hirePaymentType"
+             name="hirePaymentType"
+            value={incomeData.hirePaymentType}
+             onChange={handleChange}
+            className="border px-3 py-2 rounded-md w-full"
+          >
+            <option value="">Select Hire Payment Type</option>
+           <option value="Final Payment">Final Payment</option>
+            <option value="Advance Payment">Advance Payment</option>
+</select>
+            </div>
+            <div className="mb-4">
+          <label htmlFor="amount" className="block font-semibold mb-1">Amount</label>
+          <input
+            type="number"
+            id="hireAmount"
+            name="hireAmount"
+            value={incomeData.hireAmount}
+            onChange={handleChange}
+            className="border px-3 py-2 rounded-md w-full"
+          />
+        </div>
           </>
         )}
-        {/* Rental Payment Fields */}
-        {incomeData.source === "Rental Payment" && (
+        {incomeData.source === "Rental Income" && (
           <>
+            
+            
+            {/* Contract */}
+
+            <div className="mb-4">
+              <label htmlFor="hire" className="block font-semibold mb-1">Contract</label>
+              <select
+                id="contract"
+                name="contract"
+                value={incomeData.contract}
+                onChange={handleChange}
+                className="border px-3 py-2 rounded-md w-full"
+              >
+                <option value="">Select Contract</option>
+                {contractOptions.map(option => (
+                  <option key={option.value} value={option.value}>{option.label}</option>
+                ))}
+              </select>
+            </div>
+
             {/* Rental Type */}
             <div className="mb-4">
               <label htmlFor="rentalType" className="block font-semibold mb-1">Rental Type</label>
@@ -184,41 +311,62 @@ useEffect(() => {
                 type="text"
                 id="rentalType"
                 name="rentalType"
-                value={incomeData.rentalType}
-                onChange={handleChange}
+                value={inputRentalType }
+                readOnly
                 className="border px-3 py-2 rounded-md w-full"
               />
             </div>
-            {/* Client */}
+
             <div className="mb-4">
-              <label htmlFor="client" className="block font-semibold mb-1">Client</label>
-              <input
-                type="text"
-                id="client"
-                name="client"
-                value={incomeData.client}
-                onChange={handleChange}
-                className="border px-3 py-2 rounded-md w-full"
-              />
-            </div>
-            {/* Contract */}
-            <div className="mb-4">
-              <label htmlFor="contract" className="block font-semibold mb-1">Contract</label>
-              <input
-                type="text"
-                id="contract"
-                name="contract"
-                value={incomeData.contract}
-                onChange={handleChange}
-                className="border px-3 py-2 rounded-md w-full"
-              />
-            </div>
-            {/* Other Rental Payment Fields */}
-            {/* Add other rental payment fields here */}
+          <label htmlFor="amount" className="block font-semibold mb-1">Amount</label>
+          <input
+            type="number"
+            id="rentalAmount"
+            name="rentalAmount"
+            value={incomeData.rentalAmount}
+            onChange={handleChange}
+            className="border px-3 py-2 rounded-md w-full"
+          />
+        </div>
           </>
         )}
-        {/* Other input fields */}
-        {/* Add input fields for vehicle, recordedBy, description, amount, paymentMethod, status, comments */}
+        {/* Description */}
+        <div className="mb-4">
+          <label htmlFor="description" className="block font-semibold mb-1">Description</label>
+          <input
+            type="text"
+            id="description"
+            name="description"
+            value={incomeData.description}
+            onChange={handleChange}
+            className="border px-3 py-2 rounded-md w-full"
+          />
+        </div>
+      
+        {/* Payment Method */}
+        <div className="mb-4">
+          <label htmlFor="paymentMethod" className="block font-semibold mb-1">Payment Method</label>
+          <input
+            type="text"
+            id="paymentMethod"
+            name="paymentMethod"
+            value={incomeData.paymentMethod}
+            onChange={handleChange}
+            className="border px-3 py-2 rounded-md w-full"
+          />
+        </div>
+        {/* Comments */}
+        <div className="mb-4">
+          <label htmlFor="comments" className="block font-semibold mb-1">Comments</label>
+          <textarea
+            id="comments"
+            name="comments"
+            value={incomeData.comments}
+            onChange={handleChange}
+            className="border px-3 py-2 rounded-md w-full"
+          ></textarea>
+        </div>
+        {/* Submit Button */}
         <div className="flex justify-end">
           <button type="submit" className="bg-green-500 text-white px-4 py-2 rounded-md">Submit</button>
         </div>

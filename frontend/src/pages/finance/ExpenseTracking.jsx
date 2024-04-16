@@ -8,6 +8,10 @@ const ExpenseTracking = () => {
     setShowExpenseForm(!showExpenseForm);
   };
 
+  const handleFormSubmit = () => {
+    // Toggle the visibility of the income form after submission
+    toggleExpenseForm();
+  };
   return (
     <div className="container mx-auto py-8">
       <h1 className="text-3xl font-semibold mb-4">Expense Tracking</h1>
@@ -19,7 +23,7 @@ const ExpenseTracking = () => {
           {showExpenseForm ? 'X' : '+ Add Expense'}
         </button>
       </div>
-      {showExpenseForm ? <ExpenseForm /> : <ExpenseTable />}
+      {showExpenseForm ? <ExpenseForm onFormSubmit={handleFormSubmit} /> : <ExpenseTable />}
     </div>
   );
 };

@@ -28,33 +28,44 @@ const incomeSchema = new mongoose.Schema({
   hirePayment: {
     // Fields specific to hire payments
    
-    hirePaymentType: String,
+    
     hire: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Hire'
     },
-    
+    hirePaymentType:{
+      type: String,
+    enum: ['Final Payment','Advance Payment']
+
+    },
+    hireAmount:{
+      type: Number,
+
+    }
   },
   contractIncome: {
   
-    rentalType: String,
-    client: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Client'
-    },
+    
+    
     contract: {
         type: mongoose.Schema.Types.ObjectId,
         ref:'Contract'
-    }
+    },
     
+    rentalType:{ 
+      type: String,
+    enum: ['upFront', 'Monthly'],
+    },
+    rentalAmount:{
+      type: Number,
+
+    }
+
   },
   description: {
     type: String
   },
-  amount: {
-    type: Number,
-    
-  },
+  
   paymentMethod: {
     type: String,
   

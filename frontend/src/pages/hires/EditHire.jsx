@@ -43,137 +43,133 @@ const EditHire = () => {
     const [response, error, loading, axiosFetch] = useAxios()
     const [incomeData, incomeError, incomeLoading, incomeAxiosFetch] = useAxios()
     const handleEdit = async (e) => {
-        e.preventDefault();
-      
-        const editedData = {
-          startDate,
-          endDate,
-          vehicleType,
-          vehicleSubcategory,
-          airCondition,
-          passengerCount,
-          vehicle,
-          driver,
-          startPointNo,
-          startPointStreet,
-          startPointCity,
-          endPoint,
-          startTime,
-          tripType,
-          estimatedDistance,
-          cusName,
-          cusEmail,
-          cusMobile,
-          cusNic,
-          hireStatus,
-          finalTotal
-        };
-
-
-       
-        
-      
-        const swalWithBootstrapButtons = Swal.mixin({
-            customClass: {
-              confirmButton: "btn btn-success",
-              cancelButton: "btn btn-danger"
-            },
+      e.preventDefault();
+      try {
+          const editedData = {
+              startDate,
+              endDate,
+              vehicleType,
+              vehicleSubcategory,
+              airCondition,
+              passengerCount,
+              vehicle,
+              driver,
+              startPointNo,
+              startPointStreet,
+              startPointCity,
+              endPoint,
+              startTime,
+              tripType,
+              estimatedDistance,
+              cusName,
+              cusEmail,
+              cusMobile,
+              cusNic,
+              hireStatus,
+              finalTotal
+          };
+  
+          const swalWithBootstrapButtons = Swal.mixin({
+              customClass: {
+                  confirmButton: "btn btn-success",
+                  cancelButton: "btn btn-danger"
+              },
           });
-          
+  
           swalWithBootstrapButtons.fire({
-            title: "Are you sure?",
-            text: "You won't be able to revert this!",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonText: "Yes, edit it!",
-            cancelButtonText: "No, cancel!",
-            reverseButtons: true
+              title: "Are you sure?",
+              text: "You won't be able to revert this!",
+              icon: "warning",
+              showCancelButton: true,
+              confirmButtonText: "Yes, edit it!",
+              cancelButtonText: "No, cancel!",
+              reverseButtons: true
           }).then(async (result) => {
-            if (result.isConfirmed) {
-              try {
-                //const response = await axios.put(`/hire/edit/${viewHireData._id}`, editedData);
-                const response = await axiosFetch({
-                    axiosInstance: axios,
-                    method: 'PUT',
-                    url: `/hire/edit/${viewHireData._id}`,
-                    requestConfig: {
-                      data: {
-                        ...editedData
+              if (result.isConfirmed) {
+                  try {
+                      const response = await axiosFetch({
+                          axiosInstance: axios,
+                          method: 'PUT',
+                          url: `/hire/edit/${viewHireData._id}`,
+                          requestConfig: {
+                              data: {
+                                  ...editedData
+                              }
+                          }
+                      });
+  
+                      if (response) {
+                          swalWithBootstrapButtons.fire({
+                              title: "Success",
+                              text: "Hire Edited successfully!",
+                              icon: "success",
+                              timer: 1500,
+                              showConfirmButton: false
+                          }).then(() => {
+                              navigate('/hires');
+                          });
                       }
-                    }
-                });
-          
-                if (response) {
+  
+                  } catch (error) {
+                      console.error("Error:", error);
+                      swalWithBootstrapButtons.fire({
+                          title: "Error",
+                          text: error,
+                          icon: "error"
+                      });
+                  }
+              } else if (
+                  result.dismiss === Swal.DismissReason.cancel
+              ) {
                   swalWithBootstrapButtons.fire({
-                    title: "Success",
-                    text: "Hire Edited successfully!",
-                    icon: "success",
-                    timer: 1500,
-                    showConfirmButton: false
-                  }).then(() => {
-                    navigate('/hires');
+                      title: "Cancelled",
+                      text: "Your operation has been cancelled.",
+                      timer: 1500,
+                      showConfirmButton: false,
+                      icon: "error"
                   });
-                }
-          
-              } catch (error) {
-                console.error("Error:", error);
-                swalWithBootstrapButtons.fire({
-                  title: "Error",
-                  text: error,
-                  icon: "error"
-                });
               }
-            } else if (
-              result.dismiss === Swal.DismissReason.cancel
-            ) {
-              swalWithBootstrapButtons.fire({
-                title: "Cancelled",
-                text: "Your operation has been cancelled.",
-                timer: 1500,
-                showConfirmButton: false,
-                icon: "error"
-              });
-            }
           });
-            console.log("Response:", response.data);
-
-            if (hireStatus === "Active") {
-                // Create income object
-                console.log('cameeee Data:');
-                const incomeData = {
+  
+          console.log("Response:", response.data);
+  
+          if (hireStatus === "Active") {
+              // Create income object
+              console.log('cameeee Data:');
+              const incomeData = {
                   date: new Date(),
                   vehicle: viewHireData.vehicle, // Assuming viewHireData contains vehicle details
                   recordedBy: viewHireData.driver, // Change to the actual recorded user ID
-                  source: 'Hire',
+                  source: 'Hire Income',
                   hirePayment: {
-                    customerName: viewHireData.cusName,
-                    hirePaymentType: 'Advance', // Assuming it's an advance payment
-                    hire: viewHireData._id,
+
+                      hirePaymentType: 'Advance Payment', // Assuming it's an advance payment
+                      hire: viewHireData._id,
+                      hireAmount:viewHireData.advancedPayment
                   },
                   description: 'Income generated from active hire',
-                  amount: viewHireData.advancedPayment,
                   paymentMethod: 'Cash', // Example payment method
                   status: 'Pending', // Income status
                   comments: 'Income generated from advance of active hire',
-                };
-    
-                await incomeAxiosFetch({
-                    axiosInstance:axios,
-                    method:'PATCH',
-                    url:`/income`,
-                    requestConfig:{
-                        data:{
-                        ...incomeData
+              };
+  
+              await incomeAxiosFetch({
+                  axiosInstance: axios,
+                  method: 'POST',
+                  url: `/income`,
+                  requestConfig: {
+                      data: {
+                          ...incomeData
                       }
-                    }
-                  })
-            }
-          } catch (error) {
-            console.error("Error:", error);
-            alert("An error occurred. Please try again.");
+                  }
+              })
           }
-        }
-      };
+      } catch (error) {
+          console.error("Error:", error);
+          alert("An error occurred. Please try again.");
+      }
+  };
+  
 
       const cancel = () => {
         Swal.fire({
