@@ -640,21 +640,21 @@ const [vehicleRates, Verror, Vloading, VaxiosFetch] = useAxios();
   
             <div className="flex mt-8 px-4 justify-between">
               {step === 1 && (
-                <button type='button' className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md mr-4" onClick={cancel}>
+                <button type='button' className="py-2 px-6 bg-actionRed text-white rounded-md mr-4" onClick={cancel}>
                   Cancel
                 </button>
               )}
               {step !== 1 && (
-                <button type='button' className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md mr-4" onClick={handlePrevStep}>
+                <button type='button' className="py-2 px-6 bg-secondary text-white rounded-md mr-4" onClick={handlePrevStep}>
                   Previous
                 </button>
               )}
               {step !== 5 ? (
-                <button type='button' className="px-4 py-2 text-white bg-actionBlue rounded-md hover:bg-gray-800 focus:outline-none" onClick={handleNextStep}>
+                <button type='button' className="py-2 px-6 text-white bg-actionBlue rounded-md hover:bg-gray-800 focus:outline-none" onClick={handleNextStep}>
                   Next
                 </button>
               ) : (
-                <button type='submit' className="px-4 py-2 text-white bg-actionGreen rounded-md hover:bg-green-600 focus:outline-none" onClick={submit}>
+                <button type='submit' className="py-2 px-6 text-white bg-actionGreen rounded-md hover:bg-green-600 focus:outline-none" onClick={submit}>
                   Submit
                 </button>
               )}

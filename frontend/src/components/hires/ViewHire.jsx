@@ -114,14 +114,14 @@ const ViewHire = ({ setViewHire, viewHireData }) => {
             </div>
 
             <div className="my-4 mx-5 flex justify-between">
-              <button className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md mr-4" onClick={cancel}>Cancel</button>
-              <button className="px-7 py-2 bg-green-600 text-white rounded-md mr-4" onClick={handleEdit}>Edit</button>
+              <button className="py-2 px-6 bg-actionBlue text-white rounded-md mr-4" onClick={cancel}>Cancel</button>
+              <button className="py-2 px-6 bg-actionGreen text-white rounded-md mr-4" onClick={handleEdit}>Edit</button>
 
               <ReactToPrint
                 bodyClass="print-agreement"
                 content={() => ref.current}
                 trigger={() => (
-                <button className="px-4 py-2 text-white bg-blue-500 hover:bg-blue-700 focus:outline-none rounded-md mr-4">Print</button>
+                <button className="py-2 px-6 text-white bg-actionRed focus:outline-none rounded-md mr-4">Print</button>
                 )}
                 />
             </div>

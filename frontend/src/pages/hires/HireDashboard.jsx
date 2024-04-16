@@ -75,7 +75,7 @@ const HireDashboard = () => {
                     <div className="flex justify-between items-baseline">
                         <div className="mr-8">
                             <button 
-                                className="px-4 py-2 text-white bg-actionBlue rounded-md hover:bg-gray-800 focus:outline-none"
+                                className="py-2 px-6 text-white bg-actionBlue rounded-md hover:bg-gray-800 focus:outline-none"
                                 onClick={toggleDropdown}
                             >
                                 Filter
@@ -83,7 +83,7 @@ const HireDashboard = () => {
                         </div>
 
                         <div className="pt-[10px]">
-                            <button className="px-4 py-2 text-white bg-actionBlue rounded-md hover:bg-gray-800 focus:outline-none" onClick={()=>{navigate('/hires/add')}}>
+                            <button className="py-2 px-6 text-white bg-actionBlue rounded-md hover:bg-gray-800 focus:outline-none" onClick={()=>{navigate('/hires/add')}}>
                                 Add
                             </button>
                         </div>

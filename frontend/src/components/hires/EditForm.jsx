@@ -394,14 +394,14 @@ const EditForm = ({ setShowEditForm, viewHireData }) => {
           <button
             type="button"
             onClick={handleEdit}
-            className="px-7 py-2 bg-[#0E6300] text-white rounded-md mr-4"
+            className="py-2 px-6 bg-[#0E6300] text-white rounded-md mr-4"
           >
             Save
           </button>
           <button
             type="button"
             onClick={() => setShowEditForm(false)}
-            className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md mr-4"
+            className="py-2 px-6 bg-gray-300 text-gray-700 rounded-md mr-4"
           >
             Cancel
           </button>
