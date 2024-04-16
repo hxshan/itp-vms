@@ -4,6 +4,8 @@ import ExpensePDF from "./ExpensePDF";
 import IncomeForm from "./IncomeForm";
 import IncomeTable from "./IncomeTable";
 import EditIncomeForm from "./EditIncomeForm";
+import BarChart from "./BarChar";
+import Total from "./Total";
 
 export{
     ExpenseForm,
@@ -11,6 +13,9 @@ export{
     ExpensePDF,
     IncomeForm,
     IncomeTable,
-    EditIncomeForm
+    EditIncomeForm,
+    Total ,
+    BarChart
+
     
 }
