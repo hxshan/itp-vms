@@ -5,7 +5,7 @@ import useAxios from "@/hooks/useAxios";
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from "react";
 
-import { ClipLoader } from "react-spinners";
+import { ClockLoader } from "react-spinners";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -56,20 +56,20 @@ const HireDashboard = () => {
         return (
             <div className="flex justify-center items-center h-screen">
               <div className="sweet-loading">
-                <ClipLoader color="#10971D" loading={true}  size={50} />
+                <ClockLoader color="#10971D" loading={true}  size={50} />
               </div>
             </div>
           );
     }
 
     return (
-        <div className="container py-7 px-7 ">
+        <div className="container py-7">
             <div>
-                <div className="text-center pt-[10px] pb-[6px] border-b-2">
-                    <h1 className="text-2xl font-semibold">Hire List</h1>
+                <div className="pt-[10px] pb-[6px] border-b-2">
+                    <h1 className="text-xl font-bold">Hire List</h1>
                 </div>
 
-                <div className="flex justify-between items-baseline px-5 pt-5 xl:px-14">
+                <div className="flex justify-between items-baseline pt-5">
                     <SearchHire onSearch={handleSearch} />
 
                     <div className="flex justify-between items-baseline">

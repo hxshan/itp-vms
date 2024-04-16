@@ -4,7 +4,7 @@ import { useState } from 'react';
 import axios from '@/api/axios';
 import useAxios from "@/hooks/useAxios";
 
-import { ClipLoader } from "react-spinners";
+import { ClockLoader } from "react-spinners";
 
 
 const AddHireRates = ({setShowAddForm, reload}) => {
@@ -66,7 +66,7 @@ const AddHireRates = ({setShowAddForm, reload}) => {
         return (
             <div className="flex justify-center items-center h-screen">
               <div className="sweet-loading">
-                <ClipLoader color="#10971D" loading={true}  size={50} />
+                <ClockLoader color="#10971D" loading={true}  size={50} />
               </div>
             </div>
           );

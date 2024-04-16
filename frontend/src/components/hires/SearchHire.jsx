@@ -28,7 +28,7 @@ const SearchHire = ({onSearch}) => {
 
   return (
     <div className="">
-    <form className="flex justify-between border-[1px] border-black rounded-md"  onSubmit={handleSubmit}>
+    <form className="flex justify-between shadow appearance-none border rounded"  onSubmit={handleSubmit}>
       <div className=" flex justify-between px-5 py-2 bg-white rounded-md">
         <input
               type="text"

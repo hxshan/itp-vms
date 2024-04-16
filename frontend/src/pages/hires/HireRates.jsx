@@ -4,7 +4,7 @@ import useAxios from "@/hooks/useAxios";
 import EditHireRates from "@/components/hires/EditHireRates";
 import AddHireRate from '@/components/hires/AddHireRate'
 
-import { ClipLoader } from "react-spinners";
+import { ClockLoader } from "react-spinners";
 
 const HireRates = () => {
     const [rates, error, loading, axiosFetch] = useAxios();
@@ -46,7 +46,7 @@ const HireRates = () => {
         return (
             <div className="flex justify-center items-center h-screen">
               <div className="sweet-loading">
-                <ClipLoader color="#10971D" loading={true}  size={50} />
+                <ClockLoader color="#10971D" loading={true}  size={50} />
               </div>
             </div>
           );
@@ -55,8 +55,8 @@ const HireRates = () => {
 
     return (
         <div className="w-full h-full flex flex-col px-2 py-[20px] justify-center align-center xl:px-[60px] xl:py-[50px] ">
-            <div className="text-center pt-[10px] pb-8 border-b-2 border-[#37A000] ">
-                <h1 className="text-2xl font-semibold xl:text-4xl">Vehicle Rates</h1>
+            <div className="pt-[10px] pb-8 border-b-2 border-[#37A000] ">
+                <h1 className="text-xl font-bold xl:text-xl">Vehicle Rates</h1>
             </div>
 
             <div className="flex justify-end my-5">
