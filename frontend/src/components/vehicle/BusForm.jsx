@@ -27,8 +27,24 @@ const BusForm = ({ formState, setFormState }) => {
                         <select className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="vanType" name="vehicleType" value={formState.vehicleType} onChange={handleChange} >
                           <option value="Bus">Select</option>
                             <option value="Bus">Bus</option> 
-                    
+                            <option value="other">Other</option>
                          </select>
+                         {formState.vehicleType === 'other' && (
+                         <div>
+                         <label className="block text-gray-700 text-md font-bold mb-2 mt-4" htmlFor="otherCarType">
+                         Other Bus Type:
+                         </label>
+                         <input 
+                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
+                        id="otherCarType" 
+                          type="text" 
+                          placeholder="Enter your bus type" 
+                          value={formState.otherCarType} 
+                           onChange={handleChange} 
+                            name="otherBusType" 
+                          />
+                            </div>
+                           )}
                         </div>
                       
                     

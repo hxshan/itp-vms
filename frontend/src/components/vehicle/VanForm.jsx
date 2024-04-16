@@ -26,7 +26,24 @@ const VanForm = ({ formState, setFormState }) => {
                   <option value="miniBusVan">Mini Bus Van</option> 
                   <option value="miniVan">Mini Van</option> 
                   <option value="mpv">MPV</option>    
+                  <option value="other">Other</option>
             </select>
+            {formState.vehicleType === 'other' && (
+             <div>
+             <label className="block text-gray-700 text-md font-bold mb-2 mt-4" htmlFor="otherVanType">
+                Other Van Type:
+             </label>
+             <input 
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
+            id="otherVanType" 
+            type="text" 
+            placeholder="Enter your van type" 
+            value={formState.otherCarType} 
+            onChange={handleChange} 
+            name="otherVanType" 
+            />
+             </div>
+             )}
     </div>
     <div className="grid grid-cols-2 gap-x-4">
     <div className="col-span-1 w-full flex flex-col mb-4 ">    

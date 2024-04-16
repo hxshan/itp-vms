@@ -22,13 +22,39 @@ const CarForm = ({ formState, setFormState }) => {
             </div>
             
             <div className="col-span-1 w-full flex flex-col mb-4 ">
-            <label className="block text-gray-700 text-md font-bold mb-2" htmlFor="vehicleType">Car Type:</label>
-            <select className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="carType" name="vehicleType" value={formState.vehicleType} onChange={handleChange}>
-                <option value="car">Select</option>
-                <option value="sadan">Sadan</option>
-                <option value="hashback">Hashback</option>
-                <option value="wagon">Wagon</option>
+            <label className="block text-gray-700 text-md font-bold mb-2" htmlFor="vehicleType">
+                 Car Type:
+            </label>
+            <select 
+               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline " 
+               id="carType" 
+               name="vehicleType" 
+               value={formState.vehicleType} 
+               onChange={handleChange}
+            >
+              <option value="">Select</option>
+              <option value="sadan">Sedan</option>
+              <option value="hatchback">Hatchback</option>
+              <option value="wagon">Wagon</option>
+              <option value="other">Other</option>
             </select>
+
+            {formState.vehicleType === 'other' && (
+             <div>
+             <label className="block text-gray-700 text-md font-bold mb-2 mt-4" htmlFor="otherCarType">
+                Other Car Type:
+             </label>
+             <input 
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
+            id="otherCarType" 
+            type="text" 
+            placeholder="Enter your car type" 
+            value={formState.otherCarType} 
+            onChange={handleChange} 
+            name="otherCarType" 
+            />
+             </div>
+             )}
             </div>
 
     <div className="grid grid-cols-2 gap-x-4">

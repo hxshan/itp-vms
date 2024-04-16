@@ -25,8 +25,25 @@ const TruckForm = ({ formState, setFormState }) => {
                                     <option value="truck">Select</option>
                                     <option value="6 Wheels">6 Wheels</option> 
                                     <option value="10 Wheels">10 Wheels</option> 
-                                    <option value="14 Wheels">14 Wheels</option>     
+                                    <option value="14 Wheels">14 Wheels</option>  
+                                    <option value="other">Other</option>   
                                   </select>
+                                  {formState.vehicleType === 'other' && (
+             <div>
+             <label className="block text-gray-700 text-md font-bold mb-2 mt-4" htmlFor="otherTruckType">
+                Other Truck Type:
+             </label>
+             <input 
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
+            id="otherTruckType" 
+            type="text" 
+            placeholder="Enter your truck type" 
+            value={formState.otherCarType} 
+            onChange={handleChange} 
+            name="otherTruckType" 
+            />
+             </div>
+             )}
                                   </div>
 
                         <div className="grid grid-cols-2 gap-x-4">
