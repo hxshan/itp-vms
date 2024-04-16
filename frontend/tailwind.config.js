@@ -16,7 +16,6 @@ export default {
         'dimWhite':" rgba(239, 239, 239, 0.75)",
       },
     },
-    
   },
   plugins: [],
 }
