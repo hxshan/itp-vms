@@ -34,6 +34,9 @@ const Form = () => {
   const [estimatedTotal, setEstimatedTotal] = useState(0)
   const [advancedPayment, setAdvancedPayment] = useState(0)
 
+  const [vehicleNo, setVehicleNo] = useState('');
+  const [driverName, setDriverName] = useState('');
+
   const [response, error, loading, axiosFetch] = useAxios()
 
   const formData = {
@@ -55,7 +58,9 @@ const Form = () => {
     estimatedTotal,
     finalTotal: null,
     advancedPayment,
-    hireStatus: "Pending"
+    hireStatus: "Pending",
+    vehicleNo,
+    driverName
   }
   
 
@@ -184,8 +189,56 @@ const Form = () => {
 
   // Handle Cancel button
   const cancel = () => {
-    navigate('/hires')
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'Are you sure you want to cancel?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Confirm!'
+    })
+    .then((result) => {
+        if(result.isConfirmed) {
+            navigate('/hires');
+        } 
+    })
   }
+
+  
+
+  const handleSelectedVehicle = (e) => {
+      e.preventDefault();
+
+      const selectedVehicleId = e.target.value;
+
+      const selectedVehicle = filteredVehicles.find(vehicle => vehicle._id === selectedVehicleId);
+
+      if (selectedVehicle) {
+          setVehicleNo(selectedVehicle.vehicleRegister);
+      } else {
+          setVehicleNo(''); 
+      }
+  };
+
+  
+
+
+  const handleSelectedDriver = (e) => {
+      e.preventDefault();
+
+      const selectedDriverId = e.target.value;
+
+      const selectedDriver = DriversData.find(driver => driver._id === selectedDriverId);
+
+      if (selectedDriver) {
+          setDriverName(selectedDriver.firstName + ' ' + selectedDriver.lastName);
+      } else {
+          setDriverName('');
+      }
+  };
+
+
   
   //Handle Steps
   const handleNextStep = (e) => {
@@ -458,7 +511,10 @@ const [vehicleRates, Verror, Vloading, VaxiosFetch] = useAxios();
                     <label htmlFor="vehicle" className="block font-medium text-black text-base mb-2">
                       Select Vehicle
                     </label>
-                    <select id="vehicle" name="vehicle" value={vehicle} onChange={(e) => setVehicle(e.target.value)} className='border-2 rounded border-black px-5 w-full' required>
+                    <select id="vehicle" name="vehicle" value={vehicle} onChange={(e) => {
+                        setVehicle(e.target.value);
+                        handleSelectedVehicle(e);
+                    }}  className='border-2 rounded border-black px-5 w-full' required>
                       <option value="">Select Vehicle</option>
                       {filteredVehicles.map((vehicle) => (
                         <option key={vehicle.id} value={vehicle._id}>{vehicle.vehicleRegister}</option>
@@ -470,7 +526,10 @@ const [vehicleRates, Verror, Vloading, VaxiosFetch] = useAxios();
                     <label htmlFor="driver" className="block font-medium text-black text-base mb-2">
                       Select Driver
                     </label>
-                    <select id="driver" name="driver" value={driver} onChange={(e) => setDriver(e.target.value)} className='border-2 rounded border-black px-5 w-full' required>
+                    <select id="driver" name="driver" value={driver} onChange={(e) => {
+                        setDriver(e.target.value)
+                        handleSelectedDriver(e)
+                    }} className='border-2 rounded border-black px-5 w-full' required>
                       <option value="">Select Driver</option>
                       {DriversData.map((driver) => (
                         <option key={driver.id} value={driver._id}>{driver.firstName} {driver.lastName}</option>
@@ -589,9 +648,9 @@ const [vehicleRates, Verror, Vloading, VaxiosFetch] = useAxios();
                   <p className=' text-lg font-semibold leading-8'>Vehicle Type : &nbsp;&nbsp; {vehicleType}</p>
                   <p className=' text-lg font-semibold leading-8'>Air Condition : &nbsp;&nbsp; {airCondition ? 'With Air Condition' : 'Without Air Condition'}</p>
                   <p className=' text-lg font-semibold leading-8'>No of Passengers : &nbsp;&nbsp; {passengerCount}</p>
-                  <p className=' text-lg font-semibold leading-8'>Assigned Vehicle : &nbsp;&nbsp; {vehicle}</p>
+                  <p className=' text-lg font-semibold leading-8'>Assigned Vehicle : &nbsp;&nbsp; {vehicleNo}</p>
                   <p className=' text-lg font-semibold leading-8'>Assigned Vehicle Model : &nbsp;&nbsp; {vehicle}</p>
-                  <p className=' text-lg font-semibold leading-8'>Assigned Driver : &nbsp;&nbsp; {driver}</p>
+                  <p className=' text-lg font-semibold leading-8'>Assigned Driver : &nbsp;&nbsp; {driverName}</p>
 
                 </div>
 

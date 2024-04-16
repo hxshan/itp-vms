@@ -74,7 +74,7 @@ const HireList = ({ hireData, searchTerm, searchType, showDropdown }) => {
     const [filterCategory, setFilterCategory] = useState('');
 
     const filterByStatus = (status) => {
-        const filteredData = hireData.filter((hire) => hire.hireStatus === status);
+        const filteredData = hireData.filter((hire) => hire.hireStatus.toLowerCase() === status.toLowerCase());
         setResults(filteredData);
         setShowFilter(false);
         
@@ -116,8 +116,10 @@ const HireList = ({ hireData, searchTerm, searchType, showDropdown }) => {
                                 <option value="">Select</option>
                                 <option value="Active">Active</option>
                                 <option value="Pending">Pending</option>
-                                <option value="Cancelled">Cancelled</option>
+                                <option value="ongoing">OnGoing</option>
+                                <option value="ended">Ended</option>
                                 <option value="Completed">Completed</option>
+                                <option value="Cancelled">Cancelled</option>
                             </select>
                         </div>
                     </div>

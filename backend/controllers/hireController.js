@@ -44,7 +44,9 @@ const addHire = async (req, res) => {
       estimatedTotal,
       finalTotal,
       advancedPayment,
-      hireStatus
+      hireStatus,
+      vehicleNo,
+      driverName
     } = req.body.data;
 
     const newHire = new Hire({
@@ -77,7 +79,7 @@ const addHire = async (req, res) => {
 
     
     await newHire.save();
-    /*
+    
     sendmail(transporter, {
       startDate,
       endDate,
@@ -96,8 +98,10 @@ const addHire = async (req, res) => {
       cusMobile,
       cusNic,
       estimatedTotal,
-      advancedPayment
-    });*/
+      advancedPayment,
+      vehicleNo,
+      driverName
+    });
 
     res.status(201).json({ message: 'Hire added successfully' });
   } catch (error) {
@@ -257,15 +261,15 @@ const sendmail = async (transporter, hireData) => {
   pdfDoc.fontSize(12).text(`Start Date: ${hireData.startDate}`, { lineGap: 10 });
   pdfDoc.fontSize(12).text(`End Date: ${hireData.endDate}`, { lineGap: 5 });
   pdfDoc.fontSize(12).text(`Air Condition: ${hireData.airCondition ? 'Yes' : 'No'}`, { lineGap: 5 });
-  pdfDoc.fontSize(12).text(`Vehicle: ${hireData.vehicle.vehicleRegister}`, { lineGap: 5 });
-  pdfDoc.fontSize(12).text(`Driver: ${hireData.driver.firstName}`, { lineGap: 5 });
+  pdfDoc.fontSize(12).text(`Vehicle: ${hireData.vehicleNo}`, { lineGap: 5 });
+  pdfDoc.fontSize(12).text(`Driver: ${hireData.driverName}`, { lineGap: 5 });
   pdfDoc.fontSize(12).text(`Start Point: ${hireData.startPoint.no} ${hireData.startPoint.street} ${hireData.startPoint.city}`, { lineGap: 5 });
   pdfDoc.fontSize(12).text(`End Point: ${hireData.endPoint}`, { lineGap: 5 });
   pdfDoc.fontSize(12).text(`Estimated Distance: ${hireData.estimatedDistance}`, { lineGap: 5 });
   pdfDoc.fontSize(12).text(`Estimated Total: ${hireData.estimatedTotal}`, { lineGap: 5 });
   pdfDoc.fontSize(12).text(`Advanced Payment: ${hireData.advancedPayment}`, { lineGap: 25 });
 
-  pdfDoc.fontSize(12).text('We kindly request you to pay the advanced payment within 3 days to secure your booking. If not, unfortunately, the booking will be canceled.', { lineGap: 25 });
+  pdfDoc.fontSize(12).text('We kindly request you to pay the advanced payment within 3 days to secure your booking. If not, unfortunately, the booking will be canceled.', { lineGap: 5 });
 
   pdfDoc.fontSize(12).text('We wish you a safe and pleasant journey.', { lineGap: 15 });
 
