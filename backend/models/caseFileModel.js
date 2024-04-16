@@ -2,6 +2,11 @@ const mongoose = require("mongoose");
 
 const caseFileSchema = new mongoose.Schema(
     {
+
+        caseType: {
+            type: String,
+            enum:["accident", "emergency", "other"],
+        },
         caseTitle : {
             type:String,
             
@@ -44,8 +49,10 @@ const caseFileSchema = new mongoose.Schema(
                     type: String,
                     
                 },
-           
-
+                hire: {
+                type: mongoose.Schema.Types.ObjectId, 
+                ref: 'Hire',
+                },
            
                 passengerCount: {
                     type: Number,
@@ -89,8 +96,8 @@ const caseFileSchema = new mongoose.Schema(
 
             
                 emergencyServicesContacted: { 
-                    type: Boolean, 
-                    default: false 
+                   type: String,
+                   enum:["Yes", "No"],
                 },
                 emergencyServicesResponseTime: { 
                     type: String 

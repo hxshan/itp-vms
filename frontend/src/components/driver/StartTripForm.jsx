@@ -4,6 +4,8 @@ import axios from '@/api/axios';
 import { useNavigate } from "react-router-dom";
 
 const StartTripForm = ({ trip }) => {
+
+  console.log(trip)
   const [mileage, setMileage] = useState('');
   const [odometerImage, setOdometerImage] = useState(null);
   const [startDate, setStartDate] = useState('');
@@ -16,13 +18,33 @@ const StartTripForm = ({ trip }) => {
   const [vehicleData, Verror, Vloading, VaxiosFetch] = useAxios();
   const [updateResponse, updateError, updateLoading, updateAxiosFetch] = useAxios();
   const navigate = useNavigate();
-
   useEffect(() => {
-    const currentDate = new Date().toISOString().split('T')[0];
-    const currentTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    setStartDate(currentDate);
-    setStartTime(currentTime);
+    const updateDateTime = () => {
+      const currentDate = new Date().toISOString().split('T')[0];
+      const currentTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      setStartDate(currentDate);
+      setStartTime(currentTime);
+    };
+
+    updateDateTime(); // Initial call to set date and time
+
+    // Update date every day at midnight
+    const dateIntervalId = setInterval(() => {
+      updateDateTime();
+    }, 1000 * 60 * 60 * 24); // 24 hours
+
+    // Update time every second
+    const timeIntervalId = setInterval(() => {
+      const newTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      setStartTime(newTime);
+    }, 1000); // 1000 milliseconds = 1 second
+
+    return () => {
+      clearInterval(dateIntervalId);
+      clearInterval(timeIntervalId);
+    };
   }, []);
+
 
   useEffect(() => {
     if (updateResponse && updateResponse.data) {
@@ -43,10 +65,7 @@ const StartTripForm = ({ trip }) => {
       return;
     }
 
-    if (parseInt(mileage) <= trip.vehicle.lastMileage) {
-      setFormError('Mileage should be greater than the last recorded mileage');
-      return;
-    }
+   
 
     setFormError('');
     const updatedTrip = {
@@ -58,19 +77,24 @@ const StartTripForm = ({ trip }) => {
       hireStatus: "Ongoing"
     };
 
+   
+
+    console.log(parseInt(mileage))
+    console.log(trip.vehicle.lastMileage)
+    if (parseInt(mileage) <= trip.vehicle.lastMileage) {
+      console.log(trip.vehicle.lastMileage)
+      setFormError('Mileage should be greater than the last recorded mileage');
+      setMileage(null)
+      return;
+    }else{
+
     const updateMileage = {
       ...trip.vehicle,
       lastMileage: mileage
     };
 
-    await updateAxiosFetch({
-      axiosInstance: axios,
-      method: 'PATCH',
-      url: `/hire/driverEdit/${trip._id}/`,
-      requestConfig: {
-        data: updatedTrip,
-      },
-    });
+    console.log(trip)
+   
 
     await VaxiosFetch({
       axiosInstance: axios,
@@ -85,38 +109,52 @@ const StartTripForm = ({ trip }) => {
       console.log('Mileage updated')
     }
 
+     await updateAxiosFetch({
+      axiosInstance: axios,
+      method: 'PATCH',
+      url: `/hire/driverEdit/${trip._id}/`,
+      requestConfig: {
+        data: updatedTrip,
+      },
+    });
+
     if (updateResponse) {
       alert("successfully updated");
-      navigate('/driver/tripPage', { state: { trip: updatedTrip } });
+      navigate('/driver/tripPage', { state: { tripID: trip._id } });
     }
+    
+  }
   };
 
   return (
     <form onSubmit={handleSubmit} className="bg-white p-4 rounded-lg shadow-md">
-      <div className="mb-4">
-        <label htmlFor="pickupLocationNo" className="block text-sm font-medium text-gray-700">
-          Pickup Location No:
-        </label>
-        <input
-          type="text"
-          id="pickupLocationNo"
-          value={pickLocationNo}
-          onChange={(e) => setPickUpLocationNo(e.target.value)}
-          className="mt-1 p-2 w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-        />
-      </div>
-      <div className="mb-4">
-        <label htmlFor="pickupLocationStreet" className="block text-sm font-medium text-gray-700">
-          Pickup Location Street:
-        </label>
-        <input
-          type="text"
-          id="pickupLocationStreet"
-          value={pickLocationStreet}
-          onChange={(e) => setPickUpLocationStreet(e.target.value)}
-          className="mt-1 p-2 w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-        />
-      </div>
+      <div className="mb-4 grid grid-cols-2 gap-4">
+  <div>
+    <label htmlFor="pickupLocationNo" className="block text-sm font-medium text-gray-700">
+      Pickup Location No:
+    </label>
+    <input
+      type="text"
+      id="pickupLocationNo"
+      value={pickLocationNo}
+      onChange={(e) => setPickUpLocationNo(e.target.value)}
+      className="mt-1 p-2 w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+    />
+  </div>
+  <div>
+    <label htmlFor="pickupLocationStreet" className="block text-sm font-medium text-gray-700">
+      Pickup Location Street:
+    </label>
+    <input
+      type="text"
+      id="pickupLocationStreet"
+      value={pickLocationStreet}
+      onChange={(e) => setPickUpLocationStreet(e.target.value)}
+      className="mt-1 p-2 w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+    />
+  </div>
+</div>
+
       <div className="mb-4">
         <label htmlFor="pickupLocationCity" className="block text-sm font-medium text-gray-700">
           Pickup Location City:
@@ -153,7 +191,39 @@ const StartTripForm = ({ trip }) => {
           className="mt-1 p-2 w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
         />
       </div>
-      <div className="mb-4">
+      
+      <div className="mb-4 grid grid-cols-2 gap-4">
+  <div>
+    <label htmlFor="startDate" className="block text-sm font-medium text-gray-700">
+      Start Date:
+    </label>
+    <input
+      type="date"
+      id="startDate"
+      value={startDate}
+      onChange={(e) => setStartDate(e.target.value)}
+      readOnly
+      required
+      className="mt-1 p-2 w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+    />
+  </div>
+  <div>
+    <label htmlFor="startTime" className="block text-sm font-medium text-gray-700">
+      Start Time:
+    </label>
+    <input
+      type="time"
+      id="startTime"
+      value={startTime}
+      onChange={(e) => setStartTime(e.target.value)}
+      readOnly
+      required
+      className="mt-1 p-2 w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+    />
+  </div>
+</div>
+
+<div className="mb-4">
         <label htmlFor="mileage" className="block text-sm font-medium text-gray-700">
           Starting Mileage:
         </label>
@@ -166,34 +236,7 @@ const StartTripForm = ({ trip }) => {
           className="mt-1 p-2 w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
         />
       </div>
-      <div className="mb-4">
-        <label htmlFor="startDate" className="block text-sm font-medium text-gray-700">
-          Start Date:
-        </label>
-        <input
-          type="date"
-          id="startDate"
-          value={startDate}
-          onChange={(e) => setStartDate(e.target.value)}
-          readOnly
-          required
-          className="mt-1 p-2 w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-        />
-      </div>
-      <div className="mb-4">
-        <label htmlFor="startTime" className="block text-sm font-medium text-gray-700">
-          Start Time:
-        </label>
-        <input
-          type="time"
-          id="startTime"
-          value={startTime}
-          onChange={(e) => setStartTime(e.target.value)}
-          readOnly
-          required
-          className="mt-1 p-2 w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-        />
-      </div>
+
       <div className="mb-4">
         <label htmlFor="odometerImage" className="block text-sm font-medium text-gray-700">
           Odometer Photo:

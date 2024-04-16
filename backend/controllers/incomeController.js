@@ -1,7 +1,7 @@
 const Income = require('../models/incomeModel');
 const { Vehicles }= require('../models/vehicleModel');
-const Client = require('../models/clientModel');
-const Contract = require('../models/contractModel');
+const Contract = require("../models/contractModel");
+const Client = require("../models/clientModel");
 const Hire = require('../models/hireModel');
 const user = require('../models/userModel')
 const mongoose = require('mongoose')
@@ -9,7 +9,7 @@ const mongoose = require('mongoose')
 //get all expense
 const getAllIncome = async(req,res) => {
     const incomes= await Income.find({}).populate('vehicle').populate('hirePayment.hire').populate('recordedBy')
-    .populate('contractIncome.client')
+    
     .populate('contractIncome.contract').sort({ createdAt: -1 });
     res.status(200).json(incomes)
 }
@@ -48,7 +48,6 @@ const createIncome = async (req,res) =>{
         hirePayment,
         contractIncome,
         description,
-        amount,
         paymentMethod,
         status,
         comments
@@ -64,7 +63,6 @@ const createIncome = async (req,res) =>{
     hirePayment,
     contractIncome,
     description,
-    amount,
     paymentMethod,
     status,
     comments
@@ -124,6 +122,27 @@ const updateIncome = async (req,res) =>{
     
 } 
 
+const getContractByVehicleID = async (req, res)=>{
+    const {vehicleId} = req.params
+
+ 
+    if(!mongoose.Types.ObjectId.isValid(vehicleId)){
+        return res.status(400).json({error: 'invalid id'})
+    }
+
+    const contract = await Contract.find({ Vehical: vehicleId }).populate('Vehical').populate('clientID');
+    console.log(contract)
+    if(!contract)
+    {
+        return res.status(400).json({error: 'No such contract'})
+    }
+
+   
+    res.status(200).json(contract)
+
+}
+
+
 
 
 module.exports = {
@@ -131,5 +150,6 @@ module.exports = {
     getAllIncome,
     getIncome,
     deleteIncome,
-    updateIncome
+    updateIncome,
+    getContractByVehicleID
 }

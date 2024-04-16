@@ -76,19 +76,24 @@ const ExpenseTable = () => {
   const handleCancelEdit = () => {
     setEditSelectedExpense(null);
   };
-  const handleDeleteExpense = (id, status) => {
+  const handleDeleteExpense = async (id, status) => {
     if (status === "Paid") {
       alert("This expense cannot be deleted as it has already been paid.");
     } else {
       const confirmDelete = window.confirm("Are you sure you want to delete this expense?");
       if (confirmDelete) {
-        deleteAxiosFetch({
+        try {
+        await deleteAxiosFetch({
           axiosInstance: axios,
           method: "DELETE",
           url: `/expense/${id}`,
         });
-        setReload(reload + 1); // Trigger reload after deletion
-        console.log("Expense deleted successfully. Reloading...");
+        setReload(prevReload => prevReload + 1); // Trigger reload after deletion
+        
+      } catch (error) {
+        console.error("Error deleting expense:", error);
+        alert("An error occurred while deleting expense. Please try again.");
+      }
       }
     }
   };

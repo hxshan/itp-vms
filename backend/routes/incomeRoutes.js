@@ -4,7 +4,8 @@ const {
     getAllIncome,
     getIncome,
     deleteIncome,
-    updateIncome
+    updateIncome,
+    getContractByVehicleID
 } = require('../controllers/incomeController')
 
 
@@ -18,6 +19,8 @@ router.get('/', getAllIncome )
 // get single finace 
 
 router.get('/:id',getIncome)
+
+router.get('/contract/:vehicleId',getContractByVehicleID)
 
 
 router.post('/',  createIncome)

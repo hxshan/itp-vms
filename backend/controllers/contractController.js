@@ -65,7 +65,7 @@ const getClientbyId = async(req,res) =>{
     const ExistinClient = await Client.findOne({_id:clientID})
 
     if(!ExistinClient){
-      return res.status(400).json({"error":"client dosent exist"})
+      return res.status(400).json({message:"client dosent exist"})
     }
 
     return res.status(200).json(ExistinClient);
@@ -234,6 +234,11 @@ const createContract = async(req,res)=>{
         return res.status(400).json({message:"fields are not filled"})
       }
 
+      const currentDate = new Date();
+
+      currentDate.setHours(currentDate.getHours() + 5); // Add 5 hours
+      currentDate.setMinutes(currentDate.getMinutes() + 30); // Add 30 minutes
+
       const contract = new Contract({
         clientID,
         Vehical_Type,
@@ -253,7 +258,8 @@ const createContract = async(req,res)=>{
         Payment_Plan,
         Payment_Date,
         Amount_Payed,
-        Status:"Newly Added"
+        Status:"Newly Added",
+        DateCreated:currentDate
       });
 
       await contract.save()
@@ -309,7 +315,7 @@ const getallContract = async(req,res) =>{
     .populate('clientID');
 
     if(!Contracts){
-      return res.status(400).json({"error":"No contracts available"});
+      return res.status(400).json({message:"No contracts available"});
     }
 
  const currentDate = new Date();
@@ -335,7 +341,7 @@ currentDate.setMinutes(currentDate.getMinutes() + 30); // Add 30 minutes
 
     return res.status(200).json(Contracts)
   }catch(error){
-    return res.status(500).json({"error":error.message})
+    return res.status(500).json({error:error.message})
   }
 }
 

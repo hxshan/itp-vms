@@ -9,6 +9,8 @@ import VehicleDashboard from "./pages/vehicle/VehicleDashboard";
 import CaseFileForm from "./components/EAM/CaseFileForm";
 import EAMDashboard  from "./pages/EAM/EAMDashboard";
 import { CreateMaintainceForm } from "./components/VR/CreateMaintainceForm";
+import ViewCaseFile from "./components/EAM/viewCaseFile";
+import EditCaseFileForm from "./components/EAM/EditCaseFileForm";
 
 import AddVehicle from "./pages/vehicle/AddVehicle";
 import VehicleDetailsControl from "./pages/vehicle/VehicleDetailsControl";
@@ -20,8 +22,9 @@ import { AdminDashboard, Roles, EditRoles,UserProfile,Users, DriverPerformance} 
 import { MaintainceDashboard } from "./pages/Maintains/MaintainceDashboard";
 import { EditMaintainceOrder } from "./components/VR/EditMaintainceOrder";
 import ContractDasboard from "./pages/contract/ContractDasboard";
+import  VehicleService  from "./components/VR/VehicleService";
 import {FinanceDashboard,ExpenseTracking, IncomeTracking }from "./pages/finance";
-import { VehicleServiceList } from "./components/VR/VehicleServiceList";
+
 import ClientDashboard from "./pages/contract/ClientDashboard";
 import ViewContract from "./pages/contract/ViewContract";
 import ContractEditForm from "./pages/contract/ContractEditForm";
@@ -30,11 +33,18 @@ import CaseFileTable from "./components/EAM/CaseFileTable";
 import {HireDashboard, CreateHire, EditHire, HireRates} from "./pages/hires/hires"
 import AddClient from "./pages/contract/AddClient";
 import { View } from '../src/components/VR/View';
+import {Servicenote} from '../src/components/VR/Servicenote';
+import {Requestfromdriver} from'../src/components/VR/Requestfromdriver'
+
 
 import ViewClient from "./pages/contract/ViewClient";
 import ClientEditForm from "./pages/contract/ClientEditForm";
 import UserReport from "./components/admin/UserReport";
 import EditUser from "./pages/admin/EditUser";
+import PrintReport from "./pages/contract/PrintReport";
+import GenerateReport from "./pages/contract/GenerateReport";
+
+
 
 
 function App() {
@@ -85,6 +95,8 @@ function App() {
             <Route path="/emergency" element={<EAMDashboard />} />
             <Route path="/emergency/create" element={<CaseFileForm />} />
             <Route path="/emergency/CaseFileTable" element={<CaseFileTable />} />
+            <Route path="/emergency/view/:id" element={<ViewCaseFile />} />
+            <Route path="/emergency/edit/:id" element={<EditCaseFileForm />} />
             <Route path="/user/:id" element={<UserProfile/>}/>
               
             <Route path="/hires">
@@ -107,7 +119,8 @@ function App() {
             <Route path="/driver/TripPage" element={<TripPage />} />
             <Route path="/Mdashboard" element={<MaintainceDashboard />} />
             <Route path="/view/:id" element={<View />} />
-            <Route path="/addnote" element={<servicenote />} />
+            <Route path="/addnote/:id" element={<Servicenote />} />
+           
             <Route
               path="/vehiclemaintain/edit/:id"
               element={<EditMaintainceOrder />}
@@ -118,21 +131,25 @@ function App() {
             <Route path="/client" element={<ClientDashboard/>}/>
             <Route path="/viewContract/:id" element={<ViewContract/>}/>
             <Route path="/EditContract/:id" element={<ContractEditForm/>}/>
+            <Route path="/Report" element={<GenerateReport/>}/>
+            <Route path="/PrintReport/:id" element={<PrintReport/>}/>
 
             <Route path="/EditClient/:id" element={<ClientEditForm/>}/>
             <Route path="/addClient" element={<AddClient/>}/>
             <Route path="/viewClient/:id" element={<ViewClient/>}/>
+    
               
 
             <Route path="/finance/financeDashboard" element={<FinanceDashboard />} />
             <Route path="/finance/expenseTracking" element={<ExpenseTracking />} />
-            <Route path="/finance/IncomeTracking" element={<IncomeTracking  />} />       
+            <Route path="/finance/incomeTracking" element={<IncomeTracking  />} />       
             <Route path="/addClient" element={<AddClient/>}/>
 
             <Route
-              path="/VehicleServiceList"
-              element={<VehicleServiceList />}
+              path="/VehicleService"
+              element={<VehicleService />}
             />
+              <Route path="/requestmaintains" element={<Requestfromdriver />} />
           </Routes>
           </div>
      </main>

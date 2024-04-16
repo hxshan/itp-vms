@@ -3,10 +3,10 @@ const Schema = mongoose.Schema
 
 const serviceschema = mongoose.Schema(
     {
-        vehicleRegister: [{
+        vehicleRegister: {
             type: Schema.Types.ObjectId,
             ref: 'Vehicles'
-        }],
+        },
 
         servicedate: {
             type: Date,

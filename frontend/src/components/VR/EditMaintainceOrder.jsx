@@ -42,7 +42,7 @@ export const EditMaintainceOrder = () => {
     }, [id]);
     const validateForm = () => {
         return (
-           
+
             validateVehicleId(vehicleRegister) &&
             validateVehicleIssue(vrissue) &&
             validateVehicleCost(vrcost) &&
@@ -61,7 +61,6 @@ export const EditMaintainceOrder = () => {
         }
         e.preventDefault();
         const data = {
-           
             vehicleRegister,
             vrissue,
             vrcost,
@@ -69,8 +68,6 @@ export const EditMaintainceOrder = () => {
             vrsdate,
             vredate
         };
-
-
         axios.put(`http://localhost:3000/api/vehiclemaintain/${id}`, data)
             .then(() => {
                 alert("Updated")
@@ -89,8 +86,6 @@ export const EditMaintainceOrder = () => {
             <div className=" sm:w-3/4 bg-slate-300 p-10 flex flex-col rounded-2xl ">
                 <form className='flex flex-col gap-4 md:flex-row' onSubmit={handleSubmit}>
                     <div className="w-full">
-
-                       
                         <div className='flex flex-col gap-5 mt-9'>
                             <label className='  font-semibold  '>Vehicle Number</label>
                             <input
@@ -121,7 +116,6 @@ export const EditMaintainceOrder = () => {
                                 onChange={(e) => setVrcost(e.target.value)}
                                 value={vrcost} />
                         </div>
-
                         <div className="flex flex-col gap-5 mt-5">
                             <label className='  font-semibold  '>Additional Info</label>
                             <textarea
@@ -135,7 +129,6 @@ export const EditMaintainceOrder = () => {
                         </div>
                     </div>
                     <div className="mt-5 flex flex-col justify-center items-center w-full">
-
                         <div className="flex flex-col gap-5 mb-5 items-center">
                             <div className="flex items-center gap-4">
                                 <label className='  font-semibold' >Start Date :</label>

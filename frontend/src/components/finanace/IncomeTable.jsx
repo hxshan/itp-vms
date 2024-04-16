@@ -1,6 +1,7 @@
 import useAxios from "@/hooks/useAxios";
 import axios from "@/api/axios";
 import { useState, useEffect } from "react";
+import EditIncomeForm  from  "./EditIncomeForm";
 
 
 const IncomeTable = () => {
@@ -10,8 +11,8 @@ const IncomeTable = () => {
   const [filterStatus, setFilterStatus] = useState("All");
   const [reload, setReload] = useState(0);
 
-   const [selectedExpense, setSelectedExpense] = useState(null);
-   const [EditselectedExpense, setEditSelectedExpense] = useState(null);
+   const [selectedIncome, setSelectedIncome] = useState(null);
+   const [EditselectedIncome, setEditSelectedIncome] = useState(null);
 
   const [incomesData, incomesError, incomesLoading, incomesAxiosFetch] = useAxios();
   const [deleteResponse, deleteError, deleteLoading, deleteAxiosFetch] = useAxios();
@@ -47,6 +48,69 @@ const IncomeTable = () => {
     }
   }, [updateResponse]);
 
+
+  const handleEditIncome = (income) => {
+    setEditSelectedIncome(income);
+  };
+
+  // Function to handle saving edited expense
+  const handleSaveIncome = (editedIncome) => {
+   
+    
+    updateAxiosFetch({
+      axiosInstance: axios,
+      method: 'PATCH',
+      url: `/income/${editedIncome._id}/`,
+      requestConfig: {
+        data: editedIncome,
+      },
+    });
+    // Close edit modal and reset selected expense
+   
+    setEditSelectedIncome(null);
+  };
+
+  // Function to handle cancelling edit
+  const handleCancelEdit = () => {
+    setEditSelectedIncome(null);
+  };
+
+
+
+  const handleDeleteIncome = async (id, status) => {
+    if (status === "Confirmed") {
+      alert("This income cannot be deleted as it has already been paid.");
+    } else {
+      const confirmDelete = window.confirm("Are you sure you want to delete this income?");
+      if (confirmDelete) {
+        try {
+          await deleteAxiosFetch({
+            axiosInstance: axios,
+            method: "DELETE",
+            url: `/income/${id}`,
+          });
+          console.log("Income deleted successfully. Reloading...");
+          setReload(prevReload => prevReload + 1); // Trigger reload after successful deletion
+        } catch (error) {
+          console.error("Error deleting income:", error);
+          alert("An error occurred while deleting income. Please try again.");
+        }
+      }
+    }
+  };
+  
+
+
+  const getAmountBasedOnSource = (income) => {
+    switch (income.source) {
+      case 'Hire Income':
+        return `Rs.${income.hirePayment.hireAmount.toFixed(2)}`; 
+      case 'Renatal Income':
+        return `Rs.${income.contractIncome.rentalAmount.toFixed(2)}`;  
+      default:
+        return 'Unknown';
+    }
+  };
 
  
 
@@ -101,7 +165,7 @@ const IncomeTable = () => {
               <td className="px-4 py-2">{income.vehicle.vehicleRegister}</td>
               <td className="px-4 py-2">{income.source}</td>
               <td className="px-4 py-2">{income.status}</td>
-              <td className="px-4 py-2">{income.amount}</td>
+              <td className="px-4 py-2">{getAmountBasedOnSource(income)}</td>
               <td className="px-4 py-2">
                 <button
                   onClick={() => handleViewExpense(income)}
@@ -110,13 +174,13 @@ const IncomeTable = () => {
                   View
                 </button>
                 <button
-                  onClick={() => handleEditExpense()}
+                  onClick={() => handleEditIncome(income)}
                   className="bg-green-500 hover:bg-green-600 text-white font-bold py-1 px-3 rounded mr-1"
                 >
                   Edit
                 </button>
                 <button
-                  onClick={() => handleDeleteExpense()}
+                  onClick={() => handleDeleteIncome(income._id, income.status)}
                   className="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-3 rounded"
                 >
                   Delete
@@ -126,6 +190,14 @@ const IncomeTable = () => {
           ))}
         </tbody>
       </table>
+      {EditselectedIncome && (
+        <EditIncomeForm
+          income={EditselectedIncome}
+          onSave={handleSaveIncome}
+          onCancel={handleCancelEdit}
+        />
+      )}
+   
       
     </div>
   );

@@ -1,3 +1,4 @@
+const  mongoose  = require("mongoose");
 const CaseFile = require("../models/caseFileModel");
 
 
@@ -6,6 +7,7 @@ const CaseFile = require("../models/caseFileModel");
 
         try{
             if(
+                !req.body.caseType ||
                 !req.body.caseTitle ||
                 !req.body.location ||
                 !req.body.timeOfIncident ||
@@ -23,6 +25,7 @@ const CaseFile = require("../models/caseFileModel");
             }
     
             const newCaseFile = {
+                caseType: req.body.caseType,
                 caseTitle: req.body.caseTitle,
                 location: req.body.location,
                 timeOfIncident: req.body.timeOfIncident,
@@ -81,7 +84,14 @@ const getCaseFiles = async (req, res) => {
         try{
         
             const { id} = req.params;
+            if(!mongoose.Types.ObjectId.isValid(id)){
+                return res.status(400).send("Invalid case file id");
+            }
             const caseFile = await CaseFile.findById(id);
+
+            if(!caseFile){
+                return res.status(404).send("Case file not found");
+            }
             return res.status(200).send(caseFile);
         
         }catch(error){
@@ -96,7 +106,9 @@ const getCaseFiles = async (req, res) => {
     
 
         const { id } = req.params;
-        const  { caseTitle, 
+        const  { 
+                caseType,
+                caseTitle, 
                  location, 
                  timeOfIncident, 
                  passengerCount, 
@@ -125,6 +137,7 @@ const getCaseFiles = async (req, res) => {
            
         
             const updatedCaseFile = await CaseFile.findByIdAndUpdate(id, { 
+                caseType,
                 caseTitle,
                 location, 
                  timeOfIncident, 
@@ -181,4 +194,50 @@ const getCaseFiles = async (req, res) => {
         
 };
 
-module.exports = {createCaseFile, getCaseFiles, getCaseFileById, updateCaseFileById, deleteCaseFileById};
+const driverCreateEmergency = async (req, res) => {
+    try {
+      const {
+        caseTitle,
+        timeOfIncident,
+        driverID,
+        driverName,
+        driverLicenceNumber,
+        licencePlate,
+        passengerCount,
+        location,
+        incidentDescription,
+        hire, 
+        severity
+      } = req.body.data;
+
+      console.log(req.body)
+  
+      if (!caseTitle || !timeOfIncident || !driverID || !driverName || !driverLicenceNumber || !licencePlate || !passengerCount || !location || !incidentDescription || !hire || !severity) {
+        return res.status(400).send("Missing required fields");
+      }
+  
+      const newCaseFile = {
+        caseTitle,
+        timeOfIncident,
+        driverID,
+        driverName,
+        driverLicenceNumber,
+        licencePlate,
+        passengerCount,
+        location,
+        incidentDescription,
+        hire,
+        severity
+      };
+  
+      const createdCaseFile = await CaseFile.create(newCaseFile);
+      return res.status(201).send(createdCaseFile);
+    } catch (error) {
+      console.error("Error creating case file", error);
+      return res.status(500).send("Internal server error");
+    }
+  };
+  
+
+
+module.exports = {createCaseFile, getCaseFiles, getCaseFileById, updateCaseFileById, deleteCaseFileById, driverCreateEmergency};

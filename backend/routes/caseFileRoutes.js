@@ -4,7 +4,8 @@ const { createCaseFile,
          getCaseFiles,
          getCaseFileById,
          updateCaseFileById,
-         deleteCaseFileById,   
+         deleteCaseFileById,
+         driverCreateEmergency   
         } = require("../controllers/CaseFileController.js");
 
 
@@ -13,6 +14,7 @@ const { createCaseFile,
 const router = express.Router(); 
 
 router.post("/create", createCaseFile);
+router.post("/driverCreateEmergency",  driverCreateEmergency );
 router.get("/", getCaseFiles);
 router.get("/:id", getCaseFileById);
 router.put("/:id", updateCaseFileById);

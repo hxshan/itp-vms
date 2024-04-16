@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "@/api/axios";
 import useAxios from "@/hooks/useAxios";
+import ReactToPrint from "react-to-print";
+
 
 
 const ViewClient = () => {
@@ -157,6 +159,8 @@ const ViewClient = () => {
         getallContracts();
     },[])
 
+    const ref = useRef(null);
+
 if(contLoading){
   return(
     <div>Loading</div>
@@ -169,7 +173,7 @@ if(contLoading){
         <h1 className=" text-[50px] font-bold ">Client View</h1>
       </div>
 
-      <div className="bg-[#D9D9D9] w-[90%] h-fit rounded-lg py-4 flex flex-col  ">
+      <div  className="bg-[#D9D9D9] w-[90%] h-fit rounded-lg py-4 flex flex-col  ">
         <div className='flex justify-between px-5 mb-4'>
         <button
               className=" bg-yellow-600 px-5 py-2 rounded-xl w-[120px] "
@@ -182,7 +186,7 @@ if(contLoading){
       <button className=" bg-green-600 px-5 py-2 rounded-xl" onClick={()=>{navigate(`/EditClient/${clientID}`)}}>Edit</button>
       </div>
       </div>
-      <div className='flex justify-evenly'>
+      <div className='flex justify-evenly' ref={ref}>
         <div>
           <div className="flex gap-4 mb-3">
             <div className="flex flex-col gap-1">
@@ -304,11 +308,11 @@ if(contLoading){
             >
               Add contract
             </button>
-            <button
+            <ReactToPrint bodyClass='print-agreement' content={()=>ref.current} trigger={()=>(<button
               className=" bg-blue-600 px-5 py-2 rounded-xl w-[120px] "
             >
               Print
-            </button>
+            </button>)}/>
           </div>
       </div>
         </div>

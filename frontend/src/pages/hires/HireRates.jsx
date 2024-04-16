@@ -4,6 +4,8 @@ import useAxios from "@/hooks/useAxios";
 import EditHireRates from "@/components/hires/EditHireRates";
 import AddHireRate from '@/components/hires/AddHireRate'
 
+import { ClipLoader } from "react-spinners";
+
 const HireRates = () => {
     const [rates, error, loading, axiosFetch] = useAxios();
     const [editRates, setEditRates] = useState(false);
@@ -41,7 +43,13 @@ const HireRates = () => {
     };
 
     if (loading) {
-        return <p>Loading...</p>;
+        return (
+            <div className="flex justify-center items-center h-screen">
+              <div className="sweet-loading">
+                <ClipLoader color="#10971D" loading={true}  size={50} />
+              </div>
+            </div>
+          );
     }
 
 

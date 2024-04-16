@@ -12,7 +12,7 @@ const contractSchema = new Schema({
     },
     Vehical:{
         type:mongoose.Schema.Types.ObjectId,
-        ref:'Vehical' 
+        ref:'Vehicles' 
     },
     contract_SD:{
         type:Date,
@@ -61,6 +61,9 @@ const contractSchema = new Schema({
     },
     Status:{
         type:String,
+    },
+    DateCreated:{
+        type:Date,
     }
 })
 
