@@ -6,6 +6,7 @@ import axios from "@/api/axios";
 import SummaryTable from "../../components/vehicle/SummaryTable"
 import { useNavigate } from 'react-router-dom';
 import { ReactToPrint } from 'react-to-print';
+import { ClockLoader } from "react-spinners";
 
 const PieChart = () => {
  
@@ -31,7 +32,13 @@ const getData = ()=>{
 
   if(loading){
     return(
-      <p className="flex flex-col items-center justify-center h-screen text-center text-lg font-bold text-black" >Loading...</p>
+      <div className="w-full flex items-center justify-center h-full bg-white">
+        <ClockLoader
+            color="#36d7b7"
+            height={50}
+            width={10}
+          />
+      </div>
     )
   }
   if(error){

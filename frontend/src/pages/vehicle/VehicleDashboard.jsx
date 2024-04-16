@@ -4,6 +4,7 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Pie } from 'react-chartjs-2';
 import useAxios from "@/hooks/useAxios";
 import axios from "@/api/axios";
+import { ClockLoader } from "react-spinners";
 
 import NewlyAddedTable from '../../components/vehicle/NewlyAddedTable';
 import UnavailableTable from '../../components/vehicle/UnavailableTable';
@@ -45,7 +46,13 @@ const VehicleDashboard = () => {
 
   if(loading){
     return(
-      <p className="flex flex-col items-center justify-center h-screen text-center text-lg font-bold text-black" >Loading...</p>
+      <div className="w-full flex items-center justify-center h-full bg-white">
+        <ClockLoader
+            color="#36d7b7"
+            height={50}
+            width={10}
+          />
+      </div>
     )
   }
   if(error){
