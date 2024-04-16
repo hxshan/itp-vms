@@ -4,7 +4,7 @@ import axios from '@/api/axios';
 import useAxios from '@/hooks/useAxios';
 import { ReactToPrint } from 'react-to-print';
 
-export const MaintainOrderTable = () => {
+export const Requestfromdriver = () => {
     const [data, error, loading, axiosFetch] = useAxios();
     const [maintains, setMaintains] = useState([]);
     const currentDate = new Date();
@@ -78,6 +78,7 @@ export const MaintainOrderTable = () => {
 
     return (
         <div className="w-full flex flex-col items-center md:w-full">
+             <h1 className='font-bold text-3xl mt-3 mb-5'>Reuests from Driver</h1>
             <div className="flex flex-col ">
                 <div className="flex gap-7 items-center mb-3  flex-col md:flex-row">
                     <form>
@@ -133,16 +134,14 @@ export const MaintainOrderTable = () => {
                 </div>
             </div>
             <div ref={componentRef}>
-            <div className="flex justify-center items-center gap-3 bg-slate-50 shadow-lg rounded-md  m-5 p-3" >  <h1 className="text-center font-semibold text-2xl "> Date Range :  From {new Date(startDate).toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' })}</h1>
+                <div className="flex justify-center items-center gap-3 bg-slate-50 shadow-lg rounded-md  m-5 p-3" >  <h1 className="text-center font-semibold text-2xl "> Date Range :  From {new Date(startDate).toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' })}</h1>
                     <h1 className="text-center font-semibold text-2xl "> to {new Date(endDate).toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' })}</h1>
                 </div>
-                <table className='border-separate border-spacing-2 mb-16 shadow-xl rounded-lg mt-6'>
+                <table className='border-separate border-spacing-2 mb-16 shadow-xl rounded-lg w-[760px] mt-10'>
                     <thead>
                         <tr>
-                            <th className='border border-slate-700 rounded-md p-2'>No</th>
-                            <th className='border border-slate-700 rounded-md  p-2'>Number Plate</th>
-                            <th className='border border-slate-700 rounded-md  p-2'>Time(From - To)</th>
-                            <th className='border border-slate-700 rounded-md  p-2'>Status</th>
+                            <th className='border border-slate-700 rounded-md p-2'>Number Plate</th>
+                            <th className='border border-slate-700 rounded-md p-2'>Date</th>
                             <th className='border border-slate-700 rounded-md p-2'>Options</th>
                         </tr>
                     </thead>
@@ -159,33 +158,26 @@ export const MaintainOrderTable = () => {
                                 ) {
                                     return null;
                                 }
-                                return (
-                                    <tr key={item._id} className='h-8 '>
-                                        <td className='border border-slate-700 rounded-md text-center'>{index + 1}</td>
-                                        <td className='border border-slate-700 rounded-md text-center'>{item.vrvehicleRegister}</td>
-                                        <td className='border border-slate-700 rounded-md text-center'>
-                                            {new Date(item.vrsdate).toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' })} to {new Date(item.vredate).toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' })}
-                                        </td>
-                                        <td className='border border-slate-700 rounded-md text-center'>
-                                            {sDate > currentDate ? (
-                                                <p className='bg-red-100 font-semibold'>Undermaintenance</p>
-                                            ) : (
-                                                <p className='bg-blue-100 font-semibold'>Done</p>
-                                            )}
-                                        </td>
-                                        <td className='border border-slate-700 rounded-md text-center'>
-                                            <div className="flex justify-center gap-x-4 pr-3 pl-3 p-1">
-                                                <Link to={`/view/${item._id}`}>
-                                                    <button className='border bg-blue-500 text-zinc-50 rounded-lg pr-3 pl-3 p-2'>View</button>
-                                                </Link>
-                                                <Link to={`/vehiclemaintain/edit/${item._id}`}>
-                                                    <button className='border bg-green-500 text-zinc-50 rounded-lg pr-3 pl-3 p-2'>Edit</button>
-                                                </Link>
-                                                <button className='border bg-red-500 text-zinc-50 rounded-lg pr-3 pl-3 p-2' id={item._id} onClick={deleteData}>Delete</button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                );
+                            
+                                if (!item.vrcost || !item.vraddit || !item.vredate) {
+                                    return (
+                                        <tr key={item._id} className='h-8 '>
+                                            <td className='border border-slate-700 rounded-md text-center p-2'>{item.vrvehicleRegister}</td>
+                                            <td className='border border-slate-700 rounded-md text-center p-2'>
+                                                {new Date(item.vrsdate).toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' })}
+                                            </td>
+                                            <td className='border border-slate-700 rounded-md text-center p-2'>
+                                                <div className="flex justify-center gap-x-4 pr-3 pl-3 p-1">
+                                                
+                                                    <Link to={`/vehiclemaintain/edit/${item._id}`}>
+                                                        <button className='border bg-green-500 text-zinc-50 rounded-lg pr-3 pl-3 p-2'>Update</button>
+                                                    </Link>
+                                                    <button className='border bg-red-500 text-zinc-50 rounded-lg pr-3 pl-3 p-2' id={item._id} onClick={deleteData}>Delete</button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    );
+                                } 
                             })
                         ) : (
                             <tr>

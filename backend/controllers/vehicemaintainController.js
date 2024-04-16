@@ -5,7 +5,7 @@ const {Vehicles} = require('../models/vehicleModel')
 //Add maintain to the system
 const createmaintain = async (req, res) => {
     try {
-        // Check if all required fields are provided in the request body
+       
         const requiredFields = ['vehicleRegister', 'vrissue', 'vrcost', 'vrsdate', 'vredate', 'availability'];
         const missingFields = requiredFields.filter(field => !req.body[field]);
         if (missingFields.length > 0) {
@@ -14,7 +14,7 @@ const createmaintain = async (req, res) => {
 
         const currentDate = new Date();
         
-        // Find the ObjectId for category and vehicleRegister based on the provided strings
+       
         
         const vehicle = await Vehicles.findOne({ vehicleRegister: req.body.vehicleRegister });
 
@@ -22,7 +22,7 @@ const createmaintain = async (req, res) => {
             return res.status(400).send({ message: "Invalid category or vehicle register provided." });
         }
 
-        // Create the maintenance object
+        
         const maintain = {
            
             vehicleRegister: vehicle._id,
@@ -35,14 +35,14 @@ const createmaintain = async (req, res) => {
             availability: req.body.availability
         };
 
-        // Check if the current date is within the maintenance period
+       
         if (currentDate >= new Date(maintain.vrsdate) && currentDate <= new Date(maintain.vredate)) {
             maintain.availability = 'unavailable';
         } else {
             maintain.availability = 'available';
         }
 
-        // Create a new maintenance record
+       
         const newMaintain = await vehicleMaintain.create(maintain);
         
         return res.status(201).send(newMaintain);

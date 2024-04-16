@@ -22,8 +22,9 @@ import { AdminDashboard, Roles, EditRoles } from "./pages/admin";
 import { MaintainceDashboard } from "./pages/Maintains/MaintainceDashboard";
 import { EditMaintainceOrder } from "./components/VR/EditMaintainceOrder";
 import ContractDasboard from "./pages/contract/ContractDasboard";
+import  VehicleService  from "./components/VR/VehicleService";
 import {FinanceDashboard,ExpenseTracking, IncomeTracking }from "./pages/finance";
-import { VehicleServiceList } from "./components/VR/VehicleServiceList";
+
 import ClientDashboard from "./pages/contract/ClientDashboard";
 import ViewContract from "./pages/contract/ViewContract";
 import ContractEditForm from "./pages/contract/ContractEditForm";
@@ -32,6 +33,9 @@ import { UserProfile } from "./pages/admin";
 import {HireDashboard, CreateHire, EditHire, HireRates} from "./pages/hires/hires"
 import AddClient from "./pages/contract/AddClient";
 import { View } from '../src/components/VR/View';
+import {Servicenote} from '../src/components/VR/Servicenote';
+import {Requestfromdriver} from'../src/components/VR/Requestfromdriver'
+
 
 import ViewClient from "./pages/contract/ViewClient";
 import ClientEditForm from "./pages/contract/ClientEditForm";
@@ -109,7 +113,8 @@ function App() {
             <Route path="/driver/TripPage" element={<TripPage />} />
             <Route path="/Mdashboard" element={<MaintainceDashboard />} />
             <Route path="/view/:id" element={<View />} />
-            <Route path="/addnote" element={<servicenote />} />
+            <Route path="/addnote/:id" element={<Servicenote />} />
+           
             <Route
               path="/vehiclemaintain/edit/:id"
               element={<EditMaintainceOrder />}
@@ -132,9 +137,10 @@ function App() {
             <Route path="/addClient" element={<AddClient/>}/>
 
             <Route
-              path="/VehicleServiceList"
-              element={<VehicleServiceList />}
+              path="/VehicleService"
+              element={<VehicleService />}
             />
+              <Route path="/requestmaintains" element={<Requestfromdriver />} />
           </Routes>
           </div>
      </main>
