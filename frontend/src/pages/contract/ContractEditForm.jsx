@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from "@/api/axios";
 import { ToastContainer, toast } from 'react-toastify';
+import { ClipLoader } from "react-spinners";
 
 
 const ContractEditForm = () => {
@@ -422,15 +423,25 @@ if(endDate < minstartDate){
     }
 ]
 
+if(loading){
+  return(
+    <div className="flex justify-center items-center h-screen">
+      <div className="sweet-loading">
+        <ClipLoader color="#10971D" loading={true}  size={50} />
+      </div>
+    </div>
+  );
+}
+
   return (
     <div className='w-full flex flex-col justify-center items-center py-5' >
 
 
-    <div className='flex items-center justify-center mb-4'>
+    <div className='flex items-center justify-center mb-4 border-b-2'>
         <p className=' text-[50px] font-bold '>EDIT CONTRACT</p>
     </div>
     <ToastContainer/>
-    <div className='bg-[#D9D9D9] w-[90%] h-fit rounded-lg py-8 flex flex-col'>
+    <div className='shadow-xl bg-white w-[90%] h-fit rounded-lg py-8 flex flex-col'>
     
     <div className='flex justify-evenly'>
     <div>
@@ -477,7 +488,7 @@ if(endDate < minstartDate){
 
         <div className='flex flex-col mt-3 gap-1'>
             <label>Vehical Type</label>
-            <select name='Vehical_Type' className='w-[150px]  rounded-lg  bg-white border-none p-2' value={contractData.Vehical_Type} onChange={HandleInput}>
+            <select name='Vehical_Type' className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" value={contractData.Vehical_Type} onChange={HandleInput}>
                     {vehicals.map((item,index)=>(
                         <option key={index} value={item.name} >{item.name}</option>
                     ))}
@@ -493,7 +504,7 @@ if(endDate < minstartDate){
 
         <div className='flex flex-col gap-1'>
             <label>End date</label>
-            <input type='date' className='w-[150px] h-10 rounded-lg  bg-white border-none px-2 ' name='contract_ED' value={formatED}  onChange={HandleInput} />
+            <input type='date' className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name='contract_ED' value={formatED}  onChange={HandleInput} />
         </div>
         </div>
         
@@ -502,9 +513,9 @@ if(endDate < minstartDate){
         <p className=' text-red-500 font-bold'>{EstimatedDays ? EstimatedDays : ''}</p>
         </div>
 
-        <div className='flex flex-col gap-1'>
+        <div className='flex flex-col gap-1 mt-3'>
             <label >Status</label>
-            <p>{contractData.Status}</p>
+            <p className=' text-blue-500 font-bold' >{contractData.Status}</p>
         </div>
 
         <div className={` ${openTemination ? "": "hidden" }`}>
@@ -530,7 +541,7 @@ if(endDate < minstartDate){
 
         <div className='flex flex-col gap-1 mt-3'>
             <label>Insurance source</label>
-            <select className='w-[150px]  rounded-lg  bg-white border-none p-2' value={contractData.Insurance_Source} name='Insurance_Source'  onChange={HandleInput}>
+            <select className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" value={contractData.Insurance_Source} name='Insurance_Source'  onChange={HandleInput}>
                     <option value={"Client"}>Client</option>
                     <option value={"Company"}>Company</option>
                 </select>
@@ -539,18 +550,18 @@ if(endDate < minstartDate){
         <div className='flex gap-4 mt-3'>
         <div className='flex flex-col gap-1'>
            <label>Name of Insurance provider</label>
-           <input type='text' className='w-[220px]  rounded-lg  bg-white border-none p-2' value={contractData.Insurace_provider} name='Insurace_provider'  onChange={HandleInput}/>
+           <input type='text' className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" value={contractData.Insurace_provider} name='Insurace_provider'  onChange={HandleInput}/>
         </div>
 
         <div className='flex flex-col gap-1'>
            <label>Policy number</label>
-           <input type='text' className='w-[220px]  rounded-lg  bg-white border-none p-2' value={contractData.Policy_Number} name='Policy_Number'  onChange={HandleInput}/>
+           <input type='text' className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" value={contractData.Policy_Number} name='Policy_Number'  onChange={HandleInput}/>
         </div>
         </div>
 
         <div className='flex flex-col mt-3 gap-1'>
            <label>Coverage Type</label>
-           <select className='w-[150px]  rounded-lg  bg-white border-none p-2' value={contractData.Coverage_Type} name='Coverage_Type'  onChange={HandleInput}>
+           <select className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" value={contractData.Coverage_Type} name='Coverage_Type'  onChange={HandleInput}>
                 <option value={"Liability"}>Liability</option>
                 <option value={"comprehensive"}>comprehensive</option>
                 <option value={"collision"}>collision</option>
@@ -561,30 +572,30 @@ if(endDate < minstartDate){
         <div className='flex gap-4 mt-3'>
         <div className='flex flex-col gap-1'>
             <label>Coverage amount</label>
-            <input type='text' className='w-[220px]  rounded-lg  bg-white border-none p-2' value={contractData.Coverage_Amount} name='Coverage_Amount'  onChange={HandleInput}/>
+            <input type='text' className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" value={contractData.Coverage_Amount} name='Coverage_Amount'  onChange={HandleInput}/>
         </div>
 
         <div className='flex flex-col gap-1'>
             <label>Deductible</label>
-            <input type='text' className='w-[220px]  rounded-lg  bg-white border-none p-2' value={contractData.Deductible} name='Deductible'  onChange={HandleInput}/>
+            <input type='text' className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" value={contractData.Deductible} name='Deductible'  onChange={HandleInput}/>
         </div>
         </div>
 
         <div className='flex gap-4 mt-3'>
         <div className='flex flex-col gap-1'>
             <label>Start date</label>
-            <input type='date' className='w-[150px] h-10 rounded-lg  bg-white border-none px-2 ' value={InsuranceSD} name='Insurance_SD'  onChange={HandleInput}/>
+            <input type='date' className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" value={InsuranceSD} name='Insurance_SD'  onChange={HandleInput}/>
         </div>
 
         <div className='flex flex-col gap-1'>
             <label>End date</label>
-            <input type='date' className='w-[150px] h-10 rounded-lg  bg-white border-none px-2 ' value={InsuranceED} name='Insurance_ED' onChange={HandleInput}/>
+            <input type='date' className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" value={InsuranceED} name='Insurance_ED' onChange={HandleInput}/>
         </div>
         </div>
 
         <div className='flex flex-col mt-3'>
             <label>Additianol notes</label>
-            <textarea className='h-[200px] w-[456px]  border-none rounded-lg mt-1' value={contractData.Insurance_notes} name='Insurance_notes'  onChange={HandleInput}></textarea>
+            <textarea className='h-[200px] w-[456px]  shadow appearance-none border rounded  py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline' value={contractData.Insurance_notes} name='Insurance_notes'  onChange={HandleInput}></textarea>
         </div>
     </div>
     <div className='  w-fit h-fit rounded-xl '>
@@ -594,45 +605,44 @@ if(endDate < minstartDate){
 
         <div className='flex flex-col mt-3 gap-1'>
             <label>Amount</label>
-            <input type='text' className='w-[220px]  rounded-lg  bg-white border-none p-2' value={contractData.Payment_Amount} name='Payment_Amount' onChange={HandleInput}/>
+            <input type='text' className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" value={contractData.Payment_Amount} name='Payment_Amount' onChange={HandleInput}/>
         </div>
         
         <div className='flex gap-12 mt-3'>
         <div className='flex flex-col gap-1'>
             <label>Payment plan</label>
-            <select className='w-[150px]  rounded-lg  bg-white border-none p-2' value={contractData.Payment_Plan} name='Payment_Plan'  onChange={HandleInput}>
+            <select className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" value={contractData.Payment_Plan} name='Payment_Plan'  onChange={HandleInput}>
                     <option value={"upFront"}>upFront</option>
-                    <option value={"Monthly"}>Monthly</option>
                 </select>
         </div>
 
         <div className='flex flex-col gap-1'>
             <label>Payment date</label>
-            <input type='date' className='w-[150px]  rounded-lg  bg-white border-none p-2' value={paymentDate} name='Payment_Date'  onChange={HandleInput}/>
+            <input type='date' className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" value={paymentDate} name='Payment_Date'  onChange={HandleInput}/>
         </div>
         </div>
 
         <div className='flex flex-col mt-3 gap-1'>
             <label>Amount payed</label>
-            <input type='text' className='w-[220px]  rounded-lg  bg-white border-none p-2' value={contractData.Amount_Payed} name='Amount_Payed'  onChange={HandleInput}/>
+            <input type='text' className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" value={contractData.Amount_Payed} name='Amount_Payed'  onChange={HandleInput}/>
         </div>
 
         <div className='flex flex-col mt-3 gap-1'>
             <p>Amount Due</p>
-            <p>Loading</p>
+            <p>{contractData.Amount_Payed && contractData.Payment_Amount ? contractData.Payment_Amount - contractData.Amount_Payed : "Calculating"}</p>
         </div>
     </div>
     </div>
     </div>
     <div className="flex justify-end gap-4 mx-12">
             <button
-              className=" bg-green-600 px-5 py-2 rounded-xl w-[120px] "
+              className=" bg-actionBlue text-white font-bold px-5 py-2 rounded-xl w-[120px] "
               onClick={HandleSubmit}
             >
               Submit
             </button>
             <button
-              className=" bg-orange-600 px-5 py-2 rounded-xl w-[120px] "
+              className=" bg-actionRed text-white font-bold px-5 py-2 rounded-xl w-[120px] "
               onClick={() => {
                 navigate(`/viewContract/${contractID}`);
               }}

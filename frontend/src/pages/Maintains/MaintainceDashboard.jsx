@@ -9,12 +9,12 @@ export const MaintainceDashboard = () => {
 
 
   return (
-    <main className='  flex flex-col items-center rounded-2xl shadow-xl h-full'>
-      <h1 className='font-bold text-3xl'>Maintenance Dashboard</h1>
-      <div className="flex items-center flex-row gap-10">
+    <main className='w-full place-content-center space-y-4 mt-8 bg-cover bg-center'>
+      <h1 className='font-bold text-xl'>Maintenance Dashboard</h1>
+      <div className="flex flex-row justify-end gap-10">
 
         <Link to="/Vrform">
-          <button className=' m-5 border bg-blue-500 text-zinc-50 rounded-lg pr-3 pl-3 p-2'>Create New Maintain </button>
+          <button className=' m-0 border bg-actionBlue text-zinc-50 font-bold rounded-lg px-2 py-2 flex mb-4'>Create New Maintain </button>
         </Link></div>
       <div className="flex items-center">
         <MaintainOrderTable />

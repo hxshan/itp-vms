@@ -306,11 +306,11 @@ const vehicals = [
     <div className='w-full flex flex-col justify-center items-center py-5' >
 
 
-        <div className='flex items-center justify-center mb-4'>
+        <div className='flex items-center justify-center mb-4 border-b-2'>
             <p className=' text-[50px] font-bold '>ADD CONTRACT</p>
         </div>
         <ToastContainer/>
-        <div className='bg-[#D9D9D9] w-[90%] h-fit rounded-lg py-8 flex justify-evenly'>
+        <div className='shadow-xl bg-white  w-[90%] h-fit rounded-lg py-8 flex justify-evenly'>
         
         <div>
         <div className=' w-fit h-fit  pb-8 rounded-xl'>
@@ -337,7 +337,7 @@ const vehicals = [
 
         <div>
             <p>Client National ID</p>
-            <p className=' text-[#000ac2] font-semibold'>{clientdet.client_NIC}</p>
+            <p className=' text-[#000ac2] font-semibold'>NIC {clientdet.client_NIC}</p>
         </div>
         </div>
         <div>
@@ -356,7 +356,7 @@ const vehicals = [
 
             <div className='flex flex-col mt-3 gap-1'>
                 <label>Vehical Type</label>
-                <select name='Vehical_Type' onChange={HandleInput} className='w-[150px]  rounded-lg  bg-white border-none p-2'>
+                <select name='Vehical_Type' onChange={HandleInput} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                     <option className='hidden'>Please select</option>
                     {vehicals.map((item,index)=>(
                         <option key={index} value={item._id} >{item.name}</option>
@@ -368,12 +368,12 @@ const vehicals = [
             <div className='flex mt-3 gap-12'>
             <div className='flex flex-col gap-1'>
                 <label>Start date</label>
-                <input type='date' className='w-[150px] h-10 rounded-lg  bg-white border-none px-2' name='contract_SD' onChange={HandleInput} />
+                <input type='date' className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name='contract_SD' onChange={HandleInput} />
             </div>
 
             <div className='flex flex-col gap-1'>
                 <label>End date</label>
-                <input type='date' className='w-[150px] h-10 rounded-lg  bg-white border-none px-2 ' name='contract_ED' onChange={HandleInput}/>
+                <input type='date' className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name='contract_ED' onChange={HandleInput}/>
             </div>
             </div>
             
@@ -392,7 +392,7 @@ const vehicals = [
 
             <div className='flex flex-col gap-1 mt-3'>
                 <p>Vehical Instance</p>
-                <select name='Vehical' onChange={HandleInput} className='w-[150px]  rounded-lg  bg-white border-none p-2'>
+                <select name='Vehical' onChange={HandleInput} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                     <option className='hidden' >please select</option>
                     {vehicalInstance.map((item,index)=>(
                         <option value={item._id} className={`${item.vehicalID === ContractData.Vehical_Type?'':'hidden' }`}>{item.name}</option>
@@ -428,7 +428,7 @@ const vehicals = [
 
             <div className='flex flex-col gap-1 mt-3'>
                 <label>Insurance source</label>
-                <select className='w-[150px]  rounded-lg  bg-white border-none p-2' name='Insurance_Source' onChange={HandleInput}>
+                <select className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name='Insurance_Source' onChange={HandleInput}>
                     <option className='hidden' value="" >please select</option>
                     <option value="Client" >Client</option>
                     <option value="Company" >Company</option>
@@ -438,19 +438,19 @@ const vehicals = [
             <div className='flex gap-4 mt-3'>
             <div className='flex flex-col gap-1'>
                <label>Name of Insurance provider</label>
-               <input type='text' className='w-[220px]  rounded-lg  bg-white border-none p-2' name='Insurace_provider' onChange={HandleInput}/> 
+               <input type='text' className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name='Insurace_provider' onChange={HandleInput}/> 
             </div>
 
             <div className='flex flex-col gap-1'>
                <label>Policy number</label>
-               <input type='text' className='w-[220px]  rounded-lg  bg-white border-none p-2' name='Policy_Number' onChange={HandleInput}/> 
+               <input type='text' className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name='Policy_Number' onChange={HandleInput}/> 
             </div>
             </div>
 
             <div className='flex flex-col mt-3 gap-1'>
                <label>Coverage Type</label>
 
-               <select className='w-[150px]  rounded-lg  bg-white border-none p-2' name='Coverage_Type' onChange={HandleInput}>
+               <select className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name='Coverage_Type' onChange={HandleInput}>
                 <option className='hidden' value="" >please select</option>
                 <option value="Liability" >Liability</option>
                 <option value="comprehensive" >comprehensive</option>
@@ -461,30 +461,30 @@ const vehicals = [
             <div className='flex gap-4 mt-3'>
             <div className='flex flex-col gap-1'>
                 <label>Coverage amount</label>
-                <input type='text' className='w-[220px]  rounded-lg  bg-white border-none p-2' name='Coverage_Amount' onChange={HandleInput}/>
+                <input type='text' className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name='Coverage_Amount' onChange={HandleInput}/>
             </div>
 
             <div className='flex flex-col gap-1'>
                 <label>Deductible</label>
-                <input type='text' className='w-[220px]  rounded-lg  bg-white border-none p-2' name='Deductible' onChange={HandleInput}/>
+                <input type='text' className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name='Deductible' onChange={HandleInput}/>
             </div>
             </div>
 
             <div className='flex gap-4 mt-3'>
             <div className='flex flex-col gap-1'>
                 <label>Start date</label>
-                <input type='date' className='w-[150px] h-10 rounded-lg  bg-white border-none px-2 ' name='Insurance_SD' onChange={HandleInput}/>
+                <input type='date' className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name='Insurance_SD' onChange={HandleInput}/>
             </div>
 
             <div className='flex flex-col gap-1'>
                 <label>End date</label>
-                <input type='date' className='w-[150px] h-10 rounded-lg  bg-white border-none px-2 ' name='Insurance_ED' onChange={HandleInput}/>
+                <input type='date' className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name='Insurance_ED' onChange={HandleInput}/>
             </div>
             </div>
 
             <div className='flex flex-col mt-3'>
                 <label>Additianol notes</label>
-                <textarea className='h-[200px] w-[456px]  border-none rounded-lg mt-1' name='Insurance_notes' onChange={HandleInput}></textarea>
+                <textarea className='h-[200px] w-[456px]  shadow appearance-none border rounded  py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline' name='Insurance_notes' onChange={HandleInput}></textarea>
             </div>
         </div>
         <div className='  w-fit h-fit rounded-xl '>
@@ -494,46 +494,45 @@ const vehicals = [
 
             <div className='flex flex-col mt-3 gap-1'>
                 <label>Amount</label>
-                <input type='text' className='w-[220px]  rounded-lg  bg-white border-none p-2' name='Payment_Amount' onChange={HandleInput}/>
+                <input type='text' className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name='Payment_Amount' onChange={HandleInput}/>
             </div>
             
             <div className='flex gap-12 mt-3'>
             <div className='flex flex-col gap-1'>
                 <label>Payment plan</label>
-                <select className='w-[150px]  rounded-lg  bg-white border-none p-2' name='Payment_Plan' onChange={HandleInput}>
+                <select className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name='Payment_Plan' onChange={HandleInput}>
                     <option className='hidden' value="" >Please select</option>
                     <option value="upFront">upFront</option>
-                    <option value="Monthly" >Monthly</option>
                 </select>
             </div>
 
             <div className='flex flex-col gap-1'>
                 <label>Payment date</label>
-                <input type='date' className='w-[150px]  rounded-lg  bg-white border-none p-2' name='Payment_Date' onChange={HandleInput}/>
+                <input type='date' className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name='Payment_Date' onChange={HandleInput}/>
             </div>
             </div>
 
             <div className='flex flex-col mt-3 gap-1'>
                 <label>Amount payed</label>
-                <input type='text' className='w-[220px]  rounded-lg  bg-white border-none p-2' name='Amount_Payed' onChange={HandleInput}/>
+                <input type='text' className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name='Amount_Payed' onChange={HandleInput}/>
             </div>
 
             <div className='flex flex-col mt-3 gap-1'>
                 <p>Amount Due</p>
-                <p>Loading</p>
+                <p>{ContractData.Amount_Payed && ContractData.Payment_Amount ? ContractData.Payment_Amount - ContractData.Amount_Payed : "Calculating"}</p>
             </div>
 
            
         </div>
         <div className="flex justify-end gap-4">
             <button
-              className=" bg-green-600 px-5 py-2 rounded-xl w-[120px] "
+              className=" bg-actionBlue text-white px-5 py-2 rounded-xl w-[120px] font-bold "
               onClick={HandleSubmit}
             >
               Add
             </button>
             <button
-              className=" bg-orange-600 px-5 py-2 rounded-xl w-[120px] "
+              className=" bg-actionRed text-white px-5 py-2 rounded-xl w-[120px] font-bold "
               onClick={() => {
                 navigate(`/viewClient/${clientID}`);
               }}

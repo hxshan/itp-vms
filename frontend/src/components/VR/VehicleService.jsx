@@ -3,6 +3,7 @@ import useAxios from '@/hooks/useAxios';
 import axios from '@/api/axios';
 import { useNavigate } from 'react-router-dom';
 import { ReactToPrint } from 'react-to-print';
+import { ClockLoader } from "react-spinners";
 
 const VehicleService = () => {
   const [data, error, loading, axiosFetch] = useAxios();
@@ -41,7 +42,15 @@ const VehicleService = () => {
   }, []);
 
   if (loading) {
-    return <p className="flex flex-col items-center justify-center h-screen text-center text-3xl font-bold text-black">Loading...</p>;
+    return (
+      <div className="w-full flex items-center justify-center h-full bg-white">
+        <ClockLoader
+            color="#36d7b7"
+            height={50}
+            width={10}
+          />
+      </div>
+    );
   }
   if (error) {
     return <p>Unexpected Error has occurred!</p>;
@@ -67,11 +76,21 @@ const VehicleService = () => {
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
-    <div className="w-full place-content-center space-y-4 mt-8 bg-cover bg-center bg-white mb-10 rounded-xl">
-      <div className="border-b-4 border-black w-full"></div>
-      <div className="text-2xl font-bold text-black mt-4 text-center">Reminders for Services</div>
+    <div className="w-full place-content-center space-y-4 mt-8 bg-cover bg-center">
+      <div className="text-xl font-bold text-black mt-4 mb-8">Reminders for Services</div>
 
-      <div className="flex gap-3 items-center justify-evenly">
+      <div className="flex justify-between">
+      <div className='flex gap-4 justify-end'>
+        
+        <ReactToPrint
+          trigger={() => <button className="bg-actionRed text-white rounded-lg px-4 py-2">Generate a Report</button>}
+          content={() => componentRef.current}
+        />
+        </div>
+        
+        
+      </div>
+      <div className='flex flex-row justify-end gap-4 '>
         <input
           type="text"
           name="Search"
@@ -83,29 +102,30 @@ const VehicleService = () => {
           className=" shadow appearance-none border rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline end-0"
         />
         <div className="flex gap-2">
-          <label className="font-semibold">Endrange :</label>
+          <div className=" shadow appearance-none border rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline end-0 bg-white">
+          <label className="font-bold mr-2">Endrange :</label>
           <input
             type="number"
             className="bg-slate-100 w-28 p-1 rounded-lg text-center"
             value={rangeend}
             onChange={(e) => setRangeend(parseInt(e.target.value))}
           />
-        </div>
-        <button type="button" className="bg-red-500 text-white rounded-lg px-4 py-2" onClick={resetState}>
-          Reset
-        </button>
-        <button className="bg-blue-500 text-white rounded-lg px-4 py-2" onClick={handleFilterClick}>
+          </div>
+          <button className="bg-actionBlue text-white rounded-lg px-4 py-2 font-bold" onClick={handleFilterClick}>
           {applyFilter ? 'Remove Filter' : 'Apply Filter'}
         </button>
-        <ReactToPrint
-          trigger={() => <button className="bg-blue-500 text-white rounded-lg px-4 py-2">Generate a Report</button>}
-          content={() => componentRef.current}
-        />
-      </div>
+          <button type="button" className="bg-actionRed text-white rounded-lg px-4 py-2 font-bold" onClick={resetState}>
+          Reset
+        </button>
+        </div>
+        </div>
+
+
       <div ref={componentRef}>
-        <h1 className="text-center font-semibold text-2xl mb-3"> End Range : {rangeend}Km</h1>
+        <h1 className="text-center font-bold text-xl mb-3"> End Range : {rangeend}Km</h1>
+        <div className="border-b-4 border-black w-full mb-6"></div>
         <table className="w-full   border-black  shadow-xl p-5">
-          <thead className="bg-gray-600   text-white">
+          <thead className="bg-secondary   text-white">
             <tr>
               <th className="border border-white p-2">Vehicle Category</th>
               <th className="border border-white p-2">Vehicle Number</th>
@@ -121,13 +141,13 @@ const VehicleService = () => {
                   <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200 text-center">{vehicle.category}</td>
                   <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200 text-center">{vehicle.vehicleRegister}</td>
                   <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200 text-center">{vehicle.lastMileage}km</td>
-                  <td className="border border-slate-700 rounded-md text-center">
+                  <td className="border rounded-md text-center">
                     {vehicle.lastMileage <= rangeend ? (
-                      <p className="bg-blue-100 font-semibold">Done</p>
+                      <p className='bg-green-200 text-green-800 font-semibold rounded-md mx-4'>Done</p>
                     ) : vehicle.lastMileage <= rangeend + 2000 ? (
-                      <p className="bg-yellow-100 font-semibold">Under Range</p>
+                      <p className='bg-yellow-200 text-yellow-800 font-semibold rounded-md mx-4'>Under Range</p>
                     ) : (
-                      <p className="bg-red-100 font-semibold">Still Not Close to Range</p>
+                      <p className='bg-red-200 text-red-800 font-semibold rounded-md mx-4'>Still Not Close to Range</p>
                     )}
                   </td>
                   <td className="px-2 py-2 whitespace-nowrap border-r border-gray-200 flex justify-center">

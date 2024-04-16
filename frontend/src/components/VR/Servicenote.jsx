@@ -74,10 +74,10 @@ export const Servicenote = () => {
     };
 
     return (
-        <main className='w-full flex flex-col justify-center items-center bg-slate-200'>
+        <main className='w-full flex flex-col justify-center items-center'>
             <Serviceview />
-            <div className="sm:w-1/2 bg-slate-300 p-10 flex flex-col rounded-2xl ">
-                <h1 className='text-3xl font-semibold text-center '>
+            <div className="sm:w-1/2 bg-white p-10 flex flex-col rounded-2xl ">
+                <h1 className='font-bold text-xl mb-6 text-center'>
                     Add Service Note
                 </h1>
                 <form className='flex flex-col gap-4 md:flex-row' onSubmit={handleSubmit}>
@@ -95,7 +95,7 @@ export const Servicenote = () => {
                             <input
                                 type="date"
                                 id='servicedate'
-                                className='border p-2 rounded-lg'
+                                className='border p-2 rounded-lg shadow  '
                                 required
                                 onChange={handlechange}
                                 value={formdata.servicedate} />
@@ -104,7 +104,7 @@ export const Servicenote = () => {
                                 type="text"
                                 id='Snote'
                                 placeholder=' '
-                                className='border p-2 rounded-lg'
+                                className='border p-2 rounded-lg shadow  '
                                 required
                                 onChange={handlechange}
                                 value={formdata.Snote} />
@@ -113,14 +113,14 @@ export const Servicenote = () => {
                                 type="number"
                                 id='Scost'
                                 placeholder='RS:-10,000'
-                                className='border p-2 rounded-lg'
+                                className='border p-2 rounded-lg shadow  '
                                 required
                                 onChange={handlechange}
                                 value={formdata.Scost} />
                         </div>
                     </div>
                 </form>
-                <button onClick={handleSubmit} className='hover:opacity-80 mt-10 bg-slate-800 p-3 rounded-lg text-white font-bold'>
+                <button onClick={handleSubmit} className='hover:opacity-80 mt-10 bg-actionBlue p-3 rounded-lg text-white font-bold'>
                     Add Service Note
                 </button>
             </div>

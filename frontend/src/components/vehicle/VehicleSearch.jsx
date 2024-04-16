@@ -3,6 +3,7 @@ import useAxios from "@/hooks/useAxios";
 import axios from "@/api/axios";
 import { ToastContainer, toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import { ClockLoader } from "react-spinners";
 
 const VehicleSearch = () => {
   const [data, error, loading, axiosFetch] = useAxios();
@@ -47,7 +48,13 @@ const VehicleSearch = () => {
 
   if (loading) {
     return (
-      <p className="flex flex-col items-center justify-center h-screen text-center text-lg font-bold text-black">Loading...</p>
+      <div className="p-10 w-full flex items-center justify-center h-full bg-white">
+        <ClockLoader
+            color="#36d7b7"
+            height={50}
+            width={10}
+          />
+      </div>
     )
   }
   if (error) {
@@ -111,7 +118,7 @@ const VehicleSearch = () => {
       </div>
 
       <table className='w-full border-collapse border-spacing-2 border-black rounded-md pad shadow-xl p-5'>
-        <thead className='bg-gray-800 text-white'>
+        <thead className='bg-secondary text-white'>
           <tr>
             <th className='border border-white p-2'>Vehicle Category</th>
             <th className='border border-white p-2'>Vehicle Type</th>

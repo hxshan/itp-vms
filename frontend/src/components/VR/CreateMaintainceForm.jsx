@@ -3,10 +3,10 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import useAxios from '@/hooks/useAxios';
-
+import { Link } from 'react-router-dom';
 import {
     validateVehicleType,
-    validateVehicleId,
+    // validateVehicleId,
     validateVehicleIssue,
     validateVehicleCost,
     validateAdditionalInfo,
@@ -67,7 +67,7 @@ export const CreateMaintainceForm = () => {
     const validateForm = () => {
         return (
 
-            validateVehicleId(formdata.vehicleRegister) &&
+            // validateVehicleId(formdata.vehicleRegister) &&
             validateVehicleIssue(formdata.vrissue) &&
             validateVehicleCost(formdata.vrcost) &&
             validateAdditionalInfo(formdata.vraddit) &&
@@ -98,53 +98,52 @@ export const CreateMaintainceForm = () => {
 
     return (
 
-        <main className='w-full  flex flex-col justify-center items-center bg-slate-200'>
-            <h1 className='text-3xl font-semibold  my-9'>
+        <main className='w-full  flex flex-col justify-center items-center'>
+            <div className=" sm:w-3/4 bg-white p-10 flex flex-col rounded-2xl ">
+            <h1 className='font-bold text-xl'>
                 Create Maintaince Form
             </h1>
-            <div className=" sm:w-3/4 bg-slate-300 p-10 flex flex-col rounded-2xl ">
                 <form className='flex flex-col gap-4 md:flex-row' onSubmit={handleSubmit}>
                     <div className="w-full">
 
 
                         <div className='flex flex-col gap-5 mt-9'>
-                            <label className='  font-semibold  '>Vehicle Number</label>
+                            <label className="block text-gray-700 text-md font-bold mb-2">Vehicle Number</label>
                             <input
                                 type="text"
                                 id='vehicleRegister'
                                 placeholder='AAA1234 OR AA-1234 OR 12-1234'
-                                className='border p-2 rounded-lg'
-                                maxLength='10'
+                                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                 required
                                 onChange={handlechange}
                                 value={formdata.vehicleRegister} />
-                            <label className='  font-semibold  '>Fault of the Vehicle</label>
+                            <label className="block text-gray-700 text-md font-bold mb-2">Fault of the Vehicle</label>
                             <textarea
                                 type="text"
                                 id='vrissue'
                                 placeholder='Ex:- Front Arm Vibartion '
-                                className='border p-2 rounded-lg'
+                                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                 required
                                 onChange={handlechange}
                                 value={formdata.vrissue} />
-                            <label className='  font-semibold  '>Estimated Cost</label>
+                            <label className="block text-gray-700 text-md font-bold mb-2">Estimated Cost</label>
                             <input
                                 type="number"
                                 id='vrcost'
                                 placeholder='RS:-10,000'
-                                className='border p-2 rounded-lg'
+                                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                 required
                                 onChange={handlechange}
                                 value={formdata.vrcost} />
                         </div>
 
                         <div className="flex flex-col gap-5 mt-5">
-                            <label className='  font-semibold  '>Additional Info</label>
+                            <label className="block text-gray-700 text-md font-bold mb-2">Additional Info</label>
                             <textarea
                                 type="text"
                                 id='vraddit'
                                 placeholder='Additional Info'
-                                className='border p-2 rounded-lg'
+                                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                 onChange={handlechange}
                                 value={formdata.vraddit} />
                         </div>
@@ -153,26 +152,26 @@ export const CreateMaintainceForm = () => {
 
                         <div className="flex flex-col gap-5 mb-5 items-center">
                             <div className="flex items-center gap-4">
-                                <label className='  font-semibold' >Start Date :</label>
+                                <label className=" text-gray-700 text-md font-bold" >Start Date :</label>
                                 <input type='date'
                                     id='vrsdate'
-                                    className='rounded-lg p-2'
+                                    className="shadow  rounded  text-gray-700 p-2"
                                     onChange={handlechange}
                                     value={formdata.vrsdate} />
                             </div>
                             <div className="flex  items-center gap-4">
-                                <label className='  font-semibold'>End Date :</label>
+                                <label className="block text-gray-700 text-md font-bold mb-2">End Date :</label>
                                 <input type='date'
-                                    className='rounded-lg p-2'
+                                    className="shadow  rounded  text-gray-700 p-2"
                                     id='vredate'
                                     onChange={handlechange}
                                     value={formdata.vredate} />
                             </div>
                             <div className='flex gap-4 justify-between items-center'>
-                                <label className='  font-semibold'>Availability :</label>
+                                <label className="block text-gray-700 text-md font-bold mb-2">Availability:</label>
                                 <select
                                     id='availability'
-                                    className='rounded-lg p-2'
+                                    className="shadow  rounded  text-gray-700 p-2"
                                     onChange={handlechange}
                                     value={formdata.availability}>
                                     <option value='available'>Available</option>
@@ -205,11 +204,15 @@ export const CreateMaintainceForm = () => {
                         </div>
                     </div>
                 </form>
-                <button onClick={handleSubmit}
-                    className='hover:opacity-80 mt-10 bg-slate-800 p-3 rounded-lg text-white font-bold'>
-                    Add To Maintaince List
-                </button>
-
+                <div className="flex justify-end  items-center mt-6">
+                    <button onClick={handleSubmit}
+                        className="bg-actionBlue py-2 px-3 rounded-md text-white font-bold mr-5">
+                         Add To Maintaince List
+                    </button>
+                    <Link to={`/Mdashboard`}>
+                        <button className="my-1 mx-1 text-white bg-actionGreen py-2 px-3 rounded-md font-bold">Back</button>
+                    </Link>
+                </div>
             </div>
         </main>
 
