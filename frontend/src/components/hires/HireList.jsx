@@ -74,7 +74,7 @@ const HireList = ({ hireData, searchTerm, searchType, showDropdown }) => {
     const [filterCategory, setFilterCategory] = useState('');
 
     const filterByStatus = (status) => {
-        const filteredData = hireData.filter((hire) => hire.hireStatus === status);
+        const filteredData = hireData.filter((hire) => hire.hireStatus.toLowerCase() === status.toLowerCase());
         setResults(filteredData);
         setShowFilter(false);
         
@@ -116,8 +116,10 @@ const HireList = ({ hireData, searchTerm, searchType, showDropdown }) => {
                                 <option value="">Select</option>
                                 <option value="Active">Active</option>
                                 <option value="Pending">Pending</option>
-                                <option value="Cancelled">Cancelled</option>
+                                <option value="ongoing">OnGoing</option>
+                                <option value="ended">Ended</option>
                                 <option value="Completed">Completed</option>
+                                <option value="Cancelled">Cancelled</option>
                             </select>
                         </div>
                     </div>
@@ -154,7 +156,10 @@ const HireList = ({ hireData, searchTerm, searchType, showDropdown }) => {
                     </thead>
                     {/* Table body */}
                     <tbody>
-                        {currentItems.map((hire) => (
+                        {results.length === 0 ? (
+                              <td colSpan="6" className="text-center py-4">No data available</td>
+                        ) : 
+                        currentItems.map((hire) => (
                             <tr key={hire._id} className="bg-white border-t border-gray-200">
                                 <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200"> {hire.vehicle?.vehicleRegister || 'N/A'}</td>
 
@@ -163,11 +168,13 @@ const HireList = ({ hireData, searchTerm, searchType, showDropdown }) => {
                                 <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{hire.cusMobile}</td>
                                 <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{hire.hireStatus}</td>
                                 <td className="px-4 py-4 flex justify-between items-baseline">
-                                    <button className="px-2 py-1 bg-actionBlue text-white rounded-md mr-2" onClick={() => handleView(hire._id)}>View</button>
-                                    <button className="hidden xl:grid px-2 py-1 bg-actionRed text-white rounded-md" onClick={() => deleteHire(hire._id)}>Delete</button>
+                                    <button className="py-2 px-6 bg-actionBlue text-white rounded-md mr-2" onClick={() => handleView(hire._id)}>View</button>
+                                    <button className="hidden xl:grid py-2 px-6 bg-actionRed text-white rounded-md" onClick={() => deleteHire(hire._id)}>Delete</button>
                                 </td>
                             </tr>
-                        ))}
+                        ))
+                        }
+                        
                     </tbody>
                 </table>
             </div>
