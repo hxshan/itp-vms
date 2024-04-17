@@ -383,17 +383,19 @@ const getUserDetailsFull = async (req,res)=>{
 const getRecords = async (req,res) =>{
   try{
     const records = await EmpRecord.find().populate('user').exec()
-    const activeRecords= records.filter(record=>{return record.user.status == 'active'})
-    if (!records) {
-      return res.json([{}]);
+    
+    if (records?.length<=0) {
+      return res.status(200).json([]);
     }
+    const activeRecords= records.filter(record=>{return record.user.status == 'active'})
+    
     return res.status(200).json(activeRecords);
 
   }catch(error){
+    console.log(error)
     return res.status(500).json({message:'Internal Server Error'})
   }
 }
-
 //TODO:add validation use REGEX
 const resetPassword = async(req,res)=>{
   try{

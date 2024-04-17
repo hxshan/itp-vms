@@ -107,7 +107,19 @@ const getRoleData = async()=>{
       toast.error("All Personal details should be filled")
       return
     }
-
+    if(new Date(personalInfo.dob) > new Date()){
+      toast.error("The Date of Birth is invalid")
+      return
+    }
+    if(personalInfo.phoneNumber.length <10 ){
+      toast.error("Invalid Phone Number")
+      return
+    }
+    if(personalInfo.nicNumber.length <10 ){
+      toast.error("Invalid NIC Number")
+      return
+    }
+  
     setCurrentForm(currentForm+1)
      
   }
@@ -122,11 +134,17 @@ const getRoleData = async()=>{
   const handleSubmit = async (e) => {
     e.preventDefault();
     let emailReg=/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/
+    let pwdReg=/^(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.*[0-9]).{8,}$/
 
     if(!personalInfo.email.match(emailReg)){
       toast.error("Invalid Email Address")
       return
     }
+    if(!personalInfo.password.match(pwdReg)){
+      toast.error("Password too weak")
+      return
+    }
+
     if((personalInfo.role||personalInfo.department||personalInfo.empDate||personalInfo.baseSal||personalInfo.status)===''){
       toast.error("All Employee details should be filled")
       return

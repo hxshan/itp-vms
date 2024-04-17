@@ -8,11 +8,11 @@ import Swal from "sweetalert2";
 
 
 
-const CreateUserForm = () => {
+const CreateUserForm = ({ reload,setReload }) => {
   //Api Hooks
   const [roleData,roleError, roleloading, axiosFetch] = useAxios()
   const [user,usererror, userloading, useraxiosFetch,axiosupdatedFetch] = useAxios()
-  const [reload,setReload]=useState(0)
+  
   const navigate = useNavigate()
 
   const getRoleData =()=>{
@@ -79,10 +79,38 @@ const personal={
       toast.error("All Personal details should be filled")
       return
     }
+
+    if(new Date(personalInfo.dob) > new Date()){
+      toast.error("The Date of Birth is invalid")
+      return
+    }
+    if(personalInfo.phoneNumber.length <10 ){
+      toast.error("Invalid Phone Number")
+      return
+    }
+    if(personalInfo.nicNumber.length <10 ){
+      toast.error("Invalid NIC Number")
+      return
+    }
+
     if((emergencyContacts[0].emergencyContact||emergencyContacts[0].emergencyName)===''){
       toast.error("Add Atleast one Emergency Contact")
       return
     }
+    emergencyContacts.forEach(contact => {
+      if(contact.emergencyName == ""){
+        toast.error("Fill Emergency Contact Name")
+        return
+      }
+      if(contact.emergencyContact == ""){
+        toast.error("Fill Emergency Contact Number")
+        return
+      }
+      if(contact.emergencyContact.length < 10 ){
+        toast.error("Invalid Emergency Contact Number")
+        return
+      }
+    });
    
     if(nicDocument == null){
       toast.error("Please upload Nic Document")
@@ -104,8 +132,14 @@ const personal={
     e.preventDefault();
     console.log(personalInfo)
     let emailReg=/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/
+    let pwdReg=/^(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.*[0-9]).{8,}$/
+
     if(!personalInfo.email.match(emailReg)){
       toast.error("Invalid Email Address")
+      return
+    }
+    if(!personalInfo.password.match(pwdReg)){
+      toast.error("Password too weak")
       return
     }
     if((personalInfo.role||personalInfo.department||personalInfo.empDate||personalInfo.baseSal||personalInfo.status)===''){
@@ -154,6 +188,7 @@ const personal={
       });  
     }
     setPersonalInfo(personal)
+    setReload(reload+1)
   }
 
   const AddContact = () => {
@@ -199,7 +234,7 @@ const personal={
                 type="text"
                 name="firstName"
                 id="firstName"
-                required
+                
               />
             </div>
             <div className="col-span-1 w-full flex flex-col mb-4 ">
@@ -232,7 +267,7 @@ const personal={
                 type="text"
                 name="lastName"
                 id="lastName"
-                required
+                
               />
             </div>
             <div className="col-span-1 w-full flex flex-col mb-4 ">
@@ -247,7 +282,7 @@ const personal={
                 name="gender"
                 value={personalInfo.gender}
                 onChange={handlePersonalChange}
-                required
+                
               >
                 <option value="">Select Gender </option>
                 <option value="Male">Male</option>
@@ -268,7 +303,7 @@ const personal={
                 id="dob"
                 value={personalInfo.dob}
                 onChange={handlePersonalChange}
-                required
+                
               />
             </div>
             <div className="col-span-1 w-full flex flex-col mb-4 ">
@@ -285,7 +320,7 @@ const personal={
                 id="phoneNumber"
                 value={personalInfo.phoneNumber}
                 onChange={handlePersonalChange}
-                required
+                
               />
             </div>
             <div className="col-span-1 w-full flex flex-col mb-4 ">
@@ -302,7 +337,7 @@ const personal={
                 id="nicNumber"
                 value={personalInfo.nicNumber}
                 onChange={handlePersonalChange}
-                required
+                
               />
             </div>
             <div className="col-span-1 w-full flex flex-col mb-4 ">
@@ -318,7 +353,7 @@ const personal={
                 name="nicDocument"
                 id="nicDocument"
                 onChange={(e)=>{setNicDocument(e.target.files[0])}}
-                required
+                
               />
             </div>
             <div className="col-span-1 w-full flex flex-col mb-4 ">
@@ -335,7 +370,7 @@ const personal={
                 name="empPhoto"
                 id="empPhoto"
                 onChange={(e)=>{setEmpPhoto(e.target.files[0])}}
-                required
+                
               />
             </div>
             <div className="grid grid-cols-2 col-span-2 w-full ">
@@ -472,7 +507,7 @@ const personal={
                 id="baseSal"
                 value={personalInfo.baseSal}
                 onChange={handlePersonalChange}
-                required
+                
               />
             </div>
             {

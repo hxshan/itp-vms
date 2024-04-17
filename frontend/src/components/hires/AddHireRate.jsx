@@ -4,7 +4,7 @@ import { useState } from 'react';
 import axios from '@/api/axios';
 import useAxios from "@/hooks/useAxios";
 
-import { ClipLoader } from "react-spinners";
+import { ClockLoader } from "react-spinners";
 
 
 const AddHireRates = ({setShowAddForm, reload}) => {
@@ -66,7 +66,7 @@ const AddHireRates = ({setShowAddForm, reload}) => {
         return (
             <div className="flex justify-center items-center h-screen">
               <div className="sweet-loading">
-                <ClipLoader color="#10971D" loading={true}  size={50} />
+                <ClockLoader color="#10971D" loading={true}  size={50} />
               </div>
             </div>
           );
@@ -125,14 +125,14 @@ const AddHireRates = ({setShowAddForm, reload}) => {
                         </div>
                         <div className="flex justify-between">
                             <div className="text-center">
-                                <button type="button" className="bg-gray-300 text-gray-700 px-4 py-2 rounded-md"
+                                <button type="button" className="bg-gray-300 text-gray-700 py-2 px-6 rounded-md"
                                 onClick={handleCancle}
                                 >
                                     Cancle
                                 </button>
                             </div>
                             <div className="text-center">
-                                <button type="submit" className="bg-actionGreen text-white px-4 py-2 rounded-md"
+                                <button type="submit" className="bg-actionGreen text-white py-2 px-6 rounded-md"
                                 >
                                     Save
                                 </button>

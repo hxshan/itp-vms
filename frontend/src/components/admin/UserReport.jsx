@@ -60,21 +60,21 @@ const UserReport = () => {
                 user?.personal?.lastName}
             </h2>
             <div className="flex flex-col  w-fit ml-4">
-              <p className="font-bold text-gray-600">Job Title:</p>
+              <p className="font-bold text-gray-600">Job Title :</p>
               <p className="ml-8">
                 {user?.personal?.jobTitle}
               </p>
             </div>
             <div className="flex flex-col  w-fit ml-4">
-              <p className="font-bold text-gray-600">department here</p>
+              <p className="font-bold text-gray-600">Department :</p>
               <p className="ml-8">{user?.personal?.email}</p>
             </div>
             <div className="flex flex-col  w-fit ml-4">
-              <p className="font-bold text-gray-600">Role</p>
+              <p className="font-bold text-gray-600">Role :</p>
               <p className="ml-8">{user?.personal?.role?.name}</p>
             </div>
             <div className="flex flex-col  w-fit ml-4">
-              <p className="font-bold text-gray-600">Nic Number:</p>
+              <p className="font-bold text-gray-600">Nic Number :</p>
               <p className="ml-8">{user?.personal?.nicNumber}</p>
             </div>
           </div>
@@ -83,11 +83,11 @@ const UserReport = () => {
           <h3 className="text-lg font-bold mb-2 ml-2">Contact Information</h3>
           <div className="flex w-full ml-8">
             <div className="mr-4 flex-[50%]">
-              <p className="font-bold text-gray-600">Email:</p>
+              <p className="font-bold text-gray-600">Email :</p>
               <p className=" ml-8">{user?.personal?.email}</p>
             </div>
             <div className="flex-[50%]">
-              <p className="font-bold text-gray-600">Phone Number:</p>
+              <p className="font-bold text-gray-600">Phone Number :</p>
               <p className=" ml-8">{user?.personal?.phoneNumber}</p>
             </div>
           </div>
@@ -98,11 +98,11 @@ const UserReport = () => {
             return (
               <div key={contact.name} className="flex w-full mb-2 ml-8">
                 <div className="mr-4 flex-[50%]">
-                  <p className="font-bold text-gray-600">Contact Name:</p>
+                  <p className="font-bold text-gray-600">Contact Name :</p>
                   <p className=" ml-8">{contact.name}</p>
                 </div>
                 <div className="flex-[50%]">
-                  <p className="font-bold text-gray-600">Phone Number:</p>
+                  <p className="font-bold text-gray-600">Phone Number :</p>
                   <p className=" ml-8">{contact.number}</p>
                 </div>
               </div>

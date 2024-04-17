@@ -3,6 +3,16 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/userModel");
 
 
+const decideDashboard=(role)=>{
+    if(role.userPermissions.Read) return 'admin'
+    if(role.vehiclePermissions.Read) return 'vehicle'
+    if(role.vehicleMaintenencePermissions.Read) return 'admin'
+    if(role.hirePermissions.Read) return 'hires'
+    if(role.contractPermissions.Read) return 'Contract/Dashbored'
+    if(role.emergencyPermissions.Read) return 'emergency'
+    if(role.financePermissions.Read) return 'finance/financeDashboard'
+}
+
 const login = async (req,res)=>{
 
     try{
@@ -14,15 +24,18 @@ const login = async (req,res)=>{
         if(user.status=='inactive') return res.status(401).json({message:`Account is ${user.status}`})
 
         const match = await bcrypt.compare(password,user.password)
-
         if(!match) return res.status(401).json({message:'Unauthorized'})
+
+        const path = decideDashboard(user.role)
+
         const accessToken = jwt.sign(
             {
                 UserInfo:{
                     "id":user._id,
                     "name":user.firstName,
                     "email":user.email,
-                    "role":user.role
+                    "role":user.role,
+                    "path":path
                 }
             },
             process.env.SECRET,
