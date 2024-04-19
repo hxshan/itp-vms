@@ -6,6 +6,8 @@ import {useNavigate} from "react-router-dom";
 
 import { ClockLoader } from "react-spinners";
 import Swal from 'sweetalert2';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 const Form = () => { 
@@ -124,6 +126,7 @@ const Form = () => {
 
   //Filter Vehicles
   const [filteredVehicles, setFilteredVehicles] = useState([]);
+  const [isVehicleAvailable, setIsVehicleAvailable] = useState(true);
   
   const filterVehicles = () => {
     console.log("Filter Vehicles")
@@ -132,11 +135,16 @@ const Form = () => {
     const selectedVehicles = vehiclesData.vehicles.filter((vehicle) => vehicle.category.toLowerCase() === vehicleType.toLowerCase());
     console.log(selectedVehicles)
 
-    setFilteredVehicles(selectedVehicles); 
-    if(selectedVehicles.length === 0 ){
-      console.log("No vehicles Available")
-      alert("No vehicles Available")
-    }
+    setFilteredVehicles(selectedVehicles);
+
+    if (selectedVehicles.length === 0) {
+      console.log("No vehicles Available");
+      toast.error("No vehicles Available");
+      setIsVehicleAvailable(false);
+  } else {
+      setIsVehicleAvailable(true);
+  }
+    
 
     if(vehiclesError){
     return(
@@ -238,19 +246,26 @@ const Form = () => {
       }
   };
 
-
-  
   //Handle Steps
   const handleNextStep = (e) => {
     e.preventDefault()
 
     let errors = {};
     if(step == 1) {
+
+      filterVehicles()
       
       errors = validateFormFirstPage(formData)
+
+      if(!isVehicleAvailable ){
+        return 
+      } 
+
       if(Object.keys(errors).length === 0) {
         setStep(step + 1);
       }
+
+      
     }
 
     if(step == 2) {
@@ -414,12 +429,6 @@ const [vehicleRates, Verror, Vloading, VaxiosFetch] = useAxios();
       console.log('vehiclesData')
       console.log(vehiclesData)
     }, [])
-
-    useEffect(() => {
-      if(step === 2) {
-        filterVehicles()
-      }
-    }, [step, vehicleType])
 
     if (loading || vehiclesLoading|| DriversLoading || Vloading) {
       return (
