@@ -105,9 +105,9 @@ const ViewCaseFile = () => {
             <h1 className="text-3xl font-semibold mb-8">Driver Details</h1>
               
                 
-                  <p className="text-lg font-semibold mb-2">Driver ID: {CaseFiles.driverId} </p>
-                  <p className="text-lg font-semibold mb-2">Driver Name: {CaseFiles.driverName} </p>
-                  <p className="text-lg font-semibold mb-2">Deiver Licence Number: {CaseFiles.driverLicenceNumber} </p>
+                  
+                  <p className="text-lg font-semibold mb-2">Driver Name: Adithya Perera </p>
+                  <p className="text-lg font-semibold mb-2">Deiver Licence Number: P-4567890 </p>
                 
               
           </div>

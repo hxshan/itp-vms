@@ -236,14 +236,21 @@ const driverCreateEmergency = async (req, res) => {
   //fetch all driver alerts
 
   const getDriverAlerts = async (req, res) => {
-    try{
-        const driverAlerts = await CaseFile.find({});
+    try {
+        const driverAlerts = await CaseFile.find({}).populate({
+            path: 'hire',
+            populate: {
+                path: 'driver',
+                
+                 // Only select the firstName field of the driver
+            }
+        });
         return res.status(200).send(driverAlerts);
-    }catch(error){
+    } catch (error) {
         console.log("Error getting driver alerts", error);
         return res.status(500).send("Internal server error");
     }
-}
+};
 
     //get a specific driver alert by its id
     const getDriverAlertById = async (req, res) => {
@@ -252,7 +259,15 @@ const driverCreateEmergency = async (req, res) => {
             if(!mongoose.Types.ObjectId.isValid(id)){
                 return res.status(400).send("Invalid driver alert id");
             }
-            const driverAlert = await CaseFile.findById(id);
+            const driverAlert = await CaseFile.findById({ hire: id }).populate({
+                path: 'hire',
+                populate: {
+                    path: 'driver',
+                    select: 'firstName licenceNumber'
+                    
+                     // Only select the firstName field of the driver
+                }
+            });
             if(!driverAlert){
                 return res.status(404).send("Driver alert not found");
             }
@@ -262,6 +277,21 @@ const driverCreateEmergency = async (req, res) => {
             return res.status(500).send("Internal server error");
         }
     }
+
+   /* const getdriverDetailsById = async (req, res) => {
+        try {
+            const {id} = req.params;
+            const Services = await CaseFile.find({ hire: id }).populate("");
+    
+    
+            console.log(Services)
+            return res.status(201).json(Services);
+    
+        } catch (error) {
+            console.log(error.message);
+            res.status(500).send({ message: error.message })
+        }
+    };*/
   
 
 
