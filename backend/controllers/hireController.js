@@ -313,6 +313,73 @@ const sendmail = async (transporter, hireData) => {
 
 };
 
+  // Generate Report
+  // Combined Hire Summary and Customer Report Function
+const generateCombinedReport = async (req, res) => {
+  try {
+      // Fetch all hires
+      const allHires = await Hire.find();
 
-module.exports = { addHire, fetchHires, editHire, deleteHire };
+      // Business Performance Metrics
+      const totalHires = allHires.length;
+      const totalRevenue = allHires.reduce((acc, hire) => acc + hire.finalTotal, 0);
+      const averageDistance = allHires.reduce((acc, hire) => acc + hire.actualDistance, 0) / totalHires;
+      const averageTimeTaken = allHires.reduce((acc, hire) => acc + parseFloat(hire.actualTimeTaken), 0) / totalHires;
+      const totalAdvancedPayments = allHires.reduce((acc, hire) => acc + hire.advancedPayment, 0);
+      const averageAdvancedPayment = totalAdvancedPayments / totalHires;
+
+      // Fetch unique customers
+      const uniqueCustomers = [...new Set(allHires.map(hire => hire.cusEmail))];
+
+      // Customer Metrics
+      const totalCustomers = uniqueCustomers.length;
+
+      // Calculate metrics for top spending customers
+      const topCustomers = uniqueCustomers.slice(0, 5); // Assuming top 5 customers
+      const topCustomersHires = allHires.filter(hire => topCustomers.includes(hire.cusEmail));
+      const totalRevenueTopCustomers = topCustomersHires.reduce((acc, hire) => acc + hire.finalTotal, 0);
+      const averageDistanceTopCustomers = topCustomersHires.reduce((acc, hire) => acc + hire.actualDistance, 0) / topCustomersHires.length;
+      const averageTimeTakenTopCustomers = topCustomersHires.reduce((acc, hire) => acc + parseFloat(hire.actualTimeTaken), 0) / topCustomersHires.length;
+      const averageSpendingPerHireTopCustomers = totalRevenueTopCustomers / topCustomersHires.length;
+
+      // Combined Metrics
+      const percentageRevenueTopCustomers = (totalRevenueTopCustomers / totalRevenue) * 100;
+
+      // Generate Report
+      const report = {
+          businessPerformance: {
+              totalHires,
+              totalRevenue,
+              averageDistance,
+              averageTimeTaken,
+              totalAdvancedPayments,
+              averageAdvancedPayment
+          },
+          customerMetrics: {
+              totalCustomers,
+              topCustomers: topCustomers.length ? topCustomers : 'No top customers found',
+              totalRevenueTopCustomers,
+              averageDistanceTopCustomers,
+              averageTimeTakenTopCustomers,
+              averageSpendingPerHireTopCustomers
+          },
+          combinedMetrics: {
+              percentageRevenueTopCustomers
+          }
+      };
+
+      console.log(report);
+
+      res.status(200).json(report);
+      return report;
+
+  } catch (error) {
+      console.error('Error generating combined report:', error);
+      res.status(500).json({ message: 'Internal Server Error' });
+      throw error;
+  }
+};
+
+
+module.exports = { addHire, fetchHires, editHire, deleteHire, generateCombinedReport };
 

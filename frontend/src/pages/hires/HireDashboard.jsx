@@ -1,12 +1,13 @@
 import HireList from "@/components/hires/HireList"
 import SearchHire from "@/components/hires/SearchHire";
+import Report from "@/components/hires/Report"
 import axios from "@/api/axios";
 import useAxios from "@/hooks/useAxios";
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from "react";
 
 import { ClockLoader } from "react-spinners";
-import { ToastContainer } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const HireDashboard = () => {
@@ -43,6 +44,28 @@ const HireDashboard = () => {
     const toggleDropdown = () => {
         setShowDropdown(!showDropdown);
     };
+
+    // Function to generate report
+
+    const [reportData, setReportData] = useState(null);
+    const [showReport, setShowReport] = useState(false)
+
+    const generateReport = async () => {
+        setShowReport(true)
+        try {
+            console.log("Sending request to /hire/report...")
+            const response = await axios.get("/hire/report")
+            console.log("Received response:", response)
+            setReportData(response.data);
+            console.log(reportData)
+            toast.success('Report generated successfully!')
+        } catch (error) {
+            console.error('Error generating report:', error)
+            toast.error('Error generating report. Please try again.')
+        }
+    };
+
+    
 
     
 
@@ -81,6 +104,22 @@ const HireDashboard = () => {
                                 Filter
                             </button>
                         </div>
+
+                        <div className="pt-5 mr-8">
+                            <button 
+                                className="py-2 px-6 text-white bg-actionBlue rounded-md hover:bg-gray-800 focus:outline-none"
+                                onClick={generateReport}
+                            >
+                                Report
+                            </button>
+                        </div>
+
+                        {showReport && reportData && (
+                            <div className="mt-5">
+                                <Report reportData={reportData} setShowReport={setShowReport}/>
+                            </div>
+                        )}
+
 
                         <div className="pt-[10px]">
                             <button className="py-2 px-6 text-white bg-actionBlue rounded-md hover:bg-gray-800 focus:outline-none" onClick={()=>{navigate('/hires/add')}}>
