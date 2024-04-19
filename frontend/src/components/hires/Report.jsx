@@ -1,5 +1,6 @@
 import Modal from 'react-modal';
 import PropTypes from 'prop-types';
+import { Pie } from 'react-chartjs-2';
 
 Modal.setAppElement('#root');
 
@@ -9,6 +10,16 @@ const Report = ({ reportData, setShowReport }) => {
     }
 
     const { businessPerformance, customerMetrics, combinedMetrics } = reportData;
+
+    const pieData = {
+        labels: ['Top Customers', 'Other Customers'],
+        datasets: [{
+            data: [combinedMetrics.percentageRevenueTopCustomers, 100 - combinedMetrics.percentageRevenueTopCustomers],
+            backgroundColor: ['#FF6384', '#36A2EB'],
+            hoverBackgroundColor: ['#FF6384', '#36A2EB'],
+        }],
+    }
+    
 
     return (
 
@@ -74,6 +85,7 @@ const Report = ({ reportData, setShowReport }) => {
                 {/* Combined Metrics */}
                 <div>
                     <h3 className="text-lg font-semibold mb-2">Combined Metrics</h3>
+                    <Pie data={pieData} />
                     <ul>
                         <li>Percentage of Revenue from Top Customers: {combinedMetrics?.percentageRevenueTopCustomers.toFixed(2) || 'N/A'}%</li>
                     </ul>
