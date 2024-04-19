@@ -110,6 +110,36 @@ const addHire = async (req, res) => {
   }
 }
 
+//Delete hire automatically
+const cron = require('node-cron');
+
+const deletePendingHires = async () => {
+  try {
+    const dateCount = new Date();
+    dateCount.setDate(dateCount.getDate() - 1);
+
+    const pendingHires = await Hire.find({
+      hireStatus: 'pending',
+      createdAt: { $lte: dateCount },
+    });
+
+    if (pendingHires.length > 0) {
+      for (const hire of pendingHires) {
+        await Hire.findByIdAndUpdate(hire._id, { hireStatus: 'cancelled' });
+        console.log(`Updated hire status to cancelled for ID: ${hire._id}`);
+      }
+    }
+  } catch (error) {
+    console.error('Error updating pending hires to cancelled:', error);
+  }
+};
+
+
+cron.schedule('0 6 * * *', deletePendingHires, {
+  timezone: 'Asia/Colombo',
+});
+
+
 //Edit Hire
 const editHire = async (req, res) => {
   const { id } = req.params;
@@ -282,6 +312,7 @@ const sendmail = async (transporter, hireData) => {
   pdfDoc.end();
 
 };
+
 
 module.exports = { addHire, fetchHires, editHire, deleteHire };
 
