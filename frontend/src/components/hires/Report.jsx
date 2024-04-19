@@ -5,14 +5,10 @@ Modal.setAppElement('#root');
 
 const Report = ({ reportData, setShowReport }) => {
     if (!reportData) {
-        return null; // Return null if reportData is null
+        return null;
     }
 
     const { businessPerformance, customerMetrics, combinedMetrics } = reportData;
-
-    console.log("Business Performance:", businessPerformance);  // Debugging
-    console.log("Customer Metrics:", customerMetrics);  // Debugging
-    console.log("Combined Metrics:", combinedMetrics);  // Debugging
 
     return (
 
