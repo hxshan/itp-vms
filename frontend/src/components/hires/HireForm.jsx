@@ -430,6 +430,15 @@ const [vehicleRates, Verror, Vloading, VaxiosFetch] = useAxios();
       console.log(vehiclesData)
     }, [])
 
+    if (vehicleRates.length === 0 || DriversData.length === 0 || vehiclesData.length === 0) [
+      Swal.fire({
+        icon: 'error',
+        title: 'Error fetching Data',
+        confirmButtonText: 'OK',
+      })
+    ]
+
+
     if (loading || vehiclesLoading|| DriversLoading || Vloading) {
       return (
         <div className="flex justify-center items-center h-screen">
@@ -439,6 +448,8 @@ const [vehicleRates, Verror, Vloading, VaxiosFetch] = useAxios();
         </div>
       );
     }
+
+    
   
 
     return (
