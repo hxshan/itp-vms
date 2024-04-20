@@ -60,7 +60,6 @@ const Form = () => {
     estimatedTotal,
     finalTotal: null,
     advancedPayment,
-    hireStatus: "Pending",
     vehicleNo,
     driverName
   }

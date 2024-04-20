@@ -44,7 +44,6 @@ const addHire = async (req, res) => {
       estimatedTotal,
       finalTotal,
       advancedPayment,
-      hireStatus,
       vehicleNo,
       driverName
     } = req.body.data;
@@ -74,7 +73,6 @@ const addHire = async (req, res) => {
       estimatedTotal,
       finalTotal,
       advancedPayment,
-      hireStatus
     });
 
     
@@ -115,11 +113,12 @@ const cron = require('node-cron');
 
 const deletePendingHires = async () => {
   try {
+    console.log("Running Auto")
     const dateCount = new Date();
     dateCount.setDate(dateCount.getDate() - 1);
 
     const pendingHires = await Hire.find({
-      hireStatus: 'pending',
+      hireStatus: 'Pending',
       createdAt: { $lte: dateCount },
     });
 
@@ -135,7 +134,7 @@ const deletePendingHires = async () => {
 };
 
 
-cron.schedule('0 6 * * *', deletePendingHires, {
+cron.schedule('13 23 * * *', deletePendingHires, {
   timezone: 'Asia/Colombo',
 });
 
