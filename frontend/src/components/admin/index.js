@@ -9,8 +9,9 @@ import EditUserDocuments from "./EditUserDocuments";
 import DriverTable from "./DriverTable";
 import DriverRecordTable from "./DriverRecordTable";
 import AddDriverRecordForm from "./AddDriverRecordForm";
-
+import DashboardHero from "./DashboardHero";
 export {
+    DashboardHero,
     AddDriverRecordForm,
     DriverRecordTable,
     DriverTable,
