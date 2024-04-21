@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
+
 
 
 
@@ -7,7 +8,7 @@ const AddContractpopup = ({isOpen,TogleOpen,clients}) => {
 
     const navigate = useNavigate()
 
-
+  
 
     const [Search, SetSearch] = useState("");
     const [searchError,setSearchError] = useState('')
@@ -19,6 +20,7 @@ const AddContractpopup = ({isOpen,TogleOpen,clients}) => {
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
     const currentItems = results.slice(indexOfFirstItem, indexOfLastItem);
 
+    console.log(results)
     
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
@@ -44,6 +46,12 @@ const AddContractpopup = ({isOpen,TogleOpen,clients}) => {
           setSearchError("No items found.");
         }
       };
+
+      useEffect(()=>{
+        if(clients){
+          setResults(clients)
+        }
+      },[clients])
     
 
       const titles = ["Client NIC", "Client Name" , "Email", "Options"]
