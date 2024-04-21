@@ -9,7 +9,7 @@ const Report = ({ reportData, setShowReport }) => {
         return null;
     }
 
-    const { businessPerformance, customerMetrics, combinedMetrics } = reportData;
+    const {hireCounts, businessPerformance, customerMetrics, combinedMetrics } = reportData;
 
     const pieData = {
         labels: ['Top Customers', 'Other Customers'],
@@ -19,6 +19,20 @@ const Report = ({ reportData, setShowReport }) => {
             hoverBackgroundColor: ['#FF6384', '#36A2EB'],
         }],
     }
+
+    const pieDataHireStats = {
+        labels: ['Active', 'Pending', 'Canceled', 'Completed'],
+        datasets: [{
+            data: [
+                hireCounts.active || 0,
+                hireCounts.pending || 0,
+                hireCounts.canceled || 0,
+                hireCounts.completed || 0
+            ],
+            backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0'],
+            hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0'],
+        }],
+    };
     
 
     return (
@@ -54,14 +68,34 @@ const Report = ({ reportData, setShowReport }) => {
               },
           }}
         >
-            <div className="mt-5">
-                <h2 className="text-xl font-bold mb-3">Summery</h2>
+            <div>
+                
+            </div>
+            <div className="mb-5 px-10 py-5">
+                <h2 className="text-xl font-bold mb-5 text-center">Mounth Summery</h2>
+
+                <div className="mb-5">
+                    <h3 className="text-lg font-semibold mb-2">Hire Statics</h3>
+                    <div className='flex justify-between items-center space-x-10'>
+                        <ul className='leading-loose '>
+                            <li>Total Hires: {hireCounts.totalHires}</li>
+                            <li>Pending Hires: {hireCounts.pending || 'N/A'}</li>
+                            <li>Active Hires: {hireCounts.active || 'N/A'} </li>
+                            <li>Completed Hires: {hireCounts.completed || 'N/A'} </li>
+                            <li>Canceled Hires: {hireCounts.canceled || 'N/A'}</li>
+                        </ul>
+
+                        <div className='w-[300px] h-[300px]'>
+                            <Pie data={pieDataHireStats} />
+                        </div>
+                    </div>                  
+                </div>
 
                 {/* Business Performance Metrics */}
-                <div className="mb-5">
+                <div className="w-full md:w-1/2 mb-5">
                     <h3 className="text-lg font-semibold mb-2">Business Performance Metrics</h3>
-                    <ul>
-                        <li>Total Hires: {businessPerformance.totalHires}</li>
+                    <ul className='leading-loose '>
+                        <li>Total Hires: {hireCounts.totalHires}</li>
                         <li>Total Revenue: Rs. {businessPerformance?.totalRevenue.toFixed(2) || 'N/A'}</li>
                         <li>Average Distance: {businessPerformance?.averageDistance.toFixed(2) || 'N/A'} miles</li>
                         <li>Average Time Taken: {businessPerformance?.averageTimeTaken?.toFixed(2) ?? 'N/A'} hours</li>
@@ -71,9 +105,9 @@ const Report = ({ reportData, setShowReport }) => {
                 </div>
 
                 {/* Customer Metrics */}
-                <div className="mb-5">
+                <div className="w-full md:w-1/2 mb-5">
                     <h3 className="text-lg font-semibold mb-2">Customer Metrics</h3>
-                    <ul>
+                    <ul className='leading-loose '>
                         <li>Total Customers: {customerMetrics.totalCustomers}</li>
                         <li>Total Revenue from Top Customers: Rs. {customerMetrics?.totalRevenueTopCustomers.toFixed(2) || 'N/A'}</li>
                         <li>Average Distance for Top Customers: {customerMetrics?.averageDistanceTopCustomers.toFixed(2) || 'N/A'} miles</li>
@@ -85,8 +119,7 @@ const Report = ({ reportData, setShowReport }) => {
                 {/* Combined Metrics */}
                 <div>
                     <h3 className="text-lg font-semibold mb-2">Combined Metrics</h3>
-                    <Pie data={pieData} />
-                    <ul>
+                    <ul className='leading-loose '>
                         <li>Percentage of Revenue from Top Customers: {combinedMetrics?.percentageRevenueTopCustomers.toFixed(2) || 'N/A'}%</li>
                     </ul>
                 </div>
@@ -99,8 +132,14 @@ const Report = ({ reportData, setShowReport }) => {
 
 Report.propTypes = {
     reportData: PropTypes.shape({
-        businessPerformance: PropTypes.shape({
+        hireCounts: PropTypes.shape({
             totalHires: PropTypes.number.isRequired,
+            active: PropTypes.number.isRequired,
+            pending: PropTypes.number.isRequired,
+            canceled: PropTypes.number,
+            completed: PropTypes.number.isRequired,
+        }).isRequired,
+        businessPerformance: PropTypes.shape({
             totalRevenue: PropTypes.number.isRequired,
             averageDistance: PropTypes.number.isRequired,
             averageTimeTaken: PropTypes.number,

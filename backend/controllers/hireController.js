@@ -124,7 +124,7 @@ const deletePendingHires = async () => {
 
     if (pendingHires.length > 0) {
       for (const hire of pendingHires) {
-        await Hire.findByIdAndUpdate(hire._id, { hireStatus: 'cancelled' });
+        await Hire.findByIdAndUpdate(hire._id, { hireStatus: 'Cancelled' });
         console.log(`Updated hire status to cancelled for ID: ${hire._id}`);
       }
     }
@@ -134,7 +134,7 @@ const deletePendingHires = async () => {
 };
 
 
-cron.schedule('13 23 * * *', deletePendingHires, {
+cron.schedule('0 23 * * *', deletePendingHires, {
   timezone: 'Asia/Colombo',
 });
 
@@ -312,30 +312,45 @@ const sendmail = async (transporter, hireData) => {
 
 };
 
-  // Generate Report
-  // Combined Hire Summary and Customer Report Function
-const generateCombinedReport = async (req, res) => {
+  // Generate Report 
+  const generateCombinedReport = async (req, res) => {
   try {
-      // Fetch all hires
-      const allHires = await Hire.find();
+    const today = new Date();
+    const todayMonth = today.getMonth() + 1;
+    const todayYear = today.getFullYear();
 
-      // Business Performance Metrics
-      const totalHires = allHires.length;
-      const totalRevenue = allHires.reduce((acc, hire) => acc + hire.finalTotal, 0);
-      const averageDistance = allHires.reduce((acc, hire) => acc + hire.actualDistance, 0) / totalHires;
-      const averageTimeTaken = allHires.reduce((acc, hire) => acc + parseFloat(hire.actualTimeTaken), 0) / totalHires;
-      const totalAdvancedPayments = allHires.reduce((acc, hire) => acc + hire.advancedPayment, 0);
+    const allHires = await Hire.find()
+
+     // Filter hires to only include hires with the same month and year as today
+    const filteredHires = allHires.filter(hire => {
+      const hireMonth = hire.createdAt.getMonth() + 1;  // getMonth() returns 0-indexed month
+      const hireYear = hire.createdAt.getFullYear();
+      
+      return hireMonth === todayMonth && hireYear === todayYear;
+    });
+
+     // Count hires with each status
+     const activeCount = filteredHires.filter(hire => hire.hireStatus === 'Active').length;
+     const pendingCount = filteredHires.filter(hire => hire.hireStatus === 'Pending').length;
+     const canceledCount = filteredHires.filter(hire => hire.hireStatus === 'Cancelled').length;
+     const completedCount = filteredHires.filter(hire => hire.hireStatus === 'Completed').length;
+
+      const totalHires = filteredHires.length;
+      const totalRevenue = filteredHires.reduce((acc, hire) => acc + hire.finalTotal, 0);
+      const averageDistance = filteredHires.reduce((acc, hire) => acc + hire.actualDistance, 0) / totalHires;
+      const averageTimeTaken = filteredHires.reduce((acc, hire) => acc + parseFloat(hire.actualTimeTaken), 0) / totalHires;
+      const totalAdvancedPayments = filteredHires.reduce((acc, hire) => acc + hire.advancedPayment, 0);
       const averageAdvancedPayment = totalAdvancedPayments / totalHires;
 
       // Fetch unique customers
-      const uniqueCustomers = [...new Set(allHires.map(hire => hire.cusEmail))];
+      const uniqueCustomers = [...new Set(filteredHires.map(hire => hire.cusEmail))];
 
       // Customer Metrics
       const totalCustomers = uniqueCustomers.length;
 
       // Calculate metrics for top spending customers
       const topCustomers = uniqueCustomers.slice(0, 5); // Assuming top 5 customers
-      const topCustomersHires = allHires.filter(hire => topCustomers.includes(hire.cusEmail));
+      const topCustomersHires = filteredHires.filter(hire => topCustomers.includes(hire.cusEmail));
       const totalRevenueTopCustomers = topCustomersHires.reduce((acc, hire) => acc + hire.finalTotal, 0);
       const averageDistanceTopCustomers = topCustomersHires.reduce((acc, hire) => acc + hire.actualDistance, 0) / topCustomersHires.length;
       const averageTimeTakenTopCustomers = topCustomersHires.reduce((acc, hire) => acc + parseFloat(hire.actualTimeTaken), 0) / topCustomersHires.length;
@@ -346,8 +361,15 @@ const generateCombinedReport = async (req, res) => {
 
       // Generate Report
       const report = {
+        hireCounts: {
+          totalHires,
+          active: activeCount,
+          pending: pendingCount,
+          canceled: canceledCount,
+          completed: completedCount
+        },
+
           businessPerformance: {
-              totalHires,
               totalRevenue,
               averageDistance,
               averageTimeTaken,
@@ -367,7 +389,7 @@ const generateCombinedReport = async (req, res) => {
           }
       };
 
-      console.log(report);
+      //console.log(report);
 
       res.status(200).json(report);
       return report;
@@ -378,6 +400,7 @@ const generateCombinedReport = async (req, res) => {
       throw error;
   }
 };
+
 
 
 module.exports = { addHire, fetchHires, editHire, deleteHire, generateCombinedReport };
