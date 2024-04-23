@@ -167,7 +167,7 @@ const HireList = ({ hireData, searchTerm, searchType, showDropdown }) => {
                                 <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{new Date(hire.endDate).toLocaleDateString()}</td>
                                 <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{hire.cusMobile}</td>
                                 <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">
-                                    <div className={` text-center rounded-md ${hire.hireStatus.toLowerCase() === 'active' ? 'text-green-500 bg-green-100' : hire.hireStatus.toLowerCase() === 'pending' ? 'text-yellow-600 bg-yellow-100' : hire.hireStatus.toLowerCase() === 'ongoing' ? 'text-green-600 bg-green-100' : hire.hireStatus.toLowerCase() === 'completed' ? 'text-blue-600 bg-blue-100' : 'text-orange-600 bg-orange-100'}`}>
+                                    <div className={` text-center rounded-md ${hire.hireStatus.toLowerCase() === 'active' ? 'text-green-600 bg-green-100' : hire.hireStatus.toLowerCase() === 'pending' ? 'text-yellow-600 bg-yellow-100' : hire.hireStatus.toLowerCase() === 'ongoing' ? 'text-green-600 bg-green-100' : hire.hireStatus.toLowerCase() === 'completed' ? 'text-blue-600 bg-blue-100' : 'text-orange-600 bg-orange-100'}`}>
                                         {hire.hireStatus.toUpperCase()}
                                     </div>
                                     

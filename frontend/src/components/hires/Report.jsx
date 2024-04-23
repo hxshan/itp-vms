@@ -1,6 +1,7 @@
 import Modal from 'react-modal';
 import PropTypes from 'prop-types';
 import { Pie } from 'react-chartjs-2';
+import ReactToPrint from "react-to-print";
 
 Modal.setAppElement('#root');
 
@@ -20,6 +21,10 @@ const Report = ({ reportData, setShowReport }) => {
         }],
     }
 
+    const cancel = () => {
+        setShowReport(false);
+    };
+
     const pieDataHireStats = {
         labels: ['Active', 'Pending', 'Canceled', 'Completed'],
         datasets: [{
@@ -29,8 +34,8 @@ const Report = ({ reportData, setShowReport }) => {
                 hireCounts.canceled || 0,
                 hireCounts.completed || 0
             ],
-            backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0'],
-            hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0'],
+            backgroundColor: ['#10B981', '#FBBF24', '#F97316', '#3B82F6'],
+            hoverBackgroundColor: ['#047857', '#B45309', '#B45309', '#1E3A8A'],
         }],
     };
     
@@ -68,62 +73,71 @@ const Report = ({ reportData, setShowReport }) => {
               },
           }}
         >
-            <div>
-                
-            </div>
-            <div className="mb-5 px-10 py-5">
-                <h2 className="text-xl font-bold mb-5 text-center">Mounth Summery</h2>
-
+            <div className='px-10 py-5'>
                 <div className="mb-5">
-                    <h3 className="text-lg font-semibold mb-2">Hire Statics</h3>
-                    <div className='flex justify-between items-center space-x-10'>
+                    <h2 className="text-xl font-bold mb-5 text-center">Month Summery</h2>
+
+                    <div className="mb-5">
+                        <h3 className="text-lg font-semibold mb-2">Hire Statics</h3>
+                        <div className='flex justify-between items-center space-x-10'>
+                            <ul className='leading-loose '>
+                                <li>Total Hires: {hireCounts.totalHires}</li>
+                                <li>Pending Hires: {hireCounts.pending || 'N/A'}</li>
+                                <li>Active Hires: {hireCounts.active || 'N/A'} </li>
+                                <li>Completed Hires: {hireCounts.completed || 'N/A'} </li>
+                                <li>Canceled Hires: {hireCounts.canceled || 'N/A'}</li>
+                            </ul>
+
+                            <div className='w-[300px] h-[300px]'>
+                                <Pie data={pieDataHireStats} />
+                            </div>
+                        </div>                  
+                    </div>
+
+                    {/* Business Performance Metrics */}
+                    <div className="w-full md:w-1/2 mb-5">
+                        <h3 className="text-lg font-semibold mb-2">Business Performance Metrics</h3>
                         <ul className='leading-loose '>
                             <li>Total Hires: {hireCounts.totalHires}</li>
-                            <li>Pending Hires: {hireCounts.pending || 'N/A'}</li>
-                            <li>Active Hires: {hireCounts.active || 'N/A'} </li>
-                            <li>Completed Hires: {hireCounts.completed || 'N/A'} </li>
-                            <li>Canceled Hires: {hireCounts.canceled || 'N/A'}</li>
+                            <li>Total Revenue: Rs. {businessPerformance?.totalRevenue.toFixed(2) || 'N/A'}</li>
+                            <li>Average Distance: {businessPerformance?.averageDistance.toFixed(2) || 'N/A'} miles</li>
+                            <li>Average Time Taken: {businessPerformance?.averageTimeTaken?.toFixed(2) ?? 'N/A'} hours</li>
+                            <li>Total Advanced Payments: Rs. {businessPerformance?.totalAdvancedPayments.toFixed(2) || 'N/A'}</li>
+                            <li>Average Advanced Payment: Rs. {businessPerformance?.averageAdvancedPayment.toFixed(2) || 'N/A'}</li>
                         </ul>
+                    </div>
 
-                        <div className='w-[300px] h-[300px]'>
-                            <Pie data={pieDataHireStats} />
-                        </div>
-                    </div>                  
+                    {/* Customer Metrics */}
+                    <div className="w-full md:w-1/2 mb-5">
+                        <h3 className="text-lg font-semibold mb-2">Customer Metrics</h3>
+                        <ul className='leading-loose '>
+                            <li>Total Customers: {customerMetrics.totalCustomers}</li>
+                            <li>Total Revenue from Top Customers: Rs. {customerMetrics?.totalRevenueTopCustomers.toFixed(2) || 'N/A'}</li>
+                            <li>Average Distance for Top Customers: {customerMetrics?.averageDistanceTopCustomers.toFixed(2) || 'N/A'} miles</li>
+                            <li>Average Time Taken for Top Customers: {customerMetrics?.averageTimeTakenTopCustomers?.toFixed(2) ?? 'N/A'} hours</li>
+                            <li>Average Spending Per Hire for Top Customers: Rs. {customerMetrics?.averageSpendingPerHireTopCustomers.toFixed(2) || 'N/A'}</li>
+                        </ul>
+                    </div>
+
+                    {/* Combined Metrics */}
+                    <div>
+                        <h3 className="text-lg font-semibold mb-2">Combined Metrics</h3>
+                        <ul className='leading-loose '>
+                            <li>Percentage of Revenue from Top Customers: {combinedMetrics?.percentageRevenueTopCustomers.toFixed(2) || 'N/A'}%</li>
+                        </ul>
+                    </div>
                 </div>
 
-                {/* Business Performance Metrics */}
-                <div className="w-full md:w-1/2 mb-5">
-                    <h3 className="text-lg font-semibold mb-2">Business Performance Metrics</h3>
-                    <ul className='leading-loose '>
-                        <li>Total Hires: {hireCounts.totalHires}</li>
-                        <li>Total Revenue: Rs. {businessPerformance?.totalRevenue.toFixed(2) || 'N/A'}</li>
-                        <li>Average Distance: {businessPerformance?.averageDistance.toFixed(2) || 'N/A'} miles</li>
-                        <li>Average Time Taken: {businessPerformance?.averageTimeTaken?.toFixed(2) ?? 'N/A'} hours</li>
-                        <li>Total Advanced Payments: Rs. {businessPerformance?.totalAdvancedPayments.toFixed(2) || 'N/A'}</li>
-                        <li>Average Advanced Payment: Rs. {businessPerformance?.averageAdvancedPayment.toFixed(2) || 'N/A'}</li>
-                    </ul>
+                <div className="flex justify-between">
+                    <button className="py-2 px-6 bg-actionBlue text-white rounded-md mr-4" onClick={cancel}>Cancel</button>
+              
+                    <button className="py-2 px-6 text-white bg-actionRed focus:outline-none rounded-md mr-4" >Print</button>  
                 </div>
 
-                {/* Customer Metrics */}
-                <div className="w-full md:w-1/2 mb-5">
-                    <h3 className="text-lg font-semibold mb-2">Customer Metrics</h3>
-                    <ul className='leading-loose '>
-                        <li>Total Customers: {customerMetrics.totalCustomers}</li>
-                        <li>Total Revenue from Top Customers: Rs. {customerMetrics?.totalRevenueTopCustomers.toFixed(2) || 'N/A'}</li>
-                        <li>Average Distance for Top Customers: {customerMetrics?.averageDistanceTopCustomers.toFixed(2) || 'N/A'} miles</li>
-                        <li>Average Time Taken for Top Customers: {customerMetrics?.averageTimeTakenTopCustomers?.toFixed(2) ?? 'N/A'} hours</li>
-                        <li>Average Spending Per Hire for Top Customers: Rs. {customerMetrics?.averageSpendingPerHireTopCustomers.toFixed(2) || 'N/A'}</li>
-                    </ul>
-                </div>
-
-                {/* Combined Metrics */}
-                <div>
-                    <h3 className="text-lg font-semibold mb-2">Combined Metrics</h3>
-                    <ul className='leading-loose '>
-                        <li>Percentage of Revenue from Top Customers: {combinedMetrics?.percentageRevenueTopCustomers.toFixed(2) || 'N/A'}%</li>
-                    </ul>
-                </div>
+                
+                
             </div>
+            
 
         </Modal>
         
