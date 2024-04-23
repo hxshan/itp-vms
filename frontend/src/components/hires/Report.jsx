@@ -2,6 +2,7 @@ import Modal from 'react-modal';
 import PropTypes from 'prop-types';
 import { Pie } from 'react-chartjs-2';
 import ReactToPrint from "react-to-print";
+import { usePDF } from 'react-to-pdf';
 
 Modal.setAppElement('#root');
 
@@ -11,6 +12,20 @@ const Report = ({ reportData, setShowReport }) => {
     }
 
     const {hireCounts, businessPerformance, customerMetrics, combinedMetrics } = reportData;
+    const { toPDF, targetRef } = usePDF({
+        filename: 'page.pdf',
+        options: {
+            format: 'A4',
+            orientation: 'portrait',
+            margin: {
+                top: '10cm',
+                right: '1cm',
+                left: '1cm',
+                bottom: '1cm'
+            },
+        },
+    });
+    
 
     const pieData = {
         labels: ['Top Customers', 'Other Customers'],
@@ -24,6 +39,8 @@ const Report = ({ reportData, setShowReport }) => {
     const cancel = () => {
         setShowReport(false);
     };
+
+
 
     const pieDataHireStats = {
         labels: ['Active', 'Pending', 'Canceled', 'Completed'],
@@ -74,7 +91,7 @@ const Report = ({ reportData, setShowReport }) => {
           }}
         >
             <div className='px-10 py-5'>
-                <div className="mb-5">
+                <div className="mb-5 p-6" ref={targetRef}>
                     <h2 className="text-xl font-bold mb-5 text-center">Month Summery</h2>
 
                     <div className="mb-5">
@@ -131,7 +148,7 @@ const Report = ({ reportData, setShowReport }) => {
                 <div className="flex justify-between">
                     <button className="py-2 px-6 bg-actionBlue text-white rounded-md mr-4" onClick={cancel}>Cancel</button>
               
-                    <button className="py-2 px-6 text-white bg-actionRed focus:outline-none rounded-md mr-4" >Print</button>  
+                    <button className="py-2 px-6 text-white bg-actionRed focus:outline-none rounded-md mr-4" onClick={() => toPDF()}>Save</button>  
                 </div>
 
                 
