@@ -122,9 +122,45 @@ const addVehicle = async (req, res, next) => {
 
             res.status(201).json(newVehicle);
 
-        } else {
-            return next(new HttpError("Invalid category.", 422));
-        }
+            } else {
+
+                const { vehicleType, vehicleRegister,vehicleModel,vehicleManuYear,engineCap,vehicleColour,lugSpace,cargoArea,lastMileage,vehicleWeight,cargoCapacity,trailerLength,passengerCabin,vehicleGearSys,airCon,numOfSeats,gps,fridge,tv,licEndDate,insEndDate,statusVehicle, fuelType} = req.body;
+    
+                if(!vehicleType || !vehicleRegister || !vehicleModel || !vehicleManuYear || !engineCap || !lastMileage || !vehicleGearSys || !fuelType){
+                    return next(new HttpError("Please fill all feiled under Performance.", 400))
+                }
+    
+                if(!airCon || !numOfSeats || !gps ){
+                    return next(new HttpError("Please fill all feiled under Features.", 400))
+                }
+    
+                if(!licEndDate || !insEndDate){
+                    return next(new HttpError("Please fill all feiled under Documentary.", 400))
+                }
+                
+                const existingVehicleByRegister = await Vehicles.findOne({ vehicleRegister });
+                const existingVehicleByModel = await Vehicles.findOne({ vehicleModel });
+    
+                if (existingVehicleByRegister) {
+                    return next(new HttpError("Vehicle with the same registration number already exists.", 400));
+                }
+    
+                if (existingVehicleByModel) {
+                    return next(new HttpError("Vehicle with the same model already exists.", 400));
+                }
+    
+                const newVehicle = await Vehicles.create({ category,vehicleType, vehicleRegister,vehicleModel,vehicleManuYear,engineCap,lastMileage,vehicleWeight,cargoCapacity,trailerLength,passengerCabin,vehicleGearSys,airCon,numOfSeats,gps,fridge,tv,licEndDate,insEndDate,statusVehicle, fuelType,vehicleColour,lugSpace,cargoArea,lastMileage});
+    
+                if (!newVehicle) {
+    
+                    return next(new HttpError("Vehicle couldn't be created.", 422));
+                }
+    
+                
+    
+                res.status(201).json(newVehicle);
+            }
+
         
     } catch (error) {
         return next(new HttpError(error.message));
@@ -334,7 +370,7 @@ const getVehicles = async (req, res, next) => {
         };  
 
         
-        const vehicles = await Vehicles.find({statusVehicle: 'Active'}).sort({updatedAt: -1});
+        const vehicles = await Vehicles.find().sort({updatedAt: -1});
         const vehiclesRecover = await Vehicles.find({statusVehicle: 'Deactive'}).sort({updatedAt: -1});
         const car = await Vehicles.find({category: 'car'}).sort({ updatedAt: -1 });
         const van = await Vehicles.find({category: 'van'}).sort({ updatedAt: -1 });

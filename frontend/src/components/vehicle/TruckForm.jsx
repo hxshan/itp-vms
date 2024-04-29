@@ -112,6 +112,7 @@ const TruckForm = ({ formState, setFormState }) => {
                                     <option value="hybrid">Hybrid</option>                
                         </select>
                         </div>
+                        
                         </div>
 
                         <div className='flex flex-row'>

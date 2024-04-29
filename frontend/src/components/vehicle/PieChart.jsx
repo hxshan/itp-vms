@@ -24,7 +24,7 @@ const getData = ()=>{
       url:'/vehicle/'
     })
   }
-
+  
   useEffect(()=>{
     getData()
   },[])
