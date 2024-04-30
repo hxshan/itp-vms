@@ -124,41 +124,66 @@ const addVehicle = async (req, res, next) => {
 
             } else {
 
-                const { vehicleType, vehicleRegister,vehicleModel,vehicleManuYear,engineCap,vehicleColour,lugSpace,cargoArea,lastMileage,vehicleWeight,cargoCapacity,trailerLength,passengerCabin,vehicleGearSys,airCon,numOfSeats,gps,fridge,tv,licEndDate,insEndDate,statusVehicle, fuelType} = req.body;
+                const { vehicleType, vehicleRegister,vehicleModel,vehicleManuYear,engineCap,vehicleColour,lugSpace,cargoArea,lastMileage,vehicleWeight,cargoCapacity,trailerLength,passengerCabin,vehicleGearSys,airCon,numOfSeats,gps,fridge,tv,licEndDate,insEndDate,statusVehicle, fuelType,categoryCustom } = req.body;
     
-                if(!vehicleType || !vehicleRegister || !vehicleModel || !vehicleManuYear || !engineCap || !lastMileage || !vehicleGearSys || !fuelType){
-                    return next(new HttpError("Please fill all feiled under Performance.", 400))
-                }
-    
-                if(!airCon || !numOfSeats || !gps ){
-                    return next(new HttpError("Please fill all feiled under Features.", 400))
-                }
-    
-                if(!licEndDate || !insEndDate){
-                    return next(new HttpError("Please fill all feiled under Documentary.", 400))
-                }
+                const requiredFields = [
+                    'vehicleType',
+                    'vehicleRegister',
+                    'vehicleModel',
+                    'vehicleManuYear',
+                    'engineCap',
+                    'vehicleColour',
+                    'lugSpace',
+                    'cargoArea',
+                    'lastMileage',
+                    'vehicleWeight',
+                    'cargoCapacity',
+                    'trailerLength',
+                    'passengerCabin',
+                    'vehicleGearSys',
+                    'airCon',
+                    'numOfSeats',
+                    'gps',
+                    'fridge',
+                    'tv',
+                    'licEndDate',
+                    'insEndDate',
+                    'statusVehicle',
+                    'fuelType',
+                    'categoryCustom',
+                    'category'
+                  ];
+
+                  // Filter out empty or null values
+                  const filteredFields = {};
+                  requiredFields.forEach(field => {
+                  if (req.body[field]) {
+                         filteredFields[field] = req.body[field];
+                   }
+                  });
+
                 
-                const existingVehicleByRegister = await Vehicles.findOne({ vehicleRegister });
-                const existingVehicleByModel = await Vehicles.findOne({ vehicleModel });
-    
-                if (existingVehicleByRegister) {
-                    return next(new HttpError("Vehicle with the same registration number already exists.", 400));
-                }
-    
-                if (existingVehicleByModel) {
-                    return next(new HttpError("Vehicle with the same model already exists.", 400));
-                }
-    
-                const newVehicle = await Vehicles.create({ category,vehicleType, vehicleRegister,vehicleModel,vehicleManuYear,engineCap,lastMileage,vehicleWeight,cargoCapacity,trailerLength,passengerCabin,vehicleGearSys,airCon,numOfSeats,gps,fridge,tv,licEndDate,insEndDate,statusVehicle, fuelType,vehicleColour,lugSpace,cargoArea,lastMileage});
-    
-                if (!newVehicle) {
-    
-                    return next(new HttpError("Vehicle couldn't be created.", 422));
-                }
-    
-                
-    
-                res.status(201).json(newVehicle);
+
+                  const existingVehicleByRegister = await Vehicles.findOne({ vehicleRegister });
+                  const existingVehicleByModel = await Vehicles.findOne({ vehicleModel });
+              
+                  if (existingVehicleByRegister) {
+                    return next(new HttpError('Vehicle with the same registration number already exists.', 400));
+                  }
+              
+                  if (existingVehicleByModel) {
+                    return next(new HttpError('Vehicle with the same model already exists.', 400));
+                  }
+              
+                  const newVehicle = await Vehicles.create(filteredFields);
+              
+                  if (!newVehicle) {
+                    return next(new HttpError('Vehicle couldn\'t be created.', 422));
+                  }
+
+
+                  res.status(201).json(newVehicle);
+
             }
 
         

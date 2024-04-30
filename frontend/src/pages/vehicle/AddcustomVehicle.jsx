@@ -33,7 +33,8 @@ const AddcustomVehicle = () => {
         vehicleBookImage: null,
         vehicleLicenceImage: null,
         vehicleInsuImage: null, 
-        statusVehicle:'Active'   
+        statusVehicle:'Active',
+        categoryCustom:'Custom'   
     }
     
     const [formState, setFormState] = useState(initialFormState);
@@ -56,15 +57,23 @@ const AddcustomVehicle = () => {
         };
       }, []);
 
-    const handleChange = (event) => {
+      const handleChange = (event) => {
         const { name, value } = event.target;
-        setFormState({ ...formState, [name]: value });
-    };
+        let lowerCaseValue;
+      
+        if (name === 'category' || name === 'vehicleType') {
+          lowerCaseValue = value.toLowerCase();
+        } else {
+          lowerCaseValue = value;
+        }
+      
+        setFormState({ ...formState, [name]: lowerCaseValue });
+      };
 
-    const resetForm = () => {
+      const resetForm = () => {
         setFormState(initialFormState);
         setError('');
-    };
+      };
 
     const handleFileChange = (event) => {
         const name = event.target.name;
@@ -327,13 +336,15 @@ const AddcustomVehicle = () => {
                         </div>
 
                         <div className='m-0 pb-1'>
-                            <button className=" mx-2 bg-actionRed py-1 px-6 rounded-md text-white font-bold mt-2" onClick={resetForm}>Reset</button>
-                            <button className="mx-2 bg-actionBlue py-1 px-6 rounded-md text-white font-bold mt-2" >Add vehicle</button>
+                            <button className=" mx-2 bg-actionRed py-1 px-6 rounded-md text-white font-bold mt-2" type="button" onClick={resetForm} >Reset</button>
+                            <button className="mx-2 bg-actionBlue py-1 px-6 rounded-md text-white font-bold mt-2" type="submit" >Add vehicle</button>
                         </div>
                         
                     </div>
         {error &&<p className='mt-3 p-3 font-medium text-sm text-white bg-actionBlue rounded-md pad'>{error}</p>}
     </form>
+
+        <ToastContainer />
     </div>
 
     )}

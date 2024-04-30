@@ -1,10 +1,19 @@
 import React from 'react';
 
 const CarForm = ({ formState, setFormState }) => {
+
     const handleChange = (event) => {
         const { name, value } = event.target;
-        setFormState({ ...formState, [name]: value });
-    };
+        let updatedValue = value;
+      
+        // If the name is "otherCarType" and the selected car type is "other", update vehicleType directly
+        if (name === 'otherCarType' && formState.vehicleType === 'other') {
+          updatedValue = value.toLowerCase(); // Convert to lowercase if needed
+          setFormState({ ...formState, vehicleType: updatedValue });
+        } else {
+          setFormState({ ...formState, [name]: updatedValue });
+        }
+      };
 
     const handleFileChange = (event) => {
         const name = event.target.name;
@@ -23,38 +32,38 @@ const CarForm = ({ formState, setFormState }) => {
             
             <div className="col-span-1 w-full flex flex-col mb-4 ">
             <label className="block text-gray-700 text-md font-bold mb-2" htmlFor="vehicleType">
-                 Car Type:
-            </label>
-            <select 
-               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline " 
-               id="carType" 
-               name="vehicleType" 
-               value={formState.vehicleType} 
-               onChange={handleChange}
-            >
-              <option value="">Select</option>
-              <option value="sadan">Sedan</option>
-              <option value="hatchback">Hatchback</option>
-              <option value="wagon">Wagon</option>
-              <option value="other">Other</option>
-            </select>
+  Car Type:
+</label>
+<select 
+  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline " 
+  id="carType" 
+  name="vehicleType" 
+  value={formState.vehicleType} 
+  onChange={handleChange}
+>
+  <option value="">Select</option>
+  <option value="sedan">Sedan</option>
+  <option value="hatchback">Hatchback</option>
+  <option value="wagon">Wagon</option>
+  <option value="other">Other</option>
+</select>
 
-            {formState.vehicleType === 'other' && (
-             <div>
-             <label className="block text-gray-700 text-md font-bold mb-2 mt-4" htmlFor="otherCarType">
-                Other Car Type:
-             </label>
-             <input 
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
-            id="otherCarType" 
-            type="text" 
-            placeholder="Enter your car type" 
-            value={formState.otherCarType === 'other' ? '' : formState.otherCarType} 
-            onChange={handleChange} 
-            name="otherCarType" 
-            />
-             </div>
-             )}
+{formState.vehicleType === 'other' && (
+  <div>
+    <label className="block text-gray-700 text-md font-bold mb-2 mt-4" htmlFor="otherCarType">
+      Other Car Type:
+    </label>
+    <input 
+      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
+      id="otherCarType" 
+      type="text" 
+      placeholder="Enter your car type" 
+      value={formState.vehicleType === 'other' ? formState.otherCarType : ''} 
+      onChange={handleChange} 
+      name="otherCarType" 
+    />
+  </div>
+)}
             </div>
 
     <div className="grid grid-cols-2 gap-x-4">
