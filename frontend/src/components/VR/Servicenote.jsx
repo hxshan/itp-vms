@@ -4,21 +4,24 @@ import axios from 'axios';
 import useAxios from '@/hooks/useAxios';
 import { Serviceview } from './Serviceview';
 
+// import statements
+
 export const Servicenote = () => {
     const [data, error, loading, axiosFetch] = useAxios();
     const { id } = useParams();
     const [vehinumber, setVehinumber] = useState('');
     const [lastmilage, setLastmilage] = useState('');
+    const [kilometerLimit, setKilometerLimit] = useState('');
 
     useEffect(() => {
         axios.get(`http://localhost:3000/api/vehicle/${id}`)
             .then(response => {
-
-                setVehinumber(response.data.vehicleRegister)
-                setLastmilage(response.data.lastMileage)
+                setVehinumber(response.data.vehicleRegister);
+                setLastmilage(response.data.lastMileage);
+                setKilometerLimit(response.data.kilometerLimit);
             })
             .catch(error => {
-                console.log(error);
+                console.error(error);
             });
     }, [id]);
 
@@ -26,9 +29,10 @@ export const Servicenote = () => {
     const currentDate = new Date().toISOString().split('T')[0];
 
     const [formdata, setFormdata] = useState({
-        vehicleRegister: vehinumber,
+        vehicleRegister: '',
         servicedate: currentDate,
-        lastmilage: lastmilage,
+        lastmilage: '',
+        kilometerLimit: '',
         Snote: '',
         Scost: '',
     });
@@ -37,12 +41,20 @@ export const Servicenote = () => {
         setFormdata(prevState => ({
             ...prevState,
             vehicleRegister: vehinumber,
-            lastmilage: lastmilage
+            lastmilage: lastmilage,
 
         }));
     }, [vehinumber, lastmilage]);
 
-    const handleSubmit = () => {
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        // Check if the new kilometerLimit is greater than the previous kilometerLimit
+        if (parseInt(formdata.kilometerLimit) <= parseInt(lastmilage)) {
+            alert('New kilometerLimit must be greater than the previous kilometerLimit.');
+            return;
+        }
+
         if (!formdata.vehicleRegister) {
             console.error('Vehicle register is empty');
             return;
@@ -53,24 +65,36 @@ export const Servicenote = () => {
                 console.log('Submission successful:', response);
                 setFormdata({
                     vehicleRegister: vehinumber,
-                    Snote: '',
-                    servicedate: '',
+                    servicedate: currentDate,
                     lastmilage: lastmilage,
+                    kilometerLimit: '',
+                    Snote: '',
                     Scost: '',
-
                 });
                 navigate('/VehicleService');
             })
             .catch(error => {
-                console.error('Error submitting form:', error);
+                // Handle error response
+                if (error.response) {
+                    console.log(error.response.data);
+                    console.log(error.response.status);
+                    console.log(error.response.headers);
+                    // Show message using alert
+                    alert(error.response.data.message);
+                } else if (error.request) {
+                    console.log(error.request);
+                } else {
+                    console.log('Error', error.message);
+                }
+                console.log(error.config);
             });
     };
 
-    const handlechange = (e) => {
-        setFormdata({
-            ...formdata,
+    const handleChange = (e) => {
+        setFormdata(prevState => ({
+            ...prevState,
             [e.target.id]: e.target.value
-        });
+        }));
     };
 
     return (
@@ -95,28 +119,40 @@ export const Servicenote = () => {
                             <input
                                 type="date"
                                 id='servicedate'
-                                className='border p-2 rounded-lg shadow  '
+                                className='border p-2 rounded-lg shadow'
                                 required
-                                onChange={handlechange}
-                                value={formdata.servicedate} />
+                                onChange={handleChange}
+                                value={formdata.servicedate}
+                            />
                             <label className='font-semibold'>Service Note :</label>
                             <textarea
                                 type="text"
                                 id='Snote'
                                 placeholder=' '
-                                className='border p-2 rounded-lg shadow  '
+                                className='border p-2 rounded-lg shadow'
                                 required
-                                onChange={handlechange}
-                                value={formdata.Snote} />
+                                onChange={handleChange}
+                                value={formdata.Snote}
+                            />
                             <label className='font-semibold'>Cost :</label>
                             <input
                                 type="number"
                                 id='Scost'
                                 placeholder='RS:-10,000'
-                                className='border p-2 rounded-lg shadow  '
+                                className='border p-2 rounded-lg shadow'
                                 required
-                                onChange={handlechange}
-                                value={formdata.Scost} />
+                                onChange={handleChange}
+                                value={formdata.Scost}
+                            />
+                            <label className='font-semibold'>Kilometer Limit :</label>
+                            <input
+                                type="number"
+                                id='kilometerLimit'
+                                className='border p-2 rounded-lg shadow'
+                                required
+                                onChange={handleChange}
+                                value={formdata.kilometerLimit}
+                            />
                         </div>
                     </div>
                 </form>

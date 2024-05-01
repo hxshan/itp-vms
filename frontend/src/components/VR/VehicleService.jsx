@@ -131,6 +131,7 @@ const VehicleService = () => {
               <th className="border border-white p-2">Vehicle Number</th>
               <th className="border border-white p-2">Vehicle Last-Mileage</th>
               <th className="border border-white p-2">Status</th>
+              <th className="border border-white p-2">Limit</th>
               <th className="border border-white p-2">Actions</th>
             </tr>
           </thead>
@@ -150,6 +151,7 @@ const VehicleService = () => {
                       <p className='bg-red-200 text-red-800 font-semibold rounded-md mx-4'>Still Not Close to Range</p>
                     )}
                   </td>
+                  <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200 text-center">{vehicle.kilometerLimit}km</td>
                   <td className="px-2 py-2 whitespace-nowrap border-r border-gray-200 flex justify-center">
                     <button
                       className="my-1 mx-1 bg-blue-700 text-white py-1 px-4 rounded-md text-sm font-semibold"

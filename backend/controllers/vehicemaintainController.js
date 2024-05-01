@@ -14,15 +14,12 @@ const createmaintain = async (req, res) => {
 
         const currentDate = new Date();
         
-       
-        
         const vehicle = await Vehicles.findOne({ vehicleRegister: req.body.vehicleRegister });
 
         if (!vehicle) {
             return res.status(400).send({ message: "Invalid category or vehicle register provided." });
         }
 
-        
         const maintain = {
            
             vehicleRegister: vehicle._id,
@@ -52,10 +49,7 @@ const createmaintain = async (req, res) => {
     }
 };
 
-
-
-
-//Get all maintains from system
+//Get all maintains 
 const getallmaintains = async(req , res)=>{
     try{
         const maintains = await vehicleMaintain.find({});
@@ -71,12 +65,30 @@ const getallmaintains = async(req , res)=>{
 const getonemaintain = async(req, res)=>{
     try {
         const { id } = req.params;
+
+        // Find the maintenance record by its _id
         const maintain = await vehicleMaintain.findById(id);
-        return res.status(200).json(maintain);
-    }
-    catch (error) {
-        console.log(error);
-        res.status(500).send({ message: error.message })
+
+        // If no maintenance record found, return a message
+        if (!maintain) {
+            return res.status(404).json({ message: 'Maintenance record not found.' });
+        }
+
+        // Extract vehicleRegister from the found maintenance record
+        const vehicleRegisterId = maintain.vehicleRegister;
+
+        // Find all maintenance records associated with the vehicleRegister
+        const maintains = await vehicleMaintain.find({ vehicleRegister: vehicleRegisterId });
+
+        // Handle cases where no matching records are found
+        if (!maintains.length) {
+            return res.status(200).json({ message: 'No maintenance records found for this vehicle.' });
+        }
+
+        res.status(200).json(maintains); // Return all matching maintenance records
+    } catch (error) {
+        console.error('Error fetching maintenance records:', error);
+        res.status(500).json({ message: 'Server error' });
     }
 };
 

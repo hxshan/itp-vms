@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import axios from '@/api/axios';
 import useAxios from '@/hooks/useAxios';
 import { ReactToPrint } from 'react-to-print';
 import { ClockLoader } from "react-spinners";
+import { Pie } from 'react-chartjs-2';
 
 export const MaintainOrderTable = () => {
     const [data, error, loading, axiosFetch] = useAxios();
@@ -14,7 +15,6 @@ export const MaintainOrderTable = () => {
     const [applyFilter, setApplyFilter] = useState(false);
     const [applyFilter2, setApplyFilter2] = useState(false);
     const [search, setSearch] = useState('');
-
 
     const getData = async () => {
         await axiosFetch({
@@ -44,22 +44,24 @@ export const MaintainOrderTable = () => {
     if (loading) {
         return (
             <div className="w-full flex items-center justify-center h-full bg-white">
-              <ClockLoader
-                  color="#36d7b7"
-                  height={50}
-                  width={10}
+                <ClockLoader
+                    color="#36d7b7"
+                    height={50}
+                    width={10}
                 />
             </div>
-          );
+        );
     }
 
     const handleFilterClick = () => {
         setApplyFilter(prevState => !prevState);
     };
+
     const handleFilterClick2 = () => {
         setApplyFilter2(true);
         filterData(startDate, endDate);
     };
+
     const filterData = (start, end) => {
         if (!start || !end) return;
 
@@ -69,7 +71,6 @@ export const MaintainOrderTable = () => {
         });
         setMaintains(filteredData);
     };
-
 
     const deleteData = async (e) => {
         e.preventDefault();
@@ -83,11 +84,68 @@ export const MaintainOrderTable = () => {
         }
     };
 
+    const prepareChartData = (maintains) => {
+        const counts = {
+            UnderMaintenance: 0,
+            Done: 0,
+            RequestsFromDriver: 0 // Initialize RequestsFromDriver count
+        };
+
+        maintains.forEach(item => {
+            const sDate = new Date(item.vrsdate);
+            const eDate = item.vredate ? new Date(item.vredate) : null; // Parse eDate if it exists
+            if (sDate > currentDate) {
+                counts.UnderMaintenance++;
+            } else if (!eDate) { // Check if eDate is null or undefined
+                counts.RequestsFromDriver++;
+            } else {
+                counts.Done++;
+            }
+        });
+
+        return {
+            labels: ['Under Maintenance', 'Done', 'Requests From Driver'],
+            datasets: [{
+                data: [counts.UnderMaintenance, counts.Done, counts.RequestsFromDriver],
+                backgroundColor: ['#003f5c', '#7a5195', '#ef5675'],
+                hoverBackgroundColor: ['#003f5c', '#7a5195', '#ef5675'],
+            }]
+        };
+    };
+
+
+    const chartData = prepareChartData(maintains);
+
     const componentRef = React.createRef();
 
     return (
         <div className="w-full flex flex-col justify-between md:w-full">
             <div className="flex flex-col ">
+            <div ref={componentRef}>
+                <div className="flex flex-col">
+                <div className="flex justify-center items-center gap-3  rounded-md  m-0 p-3" >
+                    <h1 className="text-center font-bold text-xl ">
+                        Date Range :  From {new Date(startDate).toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' })}
+                    </h1>
+                    <h1 className="text-center font-bold text-xl ">
+                        to {new Date(endDate).toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' })}
+                    </h1>
+
+                </div>
+                <div className="border-b-4 border-black w-full mb-8"></div>
+
+                <div className="flex m-5">
+                    <div className=" w-[500px] h-[500px]">
+                        <Pie data={chartData} />
+                    </div>
+                    <div className="w-1/3 flex flex-col h-full mt-32 ml-auto">
+                        <div className='bg-gray-500 shadow-md rounded-md text-center p-5 mt-4  '><p className='font-bold text-white text-lg'>Done :</p> <p className='font-bold text-black '>{chartData.datasets[0].data[1]}</p></div>
+                        <div className='bg-gray-500 shadow-md rounded-md text-center p-5 mt-2  '><p className='font-bold text-white text-lg'>Under Maintenance :</p> <p className='font-bold text-black '>{chartData.datasets[0].data[0]}</p></div>
+                        <div className='bg-gray-500 shadow-md rounded-md text-center p-5 mt-2 '><p className='font-bold text-white text-lg'>Requests From Driver :</p> <p className='font-bold text-black '>{chartData.datasets[0].data[2]}</p></div>
+                    </div>
+                </div>
+                </div>
+                </div>
                 <div className="flex justify-end mb-4 gap-2 flex-col md:flex-row">
                     <form>
                         <input
@@ -141,12 +199,9 @@ export const MaintainOrderTable = () => {
                     />
                 </div>
             </div>
-            <div ref={componentRef}>
-            <div className="flex justify-center items-center gap-3  rounded-md  m-0 p-3" >  <h1 className="text-center font-bold text-xl "> Date Range :  From {new Date(startDate).toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' })}</h1>
-                    <h1 className="text-center font-bold text-xl "> to {new Date(endDate).toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' })}</h1>
-                    
-                </div>
-                <div className="border-b-4 border-black w-full mb-8"></div>
+            
+                
+
                 <table className='w-full border-collapse   rounded-md pad shadow-xl p-5 mb-10'>
                     <thead className='bg-secondary text-white border-white'>
                         <tr>
@@ -164,7 +219,10 @@ export const MaintainOrderTable = () => {
                                     || search.toUpperCase() === '' ? item : item.vrvehicleRegister.toUpperCase().includes(search);
                             }).map((item, index) => {
                                 const sDate = new Date(item.vrsdate);
-                                const eDate = new Date(item.vrsdate);
+                                const eDate = new Date(item.vredate);
+                                if (!item.vredate) {
+                                    return null;
+                                }
                                 if (applyFilter &&
                                     !(sDate < currentDate && eDate < currentDate)
                                 ) {
@@ -179,7 +237,7 @@ export const MaintainOrderTable = () => {
                                         </td>
                                         <td className='border border-slate-700 rounded-md text-center'>
                                             {sDate > currentDate ? (
-                                                <p className='bg-red-200 text-red-800 font-semibold rounded-md mx-4'>Undermaintenance</p>
+                                                <p className='bg-red-200 text-red-800 font-semibold rounded-md mx-4'>To be Maintaine</p>
                                             ) : (
                                                 <p className='bg-green-200 text-green-800 font-semibold rounded-md mx-4'>Done</p>
                                             )}
@@ -207,7 +265,7 @@ export const MaintainOrderTable = () => {
                         )}
                     </tbody>
                 </table>
-            </div>
+           
         </div>
     );
 };
