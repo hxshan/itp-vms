@@ -45,7 +45,8 @@ const upload = multer({ storage });
 
 
 //GET
-router.get('/',Auth,getAllUsers)
+//router.get('/',Auth,getAllUsers)
+router.get('/',getAllUsers)
 router.get('/drivers',getDrivers)
 router.get('/drivers/records',getRecords)
 router.get('/:id',getUserById)
