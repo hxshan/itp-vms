@@ -1,4 +1,7 @@
 const Hire = require("../models/hireModel");
+const { Vehicles } = require("../models/vehicleModel");
+const Availability = require("../models/vehicleAvailability");
+
 const { v4: uuid } = require('uuid');
 const mongoose = require('mongoose');
 
@@ -14,6 +17,18 @@ const fetchHires = async (req, res) => {
         .then(hires => res.json(hires))
   } catch (error) {
     console.error('Error fetching hire:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+}
+
+//Fetch all vehicles
+const fetchVehicles = async (req, res) => {
+  try {
+    const vehicles = await Vehicles.find().populate('availability');
+    //console.log(vehicles)
+    res.json(vehicles);
+  } catch (error) {
+    console.error('Error fetching vehicles:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 }
@@ -77,6 +92,17 @@ const addHire = async (req, res) => {
 
     
     await newHire.save();
+
+    const newAvailability = new Availability({
+      vehicle: vehicle,
+      status: 'reserved',
+      unavailableStartDate: startDate,
+      unavailableEndDate: endDate
+    });
+
+    await newAvailability.save();
+
+    await Vehicles.findByIdAndUpdate(vehicle, { $push: { availability: newAvailability._id } });
     
     sendmail(transporter, {
       startDate,
@@ -403,5 +429,5 @@ const sendmail = async (transporter, hireData) => {
 
 
 
-module.exports = { addHire, fetchHires, editHire, deleteHire, generateCombinedReport };
+module.exports = { addHire, fetchHires, editHire, deleteHire, generateCombinedReport, fetchVehicles };
 

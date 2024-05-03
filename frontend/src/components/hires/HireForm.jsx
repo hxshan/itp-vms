@@ -113,7 +113,7 @@ const Form = () => {
     axiosFetchVehicles({
           axiosInstance: axios,
           method: "GET",
-          url: "/vehicle/",
+          url: '/hire/vehicles',
       });
   };
 
@@ -131,12 +131,25 @@ const Form = () => {
     console.log("Filter Vehicles")
 
     console.log("Selected Vehicle : " + vehicleType)
-    const selectedVehicles = vehiclesData.vehicles.filter((vehicle) => vehicle.category.toLowerCase() === vehicleType.toLowerCase());
+    const selectedVehicles = vehiclesData.filter(vehicle => vehicle.category.toLowerCase() === vehicleType.toLowerCase());
     console.log(selectedVehicles)
 
     setFilteredVehicles(selectedVehicles);
 
-    if (selectedVehicles.length === 0) {
+    const filteredByAvailability = selectedVehicles.filter(vehicle => {
+      // Check if any availability record overlaps with the specified date range
+      return !vehicle.availability.some(availability => {
+        return (
+          (availability.unavailableStartDate <= startDate && availability.unavailableEndDate >= endDate) ||
+          (availability.unavailableStartDate >= startDate && availability.unavailableStartDate <= endDate) ||
+          (availability.unavailableEndDate >= startDate && availability.unavailableEndDate <= endDate)
+        );
+      });
+    });
+
+    setFilteredVehicles(filteredByAvailability);
+
+    if (filteredVehicles.length === 0) {
       console.log("No vehicles Available");
       toast.error("No vehicles Available");
       setIsVehicleAvailable(false);
@@ -429,14 +442,14 @@ const [vehicleRates, Verror, Vloading, VaxiosFetch] = useAxios();
       console.log(vehiclesData)
     }, [])
 
-    if (vehicleRates.length === 0 || DriversData.length === 0 || vehiclesData.length === 0) [
+   /* if (vehicleRates.length === 0 || DriversData.length === 0 || vehiclesData.length === 0) [
       Swal.fire({
         icon: 'error',
         title: 'Error fetching Data',
         confirmButtonText: 'OK',
       })
     ]
-
+*/
 
     if (loading || vehiclesLoading|| DriversLoading || Vloading) {
       return (

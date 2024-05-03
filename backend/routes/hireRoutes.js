@@ -1,6 +1,6 @@
 const express = require('express')  
 const router = express.Router()
-const {addHire, fetchHires,editHire, deleteHire, generateCombinedReport } = require('../controllers/hireController')
+const {addHire, fetchHires,editHire, deleteHire, generateCombinedReport, fetchVehicles } = require('../controllers/hireController')
 const {fetchHiresRates, addHireRates, editHireRate} = require('../controllers/hireRatesController.js')
 const{getHiresByDriverId,updateHireDriver,  getPastTripsForDriver, getSingleHire, getHiresByVehicleId} =   require('../controllers/driverController')
 
@@ -29,5 +29,7 @@ const{getHiresByDriverId,updateHireDriver,  getPastTripsForDriver, getSingleHire
   router.put('/rates/edit/:id',editHireRate)
 
   router.get('/report', generateCombinedReport)
+
+  router.get('/vehicles', fetchVehicles)
 
 module.exports = router
