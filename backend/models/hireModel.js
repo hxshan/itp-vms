@@ -3,7 +3,8 @@ const mongoose = require('mongoose');
 const hireSchema = new mongoose.Schema({
   hireStatus: {
     type: String, 
-    required: true
+    required: true,
+    default: "Pending"
   },
   startDate: { 
     type: Date, 
@@ -118,7 +119,11 @@ const hireSchema = new mongoose.Schema({
   finalOdometerPic: {
     type:String, 
     default: null
-}
+},
+  createdAt: {
+  type: Date,
+  default: Date.now,
+},
 });
 
 module.exports = mongoose.model('Hire', hireSchema);

@@ -4,7 +4,7 @@ import ReactToPrint from "react-to-print";
 import Modal from 'react-modal';
 import { useNavigate } from 'react-router-dom'
 
-Modal.setAppElement('#root'); // Set the root app element for screen readers
+Modal.setAppElement('#root');
 
 const ViewHire = ({ setViewHire, viewHireData }) => {
     ViewHire.propTypes = {
@@ -25,8 +25,8 @@ const ViewHire = ({ setViewHire, viewHireData }) => {
 
     return (
         <Modal
-            isOpen={true} // Open the modal
-            onRequestClose={() => setViewHire(false)} // Close the modal on escape key press or overlay click
+            isOpen={true}
+            onRequestClose={() => setViewHire(false)}
             style={{
               content: {
                   position: 'absolute',
