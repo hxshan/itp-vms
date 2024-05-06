@@ -288,7 +288,9 @@ const changeStatusVehicle = async (req, res, next) => {
 
         res.status(200).json({ message: `Vehicle with ID ${vehicleId} deactive successfully.` });
     } catch (error) {
+
         return next(new HttpError(error.message, 500));
+        
     }
 }
 
