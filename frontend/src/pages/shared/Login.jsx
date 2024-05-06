@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate} from "react-router-dom";
 import { useLogin } from "@/hooks/useLogin";
 import { useAuthContext } from "@/hooks/useAuthContext";
+import { jwtDecode } from "jwt-decode";
 
 
 const Login = () => {
@@ -22,8 +23,13 @@ const Login = () => {
   };
 
   useEffect(()=>{
-    if(user?.accessToken)
-      navigate('/admin')
+    if(user?.accessToken){
+      const decodedToken = jwtDecode(user.accessToken)
+      console.log(decodedToken)
+      const intendedPath = decodedToken?.UserInfo?.path;
+      if(intendedPath)
+        navigate(`/${intendedPath}`)
+    }   
   },[user])
 
   return (

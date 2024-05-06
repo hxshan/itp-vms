@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import useAxios from '@/hooks/useAxios';
 import { ReactToPrint } from 'react-to-print';
+import { Link } from 'react-router-dom';
 
 export const Serviceview = () => {
   const [error, loading, axiosFetch] = useAxios();
@@ -28,12 +29,16 @@ export const Serviceview = () => {
   return (
     <main>
       <div className="flex flex-col items-center">
-        <h1 className='text-3xl font-semibold my-9 '>
+        <h1 className='font-bold text-xl mb-6'>
           Past Service Records
-        </h1>  <ReactToPrint
+        </h1>
+        <Link to={`/VehicleService`}>
+          <button className="my-1 mx-1 bg-actionBlue text-white py-1 px-4 rounded-md text-sm">Back</button>
+        </Link>
+        <ReactToPrint
           trigger={() => (
             <button
-              className="bg-blue-500 text-white rounded-lg px-4 py-2 w-6/12 mb-5 "
+              className="bg-actionRed text-white rounded-lg px-4 py-2"
             >
               Generate a Report
             </button>
@@ -42,15 +47,15 @@ export const Serviceview = () => {
         />
       </div>
       <div ref={componentRef}>
-        <table className='bg-slate-50 border-separate border-spacing-1 mb-16 rounded-md shadow-xl mt-3'>
-          <thead className='bg-blue-100'>
+        <table className='w-full border-collapse   rounded-md pad shadow-xl p-5 mb-10 mt-5'>
+          <thead className='bg-secondary text-white border-white'>
             <tr>
-              <th className='border border-slate-700 rounded-md p-2'>No</th>
-              <th className='border border-slate-700 rounded-md p-2'>Vehicle Number</th>
-              <th className='border border-slate-700 rounded-md p-2'>Date</th>
-              <th className='border border-slate-700 rounded-md p-2'>Last-Milage</th>
-              <th className='border border-slate-700 rounded-md p-2'>Expense</th>
-              <th className='border border-slate-700 rounded-md p-2'>Note</th>
+              <th className='border  p-2'>No</th>
+              <th className='border  p-2'>Vehicle Number</th>
+              <th className='border  p-2'>Date</th>
+              <th className='border  p-2'>Last-Milage</th>
+              <th className='border  p-2'>Expense</th>
+              <th className='border  p-2'>Note</th>
             </tr>
           </thead>
           <tbody>
@@ -71,7 +76,7 @@ export const Serviceview = () => {
               ))
             ) : (
               <tr>
-                <td colSpan="6" className='text-center'>
+                <td colSpan="6" className='text-center p-3'>
                   No Maintenance Records available
                 </td>
               </tr>
