@@ -3,6 +3,7 @@ import useAxios from "@/hooks/useAxios";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "@/api/axios";
 import ReactToPrint from "react-to-print";
+import { ClipLoader } from "react-spinners";
 
 
 
@@ -170,6 +171,16 @@ if (data) {
   }
 
 
+  }
+
+  if(loading){
+    return(
+      <div className="flex justify-center items-center h-screen">
+        <div className="sweet-loading">
+          <ClipLoader color="#10971D" loading={true}  size={50} />
+        </div>
+      </div>
+    );
   }
 
   return (

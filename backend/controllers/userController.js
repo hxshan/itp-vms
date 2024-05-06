@@ -28,7 +28,7 @@ const createUser = async (req, res) => {
       emergencyContacts,
     } = req.body;
 
- 
+ console.log(req.body)
     if (!firstName || !lastName || !email || !password)
       return res.status(400).json({ msg: "Not all fields have been entered." });
   
@@ -110,6 +110,8 @@ const updateUserPersonal = async(req,res) =>{
       firstName,
       middleName,
       lastName,
+      email,
+      password,
       gender,
       dob,
       phoneNumber,
@@ -121,17 +123,29 @@ const updateUserPersonal = async(req,res) =>{
       baseSal,
       licenceNum,
       status,
-    } = req.body;
-
- 
-    if (!firstName || !lastName || !email || !password)
+    } = req.body.data;
+    let passwordToStore=''
+    console.log(req.body.data);
+    if (!firstName || !lastName || !email)
       return res.status(400).json({ msg: "Not all fields have been entered." });
-  
+    
+    const user=  await User.findById(id)
+    const match = await bcrypt.compare(password,user.password)
+
+    if(!match && password ){
+      const salt = await bcrypt.genSalt();
+      passwordToStore = await bcrypt.hash(password, salt);
+    }else{
+      console.log(match)
+      passwordToStore=user.password
+    }
+    
     try{
       const updatedUser = await User.findByIdAndUpdate(id,{
         firstName,
         middleName,
         lastName,
+        email,
         gender,
         dob,
         phoneNumber,
@@ -143,12 +157,13 @@ const updateUserPersonal = async(req,res) =>{
         baseSal,
         licenceNum,
         status,
+        password:passwordToStore
       })
 
       if (!updatedUser) {
         return res.status(500).json({ message: "Update Failed" });
       }
-      res.status(200).json(updatedUser);
+      return res.status(200).json(updatedUser);
 
     }catch(err){
       res.status(500).json({ message: error.message });
@@ -156,7 +171,7 @@ const updateUserPersonal = async(req,res) =>{
 
     return res.status(200).json({ message: "User Updated succesfully" });
   } catch (err) {
-    // console.log(err);
+     console.log(err);
     return res.status(500).json({ message: err.message });
   }
 
@@ -367,18 +382,20 @@ const getUserDetailsFull = async (req,res)=>{
 
 const getRecords = async (req,res) =>{
   try{
-    const records = await EmpRecord.find()
-
-    if (!records) {
-      return res.json([{}]);
+    const records = await EmpRecord.find().populate('user').exec()
+    
+    if (records?.length<=0) {
+      return res.status(200).json([]);
     }
-    return res.status(200).json(records);
+    const activeRecords= records.filter(record=>{return record.user.status == 'active'})
+    
+    return res.status(200).json(activeRecords);
 
   }catch(error){
+    console.log(error)
     return res.status(500).json({message:'Internal Server Error'})
   }
 }
-
 //TODO:add validation use REGEX
 const resetPassword = async(req,res)=>{
   try{

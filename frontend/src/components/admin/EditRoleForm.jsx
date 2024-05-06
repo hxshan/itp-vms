@@ -82,7 +82,7 @@ const EditRoleForm = () => {
   },[])
 
   const handlePermissionChange = (permission, type, checked) => {
-    const updatedRoleData = { ...roleData };
+     const updatedRoleData = { ...roleData };
 
     switch (permission) {
       case "user":

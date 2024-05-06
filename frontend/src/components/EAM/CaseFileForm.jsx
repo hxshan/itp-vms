@@ -169,7 +169,7 @@ const CaseFileForm = () => {
       <h1 className="text-3xl font-semibold mb-6">Create Case File</h1>
       <form>
       <div className="mb-4">
-          <label htmlFor="caseType" className="block text-lg font-semibold mb-2">Case Title</label>
+          <label htmlFor="caseType" className="block text-lg font-semibold mb-2">Case Type</label>
           <select id="caseType" name="caseType" value={formData.caseType} onChange={handleChange} required className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:border-blue-500">
             <option value="">Select Incident Type</option>
             <option value="accident">Accident</option>

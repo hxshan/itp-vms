@@ -6,15 +6,16 @@ import { ClockLoader } from 'react-spinners'
 import { useNavigate } from "react-router-dom";
 
 
-const DriverRecordTable = ({isopen,setIsOpen}) => {
+const DriverRecordTable = ({isopen,setIsOpen,reload}) => {
+
     const { user } = useAuthContext()
-    const columns=["Name","Email","Licence Number","Status"]
+    const columns=["Driver Name","Record Type","Date of Occurence","Record Type"]
     const navigate=useNavigate()
     const [search,setSearch]=useState('')
     const [statusFilter,setStatusFilter]=useState('')
-    const [usersdata, error, loading, axiosFetch] = useAxios()
-    const [users,setUsers]=useState([])
-    const [reload,setReload]= useState(0)
+    const [recordData, error, loading, axiosFetch] = useAxios()
+    const [records,setRecords]=useState([])
+    // const [reload,setReload]= useState(0)
     const [startIdx, setStartIdx] = useState(0);
     const [endIdx, setEndIdx] = useState(6);
     
@@ -29,25 +30,25 @@ const DriverRecordTable = ({isopen,setIsOpen}) => {
         })
     }
     
-    const deleteData =async(e) => {
-      e.preventDefault()
-      if(confirm("Are you sure you want to Delete the following user")){
-        await axiosFetch({
-          axiosInstance: axios,
-          method: "PATCH",
-          url: `/user/delete/${e.target.id}`,
-        });
-        if(!error){
-          setReload(reload + 1);
-        }   
-      }
-    };
+    // const deleteData =async(e) => {
+    //   e.preventDefault()
+    //   if(confirm("Are you sure you want to Delete the following user")){
+    //     await axiosFetch({
+    //       axiosInstance: axios,
+    //       method: "PATCH",
+    //       url: `/user/delete/${e.target.id}`,
+    //     });
+    //     if(!error){
+    //       setReload(reload + 1);
+    //     }   
+    //   }
+    // };
     
     useEffect(()=>{
-        console.log(usersdata)
-      if(usersdata)
-        setUsers(usersdata)   
-    },[usersdata])
+        console.log(recordData)
+      if(recordData)
+        setRecords(recordData)   
+    },[recordData])
     
     useEffect(()=>{
       if(user?.accessToken)
@@ -75,16 +76,15 @@ const DriverRecordTable = ({isopen,setIsOpen}) => {
       return (
         <div className="w-full mt-8">
           <div className="w-full flex justify-between mb-4">
-            <h2 className="font-bold text-xl underline mb-4">Driver List</h2>
+            <h2 className="font-bold text-xl underline mb-4">Driver Record List</h2>
             <div className="flex w-fit">
               <select name="status"
               value={statusFilter}
               onChange={(e)=>setStatusFilter(e.target.value)}
                className="shadow appearance-none border rounded w-full min-w-40 mx-2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                <option value="">Select Status</option>
-                <option value="active">Active</option>
-                <option value="inactive">Inactive</option>
-                <option value="suspended">Suspended</option>
+                <option value="">Select Type</option>
+                <option value="positive">Postive</option>
+                <option value="negative">Negative</option>
               </select>
               <input type="text" name="Search" 
               placeholder="Search"
@@ -109,28 +109,25 @@ const DriverRecordTable = ({isopen,setIsOpen}) => {
               </tr>
             </thead>
             <tbody>
-              {(users!=null && users.length>0)  ?(users.filter((user)=>{
-                
-                if (search.toLowerCase === '' && statusFilter === '' )
-                  return user
-                if (statusFilter != '' && !search.toLowerCase === '')
-                  return user.firstName.toLowerCase().includes(search) && user.status === statusFilter
-                if(statusFilter != '')
-                  return user.status === statusFilter
-                if(search.toLowerCase != '')
-                 return user.firstName.toLowerCase().includes(search) 
-              
-    
+              {(records!=null && records.length>0)  ?(records.filter((record)=>{
+                  if (search.toLowerCase === '' && statusFilter === '' )
+                    return record
+                  if (statusFilter != '' && !search.toLowerCase === '')
+                    return record.user.firstName.toLowerCase().includes(search) && record.recordType === statusFilter
+                  if(statusFilter != '')
+                    return record.recordType === statusFilter
+                  if(search.toLowerCase != '')
+                   return record.user.firstName.toLowerCase().includes(search) 
               }).slice(startIdx,endIdx)
               .map((row) => {
                 return (
                     <tr className="bg-white border-t border-gray-200" key={row._id}>
-                      <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{row.firstName}</td>
-                      <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{row.email}</td>
-                      <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{row.licenceNumber}</td>
+                      <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{row.user.firstName}</td>
+                      <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{row.recordType}</td>
+                      <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{row.occurenceDate.split('T')[0]}</td>
                       <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">
-                        <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded -full ${row.status=='active'?'text-green-500 bg-green-100': row.status=='inactive'?'text-red-600 bg-red-100':'text-orange-600 bg-orange-100'}`}>
-                          {row.status.toUpperCase()}
+                        <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded -full ${row.recordType=='positive'?'text-green-500 bg-green-100':'text-red-600 bg-red-100'}`}>
+                            {row.recordType}
                         </span>
                       </td>
                       <td className="px-6 py-2 whitespace-nowrap justify-between flex">
@@ -164,7 +161,7 @@ const DriverRecordTable = ({isopen,setIsOpen}) => {
             </button>
             <button
               className={`${
-                users.length - endIdx <= 0 ? "hidden" : " "
+                records.length - endIdx <= 0 ? "hidden" : " "
               } ml-8 py-1 px-2 border border-gray-600 rounded-md mt-4`}    
               onClick={() => {
                 setStartIdx(startIdx + 6);

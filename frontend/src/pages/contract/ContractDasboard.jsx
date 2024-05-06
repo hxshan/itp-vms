@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom'
 import axios from "@/api/axios";
 import AddContractpopup from "./AddContractpopup";
+import { ClipLoader } from "react-spinners";
 
 
 const ContractDasboard = () => {
@@ -15,9 +16,15 @@ const ContractDasboard = () => {
   const [openAddcont,setopenAddcont] = useState(false);
   const [AllClients,setAllClients] = useState([])
   const [searchError,setSearchError] = useState('');
+  const [statusFilter, setStatusFilter] = useState("");
+  const [itemsPerPage] = useState(5); 
+  const [currentPage, setCurrentPage] = useState(1);
+  const [results, setResults] = useState([]);
 
   const [data, error, loading, axiosFetch] = useAxios()
   const [clients,clientError, clientLoading, clientsFetch] = useAxios();
+
+ 
 
   const getallClients = ()=>{
     clientsFetch({
@@ -34,8 +41,15 @@ const ContractDasboard = () => {
      url: `/contract/getAllContracts`,
    });
  }
+ 
+ 
 
-  
+ const indexOfLastItem = currentPage * itemsPerPage;
+ const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+ const currentItems = results.slice(indexOfFirstItem, indexOfLastItem);
+
+ 
+ const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
 
   const [allContracts, SetallContracts] = useState([]);
@@ -70,6 +84,7 @@ const ContractDasboard = () => {
     }
     else if (data) {
       SetallContracts(data);
+      setResults(data);
     }
   }, [data]);
 
@@ -88,14 +103,7 @@ const ContractDasboard = () => {
   },[])
 
 
-  const titles = [
-    { name: "Client NIC", width: "w-[200px]" },
-    { name: "Client Name", width: "w-[200px]" },
-    { name: "Email", width: "w-[200px]" },
-    { name: "Time", width: "w-[240px]" },
-    { name: "Status", width: "w-[240px]" },
-    { name: "Options", width: "w-[200px]" },
-  ];
+  const titles = ["Client NIC", "Client Name" , "Email", "Time", "Status", "Options"]
 
   const calculateTimeDiff = (startDate, endDate) => {
     const startDateTime = new Date(startDate);
@@ -137,10 +145,14 @@ const ContractDasboard = () => {
   
 
 
-  if(loading && clientLoading){
+  if(loading || clientLoading){
     return(
-      <h1>Loading ...</h1>
-    )
+      <div className="flex justify-center items-center h-screen">
+        <div className="sweet-loading">
+          <ClipLoader color="#10971D" loading={true}  size={50} />
+        </div>
+      </div>
+    );
   }
 
   
@@ -150,33 +162,42 @@ const ContractDasboard = () => {
       <AddContractpopup isOpen={openAddcont} TogleOpen={()=>{setopenAddcont(!openAddcont)}} clients={AllClients}/>
     <div className="w-full h-full py-5">
       
-      <div className="flex items-center justify-center ">
+      <div className="flex items-center justify-center border-b-2 mb-4">
         <h1 className=" text-[50px] font-bold ">Contract Dashboard</h1>
       </div>
-      <div className='flex justify-end'>
-        <button className=" bg-red-500 px-5 py-2 rounded-xl " onClick={()=>{setopenAddcont(!openAddcont)}} >Add Contract</button>
+      <div className='flex justify-end mb-5'>
+        <button className=" bg-actionBlue text-white px-5 py-2 rounded-xl text-[16px] font-bold  uppercase " onClick={()=>{setopenAddcont(!openAddcont)}} >Add Contract</button>
         </div>
 
+      <div className=" text-blue-500 font-semibold flex justify-between mb-4">
+        <p>{searchError ? searchError : "Search something"}</p>
 
-      
-      <div className="flex items-center justify-center mb-5">
+        <div className="flex items-center justify-center gap-3">
+        <select name="status"
+          value={statusFilter}
+          onChange={(e)=>setStatusFilter(e.target.value)}
+           className="shadow appearance-none border rounded min-w-30 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+            <option value="">Select Status</option>
+            <option value="Newly Added">Newly Added</option>
+            <option value="ongoing">Ongoing</option>
+            <option value="waiting for termination" >Waiting for termination</option>
+            <option value="Terminated">Terminated</option>
+          </select>
         <input
           type="text"
-          className="bg-slate-400 px-4 py-3 rounded-l-md focus:outline-none w-[500px] placeholder-gray-950 text-[18px]"
-          placeholder="Search eg:-NIC,Name,Email"
+          className="shadow appearance-none border rounded min-w-40 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          placeholder="Search"
           name="searchData"
           onChange={handleInput}
         />
         <button
-          className="px-4 py-3 bg-slate-500 text-white rounded-r-md hover:bg-slate-600 focus:outline-none text-[18px]"
+          className="px-4 py-1 rounded-md bg-actionBlue  text-white text-[16px]"
           onClick={handleSearch}
         >
           Search
         </button>
+        
       </div>
-
-      <div className=" text-blue-500 font-semibold mb-5">
-        <p>{searchError ? searchError : "Search something"}</p>
       </div>
 
       <div className="flex flex-col justify-center">
@@ -192,9 +213,17 @@ const ContractDasboard = () => {
         </div>
       </div>
 
-      <div className="flex flex-col items-center ">
-        {allContracts && allContracts.length > 0  ? allContracts
-          .filter((item) => {
+      <table className="min-w-full divide-y divide-gray-200">
+        <thead className="bg-secondary">
+          <tr>
+            {titles.map((col,index) => {
+              return <th className="px-6 py-3 border-r border-white text-left text-xs font-bold text-white uppercase tracking-wider" key={index}>{col}</th>
+            })}
+          </tr>
+        </thead>
+        <tbody>
+  {currentItems && currentItems.length > 0 ? currentItems
+    .filter((item) => {
             const searchLowerCase = Search.toLowerCase();
             const firstNameLowerCase = item.clientID.firstName.toLowerCase();
             const lastNameLowerCase = item.clientID.lastName.toLowerCase();
@@ -208,32 +237,36 @@ const ContractDasboard = () => {
               email.includes(searchLowerCase)
             );
           })
-          .map((item, index) => (
-            <div
-              key={index}
-              className="grid grid-cols-6 text-center w-full bg-[#D9D9D9] my-2 p-2 items-center rounded-xl  text-[15px]"
-            >
-              <p className="w-[200px] ">NIC{item.clientID.nicNumber}</p>
-              <p className="w-[200px]">
-                {item.clientID.firstName} {item.clientID.lastName}
-              </p>
-              <p className="w-[200px]">{item.clientID.email}</p>
-              <p className="w-[200px] ml-6 text-red-500 font-semibold">{calculateTimeDiff(item.contract_SD, item.contract_ED)}</p>
-              <p className="w-[200px] ml-6 text-green-500 font-semibold">{item.Status}</p>
+    .map((row) => {
+      return (
+        <tr className="bg-white border-t border-gray-200" key={row._id}>
+          <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">NIC {row.clientID.nicNumber}</td>
+          <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{row.clientID.firstName} {row.clientID.lastName}</td>
+          <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{row.clientID.email}</td>
+          <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{calculateTimeDiff(row.contract_SD, row.contract_ED)}</td>
+          <td className={`px-2 text-xs font-semibold text-center ${row.Status ==='Newly Added'? 'text-green-500 bg-green-100': row.Status ==='ongoing'?'text-orange-600 bg-orange-100': row.status ==='waiting for termination'?'text-red-600 bg-red-100': 'text-red-600 bg-red-100'}`}>{row.Status.toUpperCase()}</td>
+          <td className="px-6 py-2 whitespace-nowrap justify-center gap-3 flex">
+            <button className={` bg-actionBlue text-white py-1 px-6 rounded-md`} id={row._id} onClick={()=> navigate(`/viewContract/${row._id}`)}>View</button>
+            <button className={` ${row.Status === "Terminated" ? "hidden": ""} bg-actionGreen text-white  py-1 px-6 rounded-md `}  onClick={()=> navigate(`/EditContract/${row._id}`)}>Edit</button>
+          </td>
+        </tr>
+      );
+    }) : (
+      <tr>
+        <td colSpan={allContracts.length}>No data available</td>
+      </tr>
+    )
+  }
+</tbody>
+      </table>
 
-              <div className="flex justify-center items-center w-[200px] gap-3">
-                <button className={` ${item.Status === "Terminated" ? " bg-orange-400 w-[140px] " : "bg-yellow-300"}  px-5 py-2 rounded-xl`} onClick={()=> navigate(`/viewContract/${item._id}`)}>
-                  View
-                </button>
-                <button className={` ${item.Status === "Terminated" ? "hidden": ""} bg-green-600 px-5 py-2 rounded-xl`} onClick={()=> navigate(`/EditContract/${item._id}`)}>
-                  Edit
-                </button>
-              </div>
+      <div className="flex justify-center mt-4">
+                <ul className="flex list-none border border-gray-300 rounded-md">
+                    {Array.from({ length: Math.ceil(allContracts.length / itemsPerPage) }).map((_, index) => (
+                        <li key={index} className={`cursor-pointer px-4 py-2 ${currentPage === index + 1 ? 'bg-gray-200' : ''}`} onClick={() => paginate(index + 1)}>{index + 1}</li>
+                    ))}
+                </ul>
             </div>
-          )):(<div className="mt-10 font-bold text-red-500">
-            <p>No contracts available</p>
-            </div>)}
-      </div>
     </div>
     </div>
   );
