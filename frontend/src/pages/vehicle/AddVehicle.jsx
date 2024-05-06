@@ -92,8 +92,6 @@ const AddVehicle = () => {
         }
      }
 
-     
-
 
     return (
      <div className='m-0 p-0'>
@@ -105,7 +103,10 @@ const AddVehicle = () => {
 
             <div className='flex flex-row justify-between'>
             <h1 className="text-2xl font-bold">Add Vehicle Details</h1>
-            <button className='px-3 py-1 rounded-md bg-actionBlue text-white text-sm text-bold' onClick={() => navigate('/vehicle')}>Dashboard</button>
+              <div>
+               <button className='mx-1 px-3 py-1 rounded-md bg-actionBlue text-white text-sm text-bold' onClick={() => navigate('custom')}>Add Custom Vehicle</button>
+               <button className='mx-1 px-3 py-1 rounded-md bg-actionBlue text-white text-sm text-bold' onClick={() => navigate('/')}>Dashboard</button>
+              </div>
             </div>
 
             <form className="space-y-3 m-1 mt-5 p-4  pad shadow-xl bg-white rounded " onSubmit={handleSubmit}>
@@ -150,8 +151,8 @@ const AddVehicle = () => {
                         </div>
 
                         <div className='m-0 pb-1'>
-                            <button className=" mx-2 bg-actionRed py-2 px-6 rounded-md text-white font-bold mt-2" onClick={resetForm}>Reset</button>
-                            <button className="mx-2 bg-actionBlue py-2 px-6 rounded-md text-white font-bold mt-2" >Add vehicle</button>
+                            <button className=" mx-2 bg-actionRed py-1 px-6 rounded-md text-white font-bold mt-2" onClick={resetForm}>Reset</button>
+                            <button className="mx-2 bg-actionBlue py-1 px-6 rounded-md text-white font-bold mt-2" >Add vehicle</button>
                         </div>
                         
                     </div>

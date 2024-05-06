@@ -15,6 +15,7 @@ import EditCaseFileForm from "./components/EAM/EditCaseFileForm";
 import AddVehicle from "./pages/vehicle/AddVehicle";
 import VehicleDetailsControl from "./pages/vehicle/VehicleDetailsControl";
 import VehicleViewControl from "./pages/vehicle/VehicleViewControl";
+import AddcustomVehicle from "./pages/vehicle/AddcustomVehicle";
 import VehReport from "./pages/vehicle/VehReport";
 
 import AddContract from "./pages/contract/AddContract";
@@ -110,6 +111,7 @@ function App() {
             <Route path="vehicle">
               <Route index={true} element={<VehicleDashboard />} />
               <Route path="add" element={<AddVehicle />} />
+              <Route path="add/custom" element={<AddcustomVehicle />} />
               <Route path="edit/:id" element={<VehicleDetailsControl />} />
               <Route path="view/:id" element={<VehicleViewControl />} />
               <Route path="report" element={<VehReport />} />
