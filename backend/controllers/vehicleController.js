@@ -242,6 +242,35 @@ const editVehicle = async (req,res,next) => {
     }
 }
 
+//GET : api/vehicle/availability
+const getAvailabilityByVehicleId = async (req, res) => {
+
+    const {vehicleId} = req.params.id; 
+  
+    try {
+      // Query the database to find the vehicle by ID and populate the availability field
+      const vehicle = await Vehicles.findById(vehicleId).populate('availability');
+  
+      if (!vehicle) {
+        return res.status(404).json({ message: 'Vehicle not found' });
+      }
+  
+      // Extract availability data from the vehicle object
+      const availabilityData = vehicle.availability.map(availability => ({
+        status: availability.status,
+        unavailableStartDate: availability.unavailableStartDate,
+        unavailableEndDate: availability.unavailableEndDate
+      }));
+  
+      // Send the availability data as a response
+      res.status(200).json(availabilityData);
+    } catch (error) {
+      console.error('Error fetching availability data:', error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  };
+
+
 //PATCH:api/vehicle
 const changeStatusVehicle = async (req, res, next) => {
     try {
@@ -412,5 +441,5 @@ const getVehicles = async (req, res, next) => {
 }
 
 
-module.exports = {addVehicle,editVehicle,changeStatusVehicle,getVehicle,getVehicles,recoverVehicle,deletePost,updateMileage}
+module.exports = {addVehicle,editVehicle,changeStatusVehicle,getVehicle,getVehicles,recoverVehicle,deletePost,updateMileage,getAvailabilityByVehicleId}
 
