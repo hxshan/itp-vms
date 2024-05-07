@@ -6,6 +6,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import { ReactToPrint } from 'react-to-print';
 import { useNavigate} from 'react-router-dom'
 
+
 import CarView from '../../components/vehicle/CarView'
 import VanView from '../../components/vehicle/VanView'
 import BusView from '../../components/vehicle/BusView'
@@ -16,10 +17,12 @@ const VehicleViewControl = () => {
 
     const { id } = useParams(); 
     const [data, setData] = useState(null);
+    const [available, setAvailable] = useState(null);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
     const componentRef = React.createRef();
+   
     
     const [formData, setFormData] = useState({
       category: '',
@@ -66,8 +69,33 @@ const VehicleViewControl = () => {
           }
     }; 
 
-    fetchData();
-}, [id]);
+      fetchData();
+    }, [id]);
+
+    useEffect(() => {
+      const fetchData = async () => {
+        setLoading(true);
+        try {
+          const response = await axios.get(`/vehicle/availability/${id}`);
+          setAvailable(response.data);
+        } catch (error) {
+          setError(error);
+          console.error('Error getting data', error);
+        } finally {
+          setLoading(false);
+        }
+      };
+  
+      fetchData();
+    }, [id]);
+
+
+  const startDateString = '2024-05-07T00:00:00.000Z';
+
+  const startDate = new Date(startDateString);
+
+  const formattedStartDate = startDate.toLocaleDateString();
+
 
   if (loading) {
     return <p>Loading...</p>;
@@ -107,7 +135,39 @@ const VehicleViewControl = () => {
         <>
              <div ref={componentRef}>
              {renderFormComponent()} 
-             </div>       
+             </div>  
+
+    <div className='space-y-8 p-8 mb-5'>
+
+    <h1 className="text-xl font-bold">Availability Schedule</h1> 
+
+    <div>
+      {loading ? (
+          <div>Loading...</div>
+      ) : error ? (
+          <div>Error: {error.message}</div>
+      ) : (
+       <>
+      {available && available.length > 0 ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          {available
+            .filter(availability => new Date(availability.unavailableEndDate) >= new Date())
+            .map((availability, index) => (
+              <div key={index} className="bg-white p-4 rounded-md shadow-md">
+                <h2 className="text-lg font-bold mb-2">{availability.status}</h2>
+                <p>Unavailable Start Date: {new Date(availability.unavailableStartDate).toLocaleDateString()}</p>
+                <p>Unavailable End Date: {new Date(availability.unavailableEndDate).toLocaleDateString()}</p>
+              </div>
+            ))}
+        </div>
+      ) : (
+        <p>No availability data available.</p>
+      )}
+     </>
+      )}
+     </div>
+      
+      </div>      
             
           <div className="flex flex-row justify-end">
             
@@ -126,8 +186,12 @@ const VehicleViewControl = () => {
           </div>
         </>
       )}
-    </div>
+     
+
+  </div>
+
   )
+
 }
 
 export default VehicleViewControl

@@ -245,7 +245,7 @@ const editVehicle = async (req,res,next) => {
 //GET : api/vehicle/availability
 const getAvailabilityByVehicleId = async (req, res) => {
 
-    const {vehicleId} = req.params.id; 
+    const vehicleId = req.params.id; 
   
     try {
       // Query the database to find the vehicle by ID and populate the availability field
