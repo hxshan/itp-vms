@@ -5,6 +5,7 @@ import axios from "@/api/axios";
 import { ToastContainer, toast } from 'react-toastify';
 import { ReactToPrint } from 'react-to-print';
 import { useNavigate} from 'react-router-dom'
+import { ClockLoader } from "react-spinners";
 
 
 import CarView from '../../components/vehicle/CarView'
@@ -98,7 +99,15 @@ const VehicleViewControl = () => {
 
 
   if (loading) {
-    return <p>Loading...</p>;
+    return (
+      <div className="p-10 w-full flex items-center justify-center h-full bg-white">
+        <ClockLoader
+            color="#36d7b7"
+            height={50}
+            width={10}
+          />
+      </div>
+    )
   }
 
   if (error) {
@@ -143,7 +152,13 @@ const VehicleViewControl = () => {
 
     <div>
       {loading ? (
-          <div>Loading...</div>
+          <div className="p-10 w-full flex items-center justify-center h-full bg-white">
+          <ClockLoader
+              color="#36d7b7"
+              height={50}
+              width={10}
+            />
+        </div>
       ) : error ? (
           <div>Error: {error.message}</div>
       ) : (
