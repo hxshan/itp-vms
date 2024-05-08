@@ -4,6 +4,8 @@ import user_profile from '../../assets/user_profile.png'
 import { useEffect, useState } from 'react'
 import { jwtDecode } from 'jwt-decode'
 import {useNavigate} from 'react-router-dom'
+import { IoMoon } from "react-icons/io5"
+import { IoSunny } from "react-icons/io5";
 
 const TopBar = () => {
   const {user} = useAuthContext()
@@ -11,6 +13,12 @@ const TopBar = () => {
   const {logout} = useLogout()
   const [menuOpen,setMenuOpen] = useState(false)
   const [id,setid]=useState()
+  const [dark, setDark] = useState(false);
+
+    const darkModeHandler = () => {
+        setDark(!dark);
+        document.body.classList.toggle("dark");
+    }
  
   useEffect(()=>{
     let decodedToken={}
@@ -25,7 +33,18 @@ const TopBar = () => {
   },[])
   //
   return (
-    <div className='w-screen h-[80px] text-sm fixed z-20 top-0 left-0 shadow-md bg-white flex items-center justify-end'>
+    <div className='w-screen h-[80px] text-sm fixed z-20 top-0 left-0 shadow-md bg-white dark:bg-secondary dark:text-white flex items-center justify-end'>
+         <div className="mr-5 flex items-center">
+            <button onClick={()=> darkModeHandler()}>
+                {
+                    
+                    dark && <IoSunny />
+                }
+                {
+                    !dark && <IoMoon />
+                }
+            </button>
+        </div>
       {user?.accessToken? (
         <div className='relative flex w-fit gap-4 mr-8 items-center'>
           {

@@ -4,12 +4,14 @@ import React from 'react'
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { Pie } from 'react-chartjs-2';
+import placeholder from "../../assets/placeholder.png";
 
 const DashboardHero = () => {
 
     const [users,error,loading,axiosFetch]=useAxios()
     const [counts,setCounts]=useState([0,0,0])
     const [total,setTotal]=useState(0)
+    const [image, setImage] = useState("");
     const getData=()=>{
         axiosFetch({
             axiosInstance:axios,
@@ -32,6 +34,9 @@ const DashboardHero = () => {
                     suspended+=1              
             })
         }
+        if (users?.personal?.empPhoto) {
+            setImage(users.personal.empPhoto);
+          }
         setCounts([active,inactive,suspended])
         setTotal(active+inactive+suspended)
     },[users])
@@ -75,11 +80,21 @@ useEffect(()=>{
                 <p>Total No of Users:{total}</p>
             </div>
             <h2 className='underline text-xl ml-4'>Latest User</h2>
-            <div className='w-full py-4 px-8 rounded-md bg-white h-fit'>
-                <div className='w-fit px-8 flex flex-col gap-2 shadow-lg py-8'>
-                    <p>First Name : {users[users.length-1]?.firstName}</p>
-                    <p>Last Name : {users[users.length-1]?.lastName}</p>
-                    <p>Role : {users[users.length-1]?.role.name }</p>
+            <div className='w-[18rem] py-4 rounded-md bg-white  shadow-lg h-fit'>
+                <div className='w-full h-full p-2'>
+                    {image != "" && !error ? (
+                    <img
+                        src={`http://localhost:3000/employee_picture/${image}`}
+                        alt="image"
+                    />
+                ) : (
+                     <img src={placeholder} alt="image" />
+                )}
+                </div>
+                <div className='w-full  flex flex-col items-center gap-2 pb-4'>
+                    <p>{users[users.length-1]?.firstName} {users[users.length-1]?.lastName}</p>
+                    <p>{users[users.length-1]?.email }</p>
+                    <p>{users[users.length-1]?.role.name }</p>
                 </div>
 
             </div>

@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "@/hooks/useAuthContext";
-
+import { FaUser,FaShuttleVan,FaTools,FaCarCrash,FaFileContract   } from "react-icons/fa";
+import { FaMapLocationDot,FaMoneyBillTrendUp  } from "react-icons/fa6";
 const Navbar = () => {
   const navigate = useNavigate();
   const { user } = useAuthContext();
@@ -43,7 +44,7 @@ const Navbar = () => {
   }
   return (
     <div className="h-screen fixed z-10 top-0 left-0 flex w-20 lg:w-60">
-      <div className=" bg-secondary text-white w-64 h-full flex flex-col items-start text-sm pt-[90px]">
+      <div className=" bg-secondary dark:bg-slate-200 dark:text-black text-white w-64 h-full flex flex-col items-start text-sm pt-[90px]">
         {user?.permissions?.userPermissions?.Read && (
           <div className="relative w-full px-4 ">
             <button
@@ -54,7 +55,11 @@ const Navbar = () => {
               } w-full flex flex-row py-4 px-4 text-nowrap rounded-md hover:bg-navHoverGreen hover:shadow-teal-900 hover:shadow-md focus:outline-none`}
               onClick={() => toggleMenu("user")}
             >
-              User Management
+              <div className="w-full flex gap-4 items-center">
+                <FaUser />
+                User
+              </div>
+             
             </button>
             {isOpen.user && (
               <div className="ml-6 flex flex-col gap-1">
@@ -91,6 +96,7 @@ const Navbar = () => {
           </div>
         )}
 
+
         {user?.permissions?.vehiclePermissions?.Read && (
           <div className="relative w-full px-4 ">
             <button
@@ -101,7 +107,11 @@ const Navbar = () => {
               } w-full flex flex-row py-4 px-4 text-nowrap rounded-md hover:bg-navHoverGreen hover:shadow-green-800 hover:shadow-md focus:outline-none`}
               onClick={() => toggleMenu("vehicle")}
             >
-              Vehicle Management
+               <div className="w-full flex gap-4 items-center">
+                <FaShuttleVan  />
+                Vehicle
+              </div>
+               
             </button>
             {isOpen.vehicle && (
               <div className="ml-6">
@@ -127,6 +137,8 @@ const Navbar = () => {
             )}
           </div>
         )}
+
+
         {user?.permissions?.vehicleMaintenencePermissions?.Read && (
           <div className="relative w-full px-4 ">
             <button
@@ -137,7 +149,11 @@ const Navbar = () => {
               } w-full flex flex-row py-4 px-4 text-nowrap rounded-md hover:bg-navHoverGreen hover:shadow-green-800 hover:shadow-md focus:outline-none`}
               onClick={() => toggleMenu("maintenance")}
             >
-              Maintenance Management
+              <div className="w-full flex gap-4 items-center">
+                <FaTools  />
+                Maintenance 
+              </div>
+              
             </button>
             {isOpen.maintenance && (
               <div className="ml-6">
@@ -174,7 +190,11 @@ const Navbar = () => {
               } w-full flex flex-row py-4 px-4 text-nowrap rounded-md hover:bg-navHoverGreen hover:shadow-green-800 hover:shadow-md focus:outline-none`}
               onClick={() => toggleMenu("hire")}
             >
-              Hire Management
+              <div className="w-full flex gap-4 items-center">
+                <FaMapLocationDot />
+                Hire
+              </div>
+              
             </button>
             {isOpen.hire && (
               <div className="ml-6">
@@ -211,7 +231,11 @@ const Navbar = () => {
               } w-full flex flex-row py-4 px-4 text-nowrap rounded-md hover:bg-navHoverGreen hover:shadow-green-800 hover:shadow-md focus:outline-none`}
               onClick={() => toggleMenu("emergency")}
             >
-              Emergency Management
+              <div className="w-full flex gap-4 items-center">
+                <FaCarCrash  />
+                Emergency 
+                
+              </div>
             </button>
             {isOpen.emergency && (
               <div className="ml-6">
@@ -249,7 +273,11 @@ const Navbar = () => {
               } w-full flex flex-row py-4 px-4 text-nowrap rounded-md hover:bg-navHoverGreen hover:shadow-green-800 hover:shadow-md focus:outline-none`}
               onClick={() => toggleMenu("contract")}
             >
-              Contract Management
+              <div className="w-full flex gap-4 items-center">
+                <FaFileContract  />
+                Contract 
+                
+              </div>
             </button>
             {isOpen.contract && (
               <div className="ml-6">
@@ -286,7 +314,11 @@ const Navbar = () => {
               } w-full flex flex-row py-4 px-4 text-nowrap rounded-md hover:bg-navHoverGreen hover:shadow-green-800 hover:shadow-md focus:outline-none`}
               onClick={() => toggleMenu("finance")}
             >
-              Finance Management
+              <div className="w-full flex gap-4 items-center">
+                <FaMoneyBillTrendUp  />
+              
+                Finance 
+              </div>
             </button>
             {isOpen.finance && (
               <div className="ml-6">
