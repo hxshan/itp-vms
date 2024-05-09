@@ -396,6 +396,20 @@ const getRecords = async (req,res) =>{
     return res.status(500).json({message:'Internal Server Error'})
   }
 }
+
+const deleteRecord = async(req,res)=>{
+  const { id } = req.params
+  try{
+    if (!id) {
+      return res.status(500).json({ message: "Record not found" });
+    }
+    await EmpRecord.findByIdAndDelete({_id:id});
+    return res.status(200).json({ message: "Record Deleted Successfully"});
+  }catch(err){
+    return res.status(500).json({ message: "Unexpected error occured"});
+  }
+}
+
 //TODO:add validation use REGEX
 const resetPassword = async(req,res)=>{
   try{
@@ -425,6 +439,7 @@ const resetPassword = async(req,res)=>{
 }
 
 module.exports = {
+  deleteRecord,
   getRecords,
   getUserDetailsFull, 
   createUser, 

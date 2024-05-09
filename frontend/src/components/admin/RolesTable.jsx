@@ -3,9 +3,13 @@ import useAxios from "@/hooks/useAxios";
 import axios from "@/api/axios";
 import { useNavigate } from "react-router-dom";
 import { ClockLoader } from "react-spinners";
+import { useAuthContext } from "@/hooks/useAuthContext";
+import { jwtDecode } from "jwt-decode";
 
 const RolesTable = () => {
   const navigate = useNavigate();
+  const { user } = useAuthContext();
+  const [decodedToken, setDecodedToken] = useState("");
   //const [roles,setroles]=useState([])
   const [search, setSearch] = useState("");
   const [roles, error, loading, axiosFetch] = useAxios();
@@ -18,6 +22,10 @@ const RolesTable = () => {
       axiosInstance: axios,
       method: "GET",
       url: "/role/",
+      headers: {
+        withCredentials: true,
+        authorization: `Bearer ${user?.accessToken}`,
+      },
     });
   };
 
@@ -36,17 +44,16 @@ const RolesTable = () => {
   };
 
   useEffect(() => {
-    getData();
+    if (user?.accessToken) {
+      setDecodedToken(jwtDecode(user?.accessToken));
+      getData();
+    }
   }, [reload]);
 
   if (loading) {
     return (
       <div className="w-full flex justify-center h-[300px] bg-white">
-        <ClockLoader
-            color="#36d7b7"
-            height={50}
-            width={10}
-          />
+        <ClockLoader color="#36d7b7" height={50} width={10} />
       </div>
     );
   }
@@ -120,24 +127,34 @@ const RolesTable = () => {
                           >
                             View
                           </button>
-                          <button
-                            className="bg-actionGreen text-white py-1 px-6 rounded-md"
-                            id={row._id}
-                            onClick={(e) => {
-                              navigate(e.target.id);
-                            }}
-                          >
-                            Edit
-                          </button>
-                          <button
-                            className="bg-actionRed text-white py-1 px-6 rounded-md"
-                            id={row._id}
-                            onClick={(e) => {
-                              deleteData(e);
-                            }}
-                          >
-                            Delete
-                          </button>
+                          {decodedToken?.UserInfo?.role?.userPermissions[
+                            "Update"
+                          ] && (
+                            <button
+                              className="bg-actionGreen text-white py-1 px-6 rounded-md"
+                              id={row._id}
+                              onClick={(e) => {
+                                navigate(e.target.id);
+                              }}
+                            >
+                              Edit
+                            </button>
+                          )}
+
+                          {decodedToken?.UserInfo?.role?.userPermissions[
+                            "Delete"
+                          ] && (
+                            <button
+                              className="bg-actionRed text-white py-1 px-6 rounded-md"
+                              id={row._id}
+                              onClick={(e) => {
+                                deleteData(e);
+                              }}
+                            >
+                              Delete
+                            </button>
+                          )}
+
                         </td>
                       )}
                     </tr>
@@ -156,7 +173,6 @@ const RolesTable = () => {
           className={`${
             startIdx == 0 ? "hidden" : ""
           } py-1 px-2 border border-gray-600 rounded-md mt-4`}
-        
           onClick={() => {
             setStartIdx(startIdx - 6);
             setEndIdx(endIdx - 6);
@@ -168,7 +184,7 @@ const RolesTable = () => {
         <button
           className={`${
             roles.length - endIdx <= 0 ? "hidden" : " "
-          } ml-8 py-1 px-2 border border-gray-600 rounded-md mt-4`}    
+          } ml-8 py-1 px-2 border border-gray-600 rounded-md mt-4`}
           onClick={() => {
             setStartIdx(startIdx + 6);
             setEndIdx(endIdx + 6);

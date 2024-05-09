@@ -1,5 +1,6 @@
 const express = require('express')  
 const {
+  deleteRecord,
   createUser,
   getAllUsers,
   getUserById,
@@ -64,6 +65,7 @@ router.patch('/editdocs/:id',upload.fields([{name:'nicDocument',maxCount:1},{nam
 
 //DELETE
 router.patch('/contacts/:id',deleteContact)
+router.delete('/drivers/records/:id',deleteRecord)
 
 
 

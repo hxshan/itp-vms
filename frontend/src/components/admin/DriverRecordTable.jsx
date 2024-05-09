@@ -6,7 +6,7 @@ import { ClockLoader } from 'react-spinners'
 import { useNavigate } from "react-router-dom";
 
 
-const DriverRecordTable = ({isopen,setIsOpen,reload}) => {
+const DriverRecordTable = ({isopen,setIsOpen,reload,setReload}) => {
 
     const { user } = useAuthContext()
     const columns=["Driver Name","Record Type","Date of Occurence","Record Type"]
@@ -15,7 +15,6 @@ const DriverRecordTable = ({isopen,setIsOpen,reload}) => {
     const [statusFilter,setStatusFilter]=useState('')
     const [recordData, error, loading, axiosFetch] = useAxios()
     const [records,setRecords]=useState([])
-    // const [reload,setReload]= useState(0)
     const [startIdx, setStartIdx] = useState(0);
     const [endIdx, setEndIdx] = useState(6);
     
@@ -30,22 +29,24 @@ const DriverRecordTable = ({isopen,setIsOpen,reload}) => {
         })
     }
     
-    // const deleteData =async(e) => {
-    //   e.preventDefault()
-    //   if(confirm("Are you sure you want to Delete the following user")){
-    //     await axiosFetch({
-    //       axiosInstance: axios,
-    //       method: "PATCH",
-    //       url: `/user/delete/${e.target.id}`,
-    //     });
-    //     if(!error){
-    //       setReload(reload + 1);
-    //     }   
-    //   }
-    // };
+    const deleteData =async(e) => {
+      e.preventDefault()
+      if(confirm("Are you sure you want to Delete the following Record")){
+        await axiosFetch({
+          axiosInstance: axios,
+          method: "DELETE",
+          url: `/user/drivers/records/${e.target.id}`,
+          headers:{
+            withCredentials:true,
+            authorization:`Bearer ${user?.accessToken}`
+          }
+        });
+
+        setReload(reload+1)
+      }
+    };
     
     useEffect(()=>{
-        console.log(recordData)
       if(recordData)
         setRecords(recordData)   
     },[recordData])
