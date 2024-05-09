@@ -44,7 +44,7 @@ const Navbar = () => {
   }
   return (
     <div className="h-screen fixed z-10 top-0 left-0 flex w-20 lg:w-60">
-      <div className=" bg-secondary dark:bg-slate-200 dark:text-black text-white w-64 h-full flex flex-col items-start text-sm pt-[90px]">
+      <div className=" bg-secondary dark:bg-secondary  text-white w-64 h-full flex flex-col items-start text-sm pt-[90px]">
         {user?.permissions?.userPermissions?.Read && (
           <div className="relative w-full px-4 ">
             <button

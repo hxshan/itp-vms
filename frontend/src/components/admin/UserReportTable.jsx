@@ -7,6 +7,7 @@ import { ClockLoader } from 'react-spinners'
 import { useNavigate } from "react-router-dom";
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
+import { FaRegFileExcel } from "react-icons/fa6";
 
 const UserReportTable = ({reload,setReload}) => {
     const { user } = useAuthContext()
@@ -112,7 +113,10 @@ const UserReportTable = ({reload,setReload}) => {
               <button 
               onClick={exportToExcel}
               className="px-4 py-2 text-white bg-actionBlue h-fit hover:bg-gray-800 focus:outline-none rounded-md mr-4">
+                <div className='flex gap-1 items-center'>
                 Export Excel
+                <FaRegFileExcel />
+                </div>
               </button>
               <div className='flex flex-col'>
                 <label  className="block text-gray-700 text-md font-bold mb-2 px-2" htmlFor="empfrom">Employment From</label>

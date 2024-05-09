@@ -13,6 +13,8 @@ export default {
         'navGreen':'#00bfa5',
         'navHoverGreen':'#00bfa5',
         'secondary':'#212529',
+        'secondaryDark':'#141414',
+        'backgroundDark':'#282828',
         'dimWhite':" rgba(239, 239, 239, 0.75)",
       },
     },
