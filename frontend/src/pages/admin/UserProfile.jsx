@@ -5,6 +5,7 @@ import axios from "@/api/axios";
 import {useNavigate , useParams } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
 import { useLogout } from "@/hooks/useLogout";
+import Swal from "sweetalert2";
 
 const UserProfile = () => {
   const { id } = useParams();
@@ -43,6 +44,11 @@ const UserProfile = () => {
 
   const handleSubmit= async(e)=>{
     e.preventDefault()
+    var pwdregex = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/;
+    if (!currentPwd.match(pwdregex)){
+      toast.error("New Password is Invalid (please use a strong password)")
+      return
+    }
     await resetPassword()
    
   }
@@ -50,7 +56,11 @@ const UserProfile = () => {
     if(!(resetResponse.length<=0) && !pwdErr){
       console.log(!pwdErr)
       setMenuOpen(false)
-      alert('Password Reset Successfully.You will now be logged out!!')
+      Swal.fire({
+        title: "Success!",
+        text: "Password changed successfully",
+        icon: "success"
+      });
       logout()
     }
   },[resetResponse,pwdErr])

@@ -35,7 +35,18 @@ const UserReportTable = ({reload,setReload}) => {
         })
     }
     const exportToExcel = () => {
-      const worksheet = XLSX.utils.json_to_sheet(filteredUsers);
+      var data=filteredUsers
+      var propertiesToExport=["firstName","email","role","employmentDate","status"]
+
+      var filteredData = data.map(function(row) {
+        var filteredRow = {};
+        propertiesToExport.forEach(function(prop) {
+            filteredRow[prop] = row[prop].name? row[prop].name: row[prop];
+        });
+        return filteredRow;
+    });
+
+      const worksheet = XLSX.utils.json_to_sheet(filteredData);
       const workbook = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
   

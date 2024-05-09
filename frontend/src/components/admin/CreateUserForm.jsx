@@ -80,7 +80,7 @@ const personal={
       return
     }
 
-    if(new Date(personalInfo.dob) > new Date()){
+    if((new Date().getFullYear()-new Date(personalInfo.dob).getFullYear())<18){
       toast.error("The Date of Birth is invalid")
       return
     }

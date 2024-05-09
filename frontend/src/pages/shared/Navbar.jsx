@@ -62,7 +62,7 @@ const Navbar = () => {
              
             </button>
             {isOpen.user && (
-              <div className="ml-6 flex flex-col gap-1">
+              <div className={`ml-6 flex flex-col gap-1 relative`}>
                 <button
                   className="w-full py-2 px-4 text-start hover:bg-gray-700 focus:outline-none focus:bg-gray-700"
                   onClick={() => {
