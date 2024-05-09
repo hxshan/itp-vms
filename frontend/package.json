@@ -42,7 +42,8 @@
     "react-toastify": "^10.0.5",
     "sweetalert2": "^11.10.7",
     "tailwind-merge": "^2.2.1",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@types/node": "^20.11.19",

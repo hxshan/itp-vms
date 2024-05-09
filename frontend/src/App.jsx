@@ -19,7 +19,7 @@ import AddcustomVehicle from "./pages/vehicle/AddcustomVehicle";
 import VehReport from "./pages/vehicle/VehReport";
 
 import AddContract from "./pages/contract/AddContract";
-import { AdminDashboard, Roles, EditRoles,UserProfile,Users, DriverPerformance} from "./pages/admin";
+import { AdminDashboard, Roles, EditRoles,UserProfile,Users, DriverPerformance,Reports} from "./pages/admin";
 import { MaintainceDashboard } from "./pages/Maintains/MaintainceDashboard";
 import { EditMaintainceOrder } from "./components/VR/EditMaintainceOrder";
 import ContractDasboard from "./pages/contract/ContractDasboard";
@@ -87,6 +87,8 @@ function App() {
             />
             
             <Route path="/admin/roles" element={<Roles />} />
+            <Route path="/admin/reports" element={<Reports/>} />
+            
             <Route path="/admin/roles/:id" element={<EditRoles />} />
             <Route path="/admin/edituser/:id" element={<EditUser/>}/>
             <Route path="/admin/users" element={<Users/>}/>
