@@ -95,7 +95,6 @@ const UserReportTable = ({reload}) => {
           })
         }
         if(roleFilter !== ""){
-          
           setFilteredusers(()=>{
             return basefiltered.filter(user => {
               return user.role?.name == roleFilter;

@@ -15,8 +15,14 @@ const DriverRecReportTable = ({reload}) => {
   const columns=["Driver Name","Date of Occurence","Record Type"]
   const [search,setSearch]=useState('')
   const [statusFilter,setStatusFilter]=useState('')
+  const [driverFilter,setDriverFilter]=useState('')
+
   const [recordData, error, loading, axiosFetch] = useAxios()
+  const [driverData, drivererror, driverloading, axiosdriverFetch] = useAxios()
+
   const [records,setRecords]=useState([])
+  const [drivers,setDrivers]=useState([])
+
   const [startIdx, setStartIdx] = useState(0);
   const [endIdx, setEndIdx] = useState(6);
   const [filteredRecords,setFilteredRecords]=useState([])
@@ -31,10 +37,20 @@ const DriverRecReportTable = ({reload}) => {
       }
     })
 }
+const getDriverData = ()=>{
+  axiosdriverFetch({
+    axiosInstance:axios,
+    method:'GET',
+    url:'/user/drivers/',
+    headers:{
+      authorization:`Bearer ${user?.accessToken}`
+    }
+  })
+}
 
 const filterData=()=>{
   var basefiltered=records.filter((record)=>{
-    if (search.toLowerCase === '' && statusFilter === '' )
+    if (search.toLowerCase === '' && statusFilter === '' && driverFilter === '' )
       return record
     if (statusFilter != '' && !search.toLowerCase === '')
       return record.user.firstName.toLowerCase().includes(search) && record.recordType === statusFilter
@@ -44,7 +60,13 @@ const filterData=()=>{
      return record.user.firstName.toLowerCase().includes(search) 
   })
   setFilteredRecords(basefiltered)
-
+  if(driverFilter !== ""){
+    setFilteredRecords(()=>{
+      return basefiltered.filter(record => {
+        return record.user.firstName === driverFilter;
+      });
+    })
+  }
 }
     const exportToExcel = () => {
       var data=filteredRecords
@@ -73,16 +95,21 @@ useEffect(()=>{
     setRecords(recordData)   
     setFilteredRecords(recordData)
   }
-},[recordData])
+  if(driverData){
+    setDrivers(driverData)
+  }
+},[recordData,driverData])
 
 useEffect(()=>{
-  if(user?.accessToken)
+  if(user?.accessToken){
     getData()
+    getDriverData()
+  }
 },[user,reload])
 
 useEffect(() => {
   filterData();
-}, [search, statusFilter]);
+}, [search, statusFilter,driverFilter]);
 
   if(loading){
     return(
@@ -116,16 +143,32 @@ useEffect(() => {
                 </div>
               </button>
               <div className='flex flex-col'>
+                <label className="block text-gray-700 text-md font-bold mb-2 px-2" htmlFor="driver">Driver</label>
+                <select name="driver"
+                value={driverFilter}
+                onChange={(e)=>setDriverFilter(e.target.value)}
+                className="shadow appearance-none border rounded w-full min-w-40 mx-2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                  <option value="">Select Driver</option>
+                  {
+                    drivers.map((driver)=>{
+                      return(
+                        <option key={driver._id} value={driver.firstName}>{driver.firstName}</option>
+                      )
+                    })
+                  }
+                </select>
+              </div>
+              <div className='flex flex-col'>
                 <label className="block text-gray-700 text-md font-bold mb-2 px-2" htmlFor="status">Record Type</label>
-              <select name="status"
-              value={statusFilter}
-              onChange={(e)=>setStatusFilter(e.target.value)}
-              className="shadow appearance-none border rounded w-full min-w-40 mx-2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                <option value="">Select Type</option>
-                <option value="positive">Postive</option>
-                <option value="negative">Negative</option>
-              </select>
-            </div>
+                <select name="status"
+                value={statusFilter}
+                onChange={(e)=>setStatusFilter(e.target.value)}
+                className="shadow appearance-none border rounded w-full min-w-40 mx-2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                  <option value="">Select Type</option>
+                  <option value="positive">Postive</option>
+                  <option value="negative">Negative</option>
+                </select>
+              </div>
           <input type="text" name="Search" 
           placeholder="Search"
           value={search}
