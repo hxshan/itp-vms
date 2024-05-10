@@ -9,23 +9,29 @@ import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 import { FaRegFileExcel } from "react-icons/fa6";
 
-const UserReportTable = ({reload,setReload}) => {
+
+
+const UserReportTable = ({reload}) => {
     const { user } = useAuthContext()
     const columns=["Name","Email","Role","Employment Date","Status"]
-    const navigate=useNavigate()
 
     const [search,setSearch]=useState('')
     const [statusFilter,setStatusFilter]=useState('')
     const [empFrom,setEmpFrom]=useState('')
-    
+    const [roleFilter,setRoleFilter]=useState('')
+
     const [usersdata, error, loading, axiosFetch] = useAxios()
+    const [roledata, roleerror, roleloading, axiosroleFetch] = useAxios()
+
     const [users,setUsers]=useState([])
     const [filteredUsers,setFilteredusers]=useState([])
+    const [roles,setRoles]=useState([])
+
     const [startIdx, setStartIdx] = useState(0);
     const [endIdx, setEndIdx] = useState(6);
     
-    const getData = ()=>{
-        axiosFetch({
+    const getData =async ()=>{
+        await axiosFetch({
           axiosInstance:axios,
           method:'GET',
           url:'/user/',
@@ -34,6 +40,16 @@ const UserReportTable = ({reload,setReload}) => {
           }
         })
     }
+    const getRoleData =async ()=>{
+     await axiosroleFetch({
+        axiosInstance:axios,
+        method:'GET',
+        url:'/role/',
+        headers:{
+          authorization:`Bearer ${user?.accessToken}`
+        }
+      })
+  }
     const exportToExcel = () => {
       var data=filteredUsers
       var propertiesToExport=["firstName","email","role","employmentDate","status"]
@@ -54,12 +70,12 @@ const UserReportTable = ({reload,setReload}) => {
       const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
       const blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8' });
   
-      saveAs(blob, "data.xlsx");
+      saveAs(blob, "users.xlsx");
   };
 
     const filterData=()=>{
        var basefiltered=users.filter((user)=>{
-        if (search.toLowerCase === '' && statusFilter === '' )
+        if (search.toLowerCase === '' && statusFilter === '' && roleFilter=='')
           return user
         if (statusFilter != '' && !search.toLowerCase === '')
           return user.firstName.toLowerCase().includes(search) && user.status === statusFilter
@@ -68,7 +84,7 @@ const UserReportTable = ({reload,setReload}) => {
         if(search.toLowerCase != '')
          return user.firstName.toLowerCase().includes(search)
         })
-
+        setFilteredusers(basefiltered)
         if(empFrom !== ''){  
           setFilteredusers(()=>{
             basefiltered.filter(user => {
@@ -77,25 +93,39 @@ const UserReportTable = ({reload,setReload}) => {
               return employmentDate >= fromDate;
             });
           })
-        }else{
-          setFilteredusers(basefiltered)
         }
+        if(roleFilter !== ""){
+          
+          setFilteredusers(()=>{
+            return basefiltered.filter(user => {
+              return user.role?.name == roleFilter;
+            });
+          })
+        }
+
     }
     
     
     useEffect(()=>{
-      if(usersdata)
+      if(usersdata){
         setUsers(usersdata)
-        setFilteredusers(usersdata)   
-    },[usersdata])
+        setFilteredusers(usersdata) 
+      }
+      if(roledata){
+        setRoles(roledata)
+      }
+    },[usersdata,roledata])
+
     useEffect(() => {
-      // Logic to update filtered data
       filterData();
-    }, [search, statusFilter, empFrom]);
+    }, [search, statusFilter, empFrom,roleFilter]);
     
     useEffect(()=>{
-      if(user?.accessToken)
-        getData()
+      if(user?.accessToken){
+         getData()
+          getRoleData()
+      }
+       
     },[user,reload])
     
       if(loading){
@@ -130,7 +160,7 @@ const UserReportTable = ({reload,setReload}) => {
                 </div>
               </button>
               <div className='flex flex-col'>
-                <label  className="block text-gray-700 text-md font-bold mb-2 px-2" htmlFor="empfrom">Employment From</label>
+                <label  className="block text-gray-700 text-md font-bold mb-2 px-2" htmlFor="empfrom">Employed From</label>
                 <input
                     value={empFrom}
                     onChange={(e)=>{setEmpFrom(e.target.value)}}
@@ -139,6 +169,23 @@ const UserReportTable = ({reload,setReload}) => {
                 />
               </div>
              
+              <div className='flex flex-col'>
+                <label className="block text-gray-700 text-md font-bold mb-2 px-2" htmlFor="rolefilter">Role</label>
+                <select name="rolefilter"
+                value={roleFilter}
+                onChange={(e)=>{setRoleFilter(e.target.value)}}
+                className="shadow appearance-none border rounded h-fit w-40 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                  <option value="">Select Role</option>
+                  {
+                    roles.map(role=>{
+                      return(
+                        <option key={role?._id} value={role?.name}>{role?.name}</option>
+                      )
+                    })
+                  }
+                </select>
+              </div>
+
               <div className='flex flex-col'>
                 <label className="block text-gray-700 text-md font-bold mb-2 px-2" htmlFor="status">Status</label>
                 <select name="status"
@@ -177,13 +224,13 @@ const UserReportTable = ({reload,setReload}) => {
                 
                 return (
                     <tr className="bg-white border-t border-gray-200" key={row._id}>
-                      <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{row.firstName}</td>
-                      <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{row.email}</td>
-                      <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{row.role.name}</td>
-                      <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{row.employmentDate.split('T')[0]}</td>
-                      <td className={`px-6 py-2 whitespace-nowrap border-r border-gray-200 text-center  font-bold ${row.status=='active'?'text-green-500 bg-green-100': row.status=='inactive'?'text-red-600 bg-red-100':'text-orange-600 bg-orange-100'}`}>
+                      <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{row?.firstName}</td>
+                      <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{row?.email}</td>
+                      <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{row?.role?.name}</td>
+                      <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{row?.employmentDate?.split('T')[0]}</td>
+                      <td className={`px-6 py-2 whitespace-nowrap border-r border-gray-200 text-center font-bold ${row.status=='active'?'text-green-500 bg-green-100': row.status=='inactive'?'text-red-600 bg-red-100':'text-orange-600 bg-orange-100'}`}>
                         <span className={`px-2 inline-flex text-xs leading-4 tracking-wider`}>
-                          {row.status.toUpperCase()}
+                          {row?.status?.toUpperCase()}
                         </span>
                       </td>
                   </tr>

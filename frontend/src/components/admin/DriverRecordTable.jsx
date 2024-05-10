@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 const DriverRecordTable = ({isopen,setIsOpen,reload,setReload}) => {
 
     const { user } = useAuthContext()
-    const columns=["Driver Name","Record Type","Date of Occurence","Record Type"]
+    const columns=["Driver Name","Date of Occurence","Record Type"]
     const navigate=useNavigate()
     const [search,setSearch]=useState('')
     const [statusFilter,setStatusFilter]=useState('')
@@ -124,11 +124,11 @@ const DriverRecordTable = ({isopen,setIsOpen,reload,setReload}) => {
                 return (
                     <tr className="bg-white border-t border-gray-200" key={row._id}>
                       <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{row.user.firstName}</td>
-                      <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{row.recordType}</td>
-                      <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{row.occurenceDate.split('T')[0]}</td>
-                      <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">
-                        <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded -full ${row.recordType=='positive'?'text-green-500 bg-green-100':'text-red-600 bg-red-100'}`}>
-                            {row.recordType}
+                      {/* <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{row.recordType}</td> */}
+                      <td className={`px-6 py-2 whitespace-nowrap border-r border-gray-200`}>{row.occurenceDate.split('T')[0]}</td>
+                      <td className={`px-6 py-2 whitespace-nowrap border-r border-gray-200 text-center font-bold  ${row.recordType=='positive'?'text-green-500 bg-green-100':'text-red-600 bg-red-100'}`}>
+                        <span className={`px-2 inline-flex text-xs leading-4 tracking-wider`}>
+                            {row.recordType.toUpperCase()}
                         </span>
                       </td>
                       <td className="px-6 py-2 whitespace-nowrap justify-between flex">
