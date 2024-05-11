@@ -8,6 +8,8 @@ import { useNavigate } from "react-router-dom";
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 import { FaRegFileExcel } from "react-icons/fa6";
+import jsPDF from "jspdf";
+import autoTable from 'jspdf-autotable'
 
 
 
@@ -50,6 +52,42 @@ const UserReportTable = ({reload}) => {
         }
       })
   }
+
+  const exportToPdf = () => {
+
+    const headers = ["First Name","Email","Role","Employment Date","Status"]
+    var props=["firstName","email","role","employmentDate","status"]
+  
+    var columnStyles = {
+      0: { cellWidth: 'auto' },
+      1: { cellWidth: 'auto' },
+      2: { cellWidth: 'auto' },
+      3: { cellWidth: 'auto' },
+      4: { cellWidth: 'auto' },
+  } 
+    var doc = new jsPDF();
+  
+    var filteredData = filteredUsers.map((row) => {
+      return headers.map((header, index) => {
+        if (index === 2) {
+            return row?.role?.name;
+        } else {
+            return row[props[index]];
+        }
+    });
+    });
+
+    autoTable(doc,{
+      head: [headers],
+      body: filteredData,
+      styles: { overflow: 'linebreak' },
+      columnStyles: columnStyles,
+      
+  });
+
+  doc.save('User_Report.pdf');
+  }
+
     const exportToExcel = () => {
       var data=filteredUsers
       var propertiesToExport=["firstName","email","role","employmentDate","status"]
@@ -150,13 +188,21 @@ const UserReportTable = ({reload}) => {
           <div className="w-full flex justify-between mb-4 gap-4 items-end">
             <h2 className="font-bold text-xl underline mb-4 w-fit text-nowrap">Users List</h2> 
             <div className="flex gap-6 w-full items-end justify-end">
+            <button 
+                onClick={exportToPdf}
+                className="px-4 py-2 text-white bg-actionBlue h-fit text-nowrap hover:bg-gray-800 focus:outline-none rounded-md mr-4">
+                  <div className='flex gap-1 items-center'>
+                  Export Pdf
+                  <FaRegFileExcel />
+                  </div>
+              </button>
               <button 
-              onClick={exportToExcel}
-              className="px-4 py-2 text-white bg-actionBlue h-fit hover:bg-gray-800 focus:outline-none rounded-md mr-4">
-                <div className='flex gap-1 items-center'>
-                Export Excel
-                <FaRegFileExcel />
-                </div>
+                  onClick={exportToExcel}
+                  className="px-4 py-2 text-white bg-actionBlue h-fit hover:bg-gray-800 focus:outline-none rounded-md mr-4">
+                  <div className='flex gap-1 items-center'>
+                    Export Excel
+                    <FaRegFileExcel />
+                  </div>
               </button>
               <div className='flex flex-col'>
                 <label  className="block text-gray-700 text-md font-bold mb-2 px-2" htmlFor="empfrom">Employed From</label>

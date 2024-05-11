@@ -7,8 +7,8 @@ import { ClockLoader } from 'react-spinners'
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 import { FaRegFileExcel } from "react-icons/fa6";
-
-
+import jsPDF from "jspdf";
+import autoTable from 'jspdf-autotable'
 
 const DriverRecReportTable = ({reload}) => {
   const { user } = useAuthContext()
@@ -47,6 +47,42 @@ const getDriverData = ()=>{
     }
   })
 }
+
+const exportToPdf = () => {
+
+  const headers = ["Driver Name","description","occurenceDate","recordType"]
+  var props=["user.firstName","description","occurenceDate","recordType"]
+
+  var columnStyles = {
+    0: { cellWidth: 'auto' },
+    1: { cellWidth: 40 },
+    2: { cellWidth: 'auto' },
+    3: { cellWidth: 'auto' },
+} 
+  var doc = new jsPDF();
+
+  var filteredData = filteredRecords.map((row) => {
+    return headers.map((header, index) => {
+      if (index === 0) {
+          return row.user.firstName;
+      } else {
+          return row[props[index]];
+      }
+  });
+  });
+
+  autoTable(doc,{
+      head: [headers],
+      body: filteredData,
+      styles: { overflow: 'linebreak' },
+      columnStyles: columnStyles,
+      
+  });
+
+  doc.save('Driver_Record_Report.pdf');
+
+}
+
 
 const filterData=()=>{
   var basefiltered=records.filter((record)=>{
@@ -134,9 +170,18 @@ useEffect(() => {
       <div className="w-full flex justify-between mb-4 gap-4 items-end">
       <h2 className="font-bold text-xl underline mb-4 w-fit text-nowrap">Driver Records List</h2> 
         <div className="flex gap-6 w-full items-end justify-end">
-        <button 
+             <button 
+                onClick={exportToPdf}
+                className="px-4 py-2 text-white bg-actionBlue h-fit text-nowrap hover:bg-gray-800 focus:outline-none rounded-md mr-4">
+                  <div className='flex gap-1 items-center'>
+                  Export Pdf
+                  <FaRegFileExcel />
+                  </div>
+              </button>
+             
+             <button 
               onClick={exportToExcel}
-              className="px-4 py-2 text-white bg-actionBlue h-fit hover:bg-gray-800 focus:outline-none rounded-md mr-4">
+              className="px-4 py-2 text-white bg-actionBlue h-fit text-nowrap hover:bg-gray-800 focus:outline-none rounded-md mr-4">
                 <div className='flex gap-1 items-center'>
                 Export Excel
                 <FaRegFileExcel />
