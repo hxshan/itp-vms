@@ -18,11 +18,12 @@ const VehicleViewControl = () => {
 
     const { id } = useParams(); 
     const [data, setData] = useState(null);
-    const [available, setAvailable] = useState(null);
+    const [available, setAvailable] = useState([]);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
     const componentRef = React.createRef();
+    const [searchTerm, setSearchTerm] = useState('');
    
     
     const [formData, setFormData] = useState({
@@ -135,9 +136,41 @@ const VehicleViewControl = () => {
     navigate(-1); 
   };
 
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toISOString().split('T')[0]; 
+  };
+
+  let filteredAvailable = [];
+  if (available) {
+    filteredAvailable = available.filter((availability) => {
+      
+      if (searchTerm) {
+        
+        const searchDate = new Date(searchTerm);
+       
+        const startDate = new Date(availability.unavailableStartDate);
+        const endDate = new Date(availability.unavailableEndDate);
+       
+        return (
+          availability.status.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          (startDate <= searchDate && searchDate <= endDate)
+        );
+      } else {
+       
+        return availability.status.toLowerCase().includes(searchTerm.toLowerCase());
+      }
+    });
+  }
+
+  const isDateInRange = (startDate, endDate) => {
+    const currentDate = new Date();
+    return startDate <= currentDate && currentDate <= endDate;
+  };
 
   return (
-    <div className="space-y-3 m-1 mt-5 mb-10 p-4  pad shadow-xl bg-white rounded">
+
+  <div className="space-y-3 m-1 mt-5 mb-10 p-4  pad shadow-xl bg-white rounded">
       <ToastContainer />  
       
       {data && (
@@ -150,39 +183,49 @@ const VehicleViewControl = () => {
 
     <h1 className="text-xl font-bold">Availability Schedule</h1> 
 
+
     <div>
       {loading ? (
-          <div className="p-10 w-full flex items-center justify-center h-full bg-white">
-          <ClockLoader
-              color="#36d7b7"
-              height={50}
-              width={10}
-            />
+        <div className="p-10 w-full flex items-center justify-center h-full bg-white">
+          <ClockLoader color="#36d7b7" height={50} width={10} />
         </div>
       ) : error ? (
-          <div>Error: {error.message}</div>
+        <div>Error: {error.message}</div>
       ) : (
-       <>
-      {available && available.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {available
-            .filter(availability => new Date(availability.unavailableEndDate) >= new Date())
-            .map((availability, index) => (
-              <div key={index} className="bg-white p-4 rounded-md shadow-md">
-                <h2 className="text-lg font-bold mb-2">{availability.status}</h2>
-                <p>Unavailable Start Date: {new Date(availability.unavailableStartDate).toLocaleDateString()}</p>
-                <p>Unavailable End Date: {new Date(availability.unavailableEndDate).toLocaleDateString()}</p>
-              </div>
-            ))}
-        </div>
-      ) : (
-        <p>No availability data available.</p>
+        <>
+          <div className='flex justify-end'>
+            <input
+              type="text"
+              placeholder="Search by status"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="mb-3 mr-4 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline end-0 2"
+            />
+            <input
+              type="date"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="mb-3 mr-4 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline end-0 2"
+            />
+          </div>
+          {filteredAvailable.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {filteredAvailable.map((availability, index) => (
+                <div key={index} className={`bg-white p-4 rounded-md shadow-md ${isDateInRange(new Date(availability.unavailableStartDate), new Date(availability.unavailableEndDate)) ? 'bg-green-300' : ''}`}>
+                  <h2 className="text-xl font-bold mb-2">{availability.status}</h2>
+                  <p className="text-sm font-semibold text-gray-700 mb-4">Unavailable Start Date:<p className="text-lg font-bold text-black"> {formatDate(availability.unavailableStartDate)} </p></p>
+                  <p className="text-sm font-semibold text-gray-700 mb-4">Unavailable End Date: <p className="text-lg font-bold text-black"> {formatDate(availability.unavailableEndDate)} </p></p>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p>No availability data available.</p>
+          )}
+        </>
       )}
-     </>
-      )}
-     </div>
+    </div>
       
-      </div>      
+    </div>      
             
           <div className="flex flex-row justify-end">
             
