@@ -346,6 +346,18 @@ const sendmail = async (transporter, hireData) => {
     });
   });
 
+  // Add header
+  //const logoPath = 'path/to/your/logo.png';
+  const companyName = 'Your Company Name';
+
+  // Add header
+  //pdfDoc.image(logoPath, 50, 25, { width: 50 });
+  pdfDoc.fontSize(16).text(companyName, { align: 'center' });
+  pdfDoc.moveTo(50, 90)
+    .lineTo(550, 90)
+    .stroke();
+  pdfDoc.moveDown();
+
   // Add content to PDF
   pdfDoc.fontSize(20).text('Hire Confirmation', { align: 'center' , lineGap: 15 });
 
