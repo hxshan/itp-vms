@@ -231,6 +231,7 @@ const editHire = async (req, res) => {
   }
 };
 
+/*
 //Delete Hire
 const deleteHire = async (req, res) => {
   try {
@@ -245,6 +246,46 @@ const deleteHire = async (req, res) => {
     res.json({ message: 'Hire deleted successfully' });
   } catch (error) {
     res.status(500).json({ message: 'Error deleting hire', error: error.message });
+  }
+};*/
+
+const deleteHire = async (req, res) => {
+  try {
+    const hireId = req.params.id;
+    if (!mongoose.Types.ObjectId.isValid(hireId)) {
+      return res.status(400).json({ message: 'Invalid hire ID' });
+    }
+
+    const hire = await Hire.findById(hireId);
+    if (!hire) {
+      return res.status(404).json({ message: 'Hire not found' });
+    }
+
+    // Get the vehicle and startDate from the hire document
+    const { vehicle, startDate } = hire;
+
+    // Find and update the corresponding availability document
+    const updatedAvailability = await Availability.findOneAndUpdate(
+      {
+        vehicle,
+        unavailableStartDate: startDate,
+      },
+      
+    );
+
+    if (updatedAvailability) {
+      // Update the availability array in the Vehicles collection
+      await Vehicles.updateOne(
+        { _id: vehicle },
+        { $set: { 'availability.$[elem]': updatedAvailability } },
+        { arrayFilters: [{ 'elem._id': updatedAvailability._id }] }
+      );
+      await Hire.findByIdAndUpdate(hire._id, { hireStatus: 'Cancelled' })
+    }
+
+    res.json({ message: 'Hire status updated successfully' });
+  } catch (error) {
+    res.status(500).json({ message: 'Error updating hire status', error: error.message });
   }
 };
 

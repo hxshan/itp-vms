@@ -20,7 +20,7 @@ const{getHiresByDriverId,updateHireDriver,  getPastTripsForDriver, getSingleHire
 
   router.patch('/driverEdit/:id', updateHireDriver)
 
-  router.delete('/:id', deleteHire)
+  router.put('/cancel/:id', deleteHire)
 
   router.get('/rates', fetchHiresRates)
 
