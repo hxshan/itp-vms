@@ -13,6 +13,8 @@ const VehicleSearch = () => {
   const navigate = useNavigate();
   const { vehicles = [] } = data;
   const [availabilityStatuses, setAvailabilityStatuses] = useState({});
+  const [stateFilter, setStateFilter] = useState('');
+  const [availabilityFilter, setAvailabilityFilter] = useState('');
 
   const handleViewClick = (id) => {
     navigate(`view/${id}`);
@@ -114,16 +116,21 @@ const VehicleSearch = () => {
 
   const filteredVehicles = vehicles.filter((vehicle) => {
     const searchTerm = search.toLowerCase().trim();
-    if (searchTerm === "") {
-      return true;
-    } else {
-      return (
-        (vehicle.vehicleType && vehicle.vehicleType.toLowerCase().includes(searchTerm)) ||
-        (vehicle.vehicleModel && vehicle.vehicleModel.toLowerCase().includes(searchTerm)) ||
-        (vehicle.vehicleRegister && vehicle.vehicleRegister.toLowerCase().includes(searchTerm)) ||
-        (vehicle.category && vehicle.category.toLowerCase().includes(searchTerm))
-      );
-    }
+    const stateFilterLowerCase = stateFilter.toLowerCase();
+    const matchSearch = (
+        vehicle.vehicleType.toLowerCase().includes(searchTerm) ||
+        vehicle.vehicleModel.toLowerCase().includes(searchTerm) ||
+        vehicle.vehicleRegister.toLowerCase().includes(searchTerm) ||
+        vehicle.category.toLowerCase().includes(searchTerm)
+    );
+
+    // If state filter is selected, apply additional filtering based on vehicle state
+    const matchStateFilter = !stateFilterLowerCase || vehicle.statusVehicle.toLowerCase() === stateFilterLowerCase;
+
+    // If availability filter is selected, apply additional filtering based on availability
+    const matchAvailabilityFilter = !availabilityFilter || availabilityStatuses[vehicle._id] === availabilityFilter;
+
+    return matchSearch && matchStateFilter && matchAvailabilityFilter;
   });
     
 
@@ -154,17 +161,42 @@ const VehicleSearch = () => {
 
       <ToastContainer />
 
-      <div className='flex justify-end'>
-        <input
-          type="text"
-          name="Search"
-          placeholder="Search"
-          value={search}
-          onChange={(e) => {
-            setSearch(e.target.value);
-          }}
-          className="mb-3 mr-4 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline end-0 "
-        />
+      <div className='flex justify-end items-center'>
+
+      <div className="text-xm font-semibold text-black mr-5">Search by</div>  
+
+      <select
+        value={stateFilter}
+        onChange={(e) => setStateFilter(e.target.value)}
+        className="mb-3 mr-4 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+    >
+        <option value="">All</option>
+        <option value="Active">Active</option>
+        <option value="Deactive">Deactive</option>
+      </select>
+
+      <select
+        value={availabilityFilter}
+        onChange={(e) => setAvailabilityFilter(e.target.value)}
+        className="mb-3 mr-4 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+    >
+        <option value="">All</option>
+        <option value="Available">Available</option>
+        <option value="Hire">Hire</option>
+        <option value="maintain">Maintain</option>
+        <option value="reserved">reserved</option>
+      </select>
+
+
+      <input
+        type="text"
+        name="Search"
+        placeholder="Search"
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        className="mb-3 mr-4 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline end-0 "
+      />
+   
       </div>
 
       <table className='w-full border-collapse border-spacing-2 border-black rounded-md pad shadow-xl p-5'>
