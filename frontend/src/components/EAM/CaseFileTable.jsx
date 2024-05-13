@@ -142,7 +142,8 @@ const CaseFileTable = () => {
                                         
                                             <button className="my-1 mx-1 bg-red-700 text-white py-1 px-4 rounded-md text-sm" onClick={() => deleteCaseFile(caseFile._id)}>
                                                 Delete
-                                            </button>  
+                                            </button> 
+                                            < Link to={`/emergency/edit/${caseFile._id}`} className='my-1 mx-1 bg-[#D4D800] text-white py-1 px-4 rounded-md text-sm'>Edit</Link> 
                                             </div>
                                     </td>
                                 </tr>

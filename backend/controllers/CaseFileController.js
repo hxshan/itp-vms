@@ -3,7 +3,7 @@ const CaseFile = require("../models/caseFileModel");
 
 
 //create Case File
- const createCaseFile = async (req, res) => {
+/* const createCaseFile = async (req, res) => {
 
         try{
             if(
@@ -58,7 +58,7 @@ const CaseFile = require("../models/caseFileModel");
             return res.status(500).send("Internal server error");
         }
     
-};
+};*/
 
 
 //fetch all case files
@@ -187,9 +187,10 @@ const getCaseFiles = async (req, res) => {
         
 };
 
-const driverCreateEmergency = async (req, res) => {
+const driverCreateCaseFile = async (req, res) => {
     try {
       const {
+        caseType,
         caseTitle,
         timeOfIncident,
         driverID,
@@ -205,22 +206,34 @@ const driverCreateEmergency = async (req, res) => {
 
       console.log(req.body)
   
-      if (!caseTitle || !timeOfIncident || !driverID || !driverName || !driverLicenceNumber || !licencePlate || !passengerCount || !location || !incidentDescription || !hire || !severity) {
+      if (!caseType || !caseTitle || !timeOfIncident || !driverID || !driverName || !driverLicenceNumber || !licencePlate || !passengerCount || !location || !incidentDescription || !hire || !severity) {
         return res.status(400).send("Missing required fields");
       }
   
       const newCaseFile = {
+        caseType,
         caseTitle,
         timeOfIncident,
-        driverID,
-        driverName,
-        driverLicenceNumber,
+        driver:{
+            _id:driverID,
+            firstName:driverName,
+            licenceNumber:driverLicenceNumber
+        },
         licencePlate,
         passengerCount,
         location,
         incidentDescription,
         hire,
-        severity
+        severity,
+        witnessesContactInformation,
+        witnessesStatement,
+        emergencyServicesContacted,
+        emergencyServicesResponseTime,
+        emergencyServicesActionsTaken,
+        photographicEvidence,
+        insuranceCompaniesContactInfo,
+        policeReport,
+        insuranceStatus
       };
   
       const createdCaseFile = await CaseFile.create(newCaseFile);
@@ -254,29 +267,25 @@ const driverCreateEmergency = async (req, res) => {
 
     //get a specific driver alert by its id
     const getDriverAlertById = async (req, res) => {
-        try{
-            const { id } = req.params;
-            if(!mongoose.Types.ObjectId.isValid(id)){
-                return res.status(400).send("Invalid driver alert id");
-            }
-            const driverAlert = await CaseFile.findById({ hire: id }).populate({
-                path: 'hire',
-                populate: {
-                    path: 'driver',
-                    select: 'firstName licenceNumber'
-                    
-                     // Only select the firstName field of the driver
-                }
-            });
-            if(!driverAlert){
-                return res.status(404).send("Driver alert not found");
-            }
-            return res.status(200).send(driverAlert);
-        }catch(error){
-            console.log("Error getting driver alert", error);
-            return res.status(500).send("Internal server error");
+        try {
+          const { id } = req.params;
+          if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json("Invalid case file id");
+          }
+          const caseFile = await CaseFile.findById(id)
+            .populate("driver", "firstName licenceNumber") // Populate the driver field and select specific fields
+            .populate("hire"); // Populate the hire field
+            console.log(caseFile)
+      
+          if (!caseFile) {
+            return res.status(404).send("Case file not found");
+          }
+          return res.status(200).json(caseFile);
+        } catch (error) {
+          console.log("Error getting case files", error);
+          return res.status(500).send("Internal server error");
         }
-    }
+      };
 
    /* const getdriverDetailsById = async (req, res) => {
         try {
@@ -295,4 +304,4 @@ const driverCreateEmergency = async (req, res) => {
   
 
 
-module.exports = {createCaseFile, getCaseFiles, getCaseFileById, updateCaseFileById, deleteCaseFileById, driverCreateEmergency, getDriverAlerts,getDriverAlertById};
+module.exports = { getCaseFiles, getCaseFileById, updateCaseFileById, deleteCaseFileById, driverCreateCaseFile, getDriverAlerts,getDriverAlertById};

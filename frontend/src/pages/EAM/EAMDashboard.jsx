@@ -1,7 +1,7 @@
 import CaseFileTable from "@/components/EAM/CaseFileTable";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import AlertTable from "@/components/EAM/IncidentTable";
+
 
 const EAMDashboard = () => {
     return (
@@ -15,10 +15,8 @@ const EAMDashboard = () => {
                 <CaseFileTable />
             </div>
             <hr className="my-8" />
-            <h2 className="text-2xl font-semibold">Incident Alert</h2>
-            <div className="mt-4">
-                <AlertTable />
-            </div>
+           
+            
         </div>
     );
 };

@@ -100,7 +100,10 @@ const caseFileSchema = new mongoose.Schema(
   },
 
   {
-    timestamps: { currentTime: () => Date.now() + 5.5 * 60 * 60 * 1000 },
+    timestamps: { 
+      type: Date,
+      default: Date.now
+     },
   }
 );
 const CaseFile = mongoose.model("CaseFile", caseFileSchema);
