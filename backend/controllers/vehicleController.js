@@ -440,8 +440,19 @@ const getVehicles = async (req, res, next) => {
     } catch (error) {
         return next (new HttpError(error))
     }
+ 
+}
+
+const getAllVehicles = async (req, res, next) => {
+    try {
+        const vehicles = await Vehicles.find().sort({updatedAt: -1});
+        res.status(200).json(vehicles)
+    } catch (error) {
+        return next (new HttpError(error))
+    }       
+
 }
 
 
-module.exports = {addVehicle,editVehicle,changeStatusVehicle,getVehicle,getVehicles,recoverVehicle,deletePost,updateMileage,getAvailabilityByVehicleId}
+module.exports = {addVehicle,editVehicle,changeStatusVehicle,getVehicle,getVehicles,recoverVehicle,deletePost,updateMileage,getAvailabilityByVehicleId,getAllVehicles}
 

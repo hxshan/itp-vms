@@ -1,218 +1,117 @@
-import React,{useState,useEffect} from 'react'
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+import React, { useState, useEffect, useRef } from 'react';
 import { Pie } from 'react-chartjs-2';
-import useAxios from "@/hooks/useAxios";
-import axios from "@/api/axios";
-import SummaryTable from "../../components/vehicle/SummaryTable"
+import useAxios from '@/hooks/useAxios';
+import axios from '@/api/axios';
 import { useNavigate } from 'react-router-dom';
-import { ReactToPrint } from 'react-to-print';
-import { ClockLoader } from "react-spinners";
+import { ClockLoader } from 'react-spinners';
 
 const PieChart = () => {
- 
-const [data, error, loading, axiosFetch] = useAxios()
-const categories = Object.keys(data).filter(key => key !== 'vehiclesCount' && key !== 'availableCount' && key !== 'underMaintanceCount' && key !== 'underClientCount' && key !== 'underSpecialTaskCount');
-const counts = categories.map(category => data[category])
-const [activeComponent, setActiveComponent] = useState('summary');
-const navigate = useNavigate();
-const componentRef = React.createRef();
+  const [data, error, loading, axiosFetch] = useAxios();
+  const [searchTerm, setSearchTerm] = useState('');
+  const [searchStatus, setSearchStatus] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
 
-const getData = ()=>{
+
+  const getData = () => {
     axiosFetch({
-      axiosInstance:axios,
-      method:'GET',
-      url:'/vehicle/'
-    })
+      axiosInstance: axios,
+      method: 'GET',
+      url: '/vehicle/'
+    });
   }
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  useEffect(() => {
+    let filteredResults = data.vehicles || []; // Initialize as an empty array
   
-  useEffect(()=>{
-    getData()
-  },[])
+    if (searchTerm !== '') {
+      filteredResults = filteredResults.filter(data =>
+        data.vehicleRegister.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+  
+    if (searchStatus !== '') {
+      filteredResults = filteredResults.filter(data => data.statusVehicle === searchStatus);
+    }
+  
+    setSearchResults(filteredResults);
+  }, [searchTerm, searchStatus, data]);
 
+  const handleSearchChange = event => {
+    setSearchTerm(event.target.value);
+  };
 
-  if(loading){
-    return(
+  const handleStatusChange = event => {
+    setSearchStatus(event.target.value);
+  };
+
+  const formatDate = dateString => {
+    const dateObject = new Date(dateString);
+    const options = { year: 'numeric', month: 'short', day: '2-digit' };
+    return dateObject.toLocaleDateString('en-US', options);
+  };
+
+  if (loading) {
+    return (
       <div className="w-full flex items-center justify-center h-full bg-white">
-        <ClockLoader
-            color="#36d7b7"
-            height={50}
-            width={10}
-          />
+        <ClockLoader color="#36d7b7" height={50} width={10} />
       </div>
-    )
+    );
   }
-  if(error){
-    return(
-      <p className="flex flex-col items-center justify-center h-screen text-center text-lg font-bold text-black">Unexpected Error has occured!</p>
-    )
-} 
-
-if (!data || !data.newAdded) {
-    return <p className='mt-3 p-3 font-medium text-sm text-white bg-red-500 rounded-md pad'>No data available or Server is offline.</p>;
-}
-
-ChartJS.register(ArcElement, Tooltip, Legend);
-
-
-const chartData = {
-    labels: ['Car', 'Van', 'Bus', 'Lorry', 'Truck'],
-    datasets: [
-      {
-        label: '% of Vehicles',
-        data: counts,
-        backgroundColor: [
-          'rgba(255, 99, 132, 0.2)',
-          'rgba(54, 162, 235, 0.2)',
-          'rgba(255, 206, 86, 0.2)',
-          'rgba(75, 192, 192, 0.2)',
-          'rgba(153, 102, 255, 0.2)',
-          'rgba(255, 159, 64, 0.2)',
-        ],
-        borderColor: [
-          'rgba(255, 99, 132, 1)',
-          'rgba(54, 162, 235, 1)',
-          'rgba(255, 206, 86, 1)',
-          'rgba(75, 192, 192, 1)',
-          'rgba(153, 102, 255, 1)',
-          'rgba(255, 159, 64, 1)',
-        ],
-        borderWidth: 1,
-      },
-    ],
-};
-
-const calculatePercentage = (numerator, denominator) => {
-    const res = (numerator / denominator) * 100;
-
-    if(isNaN(res)){
-          return 0;
-    }
-
-    else{
-      return res
-    }
+  if (error) {
+    return (
+      <p className="flex flex-col items-center justify-center h-screen text-center text-lg font-bold text-black">
+        Unexpected Error has occurred!
+      </p>
+    );
   }
 
-  const carPercentage = calculatePercentage(data.carCount, data.vehiclesCount);
-  const busPercentage = calculatePercentage(data.busCount, data.vehiclesCount);
-  const lorryPercentage = calculatePercentage(data.lorryCount, data.vehiclesCount);
-  const truckPercentage = calculatePercentage(data.truckCount, data.vehiclesCount);
-  const vanPercentage = calculatePercentage(data.vanCount, data.vehiclesCount);
-
-  const renderComponent = () => {
-    switch (activeComponent) {
-        case 'summary':
-        return (
-          <div>
-            {['car', 'van', 'bus', 'lorry', 'truck'].map((category) =>
-              <SummaryTable key={category} category={category} filteredData={data[category]} />
-           )}
-          </div>
-        );
-    }
-  }
 
   return (
-    <div className=' flex flex-col  p-5'>
-        <div className='flex flex-row justify-end'>
-            <div>
-            <ReactToPrint
-                    trigger={() => (
-                        <button
-                            className="mx-2 px-3 py-1 rounded-md bg-actionRed text-white text-sm text-bold"
-                        >
-                            General Report
-                        </button>
-                    )}
-                    content={() => componentRef.current}
-                />
-           
+    <div className='w-full place-content-center space-y-4 mt-8 bg-cover bg-center mb-10'>
+    <h1 className='text-2xl font-bold text-black mt-4'>All Vehicles</h1>
+    <div className='flex justify-end items-center'>
+    <div className="text-xm font-semibold text-black mr-5">Search by</div> 
     
-            </div>    
-            <button className='mx-2 px-3 py-1 rounded-md bg-actionRed text-white text-sm text-bold' onClick={() => navigate('/vehicle/vehsummary')}>Vehicle summary</button>
-            <button className='mx-2 px-3 py-1 rounded-md bg-actionBlue text-white text-sm text-bold' onClick={() => navigate('/vehicle')}>Dashboard</button>     
-        </div>
-        <div ref={componentRef}>
-          <div className='p-4'> 
-          <h1 className="text-base font-bold mb-3">Stored vehicle details</h1>
-          
-          <div className="flex m-0 flex-col ">
+    <select value={searchStatus} onChange={handleStatusChange}  className="mb-3 mr-4 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+      <option value="">All Statuses</option>
+      <option value="Active">Active</option>
+      <option value="Deactive">Deactive</option>
+    </select>
 
-           
-            <div className='flex flex-row mb-6'>
-               
-                <div className="grow-0 p-3 bg-white rounded-md pad justify-satart">
+    <input type="text" value={searchTerm} onChange={handleSearchChange} placeholder="Search by Vehicle Registration Number" className="mb-3 mr-4 shadow grow-0 appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"/>
 
-                  <Pie data={chartData} /> 
-                
-                </div>
-            
-             
-             <div className='ml-6 grow flex flex-col space-y-2'>
-
-             <div className='text-black text-sm font-bold mb-2'>Vehicle count summary</div> 
-
-             <div className=" m-0 p-2  bg-gradient-to-r from-green-700 to-green-400 rounded-md pad">
-               <div className="text-xs text-white font-semibold rounded-md pad">Totol vehicle count added in the system<h1 className='text-yellow-500 text-xl'>{data.vehiclesCount}</h1> </div>
-             </div>
-
-             <div className=" m-0 p-2 bg-gradient-to-r from-green-700 to-green-400 rounded-md pad">
-
-              <div className='flex flex-reo justify-between '>
-                <div className="text-xs text-white font-semibold rounded-md pad">Totol car count added in the system<h1 className='text-white-500 text-xl'>{data.carCount}</h1></div>
-                <div className='ml-2 text-2xl place-content-center text-yellow-400 font-bold'>{carPercentage.toFixed(2)}% </div> 
-              </div>
-             </div>
-
-             <div className=" m-0 p-2 bg-gradient-to-r from-green-700 to-green-400 rounded-md pad">
-
-             <div className='flex flex-reo justify-between'>
-               <div className="text-xs text-white font-semibold rounded-md pad">Totol van count added in the system<h1 className='text-white-500 text-xl'> {data.vanCount}</h1></div>
-               <div className='ml-2 text-2xl place-content-center text-yellow-400 font-bold'>{vanPercentage.toFixed(2)}% </div> 
-            </div> 
-
-             </div>
-
-             <div className=" m-0 p-2 bg-gradient-to-r from-green-700 to-green-400 rounded-md pad">
-
-              <div className='flex flex-reo justify-between'>
-               <div className="text-xs text-white font-semibold rounded-md pad">Totol bus count added in the system<h1 className='text-white-500 text-xl'>{data.busCount}</h1></div>
-               <div className='ml-2 text-2xl place-content-center text-yellow-400 font-bold'>{busPercentage.toFixed(2)}% </div> 
-              </div> 
-
-             </div>
-
-             <div className=" m-0 p-2 bg-gradient-to-r from-green-700 to-green-400 rounded-md pad">
-
-             <div className='flex flex-reo justify-between '>
-               <div className="text-xs text-white font-semibold rounded-md pad">Totol lorry count added in the system<h1 className='text-white-500 text-xl'>{data.lorryCount}</h1></div>
-               <div className='ml-2 text-2xl place-content-center text-yellow-400 font-bold'>{lorryPercentage.toFixed(2)}% </div> 
-              </div> 
-
-             </div>
-
-             <div className=" m-0 p-2  bg-gradient-to-r from-green-700 to-green-400 rounded-md pad">
-
-             <div className='flex flex-reo justify-between'>
-               <div className="text-xs text-white font-semibold rounded-md pad">Totol truck count added in the system<h1 className='text-white-500 text-xl'>{data.truckCount}</h1></div>
-               <div className='ml-2 text-2xl place-content-center text-yellow-400 font-bold'>{truckPercentage.toFixed(2)}% </div> 
-            </div> 
-
-            </div>
-
-            </div>
-            </div>
-
-             
-        </div> 
-
-        <div>
-          {renderComponent()}
-        </div>
-        </div>
-        </div> 
-        
-    </div>        
+    </div>
+    <table className='w-full border-collapse border-spacing-2 border-black rounded-md pad shadow-xl p-5'>
+      <thead className='bg-secondary text-white'>
+        <tr>
+          <th className='border border-white p-2'>Vehicle Registration Number</th>
+          <th className='border border-white p-2'>Status</th>
+          <th className='border border-white p-2'>Start Date</th>
+          <th className='border border-white p-2'>End Date</th>
+          <th className='border border-white p-2'>Passenger Count</th>
+          <th className='border border-white p-2'>Estimated Distance</th>
+          <th className='border border-white p-2'>Initial Odometer Reading</th>
+        </tr>
+      </thead>
+      <tbody>
+      {searchResults.map(data => (
+      <tr key={data._id} className="bg-white border-t border-gray-200">
+        <td className="px-6 text-center font-semibold py-2 whitespace-nowrap border-r border-gray-200">{data.vehicleRegister}</td>
+        <td className="px-6 text-center font-semibold py-2 whitespace-nowrap border-r border-gray-200">{data.vehicleModel }</td>
+        <td className="px-6 text-center font-semibold py-2 whitespace-nowrap border-r border-gray-200">{formatDate(data.licEndDate)}</td>
+        <td className="px-6 text-center font-semibold py-2 whitespace-nowrap border-r border-gray-200">{formatDate(data.insEndDate) }</td>
+        <td className="px-6 text-center font-semibold py-2 whitespace-nowrap border-r border-gray-200">{data.numOfSeats }</td>
+        <td className="px-6 text-center font-semibold py-2 whitespace-nowrap border-r border-gray-200">{data.vehicleGearSys}</td>
+        <td className="px-6 text-center font-semibold py-2 whitespace-nowrap border-r border-gray-200">{data.fuelType}</td>
+      </tr>
+     ))}
+      </tbody>
+    </table>
+  </div>
    );          
 }
 

@@ -17,7 +17,7 @@ import VehicleDetailsControl from "./pages/vehicle/VehicleDetailsControl";
 import VehicleViewControl from "./pages/vehicle/VehicleViewControl";
 import AddcustomVehicle from "./pages/vehicle/AddcustomVehicle";
 import VehReport from "./pages/vehicle/VehReport";
-import VehSummary from "./pages/vehicle/VehicleSummary";
+import VehSum from "./pages/vehicle/VehicleSummary";
 
 import AddContract from "./pages/contract/AddContract";
 import { AdminDashboard, Roles, EditRoles,UserProfile,Users, DriverPerformance} from "./pages/admin";
@@ -116,7 +116,7 @@ function App() {
               <Route path="edit/:id" element={<VehicleDetailsControl />} />
               <Route path="view/:id" element={<VehicleViewControl />} />
               <Route path="report" element={<VehReport />} />
-              <Route path="vehsummary" element={<VehSummary />} />
+              <Route path="vehsum" element={<VehSum />} />
             </Route>
             
             <Route path="/Vrform" element={<CreateMaintainceForm />}/>
