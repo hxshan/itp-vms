@@ -120,7 +120,11 @@ const CaseFileTable = () => {
                                     <td className="px-6 py-4 whitespace-nowrap">{caseFile.location}</td>
                                     <td className="px-6 py-4 whitespace-nowrap">{new Date(caseFile.timeOfIncident).toLocaleDateString() }</td>
                                     <td className="px-6 py-4 whitespace-nowrap text-center">{caseFile.passengerCount}</td>
-                                    <td className="px-6 py-4 whitespace-nowrap">{caseFile.severity}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap">
+                                    <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-md ${caseFile.severity === 'minor' ? 'text-yellow-700 bg-yellow-100' : caseFile.severity === 'moderate' ? 'text-orange-700 bg-orange-100' :caseFile.severity === 'severe' ? 'text-red-700 bg-red-100': 'text-orange-600 bg-orange-100'}`}>
+                                        {caseFile.severity.toUpperCase()}
+                                        </span>
+                                    </td>
                                     <td className="px-6 py-4 whitespace-nowrap">
                                     <div  className= {caseFile.status == 'completed' ? `w-full text-white bg-red-500 rounded-md py-1 px-5 `: `w-full text-white bg-green-500 rounded-md py-1 px-4 `}>
                                             {caseFile.status}
@@ -138,7 +142,8 @@ const CaseFileTable = () => {
                                         
                                             <button className="my-1 mx-1 bg-red-700 text-white py-1 px-4 rounded-md text-sm" onClick={() => deleteCaseFile(caseFile._id)}>
                                                 Delete
-                                            </button>  
+                                            </button> 
+                                            < Link to={`/emergency/edit/${caseFile._id}`} className='my-1 mx-1 bg-[#D4D800] text-white py-1 px-4 rounded-md text-sm'>Edit</Link> 
                                             </div>
                                     </td>
                                 </tr>

@@ -3,17 +3,28 @@ import axios from "@/api/axios";
 import { useState } from "react";
 import { ReactToPrint } from 'react-to-print';
 const EmergencyReportForm = ({ trip }) => {
+  const { driver, vehicle, passengerCount } = trip;
+  const driverID = driver._id;
+  const driverName = driver.firstName;
+  const driverLicenceNumber = driver.licenceNumber;
+  const licencePlate = vehicle.vehicleRegister;
+  const hire = trip._id;
+
+
   const [emergencyDetails, setEmergencyDetails] = useState({
+
+
+    caseType: '',
     caseTitle: '',
     timeOfIncident: new Date(),
-    driverID: trip.driver._id,
-    driverName: trip.driver.firstName,
-    driverLicenceNumber: trip.driver.licenceNumber,
-    licencePlate: trip.vehicle.vehicleRegister,
-    passengerCount: trip.passengerCount,
+    driverID,
+    driverName,
+    driverLicenceNumber,
+    licencePlate,
+    passengerCount,
     location: '',
     incidentDescription: '',
-    hire: trip._id,
+    hire,
     severity: ''
   });
 
@@ -35,7 +46,7 @@ const EmergencyReportForm = ({ trip }) => {
       await emergencyAxiosFetch({
         axiosInstance: axios,
         method: 'POST',
-        url: '/caseFiles/driverCreateEmergency/',
+        url: '/caseFiles/driverCreateCaseFile/',
         requestConfig: {
           data: emergencyDetails
         }
@@ -61,6 +72,15 @@ const EmergencyReportForm = ({ trip }) => {
       {errorMessage && <p className="text-red-500">{errorMessage}</p>}
       {successMessage && <p className="text-green-500">{successMessage}</p>}
       <form onSubmit={handleSubmit} className="space-y-4">
+      <div className="mb-4">
+          <label htmlFor="caseType" className="block text-lg font-semibold mb-2">Case Type</label>
+          <select id="caseType" name="caseType" value={emergencyDetails.caseType} onChange={handleChange} required className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:border-blue-500">
+            <option value="">Select Incident Type</option>
+            <option value="accident">Accident</option>
+            <option value="emergency">Emergency</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
         <div>
           <label htmlFor="caseTitle" className="block font-medium text-gray-700">Case Title</label>
           <input
