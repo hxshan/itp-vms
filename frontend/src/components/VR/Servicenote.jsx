@@ -121,7 +121,7 @@ export const Servicenote = () => {
                                 id='servicedate'
                                 className='border p-2 rounded-lg shadow'
                                 required
-                                onChange={handleChange}
+                                readOnly={handleChange}
                                 value={formdata.servicedate}
                             />
                             <label className='font-semibold'>Service Note :</label>

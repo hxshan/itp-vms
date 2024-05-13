@@ -3,20 +3,29 @@ const { Vehicles } = require('../models/vehicleModel')
 
 const addservice = async (req, res) => {
     try {
-        // Check if the vehicle exists
         const vehicle = await Vehicles.findOne({ vehicleRegister: req.body.vehicleRegister });
 
         if (!vehicle) {
             return res.status(400).send({ message: "Invalid category or vehicle register provided." });
         }
+        const existingServiceByLastMileage = await vehicle_service.findOne({
+            vehicleRegister: vehicle._id,
+            lastmilage: req.body.lastmilage
+        });
 
-        // Check if a service with the same lastmilage or servicedate already exists
-        const existingService = await vehicle_service.findOne({ vehicleRegister: vehicle._id })
-            .or([{ lastmilage: req.body.lastmilage }, { servicedate: req.body.servicedate }]);
-
-        if (existingService) {
-            return res.status(400).send({ message: "Service with the same lastmilage or servicedate already exists for this vehicle." });
+        if (existingServiceByLastMileage) {
+            return res.status(400).send({ message: "Service with the same last mileage already exists for this vehicle." });
         }
+
+        // Check if a service with the same service date already exists
+        // const existingServiceByServiceDate = await vehicle_service.findOne({
+        //     vehicleRegister: vehicle._id,
+        //     servicedate: req.body.servicedate
+        // });
+
+        // if (existingServiceByServiceDate) {
+        //     return res.status(400).send({ message: "Service with the same service date already exists for this vehicle." });
+        // }
 
         // Create a new service
         const newService = await vehicle_service.create({
