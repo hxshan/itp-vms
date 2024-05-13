@@ -11,7 +11,7 @@ export const View = () => {
     const { id } = useParams();
 
     useEffect(() => {
-        axios.get(`http://localhost:3000/api/vehiclemaintain/${id}`)
+        axios.get(`http://localhost:3000/api/vehiclemaintain/all/${id}`)
             .then(response => {
                 setOrder(response.data);
             })

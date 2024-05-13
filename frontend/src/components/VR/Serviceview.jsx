@@ -70,7 +70,7 @@ export const Serviceview = () => {
                     day: '2-digit'
                   })}</td>
                   <td className='border border-slate-700 rounded-md text-center p-2'>{item.lastmilage}km</td>
-                  <td className='border border-slate-700 rounded-md text-center p-2'>{item.Scost}</td>
+                  <td className='border border-slate-700 rounded-md text-center p-2'>Rs.{item.Scost}</td>
                   <td className='border border-slate-700 rounded-md text-center p-2'>{item.Snote}</td>
                   <td className='border border-slate-700 rounded-md text-center p-2'>{item.kilometerLimit}Km</td>
                 </tr>
@@ -86,7 +86,7 @@ export const Serviceview = () => {
           {Array.isArray(data) && data.length > 0 && (
     <tfoot>
         <td colSpan="4" className='border border-slate-700 rounded-md text-center p-2'>Total</td>
-        <td className='border border-slate-700 rounded-md text-center p-2'>
+        <td className='border border-slate-700 rounded-md text-center p-2'>Rs.
             {data.reduce((total, item) => total + item.Scost, 0)}
         </td>
         <td colSpan="2" className='border border-slate-700 rounded-md text-center p-2'></td>

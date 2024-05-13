@@ -34,8 +34,9 @@ export const EditMaintainceOrder = () => {
                 setVrissue(data.vrissue);
                 setVrcost(data.vrcost);
                 setVraddit(data.vraddit);
-                setVrsdate(new Date(data.vrsdate).toISOString().split('T')[0]);
-                setVredate(new Date(data.vredate).toISOString().split('T')[0]);
+                setVrsdate(data?.vrsdate?.split('T')[0]);
+                setVredate(data?.vredate?.split('T')[0]);
+                
             })
             .catch((error) => {
                 console.log(error);
@@ -79,6 +80,8 @@ export const EditMaintainceOrder = () => {
             });
     };
 
+  
+
     return (
         <main className='w-full  flex flex-col justify-center items-center '>
             <div className=" sm:w-3/4 bg-white p-10 flex flex-col rounded-2xl ">
@@ -97,6 +100,7 @@ export const EditMaintainceOrder = () => {
                                 maxLength='7'
                                 required
                                 readOnly={(e) => setvehicleRegister(e.target.value)}
+                        
                                 value={vehicleRegister} />
                             <label className='block text-gray-700 text-md font-bold mb-2'>Fault of the Vehicle</label>
                             <textarea

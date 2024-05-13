@@ -159,6 +159,12 @@ const Navbar = () => {
                 >
                   Service Records
                 </button>
+                <button
+                  className="w-full py-2 px-4 text-start hover:bg-gray-700 focus:outline-none focus:bg-gray-700"
+                  onClick={() => navigate("/maintainsreport")}
+                >
+                  Report
+                </button>
               </div>
             )}
           </div>

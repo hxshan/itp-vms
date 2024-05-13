@@ -67,12 +67,26 @@ const getonemaintain = async(req, res)=>{
         const { id } = req.params;
 
         // Find the maintenance record by its _id
-        const maintain = await vehicleMaintain.findById(id);
+        const maintain = await vehicleMaintain.findById(id).populate("vehicleRegister");
 
         // If no maintenance record found, return a message
         if (!maintain) {
             return res.status(404).json({ message: 'Maintenance record not found.' });
         }
+
+        res.status(200).json(maintain); // Return all matching maintenance records
+    } catch (error) {
+        console.error('Error fetching maintenance records:', error);
+        res.status(500).json({ message: 'Server error' });
+    }
+};
+
+const getonemaintains = async(req, res)=>{
+    try {
+        const { id } = req.params;
+
+        // Find the maintenance record by its _id
+        const maintain = await vehicleMaintain.findById(id);
 
         // Extract vehicleRegister from the found maintenance record
         const vehicleRegisterId = maintain.vehicleRegister;
@@ -179,4 +193,4 @@ const driverMaintenanceRequest = async (req, res) => {
     }
 };
 
-module.exports = {createmaintain, getallmaintains, getonemaintain , editmaintain , deletemaintain, driverMaintenanceRequest}
+module.exports = {createmaintain, getallmaintains, getonemaintain,getonemaintains , editmaintain , deletemaintain, driverMaintenanceRequest}
