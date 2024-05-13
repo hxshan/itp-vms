@@ -101,6 +101,7 @@ const ContractDasboard = () => {
     getContracts()
     getallClients()
   },[])
+  
 
 
   const titles = ["Client NIC", "Client Name" , "Email", "Time", "Status", "Options"]
@@ -142,6 +143,30 @@ const ContractDasboard = () => {
 
     return () => clearInterval(intervalId);
   }, []);
+
+  useEffect(() => {
+    // Filter contracts based on search criteria and status filter
+    const filteredContracts = allContracts.filter(contract =>
+      contract.clientID.nicNumber.toLowerCase().includes(Search.toLowerCase()) ||
+      contract.clientID.firstName.toLowerCase().includes(Search.toLowerCase()) ||
+      contract.clientID.lastName.toLowerCase().includes(Search.toLowerCase()) ||
+      contract.clientID.email.toLowerCase().includes(Search.toLowerCase())
+    );
+  
+    // Apply status filter if selected
+    if (statusFilter) {
+      setSearchError(""); // Reset search error message
+      setResults(filteredContracts.filter(contract => contract.Status === statusFilter));
+    } else {
+      // If no status filter, show all filtered contracts
+      if (filteredContracts.length > 0) {
+        setSearchError(`${filteredContracts.length} items found.`);
+      } else {
+        setSearchError("No items found.");
+      }
+      setResults(filteredContracts);
+    }
+  }, [Search, statusFilter, allContracts]);
   
 
 
@@ -224,19 +249,30 @@ const ContractDasboard = () => {
         <tbody>
   {currentItems && currentItems.length > 0 ? currentItems
     .filter((item) => {
-            const searchLowerCase = Search.toLowerCase();
-            const firstNameLowerCase = item.clientID.firstName.toLowerCase();
-            const lastNameLowerCase = item.clientID.lastName.toLowerCase();
-            const nicNumber = item.clientID.nicNumber.toString();
-            const email = item.clientID.email.toLowerCase();
-            return (
-              searchLowerCase === "" ||
-              firstNameLowerCase.includes(searchLowerCase) ||
-              lastNameLowerCase.includes(searchLowerCase) ||
-              nicNumber.includes(searchLowerCase) ||
-              email.includes(searchLowerCase)
-            );
-          })
+      const searchLowerCase = Search.toLowerCase();
+      const firstNameLowerCase = item.clientID.firstName.toLowerCase();
+      const lastNameLowerCase = item.clientID.lastName.toLowerCase();
+      const nicNumber = item.clientID.nicNumber.toString();
+      const email = item.clientID.email.toLowerCase();
+  
+      if (statusFilter) {
+        return item.Status === statusFilter && (
+          searchLowerCase === "" ||
+          firstNameLowerCase.includes(searchLowerCase) ||
+          lastNameLowerCase.includes(searchLowerCase) ||
+          nicNumber.includes(searchLowerCase) ||
+          email.includes(searchLowerCase)
+        );
+      } else {
+        return (
+          searchLowerCase === "" ||
+          firstNameLowerCase.includes(searchLowerCase) ||
+          lastNameLowerCase.includes(searchLowerCase) ||
+          nicNumber.includes(searchLowerCase) ||
+          email.includes(searchLowerCase)
+        );
+      }
+    })
     .map((row) => {
       return (
         <tr className="bg-white border-t border-gray-200" key={row._id}>
