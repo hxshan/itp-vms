@@ -205,7 +205,6 @@ export const MaintainOrderTable = () => {
                 <table className='w-full border-collapse   rounded-md pad shadow-xl p-5 mb-10'>
                     <thead className='bg-secondary text-white border-white'>
                         <tr>
-                            <th className='border  p-2'>No</th>
                             <th className='border p-2'>Number Plate</th>
                             <th className='border  p-2'>Time(From - To)</th>
                             <th className='border  p-2'>Status</th>
@@ -230,7 +229,6 @@ export const MaintainOrderTable = () => {
                                 }
                                 return (
                                     <tr key={item._id} className='h-8 '>
-                                        <td className='border border-slate-700 rounded-md text-center'>{index + 1}</td>
                                         <td className='border border-slate-700 rounded-md text-center'>{item.vrvehicleRegister}</td>
                                         <td className='border border-slate-700 rounded-md text-center'>
                                             {new Date(item.vrsdate).toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' })} to {new Date(item.vredate).toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' })}
