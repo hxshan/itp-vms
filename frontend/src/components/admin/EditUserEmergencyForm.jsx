@@ -3,11 +3,13 @@ import useAxios from '@/hooks/useAxios';
 import { useParams } from 'react-router-dom';
 import axios from '@/api/axios';
 import { ToastContainer, toast } from 'react-toastify';
+import { useAuthContext } from "@/hooks/useAuthContext";
 
 const EditUserEmergencyForm = () => {
-    const [user,usererror, userloading, useraxiosFetch] = useAxios()
+    const [userd,usererror, userloading, useraxiosFetch] = useAxios()
     const [reload,setReload]=useState(0)
     const {id}=useParams()
+    const { user } = useAuthContext()
   //constants
   const emptyContact = {
     _id:"",
@@ -23,20 +25,24 @@ const EditUserEmergencyForm = () => {
         axiosInstance: axios,
         method: "GET",
         url: `/user/${id}`,
+        headers:{
+          authorization:`Bearer ${user?.accessToken}`
+        }
       });
  } 
 
  useEffect(()=>{
-    if(user && Object.keys(user).length !== 0 && user.emergencyContacts){
-        if(user.emergencyContacts.length > 0){
-            setEmergencyContacts(user.emergencyContacts)
-            console.log(user)
+    if(userd && Object.keys(userd).length !== 0 && userd.emergencyContacts){
+        if(userd.emergencyContacts.length > 0){
+            setEmergencyContacts(userd.emergencyContacts)
+            console.log(userd)
         }
     }
-  },[user])
+  },[userd])
 
   useEffect(()=>{
-    getUserData()
+    if(user?.accessToken)
+      getUserData()
   },[reload])
 
 
@@ -67,6 +73,9 @@ const EditUserEmergencyForm = () => {
             data:{
               ContactId:contactId
             }
+          },
+          headers:{
+            authorization:`Bearer ${user?.accessToken}`
           }
         })
 

@@ -1,21 +1,26 @@
 import axios from "@/api/axios";
 import useAxios from "@/hooks/useAxios";
-import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
 import { Pie } from "react-chartjs-2";
 import placeholder from "../../assets/placeholder.png";
+import { useAuthContext } from "@/hooks/useAuthContext";
 
 const DashboardHero = () => {
   const [users, error, loading, axiosFetch] = useAxios();
   const [counts, setCounts] = useState([0, 0, 0]);
   const [total, setTotal] = useState(0);
   const [image, setImage] = useState("");
+  const { user } = useAuthContext()
+
   const getData = () => {
     axiosFetch({
       axiosInstance: axios,
       method: "GET",
       url: "/user/",
+      headers:{
+        authorization:`Bearer ${user?.accessToken}`
+      }
     });
   };
 

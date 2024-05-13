@@ -36,6 +36,10 @@ const RolesTable = () => {
         axiosInstance: axios,
         method: "DELETE",
         url: `/role/${e.target.id}`,
+        headers: {
+          withCredentials: true,
+          authorization: `Bearer ${user?.accessToken}`,
+        },
       });
       if (!error) {
         setReload(reload + 1);

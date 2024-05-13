@@ -31,16 +31,14 @@ const getData = ()=>{
 
 const deleteData =async(e) => {
   e.preventDefault()
-  if(confirm("Are you sure you want to Delete the following user")){
-    await axiosFetch({
-      axiosInstance: axios,
-      method: "PATCH",
-      url: `/user/delete/${e.target.id}`,
-    });
-    if(!error){
-      setReload(reload + 1);
-    }   
-  }
+      await axiosFetch({
+        axiosInstance: axios,
+        method: "PATCH",
+        url: `/user/delete/${e.target.id}`,
+        headers:{
+          authorization:`Bearer ${user?.accessToken}`
+        }
+      });
 };
 
 useEffect(()=>{
@@ -49,8 +47,9 @@ useEffect(()=>{
 },[usersdata])
 
 useEffect(()=>{
-  if(user?.accessToken)
+  if(user?.accessToken){
     getData()
+  }
 },[user,reload])
 
   if(loading){
@@ -133,7 +132,7 @@ useEffect(()=>{
                   <td className="px-6 py-2 whitespace-nowrap justify-between flex">
                   <button className="bg-actionBlue text-white py-1 px-6 rounded-md" id={row._id} onClick={(e)=>navigate(`/admin/userreport/${e.target.id}`) }>View</button>
                     <button className="bg-actionGreen text-white py-1 px-6 rounded-md" onClick={()=>navigate(`/admin/edituser/${row._id}`)}>Edit</button>
-                    <button type="submit" id={row._id} onClick={(e)=>deleteData(e)} className="bg-actionRed text-white py-1 px-6 rounded-md">Delete</button>
+                    <button type="submit" id={row._id} onClick={(e)=>{deleteData(e);setReload(reload+1)}} className="bg-actionRed text-white py-1 px-6 rounded-md">Delete</button>
                   </td>   
               </tr>
             );

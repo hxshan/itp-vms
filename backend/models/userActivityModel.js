@@ -12,11 +12,17 @@ const userActivity = new mongoose.Schema ({
     },
     requestType:{
         type:String,
-        enum: ['GET', 'POST','PATCH','POST','DELETE']
+        enum: ['CREATE','UPDATE','READ','DELETE']
+    },
+    endpoint:{
+        type:String
     },
     status:{
         type:String,
-        enum:['success','failed']
+        enum:['success','failure']
+    },
+    action:{
+        type:String
     }
 })
 

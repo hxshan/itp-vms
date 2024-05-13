@@ -20,6 +20,7 @@ const Auth =require('../middleware/Auth')
 const router = express.Router()
 
 const multer = require('multer');
+const logUserActivity = require('../middleware/logUserActivity')
 
 
 const storage = multer.diskStorage({
@@ -47,7 +48,7 @@ const upload = multer({ storage });
 
 //GET
 //router.get('/',Auth,getAllUsers)
-router.get('/',getAllUsers)
+router.get('/',Auth,getAllUsers)
 router.get('/drivers',getDrivers)
 router.get('/drivers/records',getRecords)
 router.get('/:id',getUserById)
@@ -58,13 +59,13 @@ router.post('/record',createRecord)
 
 //PATCH
 router.patch('/password/:id',resetPassword)
-router.patch('/delete/:id',setUserAsDeleted)
+router.patch('/delete/:id',Auth,setUserAsDeleted)
 router.patch('/personal/:id',updateUserPersonal)
 router.patch('/addcontacts/:id',updateContact)
 router.patch('/editdocs/:id',upload.fields([{name:'nicDocument',maxCount:1},{name:'licenceDoc',maxCount:1},{name:'empPhoto',maxCount:1}]),updateDocuments)
 
 //DELETE
-router.patch('/contacts/:id',deleteContact)
+router.patch('/contacts/:id',Auth,deleteContact)
 router.delete('/drivers/records/:id',deleteRecord)
 
 
