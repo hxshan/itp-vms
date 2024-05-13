@@ -1,5 +1,6 @@
 const vehicleMaintain = require ('../models/vehicleMaintananceModel')
 const {Vehicles} = require('../models/vehicleModel')
+const Availability = require('../models/vehicleAvailability');
 
 
 //Add maintain to the system
@@ -31,16 +32,19 @@ const createmaintain = async (req, res) => {
             vredate: req.body.vredate,
             availability: req.body.availability
         };
-
-       
-        if (currentDate >= new Date(maintain.vrsdate) && currentDate <= new Date(maintain.vredate)) {
-            maintain.availability = 'unavailable';
-        } else {
-            maintain.availability = 'available';
-        }
-
-       
+ 
         const newMaintain = await vehicleMaintain.create(maintain);
+
+        const newAvailability = new Availability({
+            vehicle:  vehicle._id,
+            status: 'Maintain',
+            unavailableStartDate: req.body.vrsdate,
+            unavailableEndDate: req.body.vredate
+        });
+        
+          await newAvailability.save();
+        
+          await Vehicles.findByIdAndUpdate(vehicle, { $push: { availability: newAvailability._id } });
         
         return res.status(201).send(newMaintain);
     } catch (error) {
@@ -192,5 +196,8 @@ const driverMaintenanceRequest = async (req, res) => {
         res.status(500).send({ message: 'Internal server error' });
     }
 };
+
+
+
 
 module.exports = {createmaintain, getallmaintains, getonemaintain,getonemaintains , editmaintain , deletemaintain, driverMaintenanceRequest}

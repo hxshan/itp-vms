@@ -88,15 +88,15 @@ export const MaintainOrderTable = () => {
         const counts = {
             UnderMaintenance: 0,
             Done: 0,
-            RequestsFromDriver: 0 // Initialize RequestsFromDriver count
+            RequestsFromDriver: 0
         };
 
         maintains.forEach(item => {
             const sDate = new Date(item.vrsdate);
-            const eDate = item.vredate ? new Date(item.vredate) : null; // Parse eDate if it exists
+            const eDate = item.vredate ? new Date(item.vredate) : null; 
             if (sDate > currentDate) {
                 counts.UnderMaintenance++;
-            } else if (!eDate) { // Check if eDate is null or undefined
+            } else if (!eDate) { 
                 counts.RequestsFromDriver++;
             } else {
                 counts.Done++;
