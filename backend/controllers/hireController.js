@@ -24,7 +24,7 @@ const fetchHires = async (req, res) => {
 //Fetch all vehicles
 const fetchVehicles = async (req, res) => {
   try {
-    const vehicles = await Vehicles.find().populate('availability');
+    const vehicles = await Vehicles.find({ statusVehicle: 'Active' }).populate('availability');
     //console.log(vehicles)
     res.json(vehicles);
   } catch (error) {
@@ -32,7 +32,7 @@ const fetchVehicles = async (req, res) => {
     res.status(500).json({ message: 'Internal server error' });
   }
 }
-
+ 
 //Add new hire
 const addHire = async (req, res) => {
   try {
@@ -95,7 +95,7 @@ const addHire = async (req, res) => {
 
     const newAvailability = new Availability({
       vehicle: vehicle,
-      status: 'reserved',
+      status: 'Hire',
       unavailableStartDate: startDate,
       unavailableEndDate: endDate
     });
