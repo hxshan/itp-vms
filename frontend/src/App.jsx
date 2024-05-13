@@ -31,7 +31,7 @@ import ViewContract from "./pages/contract/ViewContract";
 import ContractEditForm from "./pages/contract/ContractEditForm";
 import CaseFileTable from "./components/EAM/CaseFileTable";
 
-import {HireDashboard, CreateHire, EditHire, HireRates} from "./pages/hires/hires"
+import {HireDashboard, CreateHire, EditHire, HireRates, Alert} from "./pages/hires/hires"
 import AddClient from "./pages/contract/AddClient";
 import { View } from '../src/components/VR/View';
 import {Servicenote} from '../src/components/VR/Servicenote';
@@ -106,6 +106,8 @@ function App() {
               <Route path="add" element={<CreateHire />}/>
               <Route path="edit/:id" element={<EditHire />}/>
               <Route path="rates" element={<HireRates />}/>
+              <Route path="alert" element={<Alert />}/>
+
             </Route>
 
             <Route path="vehicle">

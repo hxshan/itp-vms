@@ -134,6 +134,27 @@ const addHire = async (req, res) => {
   }
 }
 
+//Find Hire By Id
+const getHireById = async (req, res) => {
+  try {
+    const hireId = req.params.id;
+
+    // Find the hire document by its ID
+    const hire = await Hire.findById(hireId)
+      .populate('vehicle')
+      .populate('driver');
+
+    if (!hire) {
+      return res.status(404).json({ message: 'Hire not found' });
+    }
+
+    res.json(hire);
+  } catch (error) {
+    console.error('Error fetching hire:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
 //Delete hire automatically
 const cron = require('node-cron');
 
@@ -482,5 +503,5 @@ const sendmail = async (transporter, hireData) => {
 
 
 
-module.exports = { addHire, fetchHires, editHire, deleteHire, generateCombinedReport, fetchVehicles };
+module.exports = { addHire, fetchHires, editHire, deleteHire, generateCombinedReport, fetchVehicles, getHireById };
 

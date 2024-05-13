@@ -1,10 +1,12 @@
 const express = require('express')  
 const router = express.Router()
-const {addHire, fetchHires,editHire, deleteHire, generateCombinedReport, fetchVehicles } = require('../controllers/hireController')
+const {addHire, fetchHires,editHire, deleteHire, generateCombinedReport, fetchVehicles, getHireById } = require('../controllers/hireController')
 const {fetchHiresRates, addHireRates, editHireRate} = require('../controllers/hireRatesController.js')
 const{getHiresByDriverId,updateHireDriver,  getPastTripsForDriver, getSingleHire, getHiresByVehicleId} =   require('../controllers/driverController')
 
   router.get('/', fetchHires)
+  
+  router.get('/get/:id', getHireById)
 
   router.get('/driver/:driverId', getHiresByDriverId)
 
