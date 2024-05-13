@@ -9,6 +9,10 @@ const PieChart = () => {
   const [data, error, loading, axiosFetch] = useAxios();
   const [searchTerm, setSearchTerm] = useState('');
   const [searchStatus, setSearchStatus] = useState('');
+  const [category, setCategory] = useState(''); // Add category state
+  const [vehicleType, setVehicleType] = useState('');
+  const [vehicleModel, setVehicleModel] = useState('');
+  const [fuelType, setFuelType] = useState('');
   const [searchResults, setSearchResults] = useState([]);
 
 
@@ -25,20 +29,32 @@ const PieChart = () => {
   }, []);
 
   useEffect(() => {
-    let filteredResults = data.vehicles || []; // Initialize as an empty array
-  
-    if (searchTerm !== '') {
-      filteredResults = filteredResults.filter(data =>
-        data.vehicleRegister.toLowerCase().includes(searchTerm.toLowerCase())
+    let filteredResults = data.vehicles || [];
+
+    filteredResults = filteredResults.filter(vehicle => {
+      const lowerCaseSearchTerm = searchTerm.toLowerCase();
+      const lowerCaseVehicleRegister = vehicle.vehicleRegister.toLowerCase();
+      const lowerCaseCategory = vehicle.category.toLowerCase();
+      const lowerCaseVehicleType = vehicle.vehicleType.toLowerCase();
+      const lowerCaseVehicleModel = vehicle.vehicleModel.toLowerCase();
+      const lowerCaseFuelType = vehicle.fuelType.toLowerCase();
+
+      return (
+        (searchTerm === '' || lowerCaseVehicleRegister.includes(lowerCaseSearchTerm)) &&
+        (searchStatus === '' || vehicle.statusVehicle === searchStatus) &&
+        (category === '' || lowerCaseCategory === category.toLowerCase()) &&
+        (vehicleType === '' || lowerCaseVehicleType === vehicleType.toLowerCase()) &&
+        (vehicleModel === '' || lowerCaseVehicleModel === vehicleModel.toLowerCase()) &&
+        (fuelType === '' || lowerCaseFuelType === fuelType.toLowerCase())
       );
-    }
-  
-    if (searchStatus !== '') {
-      filteredResults = filteredResults.filter(data => data.statusVehicle === searchStatus);
-    }
-  
+    });
+
     setSearchResults(filteredResults);
-  }, [searchTerm, searchStatus, data]);
+  }, [searchTerm, searchStatus, category, vehicleType, vehicleModel, fuelType, data]);
+
+  const handleCategoryChange = (event) => {
+    setCategory(event.target.value);
+  };
 
   const handleSearchChange = event => {
     setSearchTerm(event.target.value);
