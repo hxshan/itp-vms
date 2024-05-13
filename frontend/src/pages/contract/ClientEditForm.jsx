@@ -3,8 +3,9 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "@/api/axios";
 import useAxios from "@/hooks/useAxios";
 import { formatVal } from "./constants";
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer, toast } from "react-toastify";
 import { ClipLoader } from "react-spinners";
+import Swal from "sweetalert2";
 
 const ClientEditForm = () => {
   const params = useParams();
@@ -34,9 +35,7 @@ const ClientEditForm = () => {
   });
 
   const [client, clientError, clientLoading, ClientFetch] = useAxios();
-  const [updateRES, updateError, updateLoading , UpdateFetch] = useAxios();
-
-  
+  const [updateRES, updateError, updateLoading, UpdateFetch] = useAxios();
 
   const [formatDOB, setformatDOB] = useState("");
   const [openComp, setopenComp] = useState(false);
@@ -49,115 +48,167 @@ const ClientEditForm = () => {
     });
   };
 
-  const updatClient = async () =>{
+  const updatClient = async () => {
     await UpdateFetch({
-        axiosInstance: axios,
+      axiosInstance: axios,
       method: "PATCH",
       url: `/contract/updateClient/${clientID}`,
-      requestConfig:{
-        data:clientData,
-       }
-    })
-  }
+      requestConfig: {
+        data: clientData,
+      },
+    });
+  };
 
-  const handleSubmit = async(e)=>{
-    e.preventDefault()
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-
-    if (!clientData.firstName || !clientData.firstName.match(formatVal.nameReg)) {
-        toast.error("Invalid First Name");
-        return;
-    } else if (!clientData.lastName || !clientData.lastName.match(formatVal.nameReg)) {
-        toast.error("Invalid Last Name");
-        return;
-    } else if (!clientData.gender) {
-        toast.error("Invalid Gender");
-        return;
-    } else if (!clientData.dob) {
-        toast.error("Enter Date of Birth");
-        return;
-    } else {
-        const birthDate = new Date(clientData.dob);
-        const today = new Date();
-        let age = today.getFullYear() - birthDate.getFullYear();
-        const monthDiff = today.getMonth() - birthDate.getMonth();
-        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
-            age--;
-        }
-        if (age < 18) {
-            toast.error("Age should be greater than 18");
-            return;
-        }
-    }
-    if (!clientData.phoneNumber || !clientData.phoneNumber.match(formatVal.phoneReg)) {
-        toast.error("Invalid Phone number");
-        return;
-    } else if (!clientData.nicNumber || !clientData.nicNumber.match(formatVal.nicReg)) {
-        toast.error("Invalid NIC number");
-        return;
-    } else if (!clientData.email || !clientData.email.match(formatVal.emailReg)) {
-        toast.error("Invalid Email Address");
-        return;
-    } else if (clientData.licenceNumber && !clientData.licenceNumber.match(formatVal.licenseReg)) {
-        toast.error("Invalid license number");
-        return;
-    } else if (!clientData.Address) {
-        toast.error("Enter Address");
-        return;
-    } else if (clientData.Comp_Available) {
-        if (!clientData.Comp_Name) {
-            toast.error("Enter Company Name");
-            return;
-        } else if (!clientData.Reg_Num || !clientData.Reg_Num.match(formatVal.regNumReg)) {
-            toast.error("Invalid Registration number");
-            return;
-        } else if (!clientData.Tax_Num || !clientData.Tax_Num.match(formatVal.taxNumReg)) {
-            toast.error("Invalid Tax number");
-            return;
-        } else if (!clientData.Legal_struc) {
-            toast.error("Please select Legal Structure");
-            return;
-        } else if (!clientData.Comp_Email || !clientData.Comp_Email.match(formatVal.emailReg)) {
-            toast.error("Invalid Company email");
-            return;
-        } else if (!clientData.Comp_Phone || !clientData.Comp_Phone.match(formatVal.phoneReg)) {
-            toast.error("Invalid Company Phone number");
-            return;
-        } else if (!clientData.Comp_Address) {
-            toast.error("Enter Company Address");
-            return;
-        }
-    }
-
-    const confirm = window.confirm("Are u sure to update Client ?")
-
-    if(confirm){
-      await updatClient()
-    }else{
+    if (
+      !clientData.firstName ||
+      !clientData.firstName.match(formatVal.nameReg)
+    ) {
+      toast.error("Invalid First Name");
       return;
-    }
-   
-  }
-
-  useEffect(()=>{
-    if(!updateLoading){
-      if(updateError){
-        alert(updateError)
-      }else if(updateRES.message === "there is no client" ){
-        alert("Client does not exist")
-      }else if(updateRES.message === "client fields are not filled"){
-        alert("Client fields are not filled")
-      }else if(updateRES.message === "company fields are not filled"){
-        alert("Client fields are not filled")
-      }else if(updateRES.message === "successful"){
-        alert("Client updated successfull")
-        navigate(`/viewClient/${clientID}`)
-      }else if(updateRES.message === "failed"){
-        alert(`No values found changed "Redirecting to Client page" `)
-        navigate(`/viewClient/${clientID}`)
+    } else if (
+      !clientData.lastName ||
+      !clientData.lastName.match(formatVal.nameReg)
+    ) {
+      toast.error("Invalid Last Name");
+      return;
+    } else if (!clientData.gender) {
+      toast.error("Invalid Gender");
+      return;
+    } else if (!clientData.dob) {
+      toast.error("Enter Date of Birth");
+      return;
+    } else {
+      const birthDate = new Date(clientData.dob);
+      const today = new Date();
+      let age = today.getFullYear() - birthDate.getFullYear();
+      const monthDiff = today.getMonth() - birthDate.getMonth();
+      if (
+        monthDiff < 0 ||
+        (monthDiff === 0 && today.getDate() < birthDate.getDate())
+      ) {
+        age--;
+      }
+      if (age < 18) {
+        toast.error("Age should be greater than 18");
+        return;
       }
     }
-  },[updateLoading])
+    if (
+      !clientData.phoneNumber ||
+      !clientData.phoneNumber.match(formatVal.phoneReg)
+    ) {
+      toast.error("Invalid Phone number");
+      return;
+    } else if (
+      !clientData.nicNumber ||
+      !clientData.nicNumber.match(formatVal.nicReg)
+    ) {
+      toast.error("Invalid NIC number");
+      return;
+    } else if (
+      !clientData.email ||
+      !clientData.email.match(formatVal.emailReg)
+    ) {
+      toast.error("Invalid Email Address");
+      return;
+    } else if (
+      clientData.licenceNumber &&
+      !clientData.licenceNumber.match(formatVal.licenseReg)
+    ) {
+      toast.error("Invalid license number");
+      return;
+    } else if (!clientData.Address) {
+      toast.error("Enter Address");
+      return;
+    } else if (clientData.Comp_Available) {
+      if (!clientData.Comp_Name) {
+        toast.error("Enter Company Name");
+        return;
+      } else if (
+        !clientData.Reg_Num ||
+        !clientData.Reg_Num.match(formatVal.regNumReg)
+      ) {
+        toast.error("Invalid Registration number");
+        return;
+      } else if (
+        !clientData.Tax_Num ||
+        !clientData.Tax_Num.match(formatVal.taxNumReg)
+      ) {
+        toast.error("Invalid Tax number");
+        return;
+      } else if (!clientData.Legal_struc) {
+        toast.error("Please select Legal Structure");
+        return;
+      } else if (
+        !clientData.Comp_Email ||
+        !clientData.Comp_Email.match(formatVal.emailReg)
+      ) {
+        toast.error("Invalid Company email");
+        return;
+      } else if (
+        !clientData.Comp_Phone ||
+        !clientData.Comp_Phone.match(formatVal.phoneReg)
+      ) {
+        toast.error("Invalid Company Phone number");
+        return;
+      } else if (!clientData.Comp_Address) {
+        toast.error("Enter Company Address");
+        return;
+      }
+    }
+
+    const confirm = window.confirm("Are u sure to update Client ?");
+
+    if (confirm) {
+      await updatClient();
+    } else {
+      return;
+    }
+  };
+
+  useEffect(() => {
+    if (!updateLoading) {
+      if (updateError) {
+        alert(updateError);
+      } else if (updateRES.message === "there is no client") {
+        alert("Client does not exist");
+      } else if (updateRES.message === "client fields are not filled") {
+        alert("Client fields are not filled");
+      } else if (updateRES.message === "company fields are not filled") {
+        alert("Client fields are not filled");
+      } else if (updateRES.message === "successful") {
+        alert("Client updated successfull");
+        Swal.fire({
+          icon: "success",
+          title: "Success",
+          text: "Client updated successfull",
+          timer: 2000,
+          showConfirmButton: false,
+        }).then(() => {
+          navigate(`/viewClient/${clientID}`, {
+            replace: true,
+            state: { forceRefresh: true },
+          });
+        });
+      } else if (updateRES.message === "failed") {
+        Swal.fire({
+          icon: "warning",
+          title: "No changes",
+          text: `No values found changed "Redirecting to Client page"`,
+          timer: 2000,
+          showConfirmButton: false,
+        }).then(() => {
+          navigate(`/viewClient/${clientID}`, {
+            replace: true,
+            state: { forceRefresh: true },
+          });
+        });
+      }
+    }
+  }, [updateLoading]);
 
   useEffect(() => {
     if (client) {
@@ -191,8 +242,6 @@ const ClientEditForm = () => {
     }
   }, [client]);
 
-  
-
   useEffect(() => {
     if (clientData.dob) {
       setformatDOB(new Date(clientData.dob).toISOString().split("T")[0]);
@@ -206,43 +255,41 @@ const ClientEditForm = () => {
       if (value === "true") {
         setopenComp(true);
         setclientData({
-            ...clientData,
-            Comp_Available: true
-        })
+          ...clientData,
+          Comp_Available: true,
+        });
       } else {
         setopenComp(false);
         setclientData({
           ...clientData,
-          Comp_Available:false,
-          Comp_Name:'',
-          Reg_Num: '',
-          Tax_Num: '',
-          Legal_struc: '',
-          Comp_Email: '',
-          Comp_Phone: '',
-          Comp_Address: '',
+          Comp_Available: false,
+          Comp_Name: "",
+          Reg_Num: "",
+          Tax_Num: "",
+          Legal_struc: "",
+          Comp_Email: "",
+          Comp_Phone: "",
+          Comp_Address: "",
         });
       }
-    }else{
-        setclientData({
-            ...clientData,
-            [name]: value,
-          });  
+    } else {
+      setclientData({
+        ...clientData,
+        [name]: value,
+      });
     }
-
-    
   };
 
-  console.log(clientData)
+  console.log(clientData);
   useEffect(() => {
     getClient();
   }, []);
 
-  if(clientLoading ){
-    return(
+  if (clientLoading) {
+    return (
       <div className="flex justify-center items-center h-screen">
         <div className="sweet-loading">
-          <ClipLoader color="#10971D" loading={true}  size={50} />
+          <ClipLoader color="#10971D" loading={true} size={50} />
         </div>
       </div>
     );
@@ -252,7 +299,7 @@ const ClientEditForm = () => {
     <div className="w-full flex flex-col justify-center items-center py-5">
       <div className="flex items-center justify-center mb-4 border-b-2">
         <p className=" text-[50px] font-bold ">EDIT CLIENT</p>
-        <ToastContainer/>
+        <ToastContainer />
       </div>
 
       <div className="shadow-xl bg-white w-[90%] h-fit rounded-lg py-8 flex justify-evenly ">
@@ -426,7 +473,9 @@ const ClientEditForm = () => {
                       value={clientData.Legal_struc}
                       onChange={HandleInput}
                     >
-                        <option value="" className="hiddden">Please select</option>
+                      <option value="" className="hiddden">
+                        Please select
+                      </option>
                       <option value="Sole Proprietorship">
                         Sole Proprietorship
                       </option>
@@ -489,10 +538,18 @@ const ClientEditForm = () => {
             </div>
           </div>
           <div className="flex justify-end gap-4">
-            <button className=" bg-actionBlue text-white font-bold px-5 py-2 rounded-xl w-[120px] " onClick={handleSubmit}>
+            <button
+              className=" bg-actionBlue text-white font-bold px-5 py-2 rounded-lg w-[150px] "
+              onClick={handleSubmit}
+            >
               Submit
             </button>
-            <button className=" bg-actionRed text-white font-bold px-5 py-2 rounded-xl w-[120px] " onClick={()=>{navigate(`/viewClient/${clientID}`)}}>
+            <button
+              className=" bg-actionRed text-white font-bold px-5 py-2 rounded-lg w-[150px] "
+              onClick={() => {
+                navigate(`/viewClient/${clientID}`);
+              }}
+            >
               Cancel
             </button>
           </div>
