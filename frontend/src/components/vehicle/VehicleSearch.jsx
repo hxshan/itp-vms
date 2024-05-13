@@ -11,8 +11,8 @@ const VehicleSearch = () => {
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(0);
   const navigate = useNavigate();
-  const [available, setAvailable] = useState([]);
   const { vehicles = [] } = data;
+  const [availabilityStatuses, setAvailabilityStatuses] = useState({});
 
   const handleViewClick = (id) => {
     navigate(`view/${id}`);
@@ -55,30 +55,40 @@ const VehicleSearch = () => {
   }
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const availabilityData = [];
-        for (const vehicle of vehicles) {
-          try {
-            const response = await axios.get(`/vehicle/availability/${vehicle._id}`);
-            if (Array.isArray(response.data) && response.data.length > 0) {
-              availabilityData.push(response.data[0]); 
-            } else {
-              availabilityData.push(null);
-            }
-          } catch (error) {
-            console.error(`Error fetching availability data for vehicle with ID ${vehicle._id}:`, error);
-            availabilityData.push(null); // Push null if there's an error fetching data for the vehicle
+    getData();
+  }, [reload]);
+
+  const getAvailabilityData = async () => {
+    try {
+      const statuses = {};
+      for (const vehicle of vehicles) {
+        const response = await axios.get(`/vehicle/availability/${vehicle._id}`);
+        const vehicleAvailability = response.data;
+        let status = "Available";
+        for (const availabilityRecord of vehicleAvailability) {
+          const startDate = new Date(availabilityRecord.unavailableStartDate);
+          const endDate = new Date(availabilityRecord.unavailableEndDate);
+          const currentDate = new Date();
+          const avaStatus = availabilityRecord.status
+
+          if (currentDate >= startDate && currentDate <= endDate) {
+            status =  avaStatus ;
+            break; 
           }
         }
-        setAvailable(availabilityData);
-    
-      } catch (error) {
-        console.error('Error fetching availability data:', error);
+        statuses[vehicle._id] = status;
       }
-    };
-    fetchData();
+      setAvailabilityStatuses(statuses);
+    } catch (error) {
+      console.error('Error fetching availability data:', error);
+  
+    }
+  };
+
+  useEffect(() => {
+    getAvailabilityData();
   }, [vehicles]);
+
 
   useEffect(() => {
     getData();
@@ -115,46 +125,7 @@ const VehicleSearch = () => {
       );
     }
   });
-  console.log(vehicles)
-
-  const getAvailabilityStatus = (vehicleId) => {
-    // Find availability data objects corresponding to the vehicleId
-    const vehicleAvailabilityIds = vehicles.find(vehicle => vehicle._id === vehicleId)?.availability || [];
     
-    console.log("meka",available)
-    
-    // Filter the availability data objects corresponding to the IDs in vehicleAvailabilityIds
-    const availabilityData = available.filter(availability => vehicleAvailabilityIds.includes(availability?._id));
-  
-    // Log availabilityData for debugging
-    console.log('Availability Data:', availabilityData);
-    
-    // Check if availabilityData is not empty
-    if (availabilityData.length > 0) {
-      // Process availability data
-      for (const availability of availabilityData) {
-        if (availability && availability.unavailableStartDate && availability.unavailableEndDate) {
-          const startDate = new Date(availability.unavailableStartDate);
-          const endDate = new Date(availability.unavailableEndDate);
-          const currentDate = new Date();
-  
-          // Check if the current date is within the unavailable date range
-          if (currentDate >= startDate && currentDate <= endDate) {
-            return "Unavailable";
-          }
-        } else {
-          console.error("Invalid availability data:", availability);
-        }
-      }
-  
-      // If no unavailable date range was found, consider it available
-      return "Available";
-    } else {
-      // Handle case where availability data is not found
-      return "Availability data not found";
-    }
-  };
-
 
   const chunkSize = 10;
   const totalPages = Math.ceil(filteredVehicles.length / chunkSize);
@@ -220,10 +191,11 @@ const VehicleSearch = () => {
                   {vehicle.statusVehicle.toUpperCase()}
                 </span>
               </td>
-              <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">
-                     {getAvailabilityStatus(vehicle._id)}
-                </td>
-              
+              <td className={`px-6 py-2 whitespace-nowrap border-r text-center font-semibold border-gray-200 ${vehicle.statusVehicle === 'Active' ? (availabilityStatuses[vehicle._id] === 'Available' || availabilityStatuses[vehicle._id] === '' ? 'text-green-500 bg-green-100' : 'text-red-600 bg-red-300') : ''}`}>
+                {vehicle.statusVehicle === 'Active' ? 
+                  (availabilityStatuses[vehicle._id] || 'Available') : 
+                  (availabilityStatuses[vehicle._id] === 'Unavailable' ? 'Unavailable' : availabilityStatuses[vehicle._id])}
+              </td>
               <td className="px-2 py-2 whitespace-nowrap border-r border-gray-200 flex justify-center">
                     {vehicle.statusVehicle === 'Active' && (
                     <>
