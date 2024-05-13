@@ -129,7 +129,7 @@ const calculatePercentage = (numerator, denominator) => {
            
     
             </div>    
-
+            <button className='mx-2 px-3 py-1 rounded-md bg-actionRed text-white text-sm text-bold' onClick={() => navigate('/vehicle/vehsummary')}>Vehicle summary</button>
             <button className='mx-2 px-3 py-1 rounded-md bg-actionBlue text-white text-sm text-bold' onClick={() => navigate('/vehicle')}>Dashboard</button>     
         </div>
         <div ref={componentRef}>
