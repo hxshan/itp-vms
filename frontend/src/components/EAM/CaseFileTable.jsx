@@ -5,6 +5,8 @@ import CaseFileSearch from "./CaseFileSearch";
 
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 const CaseFileTable = () => {
     const [caseFiles, setCaseFiles] = useState([]);
@@ -48,7 +50,7 @@ const CaseFileTable = () => {
                  .then(() => {
                         setCaseFiles(caseFiles.filter((caseFile) => caseFile._id !== id));
                         setLoading(false);
-                        alert("Case file deleted successfully!");
+                        toast.success('Case file deleted successfully');
                  })
                  .catch((error) => {
                      console.log("Error deleting case file", error);
