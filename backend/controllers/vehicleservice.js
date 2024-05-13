@@ -40,8 +40,7 @@ const addservice = async (req, res) => {
 //Get all Services 
 const getallservices = async (req, res) => {
     try {
-        const Services = await vehicle_service.find().populate("vehicleRegister");
-        console.log(Services)
+        const Services = await vehicle_service.find();
         return res.status(201).json(Services);
 
     } catch (error) {

@@ -4,6 +4,7 @@ import axios from '@/api/axios';
 import { useNavigate } from 'react-router-dom';
 import { ReactToPrint } from 'react-to-print';
 import { ClockLoader } from "react-spinners";
+import { useParams } from 'react-router-dom';
 
 const VehicleService = () => {
   const [data, error, loading, axiosFetch] = useAxios();
@@ -18,6 +19,37 @@ const VehicleService = () => {
   const handleAddnoteClick = (id) => {
     navigate(`/addnote/${id}`);
   };
+  const [data1,setData1]= useState(null);
+
+
+  const getdata = async () => {
+    try {
+        const response = await axios.get("/vehicleService/getservices/");
+        setData1(response.data); // Assuming setDate is a state updater function to update 'data'
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+useEffect(() => {
+    getdata();
+}, []); // Empty dependency array to execute the effect only once on component mount
+
+
+
+const getKilometerLimit = (vehicleRegister) => {
+  if (!data1 || data1.length === 0) return null; // Handle data1 being null or empty array
+  const foundService = data1.find(item => item.vehicleRegister === vehicleRegister);
+  console.log(foundService);
+  if (foundService) {
+    console.log(foundService);
+    return foundService.kilometerLimit;
+  } else {
+    return null; // Handle case where no service is found for the vehicleRegister
+  }
+}
+
+
 
   const resetState = () => {
     setRangeend(5000);
@@ -151,8 +183,8 @@ const VehicleService = () => {
                       <p className='bg-red-200 text-red-800 font-semibold rounded-md mx-4'>Still Not Close to Range</p>
                     )}
                   </td>
-                  <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200 text-center">{vehicle.kilometerLimit}km</td>
-                  <td className="px-2 py-2 whitespace-nowrap border-r border-gray-200 flex justify-center">
+                  <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200 text-center">{getKilometerLimit(vehicle._id)}km</td>
+                <td className="px-2 py-2 whitespace-nowrap border-r border-gray-200 flex justify-center">
                     <button
                       className="my-1 mx-1 bg-blue-700 text-white py-1 px-4 rounded-md text-sm font-semibold"
                       id={vehicle._id}
