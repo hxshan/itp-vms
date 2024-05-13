@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import axios from "@/api/axios";
 import { ToastContainer, toast } from 'react-toastify';
 import { vehicalInstance } from './constants';
+import { ClipLoader } from "react-spinners";
 
 
 const AddContract = () => {
@@ -59,10 +60,15 @@ const [ContractData,setContractData] = useState({
     Payment_Date:"",
     Amount_Payed:"",
 })
-console.log(ContractData)
+
+
+const [vehicalDat,setvehicalDat] = useState()
 const [client,clientError,clientLoading,clientFetch] = useAxios();
 const [contract,conError,conLoading,conFetch] = useAxios();
+const [vehiclesData, vehiclesError, vehiclesLoading, axiosFetchVehicles] = useAxios()
 
+
+console.log(vehicalDat)
 
 const [EstimatedTime,setEstimatedTime] = useState('');
 
@@ -73,6 +79,23 @@ const getClient = ()=>{
      url: `/contract/getClient/${clientID}`,
     })
 }
+
+const fetchVehicleDetails = () => {
+    axiosFetchVehicles({
+          axiosInstance: axios,
+          method: "GET",
+          url: "/vehicle/",
+      });
+  };
+
+  useEffect(()=>{
+    if(vehiclesError){
+        alert(vehiclesError)
+    }else if(vehiclesData){
+        setvehicalDat(vehiclesData)
+    }
+  },[vehiclesData])
+
 
 const HandleInput = (e)=>{
     const {name,value} = e.target;
@@ -277,6 +300,7 @@ useEffect(()=>{
 
 useEffect(()=>{
     getClient();
+    fetchVehicleDetails();
 },[])
 
 
@@ -299,7 +323,15 @@ const vehicals = [
     }
 ]
 
-
+if(vehiclesLoading || clientLoading){
+    return(
+      <div className="flex justify-center items-center h-screen">
+        <div className="sweet-loading">
+          <ClipLoader color="#10971D" loading={true}  size={50} />
+        </div>
+      </div>
+    );
+  }
 
 
   return (
@@ -519,7 +551,7 @@ const vehicals = [
 
             <div className='flex flex-col mt-3 gap-1'>
                 <p>Amount Due</p>
-                <p>{ContractData.Amount_Payed && ContractData.Payment_Amount ? ContractData.Payment_Amount - ContractData.Amount_Payed : "Calculating"}</p>
+                <p>{ContractData.Amount_Payed && ContractData.Payment_Amount ? (ContractData.Payment_Amount - ContractData.Amount_Payed).toLocaleString() : "Calculating"}</p>
             </div>
 
            

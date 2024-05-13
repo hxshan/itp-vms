@@ -63,6 +63,8 @@ const ViewContract = () => {
      url: `/contract/getContract/${contractID}`,
    });
  }
+//(contractData.Deductible).toLocaleString()
+ console.log( contractData.Deductible === "loading" ? "failed" : Number(contractData.Deductible).toLocaleString())
 
  useEffect(() => {
 
@@ -141,37 +143,37 @@ if (data) {
     return output.join(' and ');
 }
 
-  const calculateTimeDiff = (startDate,endDate) =>{
-    
-    const startDateTime = new Date(startDate);
-    const endDateTime = new Date(endDate);
-    const currentDateTime = new Date();
+const calculateTimeDiff = (startDate, endDate) => {
+  const startDateTime = new Date(startDate);
+  const endDateTime = new Date(endDate);
+  const currentDateTime = new Date();
 
-    startDateTime.setHours(startDateTime.getHours() - 5);
-    startDateTime.setMinutes(startDateTime.getMinutes() - 30);
+  startDateTime.setHours(startDateTime.getHours() - 5);
+  startDateTime.setMinutes(startDateTime.getMinutes() - 30);
 
-    if(startDateTime > currentDateTime){
-      setError("cant start cuz start date is yet to come")
-
-    }else {
+  if (startDateTime > currentDateTime) {
+    setError("Can't start because start date is yet to come");
+  } else {
     const diffMilliseconds = endDateTime - currentDateTime;
 
     if (diffMilliseconds >= 0) {
       setCountdown(diffMilliseconds);
 
       const intervalId = setInterval(() => {
-        setCountdown((prevCountdown) => prevCountdown - 1000);
+        setCountdown((prevCountdown) => {
+          if (prevCountdown <= 0) {
+            clearInterval(intervalId);
+            return 0;
+          }
+          return prevCountdown - 1000;
+        });
       }, 1000);
-
-      setTimeout(() => {
-        clearInterval(intervalId);
-        setCountdown(0);
-      }, diffMilliseconds);
+    } else {
+      // If the end date has already passed, set countdown to 0
+      setCountdown(0);
     }
   }
-
-
-  }
+};
 
   if(loading){
     return(
@@ -327,12 +329,12 @@ if (data) {
             <div className="flex gap-4 mt-3">
               <div className="flex flex-col gap-1">
                 <label>Coverage amount</label>
-                <p>{contractData.Coverage_Amount}</p>
+                <p>{ contractData.Coverage_Amount === "loading" ? "loading" : Number(contractData.Coverage_Amount).toLocaleString()}</p>
               </div>
 
               <div className="flex flex-col gap-1">
                 <label>Deductible</label>
-                <p>{contractData.Deductible}</p>
+                <p>{ contractData.Deductible === "loading" ? "loading" : Number(contractData.Deductible).toLocaleString()}</p>
               </div>
             </div>
 
@@ -360,7 +362,7 @@ if (data) {
 
             <div className="flex flex-col mt-3 gap-1">
               <label>Amount</label>
-              <p>{contractData.Payment_Amount}</p>
+              <p>{contractData.Payment_Amount === "loading" ? "loading" : Number(contractData.Payment_Amount).toLocaleString()}</p>
             </div>
 
             <div className="flex gap-12 mt-3">
@@ -377,12 +379,12 @@ if (data) {
 
             <div className="flex flex-col mt-3 gap-1">
               <label>Amount payed</label>
-              <p>{contractData.Amount_Payed}</p>
+              <p>{contractData.Amount_Payed === "loading" ? "loading" : Number(contractData.Amount_Payed).toLocaleString()}</p>
             </div>
 
             <div className="flex flex-col mt-3 gap-1">
               <p>Amount Due</p>
-              <p>{contractData.Payment_Amount - contractData.Amount_Payed}</p>
+              <p>{contractData.Payment_Amount === "loading" || contractData.Amount_Payed === "loading" ? "loading" : Number(contractData.Payment_Amount - contractData.Amount_Payed).toLocaleString()}</p>
             </div>
           </div>
         </div>
