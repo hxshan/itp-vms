@@ -68,9 +68,7 @@ const caseFileSchema = new mongoose.Schema(
       type: String,
     },
 
-    witnessesContactInformation: {
-      type: String,
-    },
+    
     witnessesStatement: {
       type: String,
     },

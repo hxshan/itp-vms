@@ -4,7 +4,7 @@ import Spinner from "./Spinner";
 import CaseFileSearch from "./CaseFileSearch";
 
 import { Link } from "react-router-dom";
-
+import Swal from "sweetalert2";
 
 const CaseFileTable = () => {
     const [caseFiles, setCaseFiles] = useState([]);
@@ -30,7 +30,18 @@ const CaseFileTable = () => {
         }, []);
 
         const deleteCaseFile = async (id) => {
-            if(confirm("Are you sure you want to delete this case file?")){
+
+            const result = await Swal.fire({
+                title: 'Are you sure?',
+                text: 'Are you sure you want to delete this record?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Confirm!'
+            });
+
+            if(result.isConfirmed){
                 setLoading(true);
                 axios
                  .delete(`http://localhost:3000/api/caseFiles/${id}`)
@@ -43,7 +54,12 @@ const CaseFileTable = () => {
                      console.log("Error deleting case file", error);
                      setLoading(false);
                  });
+
             }
+            
+            
+                
+            
         }
 
         const handleSearch = (e) => {
