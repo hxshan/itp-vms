@@ -59,22 +59,26 @@ const VehicleSearch = () => {
       try {
         const availabilityData = [];
         for (const vehicle of vehicles) {
-          const response = await axios.get(`/vehicle/availability/${vehicle._id}`);
-          console.log("Availability response:", response.data); // Log the response
-          if (Array.isArray(response.data) && response.data.length > 0) {
-            availabilityData.push(response.data[0]); // Push the first object from the array
-          } else {
-            availabilityData.push(null); // Push null if no availability data is available
+          try {
+            const response = await axios.get(`/vehicle/availability/${vehicle._id}`);
+            if (Array.isArray(response.data) && response.data.length > 0) {
+              availabilityData.push(response.data[0]); 
+            } else {
+              availabilityData.push(null);
+            }
+          } catch (error) {
+            console.error(`Error fetching availability data for vehicle with ID ${vehicle._id}:`, error);
+            availabilityData.push(null); // Push null if there's an error fetching data for the vehicle
           }
         }
         setAvailable(availabilityData);
+    
       } catch (error) {
         console.error('Error fetching availability data:', error);
       }
     };
     fetchData();
   }, [vehicles]);
-
 
   useEffect(() => {
     getData();
@@ -111,34 +115,46 @@ const VehicleSearch = () => {
       );
     }
   });
+  console.log(vehicles)
 
   const getAvailabilityStatus = (vehicleId) => {
-  
-    // Find the availability object for the given vehicleId
-    const vehicleAvailability = available.find(avail => avail && avail.vehicleId === vehicleId);
-  
-    // Log the found availability object
-    console.log("Vehicle Availability:", vehicleAvailability);
-  
-    // Check if the availability object was found
-    if (vehicleAvailability) {
-      // Parse the date strings to Date objects
-      const startDate = new Date(vehicleAvailability.unavailableStartDate);
-      const endDate = new Date(vehicleAvailability.unavailableEndDate);
-      const currentDate = new Date();
-  
-
-      if (currentDate >= startDate && currentDate <= endDate) {
-        return { status: "Unavailable" };
-      } else {
-        return { status: "Available" };
-      }
-    } else {
- 
+    // Find availability data objects corresponding to the vehicleId
+    const vehicleAvailabilityIds = vehicles.find(vehicle => vehicle._id === vehicleId)?.availability || [];
     
-      return { status: "Available" };
+    console.log("meka",available)
+    
+    // Filter the availability data objects corresponding to the IDs in vehicleAvailabilityIds
+    const availabilityData = available.filter(availability => vehicleAvailabilityIds.includes(availability?._id));
+  
+    // Log availabilityData for debugging
+    console.log('Availability Data:', availabilityData);
+    
+    // Check if availabilityData is not empty
+    if (availabilityData.length > 0) {
+      // Process availability data
+      for (const availability of availabilityData) {
+        if (availability && availability.unavailableStartDate && availability.unavailableEndDate) {
+          const startDate = new Date(availability.unavailableStartDate);
+          const endDate = new Date(availability.unavailableEndDate);
+          const currentDate = new Date();
+  
+          // Check if the current date is within the unavailable date range
+          if (currentDate >= startDate && currentDate <= endDate) {
+            return "Unavailable";
+          }
+        } else {
+          console.error("Invalid availability data:", availability);
+        }
+      }
+  
+      // If no unavailable date range was found, consider it available
+      return "Available";
+    } else {
+      // Handle case where availability data is not found
+      return "Availability data not found";
     }
   };
+
 
   const chunkSize = 10;
   const totalPages = Math.ceil(filteredVehicles.length / chunkSize);
@@ -205,12 +221,8 @@ const VehicleSearch = () => {
                 </span>
               </td>
               <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">
-               {vehicle.statusVehicle === 'Active' && (
-                     <>
-                     {getAvailabilityStatus(vehicle._id).status}
-                    </>
-                   )}
-              </td>
+                     {getAvailabilityStatus(vehicle._id)}
+                </td>
               
               <td className="px-2 py-2 whitespace-nowrap border-r border-gray-200 flex justify-center">
                     {vehicle.statusVehicle === 'Active' && (

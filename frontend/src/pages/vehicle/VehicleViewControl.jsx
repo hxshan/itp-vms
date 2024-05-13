@@ -92,12 +92,6 @@ const VehicleViewControl = () => {
     }, [id]);
 
 
-  const startDateString = '2024-05-07T00:00:00.000Z';
-
-  const startDate = new Date(startDateString);
-
-  const formattedStartDate = startDate.toLocaleDateString();
-
 
   if (loading) {
     return (
@@ -136,10 +130,17 @@ const VehicleViewControl = () => {
     navigate(-1); 
   };
 
+  const startDateString = '2024-05-07T00:00:00.000Z';
+
+  const startDate = new Date(startDateString);
+
+  const formattedStartDate = startDate.toLocaleDateString();
+
   const formatDate = (dateString) => {
     const date = new Date(dateString);
-    return date.toISOString().split('T')[0]; 
+    return date.toLocaleDateString('en-US'); 
   };
+
 
   let filteredAvailable = [];
   if (available) {
@@ -164,7 +165,11 @@ const VehicleViewControl = () => {
   }
 
   const isDateInRange = (startDate, endDate) => {
-    const currentDate = new Date();
+    const currentDate = new Date(); // Current date in local time zone
+    console.log("Current date:", currentDate);
+    console.log("Start date:", startDate);
+    console.log("End date:", endDate);
+    console.log("Is in range:", startDate <= currentDate && currentDate <= endDate);
     return startDate <= currentDate && currentDate <= endDate;
   };
 
@@ -209,18 +214,18 @@ const VehicleViewControl = () => {
             />
           </div>
           {filteredAvailable.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-              {filteredAvailable.map((availability, index) => (
-                <div key={index} className={`bg-white p-4 rounded-md shadow-md ${isDateInRange(new Date(availability.unavailableStartDate), new Date(availability.unavailableEndDate)) ? 'bg-green-300' : ''}`}>
-                  <h2 className="text-xl font-bold mb-2">{availability.status}</h2>
-                  <p className="text-sm font-semibold text-gray-700 mb-4">Unavailable Start Date:<p className="text-lg font-bold text-black"> {formatDate(availability.unavailableStartDate)} </p></p>
-                  <p className="text-sm font-semibold text-gray-700 mb-4">Unavailable End Date: <p className="text-lg font-bold text-black"> {formatDate(availability.unavailableEndDate)} </p></p>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <p>No availability data available.</p>
-          )}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        {filteredAvailable.map((availability, index) => (
+          <div key={index} className={`p-4 rounded-md shadow-md ${isDateInRange(new Date(availability.unavailableStartDate), new Date(availability.unavailableEndDate)) ? 'bg-green-400' : 'bg-white'}`}>
+            <h2 className="text-xl font-bold mb-2">{availability.status}</h2>
+            <p className="text-sm font-semibold text-gray-700 mb-4">Unavailable Start Date:<p className="text-lg font-bold text-black"> {formatDate(availability.unavailableStartDate)} </p></p>
+            <p className="text-sm font-semibold text-gray-700 mb-4">Unavailable End Date: <p className="text-lg font-bold text-black"> {formatDate(availability.unavailableEndDate)} </p></p>
+          </div>
+        ))}
+      </div>
+    ) : (
+      <p>No availability data available.</p>
+    )}
         </>
       )}
     </div>
