@@ -3,7 +3,7 @@ import ViewHire from "./ViewHire";
 import axios from "@/api/axios";
 
 import PropTypes from 'prop-types';
-
+import { useAuthContext } from "@/hooks/useAuthContext";
 import Swal from 'sweetalert2';
 
 
@@ -13,6 +13,8 @@ const HireList = ({ hireData, searchTerm, searchType, showDropdown, setFilteredD
     const [currentPage, setCurrentPage] = useState(1);
     const [results, setResults] = useState([]);
     const [itemsPerPage] = useState(5); 
+    const { user } = useAuthContext()
+
 
     const handleView = (hId) => {
         const selected = hireData.find((hire) => hire._id === hId);
@@ -45,7 +47,14 @@ const HireList = ({ hireData, searchTerm, searchType, showDropdown, setFilteredD
     };*/
         if (result.isConfirmed) {
             try {
-                await axios.put(`/hire/cancel/${id}`);
+                await axios.put(`/hire/cancel/${id}`,{},
+                {
+                    headers:{
+                        withCredentials:true,
+                        authorization:`Bearer ${user?.accessToken}`
+                    }
+                }
+                );
                 window.location.reload()
                 console.log('Hire deleted successfully');
             } catch (error) {

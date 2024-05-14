@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import useAxios from '@/hooks/useAxios';
 import axios from '@/api/axios';
 import TripReceipt from './TripReciept';
+import { useAuthContext } from "@/hooks/useAuthContext";
+
 
 const EndTripForm = ({ trip }) => {
 
@@ -16,6 +18,7 @@ const EndTripForm = ({ trip }) => {
   const [dropLocation, setdropLocation] = useState(`${trip.endPoint}`);
   const [tripEnded, setTripEnded] = useState(false);
   const [formError, setFormError] = useState();
+  const { user } = useAuthContext()
 
   const [vehicleData, Verror, Vloading, VaxiosFetch] = useAxios();
   const [updateResponse, updateError, updateLoading, updateAxiosFetch] = useAxios();
@@ -116,6 +119,10 @@ const EndTripForm = ({ trip }) => {
       requestConfig: {
         data: updatedTrip,
       },
+      headers:{
+        withCredentials:true,
+        authorization:`Bearer ${user?.accessToken}`
+      }
     });
 
     await VaxiosFetch({
@@ -125,6 +132,10 @@ const EndTripForm = ({ trip }) => {
       requestConfig: {
         data: updateMileage,
       },
+      headers:{
+        withCredentials:true,
+        authorization:`Bearer ${user?.accessToken}`
+      }
     });
 
     if(vehicleData){

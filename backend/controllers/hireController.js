@@ -1,6 +1,8 @@
 const Hire = require("../models/hireModel");
 const { Vehicles } = require("../models/vehicleModel");
 const Availability = require("../models/vehicleAvailability");
+const logUserActivity = require("../middleware/logUserActivity");
+const Income = require('../models/incomeModel')
 
 const { v4: uuid } = require('uuid');
 const mongoose = require('mongoose');
@@ -126,8 +128,8 @@ const addHire = async (req, res) => {
       vehicleNo,
       driverName
     });
-
-    res.status(201).json({ message: 'Hire added successfully' });
+    await logUserActivity(req,200,'CREATE',`created new hire`)
+    res.status(201).json({ message: 'Hire added successfully'});
   } catch (error) {
     console.error('Error adding hire:', error);
     res.status(500).json({ message: 'Internal server error' });
@@ -245,9 +247,33 @@ const editHire = async (req, res) => {
     if (!hire) {
       return res.status(404).json({ message: 'Hire not found' });
     }
+
+    if (hireStatus === "Active"){
+
+      const income = await new Income({
+        date: new Date(),
+        vehicle: vehicle, // Assuming viewHireData contains vehicle details
+        recordedBy:req?.user?._id||'userId' , // Change to the actual recorded user ID
+        source: 'Hire Income',
+        hirePayment: {
+          
+          hirePaymentType: 'Advance Payment', // Assuming it's an advance payment
+          hire: hire._id,
+          hireAmount:advancedPayment
+        },
+        description: 'Income generated from active hire',
+        paymentMethod: 'Cash', // Example payment method
+        status: 'Pending', // Income status
+        comments: 'Income generated from advance of active hire',
+      })
+      console.log(income)
+      await income.save()
+    }
+    await logUserActivity(req,200,'CREATE',`Hire updated`)
     res.json({ message: 'Hire updated successfully', hire });
   } catch (error) {
     console.error('Error updating hire:', error);
+    await logUserActivity(req,500,'CREATE',`Hire updated`)
     res.status(500).json({ message: 'Error updating hire', error: error.message });
   }
 };
@@ -303,7 +329,7 @@ const deleteHire = async (req, res) => {
       );
       await Hire.findByIdAndUpdate(hire._id, { hireStatus: 'Cancelled' })
     }
-
+    await logUserActivity(req,200,'DELETE',`Hire was cancelled`)
     res.json({ message: 'Hire status updated successfully' });
   } catch (error) {
     res.status(500).json({ message: 'Error updating hire status', error: error.message });

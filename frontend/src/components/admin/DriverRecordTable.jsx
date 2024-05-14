@@ -95,7 +95,7 @@ const DriverRecordTable = ({isopen,setIsOpen,reload,setReload}) => {
       <>
       {
         recordOpen &&
-        <EditDriverRecordFrom driverid={editId} isOpen={recordOpen} setIsOpen={setRecordOpen} reload={reload} setReload={setReload}/>
+        <EditDriverRecordFrom recordid={editId} isOpen={recordOpen} setIsOpen={setRecordOpen} reload={reload} setReload={setReload}/>
       }
         <div className="w-full mt-8">
           <div className="w-full flex justify-between mb-4">
@@ -143,6 +143,7 @@ const DriverRecordTable = ({isopen,setIsOpen,reload,setReload}) => {
                    return record.user.firstName.toLowerCase().includes(search) 
               }).slice(startIdx,endIdx)
               .map((row) => {
+                console.log(row)
                 return (
                     <tr className="bg-white border-t border-gray-200" key={row._id}>
                       <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{row.user.firstName}</td>
@@ -155,7 +156,7 @@ const DriverRecordTable = ({isopen,setIsOpen,reload,setReload}) => {
                       </td>
                       <td className="px-6 py-2 whitespace-nowrap justify-between flex">
                       <button className="bg-actionBlue text-white py-1 px-6 rounded-md" id={row._id} onClick={(e)=>navigate(`/admin/userreport/${e.target.id}`) }>View</button>
-                        <button className="bg-actionGreen text-white py-1 px-6 rounded-md" id={row.user._id} onClick={(e)=>openForm(e)}>Edit</button>
+                        <button className="bg-actionGreen text-white py-1 px-6 rounded-md" id={row._id} onClick={(e)=>openForm(e)}>Edit</button>
                         <button type="submit" id={row._id} onClick={(e)=>deleteData(e)} className="bg-actionRed text-white py-1 px-6 rounded-md">Delete</button>
                       </td>   
                   </tr>
