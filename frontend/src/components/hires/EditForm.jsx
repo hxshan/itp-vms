@@ -2,7 +2,7 @@ import axios from '@/api/axios';
 import useAxios from "@/hooks/useAxios";
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
-
+import { useAuthContext } from "@/hooks/useAuthContext";
 
 const EditForm = ({ setShowEditForm, viewHireData }) => {
   const [startDate, setStartDate] = useState(viewHireData.startDate);
@@ -22,6 +22,7 @@ const EditForm = ({ setShowEditForm, viewHireData }) => {
   const [cusMobile, setCusMobile] = useState(viewHireData.cusMobile);
   const [cusNic, setCusNic] = useState(viewHireData.cusNic);
   const [hireStatus, setHireStatus] = useState(viewHireData.hireStatus);
+  const { user } = useAuthContext()
 
   const [data, error, loading, axiosFetch] = useAxios()
 
@@ -61,7 +62,13 @@ const EditForm = ({ setShowEditForm, viewHireData }) => {
           data:{
             ...editedData
           }
+        },
+        
+        headers:{
+          withCredentials:true,
+          authorization:`Bearer ${user?.accessToken}`
         }
+        
       })
       if(error){
         alert(error)

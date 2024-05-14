@@ -97,7 +97,7 @@ const Alert = () => {
                         </thead>
                         <tbody>
                             {alert.length === 0 ? (
-                                <td colSpan="6" className="text-center py-4">No data available</td>
+                                <td colSpan="6" className="text-center py-4">No Alrets</td>
                             ) : 
                             alert.map(alert => (
                                 <tr key={alert.id} className="bg-white border-t border-gray-200">
@@ -108,7 +108,7 @@ const Alert = () => {
                                             {alert.hireStatus.toUpperCase()}
                                         </div>  
                                     </td>
-                                    <td className="px-4 py-4 ">
+                                    <td className="px-4 py-4 flex justify-between">
                                         <button
                                             className="py-2 px-6 bg-actionGreen text-white rounded-md mr-2"
                                             onClick={() => handleEditHire(alert)}
@@ -117,7 +117,7 @@ const Alert = () => {
                                         </button>
 
                                         <button
-                                            className="py-2 px-6 bg-actionGreen text-white rounded-md mr-2"
+                                            className="py-2 px-6 bg-actionRed text-white rounded-md mr-2"
                                             onClick={() => handleDone(alert)}
                                         >
                                             Done

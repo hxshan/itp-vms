@@ -20,7 +20,7 @@ import VehReport from "./pages/vehicle/VehReport";
 import VehSum from "./pages/vehicle/VehicleSummary";
 
 import AddContract from "./pages/contract/AddContract";
-import { AdminDashboard, Roles, EditRoles,UserProfile,Users, DriverPerformance,Reports} from "./pages/admin";
+import { AdminDashboard, Roles, EditRoles,UserProfile,Users, DriverPerformance,Reports, UserActivity} from "./pages/admin";
 import { MaintainceDashboard } from "./pages/Maintains/MaintainceDashboard";
 import { EditMaintainceOrder } from "./components/VR/EditMaintainceOrder";
 import ContractDasboard from "./pages/contract/ContractDasboard";
@@ -91,7 +91,7 @@ function App() {
             
             <Route path="/admin/roles" element={<Roles />} />
             <Route path="/admin/reports" element={<Reports/>} />
-            
+            <Route path="/admin/useractivity" element={<UserActivity />} />
             <Route path="/admin/roles/:id" element={<EditRoles />} />
             <Route path="/admin/edituser/:id" element={<EditUser/>}/>
             <Route path="/admin/users" element={<Users/>}/>
@@ -122,7 +122,7 @@ function App() {
               <Route path="edit/:id" element={<VehicleDetailsControl />} />
               <Route path="view/:id" element={<VehicleViewControl />} />
               <Route path="report" element={<VehReport />} />
-              <Route path="vehsum" element={<VehSum />} />
+              <Route path="report/vehsum" element={<VehSum />} />
             </Route>
             
             <Route path="/Vrform" element={<CreateMaintainceForm />}/>

@@ -106,12 +106,13 @@ const createIncome = async (req,res) =>{
     status,
     comments
   });
-
+  await logUserActivity(req,200,'CREATE',`created Income`)
   res.status(200).json(income)
    }
    catch(error)
     {
        console.log(error)
+       await logUserActivity(req,500,'CREATE',`created Income`)
     res.status(400).json({error: error.message})
     }
 }
@@ -131,7 +132,7 @@ const deleteIncome = async (req,res) =>{
     {
         return res.status(400).json({error: 'No such income'})
     }
-
+    await logUserActivity(req,200,'DELETE',`deleted Income`)
     res.status(200).json(income)
 
 }
@@ -156,7 +157,7 @@ const updateIncome = async (req,res) =>{
     {
         return res.status(400).json({error: 'No such Income'})
     }
-
+    await logUserActivity(req,200,'UPDATE',`Updated Income`)
     res.status(200).json(income)
     
 } 

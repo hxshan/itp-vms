@@ -7,10 +7,8 @@ import axios from "@/api/axios";
 import { ClockLoader } from "react-spinners";
 
 import NewlyAddedTable from '../../components/vehicle/NewlyAddedTable';
-import UnavailableTable from '../../components/vehicle/UnavailableTable';
 import VehicleSearch from "../../components/vehicle/VehicleSearch"
-import SummaryTable from "../../components/vehicle/SummaryTable"
-import DeletedTable from "../../components/vehicle/DeletedVehicle"
+
 
 
 const VehicleDashboard = () => {
@@ -37,27 +35,21 @@ const VehicleDashboard = () => {
     getData()
   },[])
 
-  useEffect(() => {
-    if (data) {
-      
-    }
-  }, [data]);
+
 
 
   if(loading){
     return(
-      <div className="w-full flex items-center justify-center h-full bg-white">
-        <ClockLoader
-            color="#36d7b7"
-            height={50}
-            width={10}
-          />
+      <div className="relaive w-full h-screen bg-white flex justify-center items-center rounded-md">
+          <div className="p-8">
+             <ClockLoader color="#36d7b7" size={60} />
+          </div>
       </div>
     )
   }
   if(error){
     return(
-      <p className="flex flex-col items-center justify-center h-screen text-center text-lg font-bold text-black">Unexpected Error has occured!</p>
+      <p className="flex flex-col items-center justify-center h-screen text-center text-lg font-bold text-black ">Unexpected Error has occured!</p>
     )
   }
 
@@ -157,7 +149,7 @@ const VehicleDashboard = () => {
 
   return  (
     
-    <div className="w-full place-content-center space-y-4 mt-8 bg-cover bg-center">
+    <div className="container mx-auto pb-10 min-h-full dark:text-white">
       <h1 className="text-xl font-bold">Vehicle Management Dashboard</h1>
       <div className='place-content-center'> 
         <div className=' flex flex-col  p-5'>
