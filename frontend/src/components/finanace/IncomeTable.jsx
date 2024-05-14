@@ -119,7 +119,7 @@ const IncomeTable = () => {
       case 'Hire Income':
         return `Rs.${income.hirePayment.hireAmount.toFixed(0)}`;
       case 'Rental Income':
-        return `Rs.${income.contractIncome ? income.contractIncome.rentalAmount.toFixed(0) : 0}`;
+        return `Rs.${income.contractIncome.rentalAmount.toFixed(0)}`;
       default:
         return 'Unknown';
     }
