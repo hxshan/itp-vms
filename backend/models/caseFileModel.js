@@ -40,6 +40,11 @@ const caseFileSchema = new mongoose.Schema(
       ref: "Hire",
     },
 
+    vehicle: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Vehicles"
+    },
+
     passengerCount: {
       type: Number,
       required: true,
@@ -63,9 +68,7 @@ const caseFileSchema = new mongoose.Schema(
       type: String,
     },
 
-    witnessesContactInformation: {
-      type: String,
-    },
+    
     witnessesStatement: {
       type: String,
     },

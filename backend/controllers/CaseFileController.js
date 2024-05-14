@@ -1,5 +1,6 @@
 const  mongoose  = require("mongoose");
 const CaseFile = require("../models/caseFileModel");
+const nodemailer = require('nodemailer')
 
 
 //create Case File
@@ -116,7 +117,7 @@ const getCaseFiles = async (req, res) => {
                  incidentDescription , 
                  severity,
                  injuriesDiscription,
-                 witnessesContactInformation,
+                 
                  witnessesStatement,
                  emergencyServicesContacted,
                  emergencyServicesResponseTime,
@@ -188,55 +189,113 @@ const getCaseFiles = async (req, res) => {
 };
 
 const driverCreateCaseFile = async (req, res) => {
+
+    
     try {
       const {
         caseType,
         caseTitle,
-        timeOfIncident,
-        driverID,
-        driverName,
-        driverLicenceNumber,
-        licencePlate,
-        passengerCount,
         location,
+        timeOfIncident,
+        licencePlate,
+        driver,
+        hire,
+        vehicle,
+        passengerCount,
+        status,
         incidentDescription,
-        hire, 
         severity
+
       } = req.body.data;
 
-      console.log(req.body)
+      console.log(req.body.data)
   
-      if (!caseType || !caseTitle || !timeOfIncident || !driverID || !driverName || !driverLicenceNumber || !licencePlate || !passengerCount || !location || !incidentDescription || !hire || !severity) {
+      if (!caseType || !caseTitle || !timeOfIncident || !driver  || !licencePlate || !passengerCount || !location || !incidentDescription || !hire || !severity) {
+        console.log()
         return res.status(400).send("Missing required fields");
       }
   
       const newCaseFile = {
         caseType,
         caseTitle,
-        timeOfIncident,
-        driver:{
-            _id:driverID,
-            firstName:driverName,
-            licenceNumber:driverLicenceNumber
-        },
-        licencePlate,
-        passengerCount,
         location,
-        incidentDescription,
+        timeOfIncident,
+        licencePlate,
+        driver,
         hire,
-        severity,
-        witnessesContactInformation,
-        witnessesStatement,
-        emergencyServicesContacted,
-        emergencyServicesResponseTime,
-        emergencyServicesActionsTaken,
-        photographicEvidence,
-        insuranceCompaniesContactInfo,
-        policeReport,
-        insuranceStatus
+        vehicle,
+        passengerCount,
+        status ,
+        incidentDescription,
+        severity
+        
+       
       };
   
       const createdCaseFile = await CaseFile.create(newCaseFile);
+
+      const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        host: "smtp.gmail.com",
+        port: 587,
+        secure: false,
+        tls: {
+            rejectUnauthorized: false,
+        },
+        auth: {
+            user: 'adithyaperera983@gmail.com',
+            pass: 'bkxosfghilscpzqg'
+        },
+
+      });
+
+      sendmail(transporter, {
+        caseType,
+        caseTitle,
+        location,
+        timeOfIncident,
+        licencePlate,
+        driver,
+        hire,
+        vehicle,
+        passengerCount,
+        status ,
+        incidentDescription,
+        severity
+      
+      });
+
+      const sendmail = async (transporter, CaseFileData) => {
+        const mailOptions = {
+            from: 'adithyaperera983@gmail.com',
+            to: 'adithyaperera456@gmail.com',
+            subject: "Emergency alert Reported",
+            html: ` <h1>New Case File Details</h1>
+            <p>Case Type: ${CaseFileData.caseType}</p>
+            <p>Case Title: ${CaseFileData.caseTitle}</p>
+            <p>Time Of Incident: ${CaseFileData.timeOfIncident}</p>
+            <p>Driver Name: ${CaseFileData.driver?.driverName}</p>
+            <p>customer name:${CaseFileData.hire?.cusName} </p>
+            <p>cutomer number: ${CaseFileData.hire?.cusMobile}</p>
+            <p>Passenger Count: ${CaseFileData.passengerCount}</p>
+            <p>Location: ${CaseFileData.location}</p>
+            <p>Licence Plate: ${CaseFileData.licencePlate}</p>
+           
+            <p>Incident Description: ${CaseFileData.incidentDescription}</p>
+            <p>Severity: ${CaseFileData.severity}</p>
+            `,
+        };
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                console.log(error);
+            } else {
+                console.log('Email sent: ' + info.response);
+            }
+        });
+
+    };
+
+      
       return res.status(201).send(createdCaseFile);
     } catch (error) {
       console.error("Error creating case file", error);
@@ -250,14 +309,7 @@ const driverCreateCaseFile = async (req, res) => {
 
   const getDriverAlerts = async (req, res) => {
     try {
-        const driverAlerts = await CaseFile.find({}).populate({
-            path: 'hire',
-            populate: {
-                path: 'driver',
-                
-                 // Only select the firstName field of the driver
-            }
-        });
+        const driverAlerts = await CaseFile.find({}).populate("driver").populate("hire");
         return res.status(200).send(driverAlerts);
     } catch (error) {
         console.log("Error getting driver alerts", error);
@@ -272,9 +324,7 @@ const driverCreateCaseFile = async (req, res) => {
           if (!mongoose.Types.ObjectId.isValid(id)) {
             return res.status(400).json("Invalid case file id");
           }
-          const caseFile = await CaseFile.findById(id)
-            .populate("driver", "firstName licenceNumber") // Populate the driver field and select specific fields
-            .populate("hire"); // Populate the hire field
+          const caseFile = await CaseFile.findById(id).populate("driver") .populate("hire"); 
             console.log(caseFile)
       
           if (!caseFile) {

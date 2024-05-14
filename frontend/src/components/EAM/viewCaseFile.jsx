@@ -82,6 +82,7 @@ const ViewCaseFile = () => {
               <p className="text-lg font-semibold mb-2">Time of Incident: {CaseFiles.timeOfIncident.split('T')[0]}</p>
             </div>
             <div>
+            <p className="text-lg font-semibold mb-2">Vehicle Type: {CaseFiles.hire?.vehicleType}</p>
               <p className="text-lg font-semibold mb-2">Licence Plate: {CaseFiles.licencePlate}</p>
               <p className="text-lg font-semibold mb-2">Current Condition: {CaseFiles.currentCondition}</p>
               <p className="text-lg font-semibold mb-2">Status: {CaseFiles.status}</p>
@@ -94,9 +95,10 @@ const ViewCaseFile = () => {
           </div>
           <div className="p-8">
               <h1 className="text-3xl font-semibold mb-8">Hire Details</h1>
-              <p className="text-lg font-semibold mb-2">Hire ID: {CaseFiles.hire?.hireId || 'N/A'}</p>
-              <p className="text-lg font-semibold mb-2">Start Date: {CaseFiles.hire?.startDate || 'N/A'}</p>
-              <p className="text-lg font-semibold mb-2">End Date: {CaseFiles.hire?.endDate || 'N/A'}</p>
+              <p className="text-lg font-semibold mb-2">Customer name: {CaseFiles.hire?.cusName || 'N/A'}</p>
+              <p className="text-lg font-semibold mb-2">Customer Mobile: {CaseFiles.hire?.cusMobile || 'N/A'}</p>
+              <p className="text-lg font-semibold mb-2">Start Date: {new Date(CaseFiles.hire?.startDate).toLocaleDateString() || 'N/A'}</p>
+              <p className="text-lg font-semibold mb-2">End Date: {new Date(CaseFiles.hire?.endDate).toLocaleDateString() || 'N/A'}</p>
             </div>
           <div className="p-8">
             <h1 className="text-3xl font-semibold mb-8">Incident Details</h1>
