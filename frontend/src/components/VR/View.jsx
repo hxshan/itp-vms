@@ -27,9 +27,9 @@ export const View = () => {
             order.forEach(item => {
                 const month = new Date(item.vrsdate).getMonth();
                 if (new Date(item.vrsdate) < today) {
-                    maintenanceCounts[month] = (maintenanceCounts[month] || 0) + 1; // Past maintenance
+                    maintenanceCounts[month] = (maintenanceCounts[month] || 0) + 1; 
                 } else {
-                    maintenanceCounts[month] = (maintenanceCounts[month] || 0) - 1; // Ongoing or future maintenance
+                    maintenanceCounts[month] = (maintenanceCounts[month] || 0) - 1;
                 }
             });
             setMaintenanceData(maintenanceCounts);
@@ -61,11 +61,11 @@ export const View = () => {
                 <div className='w-full  rounded-md   p-5 mb-10 mt-5'>
                     {order && order.length > 0 && (
 
-                        <h1 className='bg-slate-300 text-center p-2 shadow-xl font-bold rounded-t-xl text-xl w-full'>{order[0].vrvehicleRegister}</h1>
+                        <h1 className='bg-slate-300 text-center p-2 shadow-xl font-bold rounded-t-xl text-xl w-full'>Past and upcoming Maintainces of Vehicle Number : {order[0].vrvehicleRegister}</h1>
 
                     )}
                 </div>
-                <div className="flex flex-col justify-center items-center mt-5 ">
+                <div className="flex flex-col justify-center items-center mt-5 mr-5 p-5 mb-10 ">
                     <div className="w-full h-full">
                         {Object.keys(maintenanceData).length > 0 && (
                             <div style={{ width: '80%', margin: 'auto' }}>
@@ -75,8 +75,8 @@ export const View = () => {
                                         datasets: [
                                             {
                                                 label: 'Maintenance Records',
-                                                data: Object.values(maintenanceData).map(value => Math.abs(value)), // Use absolute values for both ongoing and future maintenance
-                                                backgroundColor: Object.values(maintenanceData).map(value => value < 0 ? 'rgba(255, 99, 132, 0.6)' : 'rgba(54, 162, 235, 0.6)'), // Red for ongoing/future and blue for past
+                                                data: Object.values(maintenanceData).map(value => Math.abs(value)), 
+                                                backgroundColor: Object.values(maintenanceData).map(value => value < 0 ? 'rgba(255, 99, 132, 0.6)' : 'rgba(54, 162, 235, 0.6)'), 
                                                 borderColor: Object.values(maintenanceData).map(value => value < 0 ? 'rgba(255, 99, 132, 1)' : 'rgba(54, 162, 235, 1)'),
                                                 borderWidth: 1,
                                             },
@@ -102,6 +102,7 @@ export const View = () => {
                             <tr>
                                 <th className='border p-2'>No</th>
                                 <th className='border p-2'>Issue</th>
+                                <th className='border p-2'>Time Duration</th>
                                 <th className='border p-2'>Cost</th>
                             </tr>
                         </thead>
@@ -111,6 +112,9 @@ export const View = () => {
                                     <tr key={item._id} className='h-8 '>
                                         <td className='border border-slate-700 rounded-md text-center p-2'>{index + 1}</td>
                                         <td className='border border-slate-700 rounded-md text-center p-2'>{item.vrissue}</td>
+                                        <td className='border border-slate-700 rounded-md text-center'>
+                                        {new Date(item.vrsdate).toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' })} to {new Date(item.vredate).toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' })}
+                                    </td>
                                         <td className='border border-slate-700 rounded-md text-center p-2'>Rs.{item.vrcost}</td>
                                     </tr>
                                 ))
