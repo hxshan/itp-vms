@@ -59,7 +59,7 @@ router.get('/report/:id',getUserDetailsFull)
 router.get('/activity')
 
 //POST
-router.post('/',upload.fields([{name:'nicDocument',maxCount:1},{name:'licenceDoc',maxCount:1},{name:'empPhoto',maxCount:1}]),createUser)
+router.post('/',upload.fields([{name:'nicDocument',maxCount:1},{name:'licenceDoc',maxCount:1},{name:'empPhoto',maxCount:1}]),Auth,createUser)
 router.post('/record',createRecord)
 
 //PATCH

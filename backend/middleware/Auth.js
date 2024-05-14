@@ -4,8 +4,8 @@ const User = require('../models/userModel')
 
 const Auth = async (req, res, next) =>{
 
-    //console.log(req.headers)
-    const { authorization } = req.method == 'GET'||req.method == 'DELETE'?req.headers:req.body.headers//put patch post req
+    console.log(req.headers)
+    const { authorization } = req.method == 'GET'||req.method == 'DELETE' || req.headers.authorization?req.headers:req.body.headers//put patch post req
     if(!authorization){
         return res.status(401).json({error:'Auth token required'})
     }
