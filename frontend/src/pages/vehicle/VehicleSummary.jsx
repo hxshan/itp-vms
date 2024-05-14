@@ -17,10 +17,10 @@ const VehicleSummary = () => {
   return(
     <div className='mt-10 justify-end'>
       
-      <div className='flex flex-row justify-end'>
+      <div className='flex flex-row justify-end mb-5'>
+      <button className='mx-2 px-3 py-1 rounded-md bg-actionRed text-white text-sm text-bold' onClick={() => navigate('/vehicle/report')}>All Vehicles</button>
       <button className='mx-2 px-3 py-1 rounded-md bg-actionRed text-white text-sm text-bold' onClick={() => handleButtonClick(<Component1 />)}>Hire Summary</button>
       <button className='mx-2 px-3 py-1 rounded-md bg-actionRed text-white text-sm text-bold' onClick={() => handleButtonClick(<Component2 />)}>Maintaince Summary</button>
-      <button className='mx-2 px-3 py-1 rounded-md bg-actionRed text-white text-sm text-bold' onClick={() => handleButtonClick(<Component3 />)}>Contract Summary</button>
       <button className='mx-2 px-3 py-1 rounded-md bg-actionRed text-white text-sm text-bold' onClick={() => handleButtonClick(<Component4 />)}>Service Summary</button>
       <button className='mx-2 px-3 py-1 rounded-md bg-actionBlue text-white text-sm text-bold' onClick={() => navigate('/vehicle')}>Dashboard</button>
       </div>
