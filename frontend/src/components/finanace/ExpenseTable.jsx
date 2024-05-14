@@ -122,17 +122,21 @@ const ExpenseTable = () => {
   const getAmountBasedOnCategory = (expense) => {
     switch (expense.category) {
       case 'Fuel':
-        return `Rs.${expense.fuelDetails.totalPrice.toFixed(2)}`;
+        return `Rs.${expense.totalFuelPrice.toFixed(2)}`;
       case 'Maintenance and Repairs':
-        return `Rs.${expense.maintenanceDetails.maintenanceCost.toFixed(2)}`;
+        return `Rs.${expense.maintenanceCost.toFixed(2)}`;
       case 'Insurance':
-        return `Rs.${expense.insuranceDetails.premiumAmount.toFixed(2)}`;
+        return `Rs.${expense.premiumAmount.toFixed(2)}`;
       case 'Licensing and Permits':
-        return `Rs.${expense.licensingDetails.licenseCost.toFixed(2)}`;
+        return `Rs.${expense.licenseCost.toFixed(2)}`;
       case 'Driver Wages':
-        return `Rs.${expense.driverWages.totalEarning.toFixed(2)}`;
-      case 'Other':
-        return `Rs.${expense.other.amount.toFixed(2)}`;
+        return `Rs.${expense.totalEarning.toFixed(2)}`;
+      case 'Tolls and Parking':
+        return `Rs.${expense.otherAmount.toFixed(2)}`;
+        case 'Driver Hire Expense':
+          return `Rs.${expense.otherAmount.toFixed(2)}`;
+          case 'Other':
+            return `Rs.${expense.otherAmount.toFixed(2)}`;
       default:
         return 'Unknown';
     }
@@ -161,6 +165,8 @@ const ExpenseTable = () => {
             <option value="Insurance">Insurance</option>
             <option value="Licensing and Permits">Licensing and Permits</option>
             <option value="Driver Wages">Driver Wages</option>
+            <option value="Tolls and Parking">Tolls and Parking</option>
+            <option value="Driver Hire Expense">Driver Hire Expense</option>
             <option value="Other">Other</option>
           </select>
           <select

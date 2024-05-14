@@ -1,130 +1,87 @@
 const Expense = require('../models/expenseModel');
-const { Vehicles }= require('../models/vehicleModel');
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 
-//get all expense
-const getAllExpenses = async(req,res) => {
-    const expenses = await Expense.find({}).populate('vehicle').sort({ createdAt: -1 });
-    res.status(200).json(expenses)
-}
-
-//get a single expense
-
-const getExpense = async (req, res)=>{
-    const {id} = req.params
-
-    console.log('expense')
-    if(!mongoose.Types.ObjectId.isValid(id)){
-        return res.status(400).json({error: 'invalid id'})
-    }
-
-    const expense = await Expense.findById(id)
-    console.log(expense)
-    if(!expense)
-    {
-        return res.status(400).json({error: 'No such Expense'})
-    }
-
-   
-    res.status(200).json(expense)
-
-}
-
-// creata a new expense
-const createExpense = async (req,res) =>{ 
-    
-    const {
-        date,
-        time,
-        vehicle,
-        recordedBy,
-        tripId,
-        category,
-        status,
-        receiptImage,
-        notes,
-        fuelDetails,
-        maintenanceDetails,
-        insuranceDetails,
-        licensingDetails,
-        driverWages,
-        other
-      } = req.body.data;
-      
-  try{
-  const expense =await  Expense.create({
-    date,
-    time,
-    vehicle,
-    recordedBy,
-    tripId,
-    category,
-    status,
-    receiptImage: receiptImage || '', 
-    notes,
-    fuelDetails,
-    maintenanceDetails,
-    insuranceDetails,
-    licensingDetails,
-    driverWages,
-    other
-  });
-
-  res.status(200).json(expense)
-   }
-   catch(error)
-    {
-       console.log(error)
-    res.status(400).json({error: error.message})
+// Get all expenses
+const getAllExpenses = async (req, res) => {
+    try {
+        const expenses = await Expense.find({}).populate('vehicle').populate('tripId').populate('reimbursmentPerson').populate('driverName').sort({ createdAt: -1 });
+        res.status(200).json(expenses);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
     }
 }
 
-//delete a expense
-const deleteExpense = async (req,res) =>{
+// Get a single expense
+const getExpense = async (req, res) => {
+    const { id } = req.params;
 
-    const {id} = req.params
-
-    if(!mongoose.Types.ObjectId.isValid(id)){
-        return res.status(400).json({error: 'invalid id'})
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(400).json({ error: 'Invalid id' });
     }
 
-    const expense = await Expense.findOneAndDelete({_id: id})
-
-    if(!expense)
-    {
-        return res.status(400).json({error: 'No such Expense'})
+    try {
+        const expense = await Expense.findById(id);
+        if (!expense) {
+            return res.status(404).json({ error: 'Expense not found' });
+        }
+        res.status(200).json(expense);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
     }
-
-    res.status(200).json(expense)
-
 }
 
+// Create a new expense
+const createExpense = async (req, res) => {
+    const expenseData = req.body.data;
+    console.log(expenseData)
 
-//update a expense
-const updateExpense = async (req,res) =>{
+    try {
+        const expense = await Expense.create(expenseData);
+        console.log(expense)
+        res.status(201).json(expense);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+        console.log({ error: error.message })
+    }
+}
 
-    const {id} = req.params
+// Delete an expense
+const deleteExpense = async (req, res) => {
+    const { id } = req.params;
 
-    if(!mongoose.Types.ObjectId.isValid(id)){
-        return res.status(400).json({error: 'invalid id'})
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(400).json({ error: 'Invalid id' });
     }
 
-    const expense = await Expense.findOneAndUpdate({_id:id}, {
+    try {
+        const expense = await Expense.findByIdAndDelete(id);
+        if (!expense) {
+            return res.status(404).json({ error: 'Expense not found' });
+        }
+        res.status(200).json(expense);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
 
-        ...req.body.data
-    })
+// Update an expense
+const updateExpense = async (req, res) => {
+    const { id } = req.params;
 
-    console.log(expense)
-    if(!expense)
-    {
-        return res.status(400).json({error: 'No such Expense'})
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(400).json({ error: 'Invalid id' });
     }
 
-    res.status(200).json(expense)
-    
-} 
-
-
+    try {
+        const expense = await Expense.findByIdAndUpdate(id, req.body, { new: true });
+        if (!expense) {
+            return res.status(404).json({ error: 'Expense not found' });
+        }
+        res.status(200).json(expense);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
 
 module.exports = {
     createExpense,
