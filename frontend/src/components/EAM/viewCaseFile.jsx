@@ -99,6 +99,7 @@ const ViewCaseFile = () => {
               <p className="text-lg font-semibold mb-2">Customer Mobile: {CaseFiles.hire?.cusMobile || 'N/A'}</p>
               <p className="text-lg font-semibold mb-2">Start Date: {new Date(CaseFiles.hire?.startDate).toLocaleDateString() || 'N/A'}</p>
               <p className="text-lg font-semibold mb-2">End Date: {new Date(CaseFiles.hire?.endDate).toLocaleDateString() || 'N/A'}</p>
+              <p className="text-lg font-semibold mb-2">Hire Status: {CaseFiles.alert?.hireStatus || 'N/A'}</p>
             </div>
           <div className="p-8">
             <h1 className="text-3xl font-semibold mb-8">Incident Details</h1>
