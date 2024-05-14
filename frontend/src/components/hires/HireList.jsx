@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import Swal from 'sweetalert2';
 
 
-const HireList = ({ hireData, searchTerm, searchType, showDropdown }) => {
+const HireList = ({ hireData, searchTerm, searchType, showDropdown, setFilteredData }) => {
     const [viewHire, setViewHire] = useState(false);
     const [viewHireData, setViewHireData] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
@@ -71,15 +71,14 @@ const HireList = ({ hireData, searchTerm, searchType, showDropdown }) => {
       }, [hireData, searchTerm, searchType]);
 
     //Filter Function
-
     const [showFilter, setShowFilter] = useState(false);
     const [filterCategory, setFilterCategory] = useState('');
 
     const filterByStatus = (status) => {
-        const filteredData = hireData.filter((hire) => hire.hireStatus.toLowerCase() === status.toLowerCase());
-        setResults(filteredData);
+        const filterData = hireData.filter((hire) => hire.hireStatus.toLowerCase() === status.toLowerCase());
+        setResults(filterData);
         setShowFilter(false);
-        
+        //setFilteredData(filterData)
     };
 
     const resetFilter = () => {
@@ -205,6 +204,7 @@ HireList.propTypes = {
     hireData: PropTypes.array.isRequired,
     searchTerm: PropTypes.string.isRequired,
     searchType: PropTypes.string.isRequired,
+    setFilteredData: PropTypes.func.isRequired,
 };
 
 export default HireList;
