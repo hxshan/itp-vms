@@ -14,7 +14,9 @@ const {
   getUserDetailsFull,
   getRecords,
   getRecordByRecordId,
-  getUserActivity} = require('../controllers/userController')
+  getUserActivity,
+  getLatestUserActivity,
+  getDashboardData} = require('../controllers/userController')
 
 const {createRecord,updateRecord }=require('../controllers/employeeRecordController')
 const Auth =require('../middleware/Auth')
@@ -52,9 +54,11 @@ const upload = multer({ storage });
 //GET
 //router.get('/',Auth,getAllUsers)
 router.get('/',Auth,getAllUsers)
+router.get('/userdashboard',getDashboardData)
 router.get('/drivers',getDrivers)
 router.get('/drivers/records',getRecords)
 router.get('/activity',getUserActivity)
+router.get('/latestactivity',getLatestUserActivity)
 router.get('/drivers/records/:id',getRecordByRecordId)
 router.get('/:id',getUserById)
 router.get('/report/:id',getUserDetailsFull)

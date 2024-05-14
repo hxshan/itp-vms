@@ -11,10 +11,10 @@ const UserActivity = () => {
   const [activitydata, error, loading, axiosFetch] = useAxios()
   const [activity,setActivity]=useState([])
   const { user } = useAuthContext()
-  const columns=["Email","Endpoint","Action","Action Type","Status"]
+  const columns=["Email","Endpoint","Action","Action Type","Date","Time","Status"]
 
   const getData = ()=>{
-    axiosFetch({
+    axiosFetch({ 
       axiosInstance:axios,
       method:'GET',
       url:'/user/activity',
@@ -80,18 +80,27 @@ if(error){
         <tbody>
           {
           activity.length>0 && activity?.map((row) => {
+
+            let date = new Date(row.date)
+            let hours = date.getHours();
+            const minutes = date.getMinutes();
+          
+            // Determine AM or PM suffix
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            const formattedMinutes = minutes < 10 ? '0' + minutes : minutes;
+            const formattedTime = `${hours}:${formattedMinutes} ${ampm}`;
             return (
                 <tr className="bg-white dark:bg-secondaryDark dark:text-white border-t border-gray-200" key={row._id}>
                   <td className="px-6 py-3 whitespace-nowrap border-r border-gray-200">{row.user.email}</td>
                   <td className="px-6 py-3 whitespace-nowrap border-r border-gray-200">{row.endpoint}</td>
                   <td className="px-6 py-3 whitespace-nowrap border-r border-gray-200">{row.action}</td>
-                  <td className="px-6 py-3 whitespace-nowrap border-r border-gray-200">{row.requestType}</td>
+                  <td className={`px-6 py-3 whitespace-nowrap border-r border-gray-200 text-center  ${row.requestType == 'CREATE'?'bg-green-100': row.requestType == 'DELETE'?'bg-red-100':'bg-blue-100'}`}>{row.requestType}</td>
+                  <td className="px-6 py-3 whitespace-nowrap border-r border-gray-200">{row.date.split('T')[0]}</td>
+                  <td className="px-6 py-3 whitespace-nowrap border-r border-gray-200">{formattedTime}</td>
                   <td
                    className={`px-6 py-3 whitespace-nowrap border-r border-gray-200 text-center font-semibold leading-5 ${row.status=='success'?'text-green-500 bg-green-100':'text-red-600 bg-red-100'}`}>
-
                       {row.status.toUpperCase()}
                   </td>
-                 
               </tr>
             );
           })}
