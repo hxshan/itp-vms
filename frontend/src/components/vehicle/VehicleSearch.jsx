@@ -4,9 +4,11 @@ import axios from "@/api/axios";
 import { ToastContainer, toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { ClockLoader } from "react-spinners";
+import { useAuthContext } from "@/hooks/useAuthContext";
 
 const VehicleSearch = () => {
   const [data, error, loading, axiosFetch] = useAxios();
+  const { user } = useAuthContext()
   const [reload, setReload] = useState(0);
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(0);
@@ -27,7 +29,12 @@ const VehicleSearch = () => {
   const deactiveVehicle = async (id) => {
     if (confirm("Are you sure you want to deactive the following vehicle?")) {
       try {
-        await axios.patch(`/vehicle/delete/${id}`);
+        await axios.patch(`/vehicle/delete/${id}`,{},{
+          headers:{
+          withCredentials:true,
+          authorization:`Bearer ${user?.accessToken}`
+          }
+        });
         setReload(reload + 1);
         alert('Vehicle deactivated successfully!');
       } catch (error) {
@@ -39,7 +46,12 @@ const VehicleSearch = () => {
   const recoverVehicle = async (id) => {
     if (confirm("Are you sure you want to active the following vehicle?")) {
       try {
-        await axios.patch(`/vehicle/recover/${id}`);
+        await axios.patch(`/vehicle/recover/${id}`,{},{
+          headers:{
+          withCredentials:true,
+          authorization:`Bearer ${user?.accessToken}`
+          }
+        });
         setReload(reload + 1);
         alert('Vehicle activated successfully!');
       } catch (error) {

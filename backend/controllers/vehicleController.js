@@ -189,6 +189,7 @@ const addVehicle = async (req, res, next) => {
 
         
     } catch (error) {
+        await logUserActivity(req,500,'CREATE',`created new vehicle`)
         return next(new HttpError(error.message));
     }
 };
@@ -228,6 +229,7 @@ const editVehicle = async (req,res,next) => {
 
             } catch (error) {
                console.error('Error updating vehicle:', error);
+               await logUserActivity(req,500,'EDIT',`edited vehicle details`)
                return next(new HttpError('Failed to update vehicle. Please try again later.', 500));
             }
         }
@@ -241,7 +243,7 @@ const editVehicle = async (req,res,next) => {
                 return next(new HttpError("Couldn;t update Vehicle.",400))
             }
 
-            await logUserActivity(req,200,'EDIT',`edite vehicle details`)
+            await logUserActivity(req,200,'EDIT',`edited vehicle details`)
             res.status(200).json(updatedVehicle)
         }
 
@@ -254,11 +256,12 @@ const editVehicle = async (req,res,next) => {
                 return next(new HttpError("Couldn;t update Vehicle.",400))
             }
             
-            await logUserActivity(req,200,'EDIT',`edite vehicle details`)
+            await logUserActivity(req,200,'EDIT',`edited vehicle details`)
             res.status(200).json(updatedVehicle)
         }
         
     } catch (error) {
+        await logUserActivity(req,500,'EDIT',`edited vehicle details`)
         return next (new HttpError(error)) 
     }
 }
@@ -310,7 +313,7 @@ const changeStatusVehicle = async (req, res, next) => {
         await logUserActivity(req,200,'UPDATE',`update vehicle status as deactive`)
         res.status(200).json({ message: `Vehicle with ID ${vehicleId} deactive successfully.` });
     } catch (error) {
-
+        await logUserActivity(req,500,'UPDATE',`update vehicle status as deactive`)
         return next(new HttpError(error.message, 500));
         
     }
@@ -336,6 +339,7 @@ const recoverVehicle = async (req, res, next) => {
         await logUserActivity(req,200,'UPDATE',`update vehicle status as active`)
         res.status(200).json({ message: `Vehicle with ID ${vehicleId} active successfully.` });
     } catch (error) {
+        await logUserActivity(req,500,'UPDATE',`update vehicle status as active`)
         return next(new HttpError(error.message, 500));
     }
 }
