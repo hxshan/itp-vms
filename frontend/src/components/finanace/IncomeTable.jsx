@@ -117,9 +117,9 @@ const IncomeTable = () => {
   const getAmountBasedOnSource = (income) => {
     switch (income.source) {
       case 'Hire Income':
-        return `Rs.${income.hirePayment.hireAmount.toFixed(0)}`;
+        return `Rs.${income.hirePayment.hireAmount}`;
       case 'Rental Income':
-        return `Rs.${income.contractIncome ? income.contractIncome.rentalAmount.toFixed(0) : 0}`;
+        return `Rs.${income.contractIncome ? income.contractIncome.rentalAmount : 0}`;
       default:
         return 'Unknown';
     }

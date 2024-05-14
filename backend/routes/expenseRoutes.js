@@ -27,7 +27,7 @@ router.get('/reimbursment/:driverId',getReimbursmentByDriverId)
 
 router.get('/tripExpense/:tripId',getExpensesBytripId)
 
-router.get('/vehicleExpense/:vehicleId ', getExpensesByvehicleId)
+router.get('/vehicleExpense/:vehicleId', getExpensesByvehicleId)
 
 router.get('/driverwage/:driverId',getdriverWageBydriverId)
 
