@@ -1,6 +1,7 @@
 const vehicleMaintain = require ('../models/vehicleMaintananceModel')
 const {Vehicles} = require('../models/vehicleModel')
 const Availability = require('../models/vehicleAvailability');
+const Expense = require('../models/expenseModel')
 
 
 //Add maintain to the system
@@ -110,7 +111,7 @@ const getonemaintains = async(req, res)=>{
     }
 };
 
-//Edit Maintain
+//Edit Maintain 
 const editmaintain = async (req, res)=>{
     try {
         if (
@@ -133,6 +134,50 @@ const editmaintain = async (req, res)=>{
         }
         return res.status(200).send(result)
         
+    }
+    catch (error) {
+        console.log(error);
+        res.status(500).send({ message: error.message });
+    }
+};
+const completemaintain = async (req, res) => {
+    try {
+        if (
+            !req.body.vehicleRegister ||
+            !req.body.vrissue ||
+            !req.body.vrcost ||
+            !req.body.vraddit ||
+            !req.body.vredate
+
+        ) {
+            return res.status(400).send({ message: 'Send All required Filds' });
+        }
+        const { id } = req.params;
+
+        const result = await vehicleMaintain.findByIdAndUpdate(id, req.body);
+
+        if (!result) {
+            return res.status(404).json({ message: 'Not found the Maintain' });
+
+        }
+        const currentDate = new Date();
+
+        const expenseService = await new Expense({
+            date: currentDate,
+            vehicle: req.body.vehicleRegister,
+            recordedBy: "Shenal",
+            category: 'Maintenance and Repairs',
+            status: 'Pending',
+            maintenanceDescription: req.body.vrissue,
+            serviceProvider: "VMS-Maintains",
+            invoiceNumber: '0',
+            maintenanceCost: req.body.vrcost
+        });
+        console.log(expenseService)
+        await expenseService.save(expenseService);
+
+        return res.status(200).send(result)
+
     }
     catch (error) {
         console.log(error);
@@ -200,4 +245,4 @@ const driverMaintenanceRequest = async (req, res) => {
 
 
 
-module.exports = {createmaintain, getallmaintains, getonemaintain,getonemaintains , editmaintain , deletemaintain, driverMaintenanceRequest}
+module.exports = {completemaintain,createmaintain, getallmaintains, getonemaintain,getonemaintains , editmaintain , deletemaintain, driverMaintenanceRequest}

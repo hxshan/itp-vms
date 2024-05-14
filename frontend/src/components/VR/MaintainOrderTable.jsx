@@ -72,79 +72,75 @@ export const MaintainOrderTable = () => {
         setMaintains(filteredData);
     };
 
-    const deleteData = async (e) => {
-        e.preventDefault();
-        if (window.confirm("Are you sure you want to delete the following?")) {
-            await axiosFetch({
-                axiosInstance: axios,
-                method: "DELETE",
-                url: `vehiclemaintain/${e.target.id}`,
-            });
-            window.location.reload('/Mdashboard');
-        }
-    };
+
 
     const prepareChartData = (maintains) => {
         const counts = {
             UnderMaintenance: 0,
             Done: 0,
-            RequestsFromDriver: 0
+            RequestsFromDriver: 0,
+            UpcomingMaintaince:0
         };
 
         maintains.forEach(item => {
             const sDate = new Date(item.vrsdate);
-            const eDate = item.vredate ? new Date(item.vredate) : null; 
-            if (sDate > currentDate) {
-                counts.UnderMaintenance++;
-            } else if (!eDate) { 
+            const eDate = item.vredate ? new Date(item.vredate) : null;
+            const currentDate = new Date(); 
+            if (sDate <= currentDate && eDate <= currentDate) {
+                counts.Done++;
+            } else if (sDate >= currentDate && eDate >= currentDate ) {
+                counts.UpcomingMaintaince++;
+            } else if (!eDate) {
                 counts.RequestsFromDriver++;
             } else {
-                counts.Done++;
+                counts.UnderMaintenance++;
             }
         });
-
+        
         return {
-            labels: ['Under Maintenance', 'Done', 'Requests From Driver'],
+            labels: ['Under Maintenance', 'Done', 'Requests From Driver', 'Upcoming Maintenance'],
             datasets: [{
-                data: [counts.UnderMaintenance, counts.Done, counts.RequestsFromDriver],
-                backgroundColor: ['#003f5c', '#7a5195', '#ef5675'],
-                hoverBackgroundColor: ['#003f5c', '#7a5195', '#ef5675'],
+                data: [counts.UnderMaintenance, counts.Done, counts.RequestsFromDriver, counts.UpcomingMaintaince],
+                backgroundColor: ['#003f5c', '#7a5195', '#ef5675', '#ffa600'],
+                hoverBackgroundColor: ['#003f5c', '#7a5195', '#ef5675', '#ffa600'],
             }]
-        };
-    };
-
+        };}
+        ;
+        
 
     const chartData = prepareChartData(maintains);
 
     const componentRef = React.createRef();
+    const tableRef = React.createRef();
 
     return (
-        <div className="w-full flex flex-col justify-between md:w-full">
+        <div className="w-full flex flex-col justify-between md:w-full dark:text-white">
             <div className="flex flex-col ">
-            <div ref={componentRef}>
-                <div className="flex flex-col">
-                <div className="flex justify-center items-center gap-3  rounded-md  m-0 p-3" >
-                    <h1 className="text-center font-bold text-xl ">
-                        Date Range :  From {new Date(startDate).toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' })}
-                    </h1>
-                    <h1 className="text-center font-bold text-xl ">
-                        to {new Date(endDate).toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' })}
-                    </h1>
+                <div ref={componentRef}>
+                    <div className="flex flex-col">
+                        <div className="flex justify-center items-center gap-3  rounded-md  m-0 p-3" >
+                            <h1 className="text-center font-bold text-xl ">
+                                Date Range :  From {new Date(startDate).toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' })}
+                            </h1>
+                            <h1 className="text-center font-bold text-xl ">
+                                to {new Date(endDate).toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' })}
+                            </h1>
 
-                </div>
-                <div className="border-b-4 border-black w-full mb-8"></div>
+                        </div>
+                        <div className="border-b-4 border-black w-full mb-8 dark:border-white"></div>
 
-                <div className="flex m-5">
-                    <div className=" w-[500px] h-[500px]">
-                        <Pie data={chartData} />
+                        <div className="flex m-5">
+                            <div className=" w-[500px] h-[500px]">
+                                <Pie data={chartData} />
+                            </div>
+                            <div className="w-1/3 flex flex-col h-full mt-32 ml-auto">
+                                <div className='shadow-md rounded-md text-center p-2 mt-4' style={{ backgroundImage: 'linear-gradient(to right, #000324, #b4b4b4)' }}><p className='font-bold text-white text-lg'>Done :</p> <p className='font-bold text-white '>{chartData.datasets[0].data[1]}</p></div>
+                                <div className='shadow-md rounded-md text-center p-2 mt-4' style={{ backgroundImage: 'linear-gradient(to right, #000324, #b4b4b4)' }}><p className='font-bold text-white text-lg'>Under Maintenance :</p> <p className='font-bold text-white '>{chartData.datasets[0].data[0]}</p></div>
+                                <div className='shadow-md rounded-md text-center p-2 mt-4' style={{ backgroundImage: 'linear-gradient(to right, #000324, #b4b4b4)' }}><p className='font-bold text-white text-lg'>Upcoming Maintenance :</p> <p className='font-bold text-white '>{chartData.datasets[0].data[3]}</p></div>
+                                <div className='shadow-md rounded-md text-center p-2 mt-4' style={{ backgroundImage: 'linear-gradient(to right, #000324, #b4b4b4)' }}><p className='font-bold text-white text-lg'>Requests From Driver :</p> <p className='font-bold text-white '>{chartData.datasets[0].data[2]}</p></div>
+                            </div>
+                        </div>
                     </div>
-                    <div className="w-1/3 flex flex-col h-full mt-32 ml-auto">
-                        <div className='bg-gray-500 shadow-md rounded-md text-center p-5 mt-4  '><p className='font-bold text-white text-lg'>Done :</p> <p className='font-bold text-black '>{chartData.datasets[0].data[1]}</p></div>
-                        <div className='bg-gray-500 shadow-md rounded-md text-center p-5 mt-2  '><p className='font-bold text-white text-lg'>Under Maintenance :</p> <p className='font-bold text-black '>{chartData.datasets[0].data[0]}</p></div>
-                        <div className='bg-gray-500 shadow-md rounded-md text-center p-5 mt-2 '><p className='font-bold text-white text-lg'>Requests From Driver :</p> <p className='font-bold text-black '>{chartData.datasets[0].data[2]}</p></div>
-                    </div>
-                </div>
-                </div>
                 </div>
                 <div className="flex justify-end mb-4 gap-2 flex-col md:flex-row">
                     <form>
@@ -197,18 +193,36 @@ export const MaintainOrderTable = () => {
                         )}
                         content={() => componentRef.current}
                     />
+                    <ReactToPrint
+                        trigger={() => (
+                            <button
+                                className="bg-actionBlue text-white rounded-lg px-4 py-2"
+                            >
+                                Print Table
+                            </button>
+                        )}
+                        content={() => tableRef.current}
+                    />
                 </div>
             </div>
-            
-                
 
+            <div ref={tableRef}>
+                <div className="flex justify-center items-center gap-3  rounded-md  m-0 p-3" >
+                    <h1 className="text-center font-bold text-xl ">
+                        Maintenance  From {new Date(startDate).toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' })}
+                    </h1>
+                    <h1 className="text-center font-bold text-xl ">
+                        to {new Date(endDate).toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' })}
+                    </h1>
+
+                </div>
                 <table className='w-full border-collapse   rounded-md pad shadow-xl p-5 mb-10'>
                     <thead className='bg-secondary text-white border-white'>
                         <tr>
                             <th className='border p-2'>Number Plate</th>
                             <th className='border  p-2'>Time(From - To)</th>
                             <th className='border  p-2'>Status</th>
-                            <th className='border  p-2'>Options</th>
+                            <th className='border  p-2 column-to-hide'>Options</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -234,13 +248,17 @@ export const MaintainOrderTable = () => {
                                             {new Date(item.vrsdate).toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' })} to {new Date(item.vredate).toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' })}
                                         </td>
                                         <td className='border border-slate-700 rounded-md text-center'>
-                                            {sDate > currentDate ? (
-                                                <p className='bg-red-200 text-red-800 font-semibold rounded-md mx-4'>To be Maintaine</p>
+                                            {sDate <= currentDate && eDate <= currentDate ? (
+                                                <p className='bg-red-200 text-red-800 font-semibold rounded-md mx-4'>Past</p>
+                                            ) : sDate >= currentDate && eDate >= currentDate ? (
+                                                <p className='bg-green-200 text-green-800 font-semibold rounded-md mx-4'>Future</p>
                                             ) : (
-                                                <p className='bg-green-200 text-green-800 font-semibold rounded-md mx-4'>Done</p>
+                                                <p className='bg-yellow-200 text-yellow-800 font-semibold rounded-md mx-4'>Ongoing</p>
                                             )}
                                         </td>
-                                        <td className='border border-slate-700 rounded-md text-center'>
+
+
+                                        <td className='border border-slate-700 rounded-md text-center column-to-hide'>
                                             <div className="flex justify-center gap-x-4 pr-3 pl-3 p-1">
                                                 <Link to={`/view/${item._id}`}>
                                                     <button className="my-1 mx-1 bg-actionBlue text-white py-1 px-4 rounded-md text-sm">View</button>
@@ -248,7 +266,7 @@ export const MaintainOrderTable = () => {
                                                 <Link to={`/vehiclemaintain/edit/${item._id}`}>
                                                     <button className="my-1 mx-1 bg-actionGreen text-white py-1 px-4 rounded-md text-sm">Edit</button>
                                                 </Link>
-                                                <button className="my-1 mx-1 bg-actionRed text-white py-1 px-4 rounded-md text-sm" id={item._id} onClick={deleteData}>Delete</button>
+
                                             </div>
                                         </td>
                                     </tr>
@@ -263,7 +281,7 @@ export const MaintainOrderTable = () => {
                         )}
                     </tbody>
                 </table>
-           
+            </div>
         </div>
     );
 };
