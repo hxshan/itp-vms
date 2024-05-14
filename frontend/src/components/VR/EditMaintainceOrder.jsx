@@ -103,6 +103,22 @@ export const EditMaintainceOrder = () => {
     const handleComplete = () => {
         setCompleted(true);
         localStorage.setItem(`completed_${id}`, 'true');
+        const data = {
+            vehicleRegister,
+            vrissue,
+            vrcost,
+            vraddit,
+            vrsdate,
+            vredate
+        };
+        axios.post(`http://localhost:3000/api/vehiclemaintain/expense/${id}`, data)
+            .then(() => {
+                alert("Completed");
+                navigate('/Mdashboard');
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     };
 
     return (

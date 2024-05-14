@@ -130,9 +130,9 @@ export const MaintainOrderTable = () => {
                                 <Pie data={chartData} />
                             </div>
                             <div className="w-1/3 flex flex-col h-full mt-32 ml-auto">
-                            <div className='shadow-md rounded-md text-center p-5 mt-4' style={{ backgroundImage: 'linear-gradient(to right, #000324, #b4b4b4)' }}><p className='font-bold text-white text-lg'>Done :</p> <p className='font-bold text-white '>{chartData.datasets[0].data[1]}</p></div>
-                            <div className='shadow-md rounded-md text-center p-5 mt-4' style={{ backgroundImage: 'linear-gradient(to right, #000324, #b4b4b4)' }}><p className='font-bold text-white text-lg'>Under Maintenance :</p> <p className='font-bold text-white '>{chartData.datasets[0].data[0]}</p></div>
-                            <div className='shadow-md rounded-md text-center p-5 mt-4' style={{ backgroundImage: 'linear-gradient(to right, #000324, #b4b4b4)' }}><p className='font-bold text-white text-lg'>Requests From Driver :</p> <p className='font-bold text-white '>{chartData.datasets[0].data[2]}</p></div>
+                                <div className='shadow-md rounded-md text-center p-5 mt-4' style={{ backgroundImage: 'linear-gradient(to right, #000324, #b4b4b4)' }}><p className='font-bold text-white text-lg'>Done :</p> <p className='font-bold text-white '>{chartData.datasets[0].data[1]}</p></div>
+                                <div className='shadow-md rounded-md text-center p-5 mt-4' style={{ backgroundImage: 'linear-gradient(to right, #000324, #b4b4b4)' }}><p className='font-bold text-white text-lg'>Under Maintenance :</p> <p className='font-bold text-white '>{chartData.datasets[0].data[0]}</p></div>
+                                <div className='shadow-md rounded-md text-center p-5 mt-4' style={{ backgroundImage: 'linear-gradient(to right, #000324, #b4b4b4)' }}><p className='font-bold text-white text-lg'>Requests From Driver :</p> <p className='font-bold text-white '>{chartData.datasets[0].data[2]}</p></div>
                             </div>
                         </div>
                     </div>
@@ -204,7 +204,7 @@ export const MaintainOrderTable = () => {
             <div ref={tableRef}>
                 <div className="flex justify-center items-center gap-3  rounded-md  m-0 p-3" >
                     <h1 className="text-center font-bold text-xl ">
-                    Maintenance  From {new Date(startDate).toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' })}
+                        Maintenance  From {new Date(startDate).toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' })}
                     </h1>
                     <h1 className="text-center font-bold text-xl ">
                         to {new Date(endDate).toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' })}
@@ -243,12 +243,16 @@ export const MaintainOrderTable = () => {
                                             {new Date(item.vrsdate).toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' })} to {new Date(item.vredate).toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' })}
                                         </td>
                                         <td className='border border-slate-700 rounded-md text-center'>
-                                            {sDate >= currentDate ? (
-                                                <p className='bg-red-200 text-red-800 font-semibold rounded-md mx-4'>To be Maintaine</p>
+                                            {sDate <= currentDate && eDate <= currentDate ? (
+                                                <p className='bg-red-200 text-red-800 font-semibold rounded-md mx-4'>Past</p>
+                                            ) : sDate >= currentDate && eDate >= currentDate ? (
+                                                <p className='bg-green-200 text-green-800 font-semibold rounded-md mx-4'>Future</p>
                                             ) : (
-                                                <p className='bg-green-200 text-green-800 font-semibold rounded-md mx-4'>Done</p>
+                                                <p className='bg-yellow-200 text-yellow-800 font-semibold rounded-md mx-4'>Ongoing</p>
                                             )}
                                         </td>
+
+
                                         <td className='border border-slate-700 rounded-md text-center'>
                                             <div className="flex justify-center gap-x-4 pr-3 pl-3 p-1">
                                                 <Link to={`/view/${item._id}`}>

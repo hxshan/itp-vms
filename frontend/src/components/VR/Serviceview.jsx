@@ -29,9 +29,9 @@ export const Serviceview = () => {
     <main className='w-full'>
       <div className="flex  items-center justify-between">
         <div className="">
-        <h1 className='font-bold text-xl mb-6'>
-          Past Service Records
-        </h1>
+          <h1 className='font-bold text-xl mb-6'>
+            Past Service Records
+          </h1>
         </div>
         <div className='flex ml-1.5 gap-4 '>
           <Link to={`/VehicleService`}>
@@ -51,11 +51,11 @@ export const Serviceview = () => {
       </div>
       <div className="border-b-4 border-black w-full mb-8"></div>
       <div ref={componentRef}>
-      <div className='w-full  rounded-md  '>
-                    {data && data.length > 0 && (
-                        <h1 className='bg-slate-300 text-center p-2 shadow-xl font-bold rounded-t-xl text-xl w-full'>Past Services of vehicle Number : {data[0].vehicleRegister.vehicleRegister}</h1>
-                    )}
-                </div>
+        <div className='w-full  rounded-md  '>
+          {data && data.length > 0 && (
+            <h1 className='bg-slate-300 text-center p-2 shadow-xl font-bold rounded-t-xl text-xl w-full'>Past Services of vehicle Number : {data[0].vehicleRegister.vehicleRegister}</h1>
+          )}
+        </div>
         <table className='w-full border-collapse   rounded-md pad shadow-xl p-5 mb-10 mt-5'>
           <thead className='bg-secondary text-white border-white'>
             <tr>

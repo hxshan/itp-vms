@@ -1,5 +1,6 @@
 const vehicle_service = require('../models/vehicle_service')
 const { Vehicles } = require('../models/vehicleModel')
+const Expense =require('../models/expenseModel')
 
 const addservice = async (req, res) => {
     try {
@@ -36,6 +37,22 @@ const addservice = async (req, res) => {
             Snote: req.body.Snote,
             Scost: req.body.Scost,
         });
+
+        console.log("SErvice done")
+       
+        const expenseService =  await new Expense({
+            date:req.body.servicedate,
+            vehicle:vehicle._id,
+            recordedBy:"Shenal",
+            category:'Maintenance and Repairs',
+            status:'Approved',
+            maintenanceDescription:req.body.Snote,
+            serviceProvider:"VMS-Service",
+            invoiceNumber:'0',
+            maintenanceCost:req.body.Scost
+        });
+        console.log(expenseService)
+        await expenseService.save(expenseService);
 
         return res.status(201).send(newService);
     } catch (error) {

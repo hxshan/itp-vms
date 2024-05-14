@@ -27,7 +27,7 @@ export const View = () => {
             order.forEach(item => {
                 const month = new Date(item.vrsdate).getMonth();
                 if (new Date(item.vrsdate) < today) {
-                    maintenanceCounts[month] = (maintenanceCounts[month] || 0) + 1; 
+                    maintenanceCounts[month] = (maintenanceCounts[month] || 0) + 1;
                 } else {
                     maintenanceCounts[month] = (maintenanceCounts[month] || 0) - 1;
                 }
@@ -75,8 +75,8 @@ export const View = () => {
                                         datasets: [
                                             {
                                                 label: 'Maintenance Records',
-                                                data: Object.values(maintenanceData).map(value => Math.abs(value)), 
-                                                backgroundColor: Object.values(maintenanceData).map(value => value < 0 ? 'rgba(255, 99, 132, 0.6)' : 'rgba(54, 162, 235, 0.6)'), 
+                                                data: Object.values(maintenanceData).map(value => Math.abs(value)),
+                                                backgroundColor: Object.values(maintenanceData).map(value => value < 0 ? 'rgba(255, 99, 132, 0.6)' : 'rgba(54, 162, 235, 0.6)'),
                                                 borderColor: Object.values(maintenanceData).map(value => value < 0 ? 'rgba(255, 99, 132, 1)' : 'rgba(54, 162, 235, 1)'),
                                                 borderWidth: 1,
                                             },
@@ -113,8 +113,8 @@ export const View = () => {
                                         <td className='border border-slate-700 rounded-md text-center p-2'>{index + 1}</td>
                                         <td className='border border-slate-700 rounded-md text-center p-2'>{item.vrissue}</td>
                                         <td className='border border-slate-700 rounded-md text-center'>
-                                        {new Date(item.vrsdate).toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' })} to {new Date(item.vredate).toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' })}
-                                    </td>
+                                            {new Date(item.vrsdate).toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' })} to {new Date(item.vredate).toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' })}
+                                        </td>
                                         <td className='border border-slate-700 rounded-md text-center p-2'>Rs.{item.vrcost}</td>
                                     </tr>
                                 ))
