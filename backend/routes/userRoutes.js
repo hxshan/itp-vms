@@ -13,7 +13,10 @@ const {
   updateDocuments,
   getUserDetailsFull,
   getRecords,
-  getRecordByRecordId} = require('../controllers/userController')
+  getRecordByRecordId,
+  getUserActivity,
+  getLatestUserActivity,
+  getDashboardData} = require('../controllers/userController')
 
 const {createRecord,updateRecord }=require('../controllers/employeeRecordController')
 const Auth =require('../middleware/Auth')
@@ -51,12 +54,14 @@ const upload = multer({ storage });
 //GET
 //router.get('/',Auth,getAllUsers)
 router.get('/',Auth,getAllUsers)
+router.get('/userdashboard',getDashboardData)
 router.get('/drivers',getDrivers)
 router.get('/drivers/records',getRecords)
+router.get('/activity',getUserActivity)
+router.get('/latestactivity',getLatestUserActivity)
 router.get('/drivers/records/:id',getRecordByRecordId)
 router.get('/:id',getUserById)
 router.get('/report/:id',getUserDetailsFull)
-router.get('/activity')
 
 //POST
 router.post('/',upload.fields([{name:'nicDocument',maxCount:1},{name:'licenceDoc',maxCount:1},{name:'empPhoto',maxCount:1}]),Auth,createUser)

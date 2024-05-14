@@ -4,8 +4,10 @@ const EmergencyContact = require("../models/emergencyContactModel");
 const Role = require("../models/roleModel");
 const Hire = require("../models/hireModel")
 const EmpRecord = require('../models/employeeRecordModel')
+const UserActivity = require('../models/userActivityModel')
 const isAuth = require('../middleware/isAuth');
 const logUserActivity = require("../middleware/logUserActivity");
+
 
 //TODO:add validation use REGEX 
 const createUser = async (req, res) => {
@@ -294,18 +296,50 @@ const getAllUsers = async (req, res) => {
   try {
     const  user = req.user
     if(!isAuth(user,'userPermissions.Read')) return res.status(401).json({message:"Unauthorized"})
-
+    
     let users = await User.find().populate("role");
     if (!users) {
       return res.json([{}]);
     }
+
     users=users.filter(user=>user.status !='deleted')
     res.status(200).json(users);
+
   } catch (error) {
     console.error("Error fetching users:", error);
     res.status(500).json({ message: "Internal server error" });
   }
 };
+
+
+const getDashboardData = async (req, res) => {
+  try {
+  
+    let users = await User.find().populate("role").sort({id:1});
+    
+    let active= 0
+    let inactive = 0
+    let suspended = 0    
+    
+    if(users.length){
+      inactive = users.filter((user)=>{ return user.status.toLowerCase() == "inactive"}).length
+      suspended = users.filter((user)=>{return user.status.toLowerCase() == "suspended"}).length
+      active = users.filter((user)=>{return user.status.toLowerCase() == "active"}).length
+      total=active+inactive+suspended
+    }
+
+    latestusers=users.slice(users?.length - 2)
+    let activity = await UserActivity.find().populate('user').sort({date:-1}).limit(6)
+
+    res.status(200).json({latestusers,active,inactive,suspended,total,activity});
+
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+
+}
+
 
 //
 const setUserAsDeleted=async (req,res)=>{
@@ -370,11 +404,11 @@ const getUserDetailsFull = async (req,res)=>{
     
     if(userHires.length){
        totalHire= userHires.length
-
        completedHires = userHires.filter((hire)=>{ return hire.hireStatus.toLowerCase() == "completed" || hire.hireStatus.toLowerCase() == "ended"})
        pendingHires = userHires.filter((hire)=>{return hire.hireStatus.toLowerCase() == "pending"})
        cancelled = userHires.filter((hire)=>{return hire.hireStatus.toLowerCase() == "cancelled"})
     }
+
     const records = await EmpRecord.find({user:user._id})
     const userDetail={totalHire,completedHires,pendingHires,cancelled,records,personal:user}  
     return res.status(200).json(userDetail)
@@ -455,7 +489,36 @@ const resetPassword = async(req,res)=>{
   }
 }
 
+
+const getUserActivity=async(req,res)=>{
+  try {
+    let activity = await UserActivity.find().populate('user').sort({date:-1})
+    if (!activity) {
+      return res.json([{}]);
+    }
+   
+    res.status(200).json(activity);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching activity" });
+  }
+}
+const getLatestUserActivity=async(req,res)=>{
+  try {
+    let activity = await UserActivity.find().populate('user').sort({date:1}).limit(5)
+    if (!activity) {
+      return res.json([{}]);
+    }
+    res.status(200).json(activity);
+  } catch (error) {
+
+    res.status(500).json({ message: "Error fetching activity" });
+  }
+}
+
 module.exports = {
+  getDashboardData,
+  getLatestUserActivity,
+  getUserActivity,
   getRecordByRecordId,
   deleteRecord,
   getRecords,
