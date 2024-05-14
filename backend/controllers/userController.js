@@ -4,8 +4,10 @@ const EmergencyContact = require("../models/emergencyContactModel");
 const Role = require("../models/roleModel");
 const Hire = require("../models/hireModel")
 const EmpRecord = require('../models/employeeRecordModel')
+const UserActivity = require('../models/userActivityModel')
 const isAuth = require('../middleware/isAuth');
 const logUserActivity = require("../middleware/logUserActivity");
+
 
 //TODO:add validation use REGEX 
 const createUser = async (req, res) => {
@@ -455,7 +457,24 @@ const resetPassword = async(req,res)=>{
   }
 }
 
+
+const getUserActivity=async(req,res)=>{
+  try {
+    let activity = await UserActivity.find().populate('user').sort({date:1})
+    console.log("Ran")
+    if (!activity) {
+      return res.json([{}]);
+    }
+   
+    res.status(200).json(activity);
+  } catch (error) {
+    //console.error("Error fetching activity:", error);
+    res.status(500).json({ message: "Error fetching activity" });
+  }
+}
+
 module.exports = {
+  getUserActivity,
   getRecordByRecordId,
   deleteRecord,
   getRecords,
