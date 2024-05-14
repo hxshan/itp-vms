@@ -279,11 +279,12 @@ const driverCreateCaseFile = async (req, res) => {
             from: 'adithyaperera983@gmail.com',
             to: ['adithyaperera456@gmail.com', 'j.chamod914@gmail.com','malithgihan000@gmail.com','galgodageheshan@gmail.com'],
             subject: "Incident alert Reported!",
-            html: ` <h1>New Case File Details</h1>
+            html: `<h1>${populatedCaseFile.driver ? populatedCaseFile.driver.firstName : 'N/A'} Reported an incident</h1> 
+            <p> Case File Details</p>
             <p>Case Type: ${populatedCaseFile.caseType}</p>
             <p>Case Title: ${populatedCaseFile.caseTitle}</p>
             <p>Time Of Incident: ${populatedCaseFile.timeOfIncident}</p>
-            <p>Driver Name: ${populatedCaseFile.driver ? populatedCaseFile.driver.firstName : 'N/A'}</p>
+            <p>Driver Name: ${populatedCaseFile.driver ? populatedCaseFile.driver.firstName : 'N/A'}${populatedCaseFile.driver ? populatedCaseFile.driver.lastName : 'N/A'}</p>
             <p>Customer Name: ${populatedCaseFile.hire ? populatedCaseFile.hire.cusName : 'N/A'}</p>
             <p>Customer Number: ${populatedCaseFile.hire ? populatedCaseFile.hire.cusMobile : 'N/A'}</p>
             <p>Passenger Count: ${populatedCaseFile.passengerCount}</p>

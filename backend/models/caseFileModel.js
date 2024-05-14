@@ -98,6 +98,12 @@ const caseFileSchema = new mongoose.Schema(
     policeReport: {
       type: String, // link to the document
     },
+
+    alert:{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Alert",
+    
+    }
   },
 
   {

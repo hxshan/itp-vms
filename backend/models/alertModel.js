@@ -21,7 +21,7 @@ const alertSchema = new mongoose.Schema (
 
         caseFile: { 
             type: mongoose.Schema.Types.ObjectId, 
-            ref: 'caseFileModel',
+            ref: 'CaseFile',
         },
 
         hireStatus: {

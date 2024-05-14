@@ -2,12 +2,14 @@ const Alert = require('../models/alertModel')
 
 const sendAlert = async (req , res) => {
     try {
+
+      console.log("insitekfjdfgkjnfgkjdfg")
         const {
             driver,
             vehicle,
             hire,
             caseFile
-        } = req.body;
+        } = req.body.data;
 
         const newAlert = new Alert ({
             driver,
@@ -15,6 +17,7 @@ const sendAlert = async (req , res) => {
             hire,
             caseFile
         })
+        console.log(newAlert)
 
         await newAlert.save()
 
