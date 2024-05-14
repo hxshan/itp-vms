@@ -153,7 +153,7 @@ const VehicleDashboard = () => {
 
   return  (
     
-    <div className="w-full place-content-center space-y-4 mt-8 bg-cover bg-center">
+    <div className="container mx-auto pb-10 min-h-full dark:text-white">
       <h1 className="text-xl font-bold">Vehicle Management Dashboard</h1>
       <div className='place-content-center'> 
         <div className=' flex flex-col  p-5'>

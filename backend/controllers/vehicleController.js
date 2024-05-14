@@ -205,14 +205,31 @@ const editVehicle = async (req,res,next) => {
 
             let{vehicleType, vehicleRegister,vehicleModel,vehicleManuYear,engineCap,lastMileage,vehicleColour,vehicleGearSys,airCon,numOfSeats,lugSpace,gps,fridge,tv,licEndDate,insEndDate,fuelType} = req.body
 
-            
+            try {
             updatedVehicle = await Vehicles.findByIdAndUpdate(vehicleId,{category,vehicleType, vehicleRegister,vehicleModel,vehicleManuYear,engineCap,lastMileage,vehicleColour,vehicleGearSys,airCon,numOfSeats,lugSpace,gps,fridge,tv,licEndDate,insEndDate,fuelType}, {new: true})
+            
             if(!updatedVehicle){
                 return next(new HttpError("Couldn;t update Vehicle.",400))
             }
+
+            const existingVehicleByRegister = await Vehicles.findOne({ vehicleRegister });
+            const existingVehicleByModel = await Vehicles.findOne({ vehicleModel });
+              
+            if (existingVehicleByRegister && existingVehicleByRegister._id.toString() !== vehicleId) {
+                return next(new HttpError('Vehicle with the same registration number already exists.', 400));
+              }
+          
+              if (existingVehicleByModel && existingVehicleByModel._id.toString() !== vehicleId) {
+                return next(new HttpError('Vehicle with the same model already exists.', 400));
+              }
             
             await logUserActivity(req,200,'EDIT',`edite vehicle details`)
             res.status(200).json(updatedVehicle)
+
+            } catch (error) {
+               console.error('Error updating vehicle:', error);
+               return next(new HttpError('Failed to update vehicle. Please try again later.', 500));
+            }
         }
 
         if(category === 'lorry' ){
@@ -395,6 +412,7 @@ const getVehicle = async (req, res, next) => {
         return next(new HttpError(error));
     }
 }
+
 
 
 

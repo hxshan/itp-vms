@@ -103,47 +103,47 @@ fetchData();
 
   const handleUpdateVehicle = async (e) => {
     e.preventDefault();
-    const { vehicleType: currentVehicleType, vehicleRegister: currentVehicleRegister } = data;
-    const { vehicleType, vehicleRegister } = formData;
-    
   
-    const vehicleTypeChanged = vehicleType !== currentVehicleType;
-    const vehicleRegisterChanged = vehicleRegister !== currentVehicleRegister;
+    // Destructure formData
+    const { vehicleModel, vehicleRegister } = formData;
   
- 
-    if (vehicleTypeChanged && !vehicleType) {
-      toast.error('Please provide vehicle type.');
+    // Check if vehicleType and vehicleRegister are provided
+    if (!vehicleModel) {
+      toast.error('Please provide vehicle model.');
       return;
     }
   
-    if (vehicleRegisterChanged && !vehicleRegister) {
+    if (!vehicleRegister) {
       toast.error('Please provide vehicle register.');
       return;
     }
   
+    // Check if vehicle type or register has changed
+    const vehicleTypeChanged = vehicleModel !== data.vehicleModel;
+    const vehicleRegisterChanged = vehicleRegister !== data.vehicleRegister;
+  
     try {
+      // If vehicle type or register has changed, perform existence check
       if (vehicleTypeChanged || vehicleRegisterChanged) {
-        const response = await axios.get(`/vehicle/check?vehicleType=${vehicleType}&vehicleRegister=${vehicleRegister}`);
+        const response = await axios.get(`/vehicle/check?vehicleType=${vehicleModel}&vehicleRegister=${vehicleRegister}`);
         if (response.data.exists) {
           toast.error('Vehicle type and register already exist in the database.');
           return;
         }
       }
-    } catch (error) {
-      console.error('Error checking vehicle existence:', error);
-      toast.error('Failed to check vehicle existence. Please try again later.');
-      return;
-    }
   
-    if (confirm("Are you sure you want to update the following vehicle?")) {
-      try {
+      // If everything is valid, proceed with the update
+      if (window.confirm("Are you sure you want to update the following vehicle?")) {
         await axios.patch(`/vehicle/${id}`, formData);
         alert('Vehicle updated successfully!');
-        navigate('/vehicle');
+        navigate(`/vehicle/view/${id}`)
         setData(formData);
-      } catch (error) {
-        toast.error('Failed to update vehicle. Please try again later.');
       }
+    } catch (error) {
+
+      console.error('Error updating vehicle:', error);
+      toast.error('Failed to update vehicle. Please try again later.');
+
     }
   };
   

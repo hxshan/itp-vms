@@ -23,8 +23,8 @@ const AddcustomVehicle = () => {
         gps: '',
         licStartDate: '',
         insEndDate: '',
-        fridge: 'No',
-        tv: 'No',
+        fridge: '',
+        tv: '',
         vehicleWeight: '',
         cargoCapacity: '',
         cargoArea: '',
@@ -34,7 +34,7 @@ const AddcustomVehicle = () => {
         vehicleLicenceImage: null,
         vehicleInsuImage: null, 
         statusVehicle:'Active',
-        categoryCustom:'Custom'   
+        categoryCustom:true   
     }
     
     const [formState, setFormState] = useState(initialFormState);
@@ -82,26 +82,39 @@ const AddcustomVehicle = () => {
     };
 
     const handleSubmit = async (e) => {
-        e.preventDefault()
-        setError('')
-
-        try {
-          const response = await axios.post(`http://localhost:3000/api/vehicle/`, formState)
-          const newVehicle = await response.data;
-          
-          if(!newVehicle){
-           setError("Couldn't add Vehicle.Please try again.")
-          }
-         
-          else{
+      e.preventDefault();
+      setError('');
+    
+      // Check if any required fields are empty
+      const mandatoryFields = ['vehicleRegister', 'vehicleModel', 'vehicleManuYear', 'engineCap', 'lastMileage'];
+      for (const field of mandatoryFields) {
+        if (!formState[field]) {
+          setError(`Please fill in all mandatory fields.`);
+          return;
+        }
+      }
+    
+      try {
+        const response = await axios.post(`http://localhost:3000/api/vehicle/`, formState);
+        const newVehicle = response.data;
+    
+        if (!newVehicle) {
+          setError("Couldn't add Vehicle. Please try again.");
+        } else {
           toast.success('Vehicle added successfully!');
           resetForm();
-          }
-   
-        } catch (err) {
-           setError(err.response.data.message)
         }
-     }
+      } catch (err) {
+        if (err.response) {
+          // Handle server validation errors
+          setError(err.response.data.message || 'An error occurred while processing your request.');
+        } else {
+          // Handle other types of errors (e.g., network issues)
+          setError('An error occurred while processing your request. Please try again later.');
+        }
+      }
+    }
+    
 
 
 
