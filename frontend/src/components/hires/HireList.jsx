@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import Swal from 'sweetalert2';
 
 
-const HireList = ({ hireData, searchTerm, searchType, showDropdown }) => {
+const HireList = ({ hireData, searchTerm, searchType, showDropdown, setFilteredData }) => {
     const [viewHire, setViewHire] = useState(false);
     const [viewHireData, setViewHireData] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
@@ -71,15 +71,14 @@ const HireList = ({ hireData, searchTerm, searchType, showDropdown }) => {
       }, [hireData, searchTerm, searchType]);
 
     //Filter Function
-
     const [showFilter, setShowFilter] = useState(false);
     const [filterCategory, setFilterCategory] = useState('');
 
     const filterByStatus = (status) => {
-        const filteredData = hireData.filter((hire) => hire.hireStatus.toLowerCase() === status.toLowerCase());
-        setResults(filteredData);
+        const filterData = hireData.filter((hire) => hire.hireStatus.toLowerCase() === status.toLowerCase());
+        setResults(filterData);
         setShowFilter(false);
-        
+        //setFilteredData(filterData)
     };
 
     const resetFilter = () => {
@@ -143,7 +142,7 @@ const HireList = ({ hireData, searchTerm, searchType, showDropdown }) => {
             
 
 
-            <div className="shadow overflow-hidden border-b border-gray-200 rounded-lg ">
+            <div className="shadow overflow-hidden border-b border-gray-200 rounded-lg min-h-[350px]">
                 <table className="min-w-full divide-y divide-gray-200">
                     {/* Table header */}
                     <thead className="bg-secondary">
@@ -205,6 +204,7 @@ HireList.propTypes = {
     hireData: PropTypes.array.isRequired,
     searchTerm: PropTypes.string.isRequired,
     searchType: PropTypes.string.isRequired,
+    setFilteredData: PropTypes.func.isRequired,
 };
 
 export default HireList;

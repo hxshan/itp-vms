@@ -6,12 +6,11 @@ import { usePDF } from 'react-to-pdf';
 
 Modal.setAppElement('#root');
 
-const Report = ({ reportData, setShowReport }) => {
-    if (!reportData) {
+const Report = ({ filteredData, setShowReport }) => {
+    if (!filteredData) {
         return null;
     }
 
-    const {hireCounts, businessPerformance, customerMetrics, combinedMetrics } = reportData;
     const { toPDF, targetRef } = usePDF({
         filename: 'page.pdf',
         options: {
@@ -26,7 +25,7 @@ const Report = ({ reportData, setShowReport }) => {
         },
     });
     
-
+/*
     const pieData = {
         labels: ['Top Customers', 'Other Customers'],
         datasets: [{
@@ -34,14 +33,14 @@ const Report = ({ reportData, setShowReport }) => {
             backgroundColor: ['#FF6384', '#36A2EB'],
             hoverBackgroundColor: ['#FF6384', '#36A2EB'],
         }],
-    }
+    }*/
 
     const cancel = () => {
         setShowReport(false);
     };
 
 
-
+/*
     const pieDataHireStats = {
         labels: ['Active', 'Pending', 'Canceled', 'Completed'],
         datasets: [{
@@ -56,7 +55,7 @@ const Report = ({ reportData, setShowReport }) => {
         }],
     };
     
-
+*/
     return (
 
         <Modal
@@ -92,57 +91,44 @@ const Report = ({ reportData, setShowReport }) => {
         >
             <div className='px-10 py-5'>
                 <div className="mb-5 p-6" ref={targetRef}>
-                    <h2 className="text-xl font-bold mb-5 text-center">Month Summery</h2>
+                    <h2 className="text-xl font-bold mb-5 text-center">Hire Data</h2>
 
                     <div className="mb-5">
-                        <h3 className="text-lg font-semibold mb-2">Hire Statics</h3>
-                        <div className='flex justify-between items-center space-x-10'>
-                            <ul className='leading-loose '>
-                                <li>Total Hires: {hireCounts.totalHires}</li>
-                                <li>Pending Hires: {hireCounts.pending || 'N/A'}</li>
-                                <li>Active Hires: {hireCounts.active || 'N/A'} </li>
-                                <li>Completed Hires: {hireCounts.completed || 'N/A'} </li>
-                                <li>Canceled Hires: {hireCounts.canceled || 'N/A'}</li>
-                            </ul>
+                        <table className="min-w-full divide-y divide-gray-200">
+                        {/* Table header */}
+                            <thead className="bg-secondary">
+                                <tr>
+                                    <th className="relative px-6 py-3 border-r border-white text-white">Vehicle No</th>
+                                    <th className="relative px-6 py-3 border-r border-white text-white">Start Date</th>
+                                    <th className="relative px-6 py-3 border-r border-white text-white">End Date</th>
+                                    <th className="relative px-6 py-3 border-r border-white text-white">Cus Mobile</th>
+                                    <th className="relative px-6 py-3 border-r border-white text-white">Status</th>
+                                </tr>
+                            </thead>
+                            {/* Table body */}
+                                <tbody>
+                                    {filteredData.length === 0 ? (
+                                        <td colSpan="6" className="text-center py-4">No data available</td>
+                                    ) : (
+                                        filteredData.map((hire) => (
+                                            <tr key={hire._id} className="bg-white border-t border-gray-200">
+                                                <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200"> {hire.vehicle?.vehicleRegister || 'N/A'}</td>
 
-                            <div className='w-[300px] h-[300px]'>
-                                <Pie data={pieDataHireStats} />
-                            </div>
-                        </div>                  
+                                                <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{new Date(hire.startDate).toLocaleDateString()}</td>
+                                                <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{new Date(hire.endDate).toLocaleDateString()}</td>
+                                                <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{hire.cusMobile}</td>
+                                                <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">
+                                                    <div className={`text-center rounded-md ${hire.hireStatus.toLowerCase() === 'active' ? 'text-green-600 bg-green-100' : hire.hireStatus.toLowerCase() === 'pending' ? 'text-yellow-600 bg-yellow-100' : hire.hireStatus.toLowerCase() === 'ongoing' ? 'text-green-600 bg-green-100' : hire.hireStatus.toLowerCase() === 'completed' ? 'text-blue-600 bg-blue-100' : 'text-orange-600 bg-orange-100'}`}>
+                                                        {hire.hireStatus.toUpperCase()}
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        ))
+                                    )}
+                                </tbody>
+                        </table>                  
                     </div>
 
-                    {/* Business Performance Metrics */}
-                    <div className="w-full md:w-1/2 mb-5">
-                        <h3 className="text-lg font-semibold mb-2">Business Performance Metrics</h3>
-                        <ul className='leading-loose '>
-                            <li>Total Hires: {hireCounts.totalHires}</li>
-                            <li>Total Revenue: Rs. {businessPerformance?.totalRevenue.toFixed(2) || 'N/A'}</li>
-                            <li>Average Distance: {businessPerformance?.averageDistance.toFixed(2) || 'N/A'} miles</li>
-                            <li>Average Time Taken: {businessPerformance?.averageTimeTaken?.toFixed(2) ?? 'N/A'} hours</li>
-                            <li>Total Advanced Payments: Rs. {businessPerformance?.totalAdvancedPayments.toFixed(2) || 'N/A'}</li>
-                            <li>Average Advanced Payment: Rs. {businessPerformance?.averageAdvancedPayment.toFixed(2) || 'N/A'}</li>
-                        </ul>
-                    </div>
-
-                    {/* Customer Metrics */}
-                    <div className="w-full md:w-1/2 mb-5">
-                        <h3 className="text-lg font-semibold mb-2">Customer Metrics</h3>
-                        <ul className='leading-loose '>
-                            <li>Total Customers: {customerMetrics.totalCustomers}</li>
-                            <li>Total Revenue from Top Customers: Rs. {customerMetrics?.totalRevenueTopCustomers.toFixed(2) || 'N/A'}</li>
-                            <li>Average Distance for Top Customers: {customerMetrics?.averageDistanceTopCustomers.toFixed(2) || 'N/A'} miles</li>
-                            <li>Average Time Taken for Top Customers: {customerMetrics?.averageTimeTakenTopCustomers?.toFixed(2) ?? 'N/A'} hours</li>
-                            <li>Average Spending Per Hire for Top Customers: Rs. {customerMetrics?.averageSpendingPerHireTopCustomers.toFixed(2) || 'N/A'}</li>
-                        </ul>
-                    </div>
-
-                    {/* Combined Metrics */}
-                    <div>
-                        <h3 className="text-lg font-semibold mb-2">Combined Metrics</h3>
-                        <ul className='leading-loose '>
-                            <li>Percentage of Revenue from Top Customers: {combinedMetrics?.percentageRevenueTopCustomers.toFixed(2) || 'N/A'}%</li>
-                        </ul>
-                    </div>
                 </div>
 
                 <div className="flex justify-between">
@@ -162,33 +148,6 @@ const Report = ({ reportData, setShowReport }) => {
 };
 
 Report.propTypes = {
-    reportData: PropTypes.shape({
-        hireCounts: PropTypes.shape({
-            totalHires: PropTypes.number.isRequired,
-            active: PropTypes.number.isRequired,
-            pending: PropTypes.number.isRequired,
-            canceled: PropTypes.number,
-            completed: PropTypes.number.isRequired,
-        }).isRequired,
-        businessPerformance: PropTypes.shape({
-            totalRevenue: PropTypes.number.isRequired,
-            averageDistance: PropTypes.number.isRequired,
-            averageTimeTaken: PropTypes.number,
-            totalAdvancedPayments: PropTypes.number.isRequired,
-            averageAdvancedPayment: PropTypes.number.isRequired,
-        }).isRequired,
-        customerMetrics: PropTypes.shape({
-            totalCustomers: PropTypes.number.isRequired,
-            topCustomers: PropTypes.arrayOf(PropTypes.string).isRequired,
-            totalRevenueTopCustomers: PropTypes.number.isRequired,
-            averageDistanceTopCustomers: PropTypes.number.isRequired,
-            averageTimeTakenTopCustomers: PropTypes.number,
-            averageSpendingPerHireTopCustomers: PropTypes.number.isRequired,
-        }).isRequired,
-        combinedMetrics: PropTypes.shape({
-            percentageRevenueTopCustomers: PropTypes.number.isRequired,
-        }).isRequired,  
-    }),
     setShowReport: PropTypes.func.isRequired,
 };
 

@@ -16,11 +16,12 @@ const sendAlert = async (req , res) => {
             caseFile
         })
 
+        
         await newAlert.save()
 
         res.status(201).json({ message: 'Alert Sent' });
     } catch (error) {
-        console.error('Error sending hire:', error);
+        console.error('Error sending alert:', error);
         res.status(500).json({ message: 'Internal server error' });
       }
 }

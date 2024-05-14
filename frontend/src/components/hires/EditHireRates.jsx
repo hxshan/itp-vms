@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import axios from '@/api/axios';
 import useAxios from "@/hooks/useAxios";
@@ -12,7 +12,7 @@ const EditHireRates = ({setEditRates, editHireData, reload}) => {
     const [rateId , setRateId] = useState(editHireData._id)
     const [vehicleCatagory , setVehicleSubcategory] = useState(editHireData.vehicleCatagory)
     const [baseRate , setBaseRate] = useState(editHireData.baseRate)
-    const [basedDistance , setBaseDistance] = useState(editHireData.basedDistance)
+    const [basedDistance , setBaseDistance] = useState(editHireData.baseDistence)
     const [additionalRate, setAdditionalRate] = useState(editHireData.additionalRate)
     const [acBaseRate , setAcBaseRate] = useState(editHireData.acBaseRate)
     const [acAdditionalRate, setAcAdditionalRate] = useState(editHireData.acAdditionalRate)
@@ -51,8 +51,6 @@ const EditHireRates = ({setEditRates, editHireData, reload}) => {
             console.log("Data:", response);
             alert("successfully updated")
           }  
-
-          
 
         
         console.log("Edited Data")
