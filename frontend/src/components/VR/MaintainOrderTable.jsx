@@ -78,31 +78,35 @@ export const MaintainOrderTable = () => {
         const counts = {
             UnderMaintenance: 0,
             Done: 0,
-            RequestsFromDriver: 0
+            RequestsFromDriver: 0,
+            UpcomingMaintaince:0
         };
 
         maintains.forEach(item => {
             const sDate = new Date(item.vrsdate);
             const eDate = item.vredate ? new Date(item.vredate) : null;
-            if (sDate > currentDate) {
-                counts.UnderMaintenance++;
+            const currentDate = new Date(); 
+            if (sDate <= currentDate && eDate <= currentDate) {
+                counts.Done++;
+            } else if (sDate >= currentDate && eDate >= currentDate ) {
+                counts.UpcomingMaintaince++;
             } else if (!eDate) {
                 counts.RequestsFromDriver++;
             } else {
-                counts.Done++;
+                counts.UnderMaintenance++;
             }
         });
-
+        
         return {
-            labels: ['Under Maintenance', 'Done', 'Requests From Driver'],
+            labels: ['Under Maintenance', 'Done', 'Requests From Driver', 'Upcoming Maintenance'],
             datasets: [{
-                data: [counts.UnderMaintenance, counts.Done, counts.RequestsFromDriver],
-                backgroundColor: ['#003f5c', '#7a5195', '#ef5675'],
-                hoverBackgroundColor: ['#003f5c', '#7a5195', '#ef5675'],
+                data: [counts.UnderMaintenance, counts.Done, counts.RequestsFromDriver, counts.UpcomingMaintaince],
+                backgroundColor: ['#003f5c', '#7a5195', '#ef5675', '#ffa600'],
+                hoverBackgroundColor: ['#003f5c', '#7a5195', '#ef5675', '#ffa600'],
             }]
-        };
-    };
-
+        };}
+        ;
+        
 
     const chartData = prepareChartData(maintains);
 
@@ -130,9 +134,10 @@ export const MaintainOrderTable = () => {
                                 <Pie data={chartData} />
                             </div>
                             <div className="w-1/3 flex flex-col h-full mt-32 ml-auto">
-                                <div className='shadow-md rounded-md text-center p-5 mt-4' style={{ backgroundImage: 'linear-gradient(to right, #000324, #b4b4b4)' }}><p className='font-bold text-white text-lg'>Done :</p> <p className='font-bold text-white '>{chartData.datasets[0].data[1]}</p></div>
-                                <div className='shadow-md rounded-md text-center p-5 mt-4' style={{ backgroundImage: 'linear-gradient(to right, #000324, #b4b4b4)' }}><p className='font-bold text-white text-lg'>Under Maintenance :</p> <p className='font-bold text-white '>{chartData.datasets[0].data[0]}</p></div>
-                                <div className='shadow-md rounded-md text-center p-5 mt-4' style={{ backgroundImage: 'linear-gradient(to right, #000324, #b4b4b4)' }}><p className='font-bold text-white text-lg'>Requests From Driver :</p> <p className='font-bold text-white '>{chartData.datasets[0].data[2]}</p></div>
+                                <div className='shadow-md rounded-md text-center p-2 mt-4' style={{ backgroundImage: 'linear-gradient(to right, #000324, #b4b4b4)' }}><p className='font-bold text-white text-lg'>Done :</p> <p className='font-bold text-white '>{chartData.datasets[0].data[1]}</p></div>
+                                <div className='shadow-md rounded-md text-center p-2 mt-4' style={{ backgroundImage: 'linear-gradient(to right, #000324, #b4b4b4)' }}><p className='font-bold text-white text-lg'>Under Maintenance :</p> <p className='font-bold text-white '>{chartData.datasets[0].data[0]}</p></div>
+                                <div className='shadow-md rounded-md text-center p-2 mt-4' style={{ backgroundImage: 'linear-gradient(to right, #000324, #b4b4b4)' }}><p className='font-bold text-white text-lg'>Upcoming Maintenance :</p> <p className='font-bold text-white '>{chartData.datasets[0].data[3]}</p></div>
+                                <div className='shadow-md rounded-md text-center p-2 mt-4' style={{ backgroundImage: 'linear-gradient(to right, #000324, #b4b4b4)' }}><p className='font-bold text-white text-lg'>Requests From Driver :</p> <p className='font-bold text-white '>{chartData.datasets[0].data[2]}</p></div>
                             </div>
                         </div>
                     </div>
@@ -217,7 +222,7 @@ export const MaintainOrderTable = () => {
                             <th className='border p-2'>Number Plate</th>
                             <th className='border  p-2'>Time(From - To)</th>
                             <th className='border  p-2'>Status</th>
-                            <th className='border  p-2'>Options</th>
+                            <th className='border  p-2 column-to-hide'>Options</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -253,7 +258,7 @@ export const MaintainOrderTable = () => {
                                         </td>
 
 
-                                        <td className='border border-slate-700 rounded-md text-center'>
+                                        <td className='border border-slate-700 rounded-md text-center column-to-hide'>
                                             <div className="flex justify-center gap-x-4 pr-3 pl-3 p-1">
                                                 <Link to={`/view/${item._id}`}>
                                                     <button className="my-1 mx-1 bg-actionBlue text-white py-1 px-4 rounded-md text-sm">View</button>

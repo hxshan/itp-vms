@@ -152,7 +152,7 @@ export const Requestfromdriver = () => {
                         <tr>
                             <th className='border  p-2'>Number Plate</th>
                             <th className='border  p-2'>Date</th>
-                            <th className='border p-2'>Options</th>
+                            <th className='border p-2 column-to-hide'>Options</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -177,7 +177,7 @@ export const Requestfromdriver = () => {
                                                 {new Date(item.vrsdate).toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' })}
                                             </td>
                                             <td className='border border-slate-700 rounded-md text-center'>
-                                                <div className="flex justify-center gap-x-4 pr-3 pl-3 p-1">
+                                                <div className="flex justify-center gap-x-4 pr-3 pl-3 p-1 column-to-hide">
 
                                                     <Link to={`/vehiclemaintain/edit/${item._id}`}>
                                                         <button className="my-1 mx-1 bg-actionGreen text-white py-1 px-4 rounded-md text-sm">Update</button>
