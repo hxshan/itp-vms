@@ -183,7 +183,8 @@ const VehicleSearch = () => {
         <option value="">All</option>
         <option value="Available">Available</option>
         <option value="Hire">Hire</option>
-        <option value="maintain">Maintain</option>
+        <option value="Maintain">Maintain</option>
+        <option value="Contract">Contract</option>
         <option value="reserved">reserved</option>
       </select>
 

@@ -45,13 +45,11 @@ const HireSummury = () => {
   
     if (loading) {
       return (
-        <div className="w-full flex items-center justify-center h-full bg-white">
-          <ClockLoader
-            color="#36d7b7"
-            height={50}
-            width={10}
-          />
-        </div>
+        <div className="relaive w-full h-screen bg-white flex justify-center items-center rounded-md">
+          <div className="p-8">
+             <ClockLoader color="#36d7b7" size={60} />
+          </div>
+      </div>
       )
     }
   
