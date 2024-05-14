@@ -13,7 +13,7 @@ const expenseSchema = new mongoose.Schema({
   vehicle: { 
     type: mongoose.Schema.Types.ObjectId, 
     ref: 'Vehicles', 
-    required: true 
+    
   },
   recordedBy: { 
     type: String, 

@@ -5,6 +5,7 @@ const Client = require("../models/clientModel");
 const Hire = require('../models/hireModel');
 const user = require('../models/userModel')
 const mongoose = require('mongoose')
+const logUserActivity = require("../middleware/logUserActivity");
 
 //get all 
 const getAllIncome = async(req,res) => {

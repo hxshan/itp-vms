@@ -1,5 +1,6 @@
 const Expense = require('../models/expenseModel');
 const mongoose = require('mongoose');
+const logUserActivity = require("../middleware/logUserActivity");
 
 // Get all expenses
 const getAllExpenses = async (req, res) => {
@@ -72,12 +73,14 @@ const getExpensesBytripId = async (req, res) => {
 const getExpensesByvehicleId = async (req, res) => {
     const { vehicleId } = req.params;
 
+    
     if (!mongoose.Types.ObjectId.isValid(vehicleId)) {
         return res.status(400).json({ error: 'Invalid id' });
     }
 
     try {
-        const expense = await Expense.find({vehicle:vehicleId}).populate('vehicle').populate('tripId').populate('reimbursmentPerson').populate('driverName');
+        const expense = await Expense.find({vehicle:vehicleId,category: { $in: ['Fuel', 'Maintenance and Repairs', 'Insurance', 'Licensing and Permits'] }
+    }).populate('vehicle').populate('tripId').populate('reimbursmentPerson').populate('driverName');
         if (!expense) {
             return res.status(404).json({ error: 'Expense not found' });
         }
