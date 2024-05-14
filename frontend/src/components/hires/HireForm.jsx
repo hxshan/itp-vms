@@ -8,11 +8,11 @@ import { ClockLoader } from "react-spinners";
 import Swal from 'sweetalert2';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+import { useAuthContext } from "@/hooks/useAuthContext";
 
 const Form = () => { 
   const [step, setStep] = useState(1);
-
+  const { user } = useAuthContext()
   const navigate = useNavigate();
 
   const [startDate, setStartDate] = useState('');
@@ -80,6 +80,10 @@ const Form = () => {
           data:{
             ...formData
           }
+        },
+        headers:{
+          withCredentials:true,
+          authorization:`Bearer ${user?.accessToken}`
         }
       })
 

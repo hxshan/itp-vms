@@ -5,12 +5,12 @@ import { useEffect } from "react";
 import { ClockLoader } from "react-spinners";
 import Swal from "sweetalert2";
 
-const EditDriverRecordFrom = ({ isOpen, setIsOpen,reload,setReload,driverid }) => {
+const EditDriverRecordFrom = ({ isOpen, setIsOpen,reload,setReload,recordid}) => {
   const [driversData, error, loading, axiosFetch] = useAxios();
   const [record, recordError, recordLoading, axiosRecordFetch] = useAxios();
 
   const [drivers,setDrivers]=useState([])
-  const [selectedDriver,setSelectedDriver]=useState(isOpen?driverid:'')
+  const [selectedDriver,setSelectedDriver]=useState(isOpen?recordid:'')
   const [description,setDescription]=useState('')
   const [date,setDate]=useState('')
   const [type,setType]=useState('')
@@ -27,7 +27,7 @@ const EditDriverRecordFrom = ({ isOpen, setIsOpen,reload,setReload,driverid }) =
     axiosRecordFetch({
         axiosInstance:axios,
         method:'GET',
-        url:`/user/drivers/records/${driverid}`
+        url:`/user/drivers/records/${recordid}`
     })
   }
 
@@ -65,7 +65,7 @@ try{
     axiosRecordFetch({
         axiosInstance:axios,
         method:'PATCH',
-        url:`/user/drivers/records/${record._id}`,
+        url:`/user/drivers/records/${recordid}`,
         requestConfig:{
             data:{
                 selectedDriver,
@@ -86,7 +86,7 @@ try{
   }
 
 useEffect(()=>{
-    if(driverid !=='' && isOpen){
+    if(recordid !=='' && isOpen){
         getData()
         getRecordData()
     }
@@ -99,6 +99,7 @@ useEffect(()=>{
     if(record){
         setDescription(record.description)
         setType(record.recordType)
+        setSelectedDriver(record?.user)  
         setDate(record.occurenceDate?.split('T')[0])
         console.log(record)
     }

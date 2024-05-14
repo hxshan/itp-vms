@@ -126,10 +126,6 @@ const VehicleViewControl = () => {
     }
   };
 
-  const handleCancel = () => {
-    navigate(-1); 
-  };
-
   const startDateString = '2024-05-07T00:00:00.000Z';
 
   const startDate = new Date(startDateString);
@@ -244,8 +240,8 @@ const VehicleViewControl = () => {
                     )}
                     content={() => componentRef.current}
                 />
-            <button className="mx-2 bg-actionBlue py-2 px-4 rounded-md text-white text-sm font-bold mt-2" type="button" onClick={handleCancel}>Cancel</button>
-                
+           <button className="mx-2 bg-actionBlue py-2 px-4 rounded-md text-white text-sm font-bold mt-2" onClick={() => navigate(`/vehicle/edit/${id}`)}>Update</button>
+            <button className="mx-2 bg-actionBlue py-2 px-4 rounded-md text-white text-sm font-bold mt-2" type="button"  onClick={() => navigate(`/vehicle`)}>Cancel</button>    
           </div>
         </>
       )}
