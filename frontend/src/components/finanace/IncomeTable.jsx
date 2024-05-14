@@ -3,9 +3,11 @@ import { ReactToPrint } from 'react-to-print';
 import useAxios from '@/hooks/useAxios';
 import axios from '@/api/axios';
 import EditIncomeForm from './EditIncomeForm';
+import { useAuthContext } from "@/hooks/useAuthContext";
 
 const IncomeTable = () => {
   
+  const { user } = useAuthContext()
   const [income, setIncome] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(5); 
@@ -17,6 +19,8 @@ const IncomeTable = () => {
   const [vehicleData, vehicleerror, vehicleloading, vehicleAxiosFetch] = useAxios();
   const [selectedIncome, setSelectedIncome] = useState(null);
   const [EditselectedIncome, setEditSelectedIncome] = useState(null);
+
+
 
   const [incomesData, incomesError, incomesLoading, incomesAxiosFetch] = useAxios();
   const [deleteResponse, deleteError, deleteLoading, deleteAxiosFetch] = useAxios();
@@ -85,6 +89,10 @@ const IncomeTable = () => {
       requestConfig: {
         data: editedIncome,
       },
+      headers:{
+        withCredentials:true,
+        authorization:`Bearer ${user?.accessToken}`
+      }
     });
     setEditSelectedIncome(null);
   };
@@ -104,6 +112,10 @@ const IncomeTable = () => {
             axiosInstance: axios,
             method: 'DELETE',
             url: `/income/${id}`,
+            headers:{
+              withCredentials:true,
+              authorization:`Bearer ${user?.accessToken}`
+            }
           });
           setReload((prevReload) => prevReload + 1);
         } catch (error) {

@@ -248,6 +248,10 @@ const handleExpenseChange = (e) => {
         data: {
           ...formData
         }
+      },
+      headers:{
+        withCredentials:true,
+        authorization:`Bearer ${user?.accessToken}`
       }
     });
     alert("Expense created successfully");

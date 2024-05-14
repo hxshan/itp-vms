@@ -117,8 +117,10 @@ const createExpense = async (req, res) => {
     try {
         const expense = await Expense.create(expenseData);
         console.log(expense)
+        await logUserActivity(req,200,'CREATE',`created Expense`)
         res.status(201).json(expense);
     } catch (error) {
+        await logUserActivity(req,500,'CREATE',`created Expense`)
         res.status(400).json({ error: error.message });
         console.log({ error: error.message })
     }
@@ -137,6 +139,7 @@ const deleteExpense = async (req, res) => {
         if (!expense) {
             return res.status(404).json({ error: 'Expense not found' });
         }
+        await logUserActivity(req,200,'DELETE',`Deleted Expense`)
         res.status(200).json(expense);
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -163,8 +166,10 @@ const updateExpense = async (req, res) => {
         if (!expense) {
             return res.status(404).json({ error: 'Expense not found' });
         }
+        await logUserActivity(req,200,'UPDATE',`Updated Expense`)
         res.status(200).json(expense);
     } catch (error) {
+        await logUserActivity(req,500,'UPDATE',`created new hire`)
         res.status(500).json({ error: error.message });
     }
 }
