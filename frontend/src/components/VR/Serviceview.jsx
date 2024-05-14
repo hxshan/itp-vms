@@ -49,11 +49,11 @@ export const Serviceview = () => {
           />
         </div>
       </div>
-      <div className="border-b-4 border-black w-full mb-8"></div>
+      <div className="border-b-4 border-black w-full mb-8 dark:border-white"></div>
       <div ref={componentRef}>
         <div className='w-full  rounded-md  '>
           {data && data.length > 0 && (
-            <h1 className='bg-slate-300 text-center p-2 shadow-xl font-bold rounded-t-xl text-xl w-full'>Past Services of vehicle Number : {data[0].vehicleRegister.vehicleRegister}</h1>
+            <h1 className='bg-slate-300 text-center p-2 shadow-xl font-bold dark:text-black rounded-t-xl text-xl w-full'>Past Services of vehicle Number : {data[0].vehicleRegister.vehicleRegister}</h1>
           )}
         </div>
         <table className='w-full border-collapse   rounded-md pad shadow-xl p-5 mb-10 mt-5'>

@@ -109,17 +109,17 @@ export const CreateMaintainceForm = () => {
 
     return (
 
-        <main className='w-full  flex flex-col justify-center items-center'>
-            <div className=" sm:w-3/4 bg-white p-10 flex flex-col rounded-2xl ">
+        <main className='w-full  flex flex-col justify-center items-center '>
+            <div className=" sm:w-3/4 bg-white p-10 flex flex-col rounded-2xl dark:text-white dark:bg-slate-500">
                 <h1 className='font-bold text-xl'>
                     Create Maintaince Form
                 </h1>
-                <form className='flex flex-col gap-4 md:flex-row' onSubmit={handleSubmit}>
+                <form className='flex flex-col gap-4 md:flex-row dark:text-white' onSubmit={handleSubmit}>
                     <div className="w-full">
 
 
                         <div className='flex flex-col gap-5 mt-9'>
-                            <label className="block text-gray-700 text-md font-bold mb-2">Vehicle Number</label>
+                            <label className="block text-gray-700 text-md font-bold mb-2 dark:text-white">Vehicle Number</label>
                             <input
                                 type="text"
                                 id='vehicleRegister'
@@ -128,7 +128,7 @@ export const CreateMaintainceForm = () => {
                                 required
                                 onChange={handlechange}
                                 value={formdata.vehicleRegister} />
-                            <label className="block text-gray-700 text-md font-bold mb-2">Fault of the Vehicle</label>
+                            <label className="block text-gray-700 text-md font-bold mb-2 dark:text-white">Fault of the Vehicle</label>
                             <textarea
                                 type="text"
                                 id='vrissue'
@@ -137,7 +137,7 @@ export const CreateMaintainceForm = () => {
                                 required
                                 onChange={handlechange}
                                 value={formdata.vrissue} />
-                            <label className="block text-gray-700 text-md font-bold mb-2">Estimated Cost</label>
+                            <label className="block text-gray-700 text-md font-bold mb-2 dark:text-white">Estimated Cost</label>
                             <input
                                 type="number"
                                 id='vrcost'
@@ -149,7 +149,7 @@ export const CreateMaintainceForm = () => {
                         </div>
 
                         <div className="flex flex-col gap-5 mt-5">
-                            <label className="block text-gray-700 text-md font-bold mb-2">Additional Info</label>
+                            <label className="block text-gray-700 text-md font-bold mb-2 dark:text-white">Additional Info</label>
                             <textarea
                                 type="text"
                                 id='vraddit'
@@ -163,7 +163,7 @@ export const CreateMaintainceForm = () => {
 
                         <div className="flex flex-col gap-5 mb-5 items-center">
                             <div className="flex items-center gap-4">
-                                <label className=" text-gray-700 text-md font-bold" >Start Date :</label>
+                                <label className=" text-gray-700 text-md font-bold dark:text-white" >Start Date :</label>
                                 <input type='date'
                                     id='vrsdate'
                                     className="shadow  rounded  text-gray-700 p-2"
@@ -171,7 +171,7 @@ export const CreateMaintainceForm = () => {
                                     value={formdata.vrsdate} />
                             </div>
                             <div className="flex  items-center gap-4">
-                                <label className="block text-gray-700 text-md font-bold mb-2">End Date :</label>
+                                <label className="block text-gray-700 text-md font-bold mb-2 dark:text-white">End Date :</label>
                                 <input type='date'
                                     className="shadow  rounded  text-gray-700 p-2"
                                     id='vredate'
@@ -179,7 +179,7 @@ export const CreateMaintainceForm = () => {
                                     value={formdata.vredate} />
                             </div>
                             <div className='flex gap-4 justify-between items-center'>
-                                <label className="block text-gray-700 text-md font-bold mb-2">Availability:</label>
+                                <label className="block text-gray-700 text-md font-bold mb-2 dark:text-white">Availability:</label>
                                 <select
                                     id='availability'
                                     className="shadow  rounded  text-gray-700 p-2"

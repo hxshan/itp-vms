@@ -86,7 +86,7 @@ export const Requestfromdriver = () => {
     const componentRef = React.createRef();
 
     return (
-        <div className="w-full flex flex-col justify-between md:w-full">
+        <div className="w-full flex flex-col justify-between md:w-full dark:text-white">
             <h1 className='font-bold text-xl mt-6'>Reuests from Driver</h1>
             <div className="flex flex-col ">
                 <div className="flex justify-end mb-4 gap-2 flex-col md:flex-row">
@@ -146,7 +146,7 @@ export const Requestfromdriver = () => {
                 <div className="flex justify-center items-center gap-3  rounded-md  m-0 p-3"  >  <h1 className="text-center font-bold text-xl "> Date Range :  From {new Date(startDate).toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' })}</h1>
                     <h1 className="text-center font-bold text-xl ">to {new Date(endDate).toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' })}</h1>
                 </div>
-                <div className="border-b-4 border-black w-full mb-8"></div>
+                <div className="border-b-4 border-black w-full mb-8 dark:border-white"></div>
                 <table className='w-full border-collapse   rounded-md pad shadow-xl p-5 mb-10'>
                     <thead className='bg-secondary text-white border-white'>
                         <tr>

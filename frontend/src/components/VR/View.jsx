@@ -39,7 +39,7 @@ export const View = () => {
     const componentRef = React.createRef();
 
     return (
-        <div className="">
+        <div className="dark:text-white">
             <div className="flex justify-end items-center">
                 <div className=""> <Link to={`/Mdashboard`}>
                     <button className="my-1 mx-1 bg-actionBlue text-white rounded-lg px-4 py-2">Back</button>
@@ -61,7 +61,7 @@ export const View = () => {
                 <div className='w-full  rounded-md   p-5 mb-10 mt-5'>
                     {order && order.length > 0 && (
 
-                        <h1 className='bg-slate-300 text-center p-2 shadow-xl font-bold rounded-t-xl text-xl w-full'>Past and upcoming Maintainces of Vehicle Number : {order[0].vrvehicleRegister}</h1>
+                        <h1 className='bg-slate-300 text-center p-2 dark:text-black shadow-xl font-bold rounded-t-xl text-xl w-full'>Past and upcoming Maintainces of Vehicle Number : {order[0].vrvehicleRegister}</h1>
 
                     )}
                 </div>

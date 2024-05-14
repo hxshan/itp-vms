@@ -114,7 +114,7 @@ export const MaintainOrderTable = () => {
     const tableRef = React.createRef();
 
     return (
-        <div className="w-full flex flex-col justify-between md:w-full">
+        <div className="w-full flex flex-col justify-between md:w-full dark:text-white">
             <div className="flex flex-col ">
                 <div ref={componentRef}>
                     <div className="flex flex-col">
@@ -127,7 +127,7 @@ export const MaintainOrderTable = () => {
                             </h1>
 
                         </div>
-                        <div className="border-b-4 border-black w-full mb-8"></div>
+                        <div className="border-b-4 border-black w-full mb-8 dark:border-white"></div>
 
                         <div className="flex m-5">
                             <div className=" w-[500px] h-[500px]">

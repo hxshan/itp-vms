@@ -52,18 +52,18 @@ export const ReportMaintain = ({ vehicleId }) => {
     
 
     return (
-        <div className="w-full h-full flex flex-col px-2 py-[20px] justify-center align-center xl:px-[60px] xl:py-[50px] ">
+        <div className="w-full h-full flex flex-col px-2 py-[20px] justify-center align-center xl:px-[60px] xl:py-[50px] dark:text-white">
             <div className="pt-[10px] pb-8 border-b-2 border-[#37A000] ">
-                <h1 className="text-xl font-bold xl:text-xl text-center text-black">Requests from Emergency</h1>
+                <h1 className="text-xl font-bold xl:text-xl text-center text-black dark:text-white">Requests from Emergency</h1>
             </div>
-            <div className="border-b-4 border-black w-full mb-8"></div>
+            <div className="border-b-4 border-black w-full mb-8 dark:border-white"></div>
             <div>
                 <table className="w-full divide-y divide-gray-200 ">
                     <thead className="bg-secondary">
                         <tr>
-                            <th className=" px-1 py-1  border-white text-white text-center">Vehicle No</th>
-                            <th className=" px-1 py-1  border-gray-200 text-center text-white">Driver</th>
-                            <th className=" px-1 py-1  border-gray-200 text-center text-white">Action</th>
+                            <th className=" px-1 py-1 dark:bg-slate-500 border-white text-white text-center">Vehicle No</th>
+                            <th className=" px-1 py-1 dark:bg-slate-500 border-gray-200 text-center text-white">Driver</th>
+                            <th className=" px-1 py-1 dark:bg-slate-500 border-gray-200 text-center text-white">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -71,7 +71,7 @@ export const ReportMaintain = ({ vehicleId }) => {
                             <td colSpan="6" className="text-center py-4">No data available</td>
                         ) : 
                         alerts.map(alert => (
-                            <tr key={alert.id} className="bg-white t text-center border-gray-200">
+                            <tr key={alert.id} className="bg-white t text-center dark:bg-slate-500 border-gray-200">
                                 <td className="px-1 py-1 text-center border-gray-200">{alert.vehicle.vehicleRegister}</td>
                                 <td className="px-1 py-1 text-center border-gray-200"> {alert.driver.firstName} {alert.driver.lastName} </td>
                                 {!completed && (

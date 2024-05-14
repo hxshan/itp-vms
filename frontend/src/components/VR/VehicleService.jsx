@@ -69,7 +69,7 @@ const VehicleService = () => {
 
   if (loading) {
     return (
-      <div className="w-full flex items-center justify-center h-full bg-white">
+      <div className="w-full flex items-center justify-center h-full bg-white dark:bg-slate-600">
         <ClockLoader
           color="#36d7b7"
           height={50}
@@ -102,8 +102,8 @@ const VehicleService = () => {
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
-    <div className="w-full place-content-center space-y-4 mt-8 bg-cover bg-center">
-      <div className="text-xl font-bold text-black mt-4 mb-8">Reminders for Services</div>
+    <div className="w-full place-content-center space-y-4 mt-8 bg-cover bg-center dark:text-white">
+      <div className="text-xl font-bold text-black mt-4 mb-8 dark:text-white">Reminders for Services</div>
 
       <div className="flex justify-between">
         <div className='flex gap-4 justify-end'>
@@ -135,8 +135,8 @@ const VehicleService = () => {
       </div>
 
       <div ref={componentRef}>
-        <div className="border-b-4 border-black w-full mb-6"></div>
-        <table className="w-full   border-black  shadow-xl p-5">
+        <div className="border-b-4 border-black w-full mb-6 dark:border-white"></div>
+        <table className="w-full   border-black  shadow-xl p-5 ">
           <thead className="bg-secondary   text-white">
             <tr>
               <th className="border border-white p-2">Vehicle Category</th>
@@ -147,14 +147,14 @@ const VehicleService = () => {
               <th className="border border-white p-2 column-to-hide">Actions</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className='dark:bg-slate-500'>
             {filteredVehicles.length > 0 ? (
               filteredVehicles.map((vehicle) => (
                 <tr className="bg-white border-t border-gray-200" key={vehicle._id}>
-                  <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200 text-center">{vehicle.category}</td>
-                  <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200 text-center">{vehicle.vehicleRegister}</td>
-                  <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200 text-center">{vehicle.lastMileage}km</td>
-                  <td className="border rounded-md text-center">
+                  <td className="px-6 py-2 dark:bg-slate-500 whitespace-nowrap border-r border-gray-200 text-center">{vehicle.category}</td>
+                  <td className="px-6 py-2 dark:bg-slate-500 whitespace-nowrap border-r border-gray-200 text-center">{vehicle.vehicleRegister}</td>
+                  <td className="px-6 py-2 dark:bg-slate-500 whitespace-nowrap border-r border-gray-200 text-center">{vehicle.lastMileage}km</td>
+                  <td className="border rounded-md text-center dark:bg-slate-500">
                     {getLatestKilometerLimit(vehicle._id) !== null ? (
                       vehicle.lastMileage <= getLatestKilometerLimit(vehicle._id) ? (
                         <p className='bg-green-200 text-green-800 font-semibold rounded-md mx-4'>Done</p>
@@ -163,10 +163,10 @@ const VehicleService = () => {
                       )
                     ) : <p className='bg-yellow-200 text-yellow-800 font-semibold rounded-md mx-4'>To be Service</p>}
                   </td>
-                  <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200 text-center">{getLatestKilometerLimit(vehicle._id)}km</td>
-                  <td className="px-2 py-2 whitespace-nowrap border-r border-gray-200 flex justify-center">
+                  <td className="px-6 py-2 whitespace-nowrap border-r  dark:bg-slate-500 border-gray-200 text-center">{getLatestKilometerLimit(vehicle._id)}km</td>
+                  <td className="px-2 py-2 whitespace-nowrap border-r dark:bg-slate-500 border-gray-200 flex justify-center">
                     <button
-                      className="my-1 mx-1 bg-blue-700 text-white py-1 px-4 rounded-md text-sm font-semibold column-to-hide"
+                      className="my-1 mx-1 bg-blue-700 dark:bg-slate-500 text-white py-1 px-4 rounded-md text-sm font-semibold column-to-hide"
                       id={vehicle._id}
                       onClick={() => handleAddnoteClick(vehicle._id)}
                     >
@@ -191,7 +191,7 @@ const VehicleService = () => {
             {[...Array(Math.ceil(vehicles.length / itemsPerPage)).keys()].map((number) => (
               <li
                 key={number}
-                className={`page-item bg-slate-100 rounded-lg p-1 ${currentPage === number + 1 ? 'active bg-slate-400 p-1' : ''}`}
+                className={`page-item bg-slate-100 dark:bg-slate-500 rounded-lg p-1 dark:text-white ${currentPage === number + 1 ? 'active bg-slate-400 p-1' : ''}`}
               >
                 <button
                   onClick={() => paginate(number + 1)}
