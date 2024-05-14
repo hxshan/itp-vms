@@ -31,16 +31,14 @@ const getData = ()=>{
 
 const deleteData =async(e) => {
   e.preventDefault()
-  if(confirm("Are you sure you want to Delete the following user")){
-    await axiosFetch({
-      axiosInstance: axios,
-      method: "PATCH",
-      url: `/user/delete/${e.target.id}`,
-    });
-    if(!error){
-      setReload(reload + 1);
-    }   
-  }
+      await axiosFetch({
+        axiosInstance: axios,
+        method: "PATCH",
+        url: `/user/delete/${e.target.id}`,
+        headers:{
+          authorization:`Bearer ${user?.accessToken}`
+        }
+      });
 };
 
 useEffect(()=>{
@@ -49,8 +47,9 @@ useEffect(()=>{
 },[usersdata])
 
 useEffect(()=>{
-  if(user?.accessToken)
+  if(user?.accessToken){
     getData()
+  }
 },[user,reload])
 
   if(loading){
@@ -79,7 +78,7 @@ useEffect(()=>{
           <select name="status"
           value={statusFilter}
           onChange={(e)=>setStatusFilter(e.target.value)}
-           className="shadow appearance-none border rounded w-full min-w-40 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+           className="shadow  appearance-none border rounded w-full min-w-40 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
             <option value="">Select Status</option>
             <option value="active">Active</option>
             <option value="inactive">Inactive</option>
@@ -89,7 +88,7 @@ useEffect(()=>{
           placeholder="Search"
           value={search}
           onChange={(e)=>{setSearch(e.target.value)}}
-          className="shadow appearance-none border rounded min-w-40 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+          className="shadow appearance-none border rounded placeholder:font-semibold placeholder:tracking-wide min-w-[220px] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
         </div>
       </div>
       
@@ -121,19 +120,19 @@ useEffect(()=>{
           }).slice(startIdx,endIdx)
           .map((row) => {
             return (
-                <tr className="bg-white border-t border-gray-200" key={row._id}>
-                  <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{row.firstName}</td>
-                  <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{row.email}</td>
-                  <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{row.role.name}</td>
-                  <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">
-                    <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded -full ${row.status=='active'?'text-green-500 bg-green-100': row.status=='inactive'?'text-red-600 bg-red-100':'text-orange-600 bg-orange-100'}`}>
+                <tr className="bg-white dark:bg-secondaryDark dark:text-white border-t border-gray-200" key={row._id}>
+                  <td className="px-6 py-3 whitespace-nowrap border-r border-gray-200">{row.firstName}</td>
+                  <td className="px-6 py-3 whitespace-nowrap border-r border-gray-200">{row.email}</td>
+                  <td className="px-6 py-3 whitespace-nowrap border-r border-gray-200">{row.role.name}</td>
+                  <td
+                   className={`px-6 py-3 whitespace-nowrap border-r border-gray-200 text-center font-semibold leading-5 ${row.status=='active'?'text-green-500 bg-green-100': row.status=='inactive'?'text-red-600 bg-red-100':'text-orange-600 bg-orange-100'}`}>
+
                       {row.status.toUpperCase()}
-                    </span>
                   </td>
-                  <td className="px-6 py-2 whitespace-nowrap justify-between flex">
+                  <td className="px-6 py-3 whitespace-nowrap justify-between flex">
                   <button className="bg-actionBlue text-white py-1 px-6 rounded-md" id={row._id} onClick={(e)=>navigate(`/admin/userreport/${e.target.id}`) }>View</button>
                     <button className="bg-actionGreen text-white py-1 px-6 rounded-md" onClick={()=>navigate(`/admin/edituser/${row._id}`)}>Edit</button>
-                    <button type="submit" id={row._id} onClick={(e)=>deleteData(e)} className="bg-actionRed text-white py-1 px-6 rounded-md">Delete</button>
+                    <button type="submit" id={row._id} onClick={(e)=>{deleteData(e);setReload(reload+1)}} className="bg-actionRed text-white py-1 px-6 rounded-md">Delete</button>
                   </td>   
               </tr>
             );

@@ -1,6 +1,6 @@
 const express = require('express')  
 
-const {addVehicle,editVehicle,changeStatusVehicle,updateMileage,getVehicle,getVehicles,recoverVehicle,deletePost,getAvailabilityByVehicleId} = require('../controllers/vehicleController')
+const {addVehicle,editVehicle,changeStatusVehicle,updateMileage,getVehicle,getVehicles,recoverVehicle,deletePost,getAvailabilityByVehicleId,getAllVehicles} = require('../controllers/vehicleController')
 
 const router = express.Router()
 router.post('/', addVehicle)

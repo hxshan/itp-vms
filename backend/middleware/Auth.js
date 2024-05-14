@@ -3,8 +3,9 @@ const User = require('../models/userModel')
 
 
 const Auth = async (req, res, next) =>{
-    const { authorization } = req.headers
-    //console.log(authorization)
+
+    console.log(req.headers)
+    const { authorization } = req.method == 'GET'||req.method == 'DELETE' || req.headers.authorization?req.headers:req.body.headers//put patch post req
     if(!authorization){
         return res.status(401).json({error:'Auth token required'})
     }
@@ -13,8 +14,9 @@ const Auth = async (req, res, next) =>{
 
     try{
         
-        const {email} = jwt.verify(token,process.env.SECRET)
-        req.user = await User.findOne({email}).select('email')
+        const decoded = jwt.verify(token,process.env.SECRET)
+        const email=decoded?.UserInfo?.email
+        req.user = await User.findOne({email}).populate('role').select('email')
         next()
 
     }catch(error){

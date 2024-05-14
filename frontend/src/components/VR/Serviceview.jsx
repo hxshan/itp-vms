@@ -8,8 +8,7 @@ import { ReactToPrint } from 'react-to-print';
 import { Link } from 'react-router-dom';
 
 export const Serviceview = () => {
-  const [error, loading, axiosFetch] = useAxios();
-  const [services, setServices] = useState([]);
+  
   const [data, setDate] = useState();
   const { id } = useParams();
 
@@ -56,6 +55,7 @@ export const Serviceview = () => {
               <th className='border  p-2'>Last-Milage</th>
               <th className='border  p-2'>Expense</th>
               <th className='border  p-2'>Note</th>
+              <th className='border  p-2'>limit</th>
             </tr>
           </thead>
           <tbody>
@@ -70,8 +70,9 @@ export const Serviceview = () => {
                     day: '2-digit'
                   })}</td>
                   <td className='border border-slate-700 rounded-md text-center p-2'>{item.lastmilage}km</td>
-                  <td className='border border-slate-700 rounded-md text-center p-2'>{item.Scost}</td>
+                  <td className='border border-slate-700 rounded-md text-center p-2'>Rs.{item.Scost}</td>
                   <td className='border border-slate-700 rounded-md text-center p-2'>{item.Snote}</td>
+                  <td className='border border-slate-700 rounded-md text-center p-2'>{item.kilometerLimit}Km</td>
                 </tr>
               ))
             ) : (
@@ -82,6 +83,16 @@ export const Serviceview = () => {
               </tr>
             )}
           </tbody>
+          {Array.isArray(data) && data.length > 0 && (
+    <tfoot>
+        <td colSpan="4" className='border border-slate-700 rounded-md text-center p-2'>Total</td>
+        <td className='border border-slate-700 rounded-md text-center p-2'>Rs.
+            {data.reduce((total, item) => total + item.Scost, 0)}
+        </td>
+        <td colSpan="2" className='border border-slate-700 rounded-md text-center p-2'></td>
+    </tfoot>
+)}
+
         </table>
       </div>
     </main>

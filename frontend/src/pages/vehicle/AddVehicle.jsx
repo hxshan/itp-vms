@@ -156,7 +156,7 @@ const AddVehicle = () => {
                         </div>
                         
                     </div>
-                    {error &&<p className='mt-3 p-3 font-medium text-sm text-white bg-actionBlue rounded-md pad'>{error}</p>}
+                    {error &&<p className='mt-3 p-3 font-medium text-sm text-white bg-actionRed rounded-md pad'>{error}</p>}
                 </form>      
             )}
 

@@ -67,8 +67,6 @@ const caseFileSchema = new mongoose.Schema(
     injuriesDiscription: {
       type: String,
     },
-
-
     witnessesStatement: {
       type: String,
     },

@@ -4,6 +4,8 @@ const EmergencyContact = require("../models/emergencyContactModel");
 const Role = require("../models/roleModel");
 const Hire = require("../models/hireModel")
 const EmpRecord = require('../models/employeeRecordModel')
+const isAuth = require('../middleware/isAuth');
+const logUserActivity = require("../middleware/logUserActivity");
 
 //TODO:add validation use REGEX 
 const createUser = async (req, res) => {
@@ -28,7 +30,7 @@ const createUser = async (req, res) => {
       emergencyContacts,
     } = req.body;
 
- console.log(req.body)
+ 
     if (!firstName || !lastName || !email || !password)
       return res.status(400).json({ msg: "Not all fields have been entered." });
   
@@ -43,13 +45,10 @@ const createUser = async (req, res) => {
     const salt = await bcrypt.genSalt();
     const passwordHash = await bcrypt.hash(password, salt);
 
-    if (!req.files.nicDocument) {
-      return res.status(400).json({ message: 'NIC document is required' });
-    }
-
-    const nicDocumentPath = req.files.nicDocument[0].path||null;
-    const empPhotoName=req.files.empPhoto[0].filename;
-
+ 
+    const nicDocumentPath = "";
+    const empPhotoName=req?.files?.empPhoto[0]?.filename;
+    console.log("nic passed")
     // console.log(empPhotoName)
     //match front and back names
     const user = new User({
@@ -91,11 +90,11 @@ const createUser = async (req, res) => {
       return res.status(500).json({ message: err.message });
     }
 
-    // console.log(user)
+     console.log(user)
     await user.save();
-    // console.log('saved')
+     console.log('saved')
 
-
+    await logUserActivity(req,200,'CREATE',`created new user ${user.email}`)
     return res.status(200).json({ message: "User created succesfully" });
   } catch (err) {
     // console.log(err);
@@ -124,6 +123,7 @@ const updateUserPersonal = async(req,res) =>{
       licenceNum,
       status,
     } = req.body.data;
+
     let passwordToStore=''
     console.log(req.body.data);
     if (!firstName || !lastName || !email)
@@ -136,11 +136,10 @@ const updateUserPersonal = async(req,res) =>{
       const salt = await bcrypt.genSalt();
       passwordToStore = await bcrypt.hash(password, salt);
     }else{
-      console.log(match)
+      //console.log(match)
       passwordToStore=user.password
     }
     
-    try{
       const updatedUser = await User.findByIdAndUpdate(id,{
         firstName,
         middleName,
@@ -163,13 +162,10 @@ const updateUserPersonal = async(req,res) =>{
       if (!updatedUser) {
         return res.status(500).json({ message: "Update Failed" });
       }
+      await logUserActivity(req,200,'UPDATE',`Updated a users (${firstName}) info`)
       return res.status(200).json(updatedUser);
 
-    }catch(err){
-      res.status(500).json({ message: error.message });
-    }
-
-    return res.status(200).json({ message: "User Updated succesfully" });
+    //return res.status(200).json({ message: "User Updated succesfully" });
   } catch (err) {
      console.log(err);
     return res.status(500).json({ message: err.message });
@@ -196,7 +192,7 @@ const deleteContact = async(req,res) =>{
     const updatedUser = await User.findByIdAndUpdate(id,{emergencyContacts:newContactArr})
 
     if(!updatedUser) return res.status(500).json({ message: 'Update Failed' });
-
+    await logUserActivity(req,200,'DELETE','deleted a Emergency contact') 
     return res.status(200).json({ message: 'Delete Succesfull' });
     
   }catch(err){
@@ -293,11 +289,13 @@ const updateDocuments = async(req,res) =>{
 
 }
 
-
+//not logged
 const getAllUsers = async (req, res) => {
   try {
-    let users = await User.find().populate("role");
+    const  user = req.user
+    if(!isAuth(user,'userPermissions.Read')) return res.status(401).json({message:"Unauthorized"})
 
+    let users = await User.find().populate("role");
     if (!users) {
       return res.json([{}]);
     }
@@ -309,13 +307,15 @@ const getAllUsers = async (req, res) => {
   }
 };
 
+//
 const setUserAsDeleted=async (req,res)=>{
   const {id}=req.params
-  // console.log(id)
+  console.log(req)
   try{
     const updateduser= await User.findByIdAndUpdate(id,{status:'deleted'})
     if(!updateduser) return res.status(500).json({ message: "Update Failed" });
-    res.status(200).json(updateduser);
+    await logUserActivity(req,200,'DELETE','deleted a user') 
+    return res.status(200).json(updateduser);
   }catch(err){
     return res.status(500).json({message:"Internal Sever Error"})
   }
@@ -365,15 +365,18 @@ const getUserDetailsFull = async (req,res)=>{
     const userHires = await Hire.find({driver:user._id})
     let totalHire= 0
     let completedHires = 0
-    let pendingHires = 0
+    let cancelled=0
+    let pendingHires = 0    
     
     if(userHires.length){
        totalHire= userHires.length
-       completedHires = userHires.filter((hire)=>{ return hire.hireStatus == "Completed"})
-       pendingHires = userHires.filter((hire)=>{return hire.status == "Pending"})
+
+       completedHires = userHires.filter((hire)=>{ return hire.hireStatus.toLowerCase() == "completed" || hire.hireStatus.toLowerCase() == "ended"})
+       pendingHires = userHires.filter((hire)=>{return hire.hireStatus.toLowerCase() == "pending"})
+       cancelled = userHires.filter((hire)=>{return hire.hireStatus.toLowerCase() == "cancelled"})
     }
-    const records = await EmpRecord.find({userId:user._id})
-    const userDetail={totalHire,completedHires,pendingHires,records,personal:user}
+    const records = await EmpRecord.find({user:user._id})
+    const userDetail={totalHire,completedHires,pendingHires,cancelled,records,personal:user}  
     return res.status(200).json(userDetail)
   }catch(error){
     return res.status(404).json({message:JSON.stringify(error.message)})
@@ -396,6 +399,34 @@ const getRecords = async (req,res) =>{
     return res.status(500).json({message:'Internal Server Error'})
   }
 }
+
+const getRecordByRecordId = async (req,res)=>{
+  try{
+    const {id}=req.params
+    const record = await EmpRecord.findOne({user:id}).exec()
+
+    if(!record) return res.status(400).json({message:'no record found'});
+    return res.status(200).json(record);
+
+  }catch(err){
+    return res.status(500).json({message:'Internal Server Error'})
+  }
+}
+
+const deleteRecord = async(req,res)=>{
+  const { id } = req.params
+  try{
+    if (!id) {
+      return res.status(500).json({ message: "Record not found" });
+    }
+    await EmpRecord.findByIdAndDelete({_id:id});
+    await logUserActivity(req,200,'DELETE',`deleted performance record`)
+    return res.status(200).json({ message: "Record Deleted Successfully"});
+  }catch(err){
+    return res.status(500).json({ message: "Unexpected error occured"});
+  }
+}
+
 //TODO:add validation use REGEX
 const resetPassword = async(req,res)=>{
   try{
@@ -417,14 +448,16 @@ const resetPassword = async(req,res)=>{
 
     if(!user) return res.status(500).json({message:'Update Failed'})
 
+    await logUserActivity(req,200,'UPDATE',`Reset their password`)  
     return res.status(200).json({message:'succesfull'})
-    
   }catch(error){
     return res.status(500).json({message:'internal server Error'})
   }
 }
 
 module.exports = {
+  getRecordByRecordId,
+  deleteRecord,
   getRecords,
   getUserDetailsFull, 
   createUser, 

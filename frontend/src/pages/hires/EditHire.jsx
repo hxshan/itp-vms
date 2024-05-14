@@ -37,11 +37,9 @@ const EditHire = () => {
     const [hireStatus, setHireStatus] = useState(viewHireData.hireStatus);
     const [finalTotal, setfinalTotal] = useState(viewHireData.finalTotal);
 
-    const [availableVehicles, setAvailableVehicles] = useState(["CHJ-2233", "CGF-5568"])
-    const [availableDrivers, setavailableDrivers] = useState(["Chamara" , "Jonny", "Danny", "Chanchala"])
-
     const [response, error, loading, axiosFetch] = useAxios()
     const [incomeData, incomeError, incomeLoading, incomeAxiosFetch] = useAxios()
+
     const handleEdit = async (e) => {
       e.preventDefault();
       try {
@@ -189,44 +187,56 @@ const EditHire = () => {
     }
 
     //Fetch Vehicle Data
-  const [vehiclesData, vehiclesError, vehiclesLoading, axiosFetchVehicles] = useAxios()
-  
+    const [vehiclesData, vehiclesError, vehiclesLoading, axiosFetchVehicles] = useAxios()
+    
 
-  const fetchVehicleDetails = async () => {
-    axiosFetchVehicles({
-          axiosInstance: axios,
-          method: "GET",
-          url: "/vehicle/",
-      });
-  };
-
-  if(vehiclesError){
-    return(
-      <p>Can not Vehicle Fetch Data</p>
-    )
-  }
-
-  //Filter Vehicles
-  const [filteredVehicles, setFilteredVehicles] = useState([]);
-  
-  const filterVehicles = () => {
-    console.log("Filter Vehicles")
-
-    console.log("Selected Vehicle : " + vehicleType)
-    const selectedVehicles = vehiclesData.vehicles ?.filter((vehicle) => vehicle.category.toLowerCase() === vehicleType.toLowerCase());
-    console.log(selectedVehicles)
-
-    setFilteredVehicles(selectedVehicles); 
-    if(selectedVehicles.length === 0 ){
-      console.log("No vehicles Available")
-      alert("No vehicles Available")
-    }
-
+    const fetchVehicleDetails = async () => {
+        axiosFetchVehicles({
+              axiosInstance: axios,
+              method: "GET",
+              url: '/hire/vehicles',
+          });
+      };
+    
     if(vehiclesError){
     return(
-      <p>Can not Fetch Data</p>
+        <p>Can not Vehicle Fetch Data</p>
     )
-  }
+    }
+
+    const [filteredVehicles, setFilteredVehicles] = useState([]);
+    const [isVehicleAvailable, setIsVehicleAvailable] = useState(true);
+    
+    const filterVehicles = () => {
+      console.log("Filter Vehicles")
+  
+      console.log("Selected Vehicle : " + vehicleType)
+      const selectedVehicles = vehiclesData.filter(vehicle => vehicle.category.toLowerCase() === vehicleType.toLowerCase());
+      console.log(selectedVehicles)
+  
+      setFilteredVehicles(selectedVehicles);
+      console.log("selectedVehicles", selectedVehicles)
+  
+      const filteredByAvailability = selectedVehicles.filter(vehicle => {
+        // Check if any availability record overlaps with the specified date range
+        return !vehicle.availability.some(availability => {
+          return (
+            (availability.unavailableStartDate <= startDate && availability.unavailableEndDate >= endDate) ||
+            (availability.unavailableStartDate >= startDate && availability.unavailableStartDate <= endDate) ||
+            (availability.unavailableEndDate >= startDate && availability.unavailableEndDate <= endDate)
+          );
+        });
+      });
+  
+      setFilteredVehicles(filteredByAvailability);
+      console.log("filteredByAvailability" , filteredByAvailability)
+  
+      if (filteredVehicles.length === 0) {
+        console.log("No vehicles Available");
+        setIsVehicleAvailable(false);
+    } else {
+        setIsVehicleAvailable(true);
+    }
 
 
   }
@@ -250,11 +260,9 @@ const EditHire = () => {
     
 
     useEffect(() => {
-        fetchVehicleDetails()
-        console.log('vehiclesData')
-        console.log(vehiclesData)
-        filterDrivers()
-    }, [])
+        fetchVehicleDetails().then(filterVehicles);
+        filterDrivers();
+      }, []);
 
     useEffect(() => {
         if (vehiclesData && vehiclesData.vehicles) {
@@ -297,6 +305,43 @@ const EditHire = () => {
                         </select>
                     </div>
 
+                    <div className='flex justify-between align-baseline mb-5'>
+
+                            <div className=" flex flex-col  align-baseline xl:flex-row xl:flex-1">
+
+                                <label htmlFor="endPoint" 
+                                className="block font-medium text-black mr-[5px] text-base xl:mr-7">
+                                End Point
+                                </label>
+
+                                <input type="text" id="endPoint" name="endPoint" 
+                                value={endPoint}
+                                onChange={(e) => setEndPoint(e.target.value)} 
+                                placeholder='To'
+                                className='border-2 rounded border-black px-4'
+                                required
+                                />
+
+                            </div>
+
+                            <div className=" flex flex-col ml-7  align-baseline xl:flex-row xl:flex-1">
+
+                                <label htmlFor="startTime" 
+                                className="block font-medium text-black mr-[5px] text-base xl:mr-7">
+                                Start Time
+                                </label>
+
+                                <input type="time" id="startTime" name="startTime" 
+                                value={startTime}
+                                onChange={(e) => setStartTime(e.target.value)} 
+                                className='border-2 rounded border-black px-4'
+                                required
+                                />
+
+                            </div>
+
+                        </div>
+
                     <div className='flex justify-between align-baseline mb-5 '>
                         <div className=" flex flex-col justify-between align-baseline xl:flex-1 xl:mr-14 xl:flex-row">
 
@@ -310,6 +355,7 @@ const EditHire = () => {
                             className='border-2 rounded border-black px-14'
                             required
                             >
+                                <option key={vehicle.id} value={vehicle._id}>{vehicle.vehicleRegister}</option>
                                 {filteredVehicles.map((vehicle) => (
                                 <option key={vehicle.id} value={vehicle._id}>{vehicle.vehicleRegister}</option>
                                 ))}

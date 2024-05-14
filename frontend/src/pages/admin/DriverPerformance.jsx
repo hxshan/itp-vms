@@ -12,7 +12,7 @@ const DriverPerformance = () => {
     <div className="container pb-10 min-h-full pt-8 relative" >
         <AddDriverRecordForm isOpen={recordOpen} setIsOpen={setRecordOpen} reload={reload} setReload={setReload}/>
         <DriverTable/>
-        <DriverRecordTable isOpen={recordOpen} setIsOpen={setRecordOpen} reload={reload}/>
+        <DriverRecordTable isOpen={recordOpen} setIsOpen={setRecordOpen} reload={reload} setReload={setReload}/>
    
     </div>
   )
