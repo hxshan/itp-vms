@@ -12,7 +12,6 @@ const ExpenseForm = ({ onFormSubmit }) => {
       recordedBy: "",
       tripId: null,
       category: "",
-      driverHireExpense:"",
       status: "Pending",
       notes: "",
       odometerReading: 0,

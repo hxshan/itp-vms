@@ -188,6 +188,7 @@ const getCaseFiles = async (req, res) => {
         
 };
 
+
 const driverCreateCaseFile = async (req, res) => {
 
     
@@ -235,8 +236,8 @@ const driverCreateCaseFile = async (req, res) => {
      
       const createdCaseFile = await CaseFile.create(newCaseFile);
 
-      const populatedCaseFile = await CaseFile.findById(createdCaseFile._id).populate('driver').populate('hire');
 
+      const populatedCaseFile = await CaseFile.findById(createdCaseFile._id).populate('driver').populate('hire');
 
       const transporter = nodemailer.createTransport({
         service: 'gmail',
@@ -253,8 +254,8 @@ const driverCreateCaseFile = async (req, res) => {
 
       });
 
+
       sendmail(transporter,populatedCaseFile)
-        
 
       return res.status(201).send(createdCaseFile);
     } catch (error) {
@@ -355,5 +356,5 @@ const driverCreateCaseFile = async (req, res) => {
     };*/
   
 
-
 module.exports = { getCaseFiles, getCaseFileById, updateCaseFileById, deleteCaseFileById, driverCreateCaseFile, getDriverAlerts,getDriverAlertById};
+
