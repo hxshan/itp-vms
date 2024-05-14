@@ -24,7 +24,7 @@ const fetchHires = async (req, res) => {
 //Fetch all vehicles
 const fetchVehicles = async (req, res) => {
   try {
-    const vehicles = await Vehicles.find().populate('availability');
+    const vehicles = await Vehicles.find({ statusVehicle: 'Active' }).populate('availability');
     //console.log(vehicles)
     res.json(vehicles);
   } catch (error) {
@@ -32,7 +32,7 @@ const fetchVehicles = async (req, res) => {
     res.status(500).json({ message: 'Internal server error' });
   }
 }
-
+ 
 //Add new hire
 const addHire = async (req, res) => {
   try {
@@ -95,7 +95,7 @@ const addHire = async (req, res) => {
 
     const newAvailability = new Availability({
       vehicle: vehicle,
-      status: 'reserved',
+      status: 'Hire',
       unavailableStartDate: startDate,
       unavailableEndDate: endDate
     });
@@ -133,6 +133,27 @@ const addHire = async (req, res) => {
     res.status(500).json({ message: 'Internal server error' });
   }
 }
+
+//Find Hire By Id
+const getHireById = async (req, res) => {
+  try {
+    const hireId = req.params.id;
+
+    // Find the hire document by its ID
+    const hire = await Hire.findById(hireId)
+      .populate('vehicle')
+      .populate('driver');
+
+    if (!hire) {
+      return res.status(404).json({ message: 'Hire not found' });
+    }
+
+    res.json(hire);
+  } catch (error) {
+    console.error('Error fetching hire:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
 
 //Delete hire automatically
 const cron = require('node-cron');
@@ -231,6 +252,7 @@ const editHire = async (req, res) => {
   }
 };
 
+/*
 //Delete Hire
 const deleteHire = async (req, res) => {
   try {
@@ -245,6 +267,46 @@ const deleteHire = async (req, res) => {
     res.json({ message: 'Hire deleted successfully' });
   } catch (error) {
     res.status(500).json({ message: 'Error deleting hire', error: error.message });
+  }
+};*/
+
+const deleteHire = async (req, res) => {
+  try {
+    const hireId = req.params.id;
+    if (!mongoose.Types.ObjectId.isValid(hireId)) {
+      return res.status(400).json({ message: 'Invalid hire ID' });
+    }
+
+    const hire = await Hire.findById(hireId);
+    if (!hire) {
+      return res.status(404).json({ message: 'Hire not found' });
+    }
+
+    // Get the vehicle and startDate from the hire document
+    const { vehicle, startDate } = hire;
+
+    // Find and update the corresponding availability document
+    const updatedAvailability = await Availability.findOneAndUpdate(
+      {
+        vehicle,
+        unavailableStartDate: startDate,
+      },
+      
+    );
+
+    if (updatedAvailability) {
+      // Update the availability array in the Vehicles collection
+      await Vehicles.updateOne(
+        { _id: vehicle },
+        { $set: { 'availability.$[elem]': updatedAvailability } },
+        { arrayFilters: [{ 'elem._id': updatedAvailability._id }] }
+      );
+      await Hire.findByIdAndUpdate(hire._id, { hireStatus: 'Cancelled' })
+    }
+
+    res.json({ message: 'Hire status updated successfully' });
+  } catch (error) {
+    res.status(500).json({ message: 'Error updating hire status', error: error.message });
   }
 };
 
@@ -304,6 +366,18 @@ const sendmail = async (transporter, hireData) => {
       }
     });
   });
+
+  // Add header
+  //const logoPath = 'path/to/your/logo.png';
+  const companyName = 'Your Company Name';
+
+  // Add header
+  //pdfDoc.image(logoPath, 50, 25, { width: 50 });
+  pdfDoc.fontSize(16).text(companyName, { align: 'center' });
+  pdfDoc.moveTo(50, 90)
+    .lineTo(550, 90)
+    .stroke();
+  pdfDoc.moveDown();
 
   // Add content to PDF
   pdfDoc.fontSize(20).text('Hire Confirmation', { align: 'center' , lineGap: 15 });
@@ -429,5 +503,5 @@ const sendmail = async (transporter, hireData) => {
 
 
 
-module.exports = { addHire, fetchHires, editHire, deleteHire, generateCombinedReport, fetchVehicles };
+module.exports = { addHire, fetchHires, editHire, deleteHire, generateCombinedReport, fetchVehicles, getHireById };
 

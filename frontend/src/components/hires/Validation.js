@@ -1,4 +1,4 @@
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const validateFormFirstPage = (FormData) => {
@@ -13,8 +13,6 @@ const validateFormFirstPage = (FormData) => {
 
     const today = new Date()
     const startDate = new Date(FormData.startDate)
-
-  
 
     if (FormData.endDate === '') {
         error.endDate = 'Please Enter StartDate'
