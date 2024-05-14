@@ -1,8 +1,11 @@
 const Contract = require("../models/contractModel");
 const Client = require("../models/clientModel");
+const ClientRequest = require("../models/clientRequestModel");
 const bcrypt = require("bcrypt");
 const { Vehicles } = require("../models/vehicleModel");
 const Availability = require("../models/vehicleAvailability");
+const Income = require("../models/incomeModel")
+const logUserActivity = require("../middleware/logUserActivity");
 
 const createClient = async (req, res) => {
   try {
@@ -89,6 +92,7 @@ const createClient = async (req, res) => {
     });
 
     await client.save();
+    await logUserActivity(req,200,'CREATE',"client created")
 
     res.status(200).json({ message: "client created succesfully" });
   } catch (error) {
@@ -349,6 +353,24 @@ const createContract = async (req, res) => {
     });
 
     await contract.save();
+
+    const incomeData = new Income({
+      date : Payment_Date,
+      vehicle : Vehical,
+      recordedBy : req?.user?._id,
+      source : "Rental Income",
+      contractIncome:{
+        contract:clientID,
+        rentalType:Payment_Plan,
+        rentalAmount:Amount_Payed
+      } ,
+      description:"contract income from active contract",
+      paymentMethod:"suit case(v bucks)",
+      status:"Received",
+      comments:"contract money"
+    })
+
+    
     const newAvailability = new Availability({
       vehicle: Vehical,
       status: "Contract",
@@ -368,6 +390,10 @@ const createContract = async (req, res) => {
       { $set: { Contract_Available: "Available" } }
     );
 
+
+    await incomeData.save();
+    await logUserActivity(req,200,'CREATE',"created new contract")
+
     res.status(200).json({ message: "contract created successfully" });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -379,6 +405,46 @@ const getContractbyID = async (req, res) => {
     const contractID = req.params.id;
 
     const contractExist = await Contract.findOne({ _id: contractID }).populate(
+      "clientID"
+    );
+
+    if (!contractExist) {
+      return res.status(400).json({ error: "contract dosent exist" });
+    }
+
+    const currentDate = new Date();
+
+    currentDate.setHours(currentDate.getHours() + 5); // Add 5 hours
+    currentDate.setMinutes(currentDate.getMinutes() + 30); // Add 30 minutes
+
+    let newStatus;
+    if (contractExist.Status === "Terminated") {
+      newStatus = "Terminated";
+    } else if (contractExist.contract_ED <= currentDate) {
+      newStatus = "waiting for termination";
+    } else if (contractExist.contract_SD <= currentDate) {
+      newStatus = "ongoing";
+    } else {
+      newStatus = "Newly Added";
+    }
+
+    await Contract.updateOne(
+      { _id: contractExist._id },
+      { $set: { Status: newStatus } }
+    );
+    contractExist.Status = newStatus;
+
+    return res.status(200).json(contractExist);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+const getContractbyClientID = async (req, res) => {
+  try {
+    const clientID = req.params.id;
+
+    const contractExist = await Contract.findOne({ clientID: clientID }).populate(
       "clientID"
     );
 
@@ -513,12 +579,14 @@ const updateContract = async (req, res) => {
       { vehicle: Vehical, status: "Contract" },
       { $set: { unavailableEndDate: contract_ED } }
     );
+    await logUserActivity(req,200,'UPDATE',"updated contract")
 
     if (updateSuccess.modifiedCount > 0) {
       return res.status(200).json({ message: "success" });
     } else {
       return res.status(200).json({ message: "failed" });
     }
+    
   } catch (error) {
     res.status(500).json({ error: "internal server error" });
   }
@@ -533,6 +601,7 @@ const deleteContract = async (req, res) => {
     if (!contractExist) {
       return res.status(400).json({ message: "contract does not exist" });
     }
+    await logUserActivity(req,200,'DELETE',"contract deleted")
 
     if (contractExist.Status === "waiting for termination") {
       await Contract.updateOne(
@@ -575,6 +644,71 @@ const getVehicle = async (req, res) => {
   }
 };
 
+const createRequest = async(req,res) =>{
+
+  try{
+    const {
+      clientID,
+      ContractID,
+      renew_ED,
+      Status
+    } = req.body.data;
+
+    console.log(clientID)
+
+    const Request = new ClientRequest({
+      clientID,
+      ContractID,
+      renew_ED,
+      Status
+    });
+
+    
+
+    await Request.save();
+
+    res.status(200).json({ message: "client request added succesfully" });
+  }catch(error){
+    res.status(500).json({ error: "Internal server error " })
+  }
+}
+
+const getallRequests = async(req,res) =>{
+  try{
+
+    const Requests = await ClientRequest.find({}).populate("clientID");
+
+    res.status(200).json(Requests);
+  }catch(error){
+    res.status(500).json({ error: "Internal server error " })
+  }
+}
+
+const deleteRequest = async(req,res) =>{
+  try{
+    const RequestID = req.params.id;
+    await ClientRequest.deleteOne({ _id: RequestID });
+
+    return res.status(200).json({message:"Request deleted"})
+  }catch(error){
+    return res.status(500).json({error:"Internal server error"})
+  }
+}
+
+const getRequestbyID = async(req,res) =>{
+  try{
+    const ID = req.params.id;
+    
+    const request = await ClientRequest.find({ clientID: ID });
+    
+      res.status(200).json(request)
+    
+  }catch(error){
+    
+    return res.status(500).json({error:"Internal server error"})
+  }
+}
+
 module.exports = {
   createContract,
   createClient,
@@ -588,4 +722,9 @@ module.exports = {
   deleteContract,
   fetchVehicles,
   getVehicle,
+  createRequest,
+  getallRequests,
+  deleteRequest,
+  getRequestbyID,
+  getContractbyClientID
 };
