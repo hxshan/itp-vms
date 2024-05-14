@@ -1,8 +1,10 @@
 const express = require('express')  
 const router = express.Router()
+const Auth =require('../middleware/Auth')
 const {addHire, fetchHires,editHire, deleteHire, generateCombinedReport, fetchVehicles, getHireById } = require('../controllers/hireController')
 const {fetchHiresRates, addHireRates, editHireRate} = require('../controllers/hireRatesController.js')
 const{getHiresByDriverId,updateHireDriver,  getPastTripsForDriver, getSingleHire, getHiresByVehicleId} =   require('../controllers/driverController')
+
 
   router.get('/', fetchHires)
   
@@ -16,13 +18,13 @@ const{getHiresByDriverId,updateHireDriver,  getPastTripsForDriver, getSingleHire
 
   router.get('/vehicle/:vehicleId', getHiresByVehicleId)
 
-  router.post('/add', addHire)
+  router.post('/add',Auth,addHire)
 
-  router.put('/edit/:id', editHire)
+  router.put('/edit/:id',Auth,editHire)
 
   router.patch('/driverEdit/:id', updateHireDriver)
 
-  router.put('/cancel/:id', deleteHire)
+  router.put('/cancel/:id',Auth,deleteHire)
 
   router.get('/rates', fetchHiresRates)
 

@@ -437,7 +437,7 @@ const getRecords = async (req,res) =>{
 const getRecordByRecordId = async (req,res)=>{
   try{
     const {id}=req.params
-    const record = await EmpRecord.findOne({user:id}).exec()
+    const record = await EmpRecord.findById(id).exec()
 
     if(!record) return res.status(400).json({message:'no record found'});
     return res.status(200).json(record);
