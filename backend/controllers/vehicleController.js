@@ -4,6 +4,7 @@ const Availability = require('../models/vehicleAvailability')
 const path = require('path')
 const fs = require('fs')
 const HttpError = require ('../models/errorModel')
+const logUserActivity = require("../middleware/logUserActivity");
 
 //POST:api/vehicle
 const addVehicle = async (req, res, next) => {
@@ -44,7 +45,7 @@ const addVehicle = async (req, res, next) => {
                 return next(new HttpError("Vehicle couldn't be created.", 422));
             }
 
-            
+            await logUserActivity(req,200,'CREATE',`created new vehicle`)
              res.status(201).json(newVehicle);
     
 
@@ -79,7 +80,7 @@ const addVehicle = async (req, res, next) => {
                 return next(new HttpError("Vehicle couldn't be created.", 422));
             }
 
-
+            await logUserActivity(req,200,'CREATE',`created new vehicle`)
             res.status(201).json(newVehicle);
 
 
@@ -119,7 +120,7 @@ const addVehicle = async (req, res, next) => {
             }
 
             
-
+            await logUserActivity(req,200,'CREATE',`created new vehicle`)
             res.status(201).json(newVehicle);
 
             } else {
@@ -174,14 +175,14 @@ const addVehicle = async (req, res, next) => {
                   if (existingVehicleByModel) {
                     return next(new HttpError('Vehicle with the same model already exists.', 400));
                   }
-              
+                  
                   const newVehicle = await Vehicles.create(filteredFields);
               
                   if (!newVehicle) {
                     return next(new HttpError('Vehicle couldn\'t be created.', 422));
                   }
 
-
+                  await logUserActivity(req,200,'CREATE',`created new vehicle`)
                   res.status(201).json(newVehicle);
 
             }
@@ -204,13 +205,31 @@ const editVehicle = async (req,res,next) => {
 
             let{vehicleType, vehicleRegister,vehicleModel,vehicleManuYear,engineCap,lastMileage,vehicleColour,vehicleGearSys,airCon,numOfSeats,lugSpace,gps,fridge,tv,licEndDate,insEndDate,fuelType} = req.body
 
-            
+            try {
             updatedVehicle = await Vehicles.findByIdAndUpdate(vehicleId,{category,vehicleType, vehicleRegister,vehicleModel,vehicleManuYear,engineCap,lastMileage,vehicleColour,vehicleGearSys,airCon,numOfSeats,lugSpace,gps,fridge,tv,licEndDate,insEndDate,fuelType}, {new: true})
+            
             if(!updatedVehicle){
                 return next(new HttpError("Couldn;t update Vehicle.",400))
             }
 
+            const existingVehicleByRegister = await Vehicles.findOne({ vehicleRegister });
+            const existingVehicleByModel = await Vehicles.findOne({ vehicleModel });
+              
+            if (existingVehicleByRegister && existingVehicleByRegister._id.toString() !== vehicleId) {
+                return next(new HttpError('Vehicle with the same registration number already exists.', 400));
+              }
+          
+              if (existingVehicleByModel && existingVehicleByModel._id.toString() !== vehicleId) {
+                return next(new HttpError('Vehicle with the same model already exists.', 400));
+              }
+            
+            await logUserActivity(req,200,'EDIT',`edite vehicle details`)
             res.status(200).json(updatedVehicle)
+
+            } catch (error) {
+               console.error('Error updating vehicle:', error);
+               return next(new HttpError('Failed to update vehicle. Please try again later.', 500));
+            }
         }
 
         if(category === 'lorry' ){
@@ -222,6 +241,7 @@ const editVehicle = async (req,res,next) => {
                 return next(new HttpError("Couldn;t update Vehicle.",400))
             }
 
+            await logUserActivity(req,200,'EDIT',`edite vehicle details`)
             res.status(200).json(updatedVehicle)
         }
 
@@ -233,7 +253,8 @@ const editVehicle = async (req,res,next) => {
             if(!updatedVehicle){
                 return next(new HttpError("Couldn;t update Vehicle.",400))
             }
-
+            
+            await logUserActivity(req,200,'EDIT',`edite vehicle details`)
             res.status(200).json(updatedVehicle)
         }
         
@@ -285,7 +306,8 @@ const changeStatusVehicle = async (req, res, next) => {
         if (!updatedVehicle) {
             return next(new HttpError("Vehicle not found.", 404));
         }
-
+        
+        await logUserActivity(req,200,'UPDATE',`update vehicle status as deactive`)
         res.status(200).json({ message: `Vehicle with ID ${vehicleId} deactive successfully.` });
     } catch (error) {
 
@@ -310,7 +332,8 @@ const recoverVehicle = async (req, res, next) => {
         if (!updatedVehicle) {
             return next(new HttpError("Vehicle not found.", 404));
         }
-
+        
+        await logUserActivity(req,200,'UPDATE',`update vehicle status as active`)
         res.status(200).json({ message: `Vehicle with ID ${vehicleId} active successfully.` });
     } catch (error) {
         return next(new HttpError(error.message, 500));
@@ -337,7 +360,8 @@ const updateMileage = async (req, res, next) => {
         if (!updatedVehicle) {
             return next(new HttpError("Vehicle not found.", 404));
         }
-
+        
+        await logUserActivity(req,200,'UPDATE',`update vehicle milage`)
         res.status(200).json({ message: `Vehicle with ID ${vehicleId} activated successfully.` });
     } catch (error) {
         return next(new HttpError(error.message, 500));
@@ -348,17 +372,18 @@ const updateMileage = async (req, res, next) => {
 
 
 //DELETE:api/vehicle
-const deletePost = async(req,res,next) => {
+const deleteVehicle = async(req,res,next) => {
     try {
         const vehicleId = req.params.id;
 
         if(!vehicleId){
-            return next(new HttpError("Post unavailable.",400))
+            return next(new HttpError("Vehicle deleted.",400))
         }
         
         await Vehicles.findByIdAndDelete(vehicleId);
-
-        res.json(`Post ${vehicleId} deleted successfully.`)
+        
+        await logUserActivity(req,200,'DELETE',`deleted vehicle`)
+        res.json(`Vehicle ${vehicleId} deleted successfully.`)
 
     } catch (error) {
         return next (new HttpError(error)) 
@@ -387,6 +412,7 @@ const getVehicle = async (req, res, next) => {
         return next(new HttpError(error));
     }
 }
+
 
 
 
@@ -454,5 +480,5 @@ const getAllVehicles = async (req, res, next) => {
 }
 
 
-module.exports = {addVehicle,editVehicle,changeStatusVehicle,getVehicle,getVehicles,recoverVehicle,deletePost,updateMileage,getAvailabilityByVehicleId,getAllVehicles}
+module.exports = {addVehicle,editVehicle,changeStatusVehicle,getVehicle,getVehicles,recoverVehicle,deleteVehicle,updateMileage,getAvailabilityByVehicleId,getAllVehicles}
 

@@ -122,7 +122,7 @@ function App() {
               <Route path="edit/:id" element={<VehicleDetailsControl />} />
               <Route path="view/:id" element={<VehicleViewControl />} />
               <Route path="report" element={<VehReport />} />
-              <Route path="vehsum" element={<VehSum />} />
+              <Route path="report/vehsum" element={<VehSum />} />
             </Route>
             
             <Route path="/Vrform" element={<CreateMaintainceForm />}/>

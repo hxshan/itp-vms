@@ -38,7 +38,8 @@ const AddVehicle = () => {
         vehicleBookImage: null,
         vehicleLicenceImage: null,
         vehicleInsuImage: null, 
-        statusVehicle:'Active'   
+        statusVehicle:'Active',
+        categoryCustom:false     
     }
     
     const [formState, setFormState] = useState(initialFormState);
@@ -105,7 +106,7 @@ const AddVehicle = () => {
             <h1 className="text-2xl font-bold">Add Vehicle Details</h1>
               <div>
                <button className='mx-1 px-3 py-1 rounded-md bg-actionBlue text-white text-sm text-bold' onClick={() => navigate('custom')}>Add Custom Vehicle</button>
-               <button className='mx-1 px-3 py-1 rounded-md bg-actionBlue text-white text-sm text-bold' onClick={() => navigate('/')}>Dashboard</button>
+               <button className='mx-1 px-3 py-1 rounded-md bg-actionBlue text-white text-sm text-bold' onClick={() => navigate(`/vehicle`)}>Dashboard</button>
               </div>
             </div>
 
