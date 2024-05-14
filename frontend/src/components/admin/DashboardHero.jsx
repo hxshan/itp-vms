@@ -83,7 +83,7 @@ const DashboardHero = () => {
   var lastThreeUsers = users.slice(users?.length - 2);
 
   return (
-    <div className="w-full h-fit bg-white dark:bg-slate-800 p-8 rounded-md flex flex-col lg:flex-row gap-16">
+    <div className="w-full h-fit bg-white dark:bg-navPurpleDarker p-8 rounded-md flex flex-col lg:flex-row gap-16">
       <div>
         <h2 className="font-bold text-center text-xl underline">Stores user details</h2>
         <div className="mt-8 w-[300px] h-[300px] lg:w-[400px] lg:h-[400px]">

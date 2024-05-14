@@ -73,12 +73,12 @@ useEffect(()=>{
   return (
     <div className="w-full">
       <div className="w-full flex justify-between mb-4">
-        <h2 className="font-bold text-xl underline mb-4">User List</h2>
+        <h2 className="font-bold text-xl underline mb-4 dark:text-white">User List</h2>
         <div className="flex gap-4 w-fit">
           <select name="status"
           value={statusFilter}
           onChange={(e)=>setStatusFilter(e.target.value)}
-           className="shadow  appearance-none border rounded w-full min-w-40 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+           className="shadow  appearance-none border rounded w-full min-w-40 py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-navPurpleDarker dark:text-white">
             <option value="">Select Status</option>
             <option value="active">Active</option>
             <option value="inactive">Inactive</option>
@@ -88,12 +88,12 @@ useEffect(()=>{
           placeholder="Search"
           value={search}
           onChange={(e)=>{setSearch(e.target.value)}}
-          className="shadow appearance-none border rounded placeholder:font-semibold placeholder:tracking-wide min-w-[220px] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+          className="shadow appearance-none border rounded placeholder:font-semibold placeholder:tracking-wide min-w-[220px] py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-navPurpleDarker dark:text-white" />
         </div>
       </div>
       
     <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-    <table className="min-w-full divide-y divide-gray-200">
+    <table className="min-w-full divide-y divide-gray-200 ">
         <thead className="bg-secondary">
           <tr>
             {columns.map((col,index) => {
@@ -120,7 +120,7 @@ useEffect(()=>{
           }).slice(startIdx,endIdx)
           .map((row) => {
             return (
-                <tr className="bg-white dark:bg-secondaryDark dark:text-white border-t border-gray-200" key={row._id}>
+                <tr className="bg-white dark:bg-navPurpleDarker dark:text-white border-t border-gray-200" key={row._id}>
                   <td className="px-6 py-3 whitespace-nowrap border-r border-gray-200">{row.firstName}</td>
                   <td className="px-6 py-3 whitespace-nowrap border-r border-gray-200">{row.email}</td>
                   <td className="px-6 py-3 whitespace-nowrap border-r border-gray-200">{row.role.name}</td>

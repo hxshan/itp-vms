@@ -171,13 +171,13 @@ const EditUserEmergencyForm = () => {
                   >
                     <div className="col-span-1 w-full flex flex-col">
                       <label
-                        className="block text-gray-700 text-md font-bold mb-2"
+                        className="block  text-md font-bold mb-2"
                         htmlFor="name"
                       >
                         Contact Name
                       </label>
                       <input
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
                         type="text"
                         name="name"
                         value={emergencyContacts[index].name}
@@ -188,14 +188,14 @@ const EditUserEmergencyForm = () => {
                     </div>
                     <div className="col-span-1 w-full flex flex-col">
                       <label
-                        className="block text-gray-700 text-md font-bold mb-2"
+                        className="block  text-md font-bold mb-2"
                         htmlFor="number"
                       >
                         Contact Number
                       </label>
                       <div className="flex w-full">
                         <input
-                          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                          className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
                           type="text"
                           name="number"
                           id={`emergencyContact${index}`}

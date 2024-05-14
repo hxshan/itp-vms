@@ -125,7 +125,7 @@ const AddHireRates = ({setShowAddForm, reload}) => {
                         </div>
                         <div className="flex justify-between">
                             <div className="text-center">
-                                <button type="button" className="bg-gray-300 text-gray-700 py-2 px-6 rounded-md"
+                                <button type="button" className="bg-gray-300  py-2 px-6 rounded-md"
                                 onClick={handleCancle}
                                 >
                                     Cancle

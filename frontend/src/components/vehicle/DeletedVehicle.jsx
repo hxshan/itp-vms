@@ -90,7 +90,7 @@ const DeletedVehicle = () => {
           onChange={(e) => {
             setSearch(e.target.value);
           }}
-          className="mb-3 mr-4 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline end-0 "
+          className="mb-3 mr-4 shadow appearance-none border rounded py-2 px-3  leading-tight focus:outline-none focus:shadow-outline end-0 "
         />
         </div>
      

@@ -96,10 +96,10 @@ const AddVehicle = () => {
     return (
      <div className='m-0 p-0'>
         {loading ? (
-          <p className="flex flex-col items-center justify-center h-screen text-center">Loading... Please check your internet connection.</p>
+          <p className="flex flex-col items-center justify-center h-screen text-center dark:text-white">Loading... Please check your internet connection.</p>
         ) : (
 
-        <div className="place-content-center mt-8 bg-cover bg-center">
+        <div className="place-content-center mt-8 bg-cover bg-center dark:text-white">
 
             <div className='flex flex-row justify-between'>
             <h1 className="text-2xl font-bold">Add Vehicle Details</h1>
@@ -109,7 +109,7 @@ const AddVehicle = () => {
               </div>
             </div>
 
-            <form className="space-y-3 m-1 mt-5 p-4  pad shadow-xl bg-white rounded " onSubmit={handleSubmit}>
+            <form className="space-y-3 m-1 mt-5 p-4  pad shadow-xl bg-white rounded dark:bg-navPurpleDarker" onSubmit={handleSubmit}>
             <p className="text-sm text-red-600 leading-relaxed">
             - Before adding a vehicle, please ensure you have all the necessary information at hand. This includes vehicle details such as registration number, model, manufacturing year, and more.
             </p>
@@ -123,8 +123,8 @@ const AddVehicle = () => {
             - If you have any questions or require assistance while adding a vehicle, feel free to reach out to our support team. We're here to help you every step of the way.
            </p>
            <div className="col-span-1 w-full flex flex-col mt-4 mb-4 ">
-                <label className="block text-gray-700 text-md font-bold mb-2" htmlFor="category">Select Vehicle Category:</label>
-                <select id="category" name="category" value={formState.category} onChange={handleCategoryChange} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                <label className="block  text-md font-bold mb-2" htmlFor="category">Select Vehicle Category:</label>
+                <select id="category" name="category" value={formState.category} onChange={handleCategoryChange} className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black">
                     <option value="">Select</option>
                     <option value="car">Car</option>
                     <option value="van">Van</option>
@@ -135,7 +135,7 @@ const AddVehicle = () => {
             </div>   
             </form>
             {formState.category && (
-                <form className="mx-1 mt-5 mb-10 px-8 pt-6 pb-8 shadow-xl bg-white rounded pad" onSubmit={handleSubmit}>
+                <form className="mx-1 mt-5 mb-10 px-8 pt-6 pb-8 shadow-xl bg-white rounded pad dark:bg-navPurpleDarker" onSubmit={handleSubmit}>
                     
                     {/* Render appropriate form based on selected category */}
                     {formState.category === 'car' && <CarForm formState={formState} setFormState={setFormState} />}

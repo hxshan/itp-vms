@@ -585,7 +585,7 @@ const ContractEditForm = () => {
                 <label>Vehical Type</label>
                 <p
                   name="Vehical_Type"
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
                 >
                   {contractData.Vehical_Type}
                 </p>
@@ -602,7 +602,7 @@ const ContractEditForm = () => {
                     <label>End date</label>
                     <input
                       type="date"
-                      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
                       name="contract_ED"
                       value={formatED}
                       onChange={HandleInput}
@@ -662,7 +662,7 @@ const ContractEditForm = () => {
               <div className="flex flex-col gap-1 mt-3">
                 <label>Insurance source</label>
                 <select
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
                   value={contractData.Insurance_Source}
                   name="Insurance_Source"
                   onChange={HandleInput}
@@ -677,7 +677,7 @@ const ContractEditForm = () => {
                   <label>Name of Insurance provider</label>
                   <input
                     type="text"
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
                     value={contractData.Insurace_provider}
                     name="Insurace_provider"
                     onChange={HandleInput}
@@ -688,7 +688,7 @@ const ContractEditForm = () => {
                   <label>Policy number</label>
                   <input
                     type="text"
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
                     value={contractData.Policy_Number}
                     name="Policy_Number"
                     onChange={HandleInput}
@@ -699,7 +699,7 @@ const ContractEditForm = () => {
               <div className="flex flex-col mt-3 gap-1">
                 <label>Coverage Type</label>
                 <select
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
                   value={contractData.Coverage_Type}
                   name="Coverage_Type"
                   onChange={HandleInput}
@@ -715,7 +715,7 @@ const ContractEditForm = () => {
                   <label>Coverage amount</label>
                   <input
                     type="text"
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
                     value={contractData.Coverage_Amount}
                     name="Coverage_Amount"
                     onChange={HandleInput}
@@ -726,7 +726,7 @@ const ContractEditForm = () => {
                   <label>Deductible</label>
                   <input
                     type="text"
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
                     value={contractData.Deductible}
                     name="Deductible"
                     onChange={HandleInput}
@@ -739,7 +739,7 @@ const ContractEditForm = () => {
                   <label>Start date</label>
                   <input
                     type="date"
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
                     value={InsuranceSD}
                     name="Insurance_SD"
                     onChange={HandleInput}
@@ -750,7 +750,7 @@ const ContractEditForm = () => {
                   <label>End date</label>
                   <input
                     type="date"
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
                     value={InsuranceED}
                     name="Insurance_ED"
                     onChange={HandleInput}
@@ -761,7 +761,7 @@ const ContractEditForm = () => {
               <div className="flex flex-col mt-3">
                 <label>Additianol notes</label>
                 <textarea
-                  className="h-[200px] w-[456px]  shadow appearance-none border rounded  py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  className="h-[200px] w-[456px]  shadow appearance-none border rounded  py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
                   value={contractData.Insurance_notes}
                   name="Insurance_notes"
                   onChange={HandleInput}
@@ -777,7 +777,7 @@ const ContractEditForm = () => {
                 <label>Amount</label>
                 <input
                   type="text"
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
                   value={contractData.Payment_Amount}
                   name="Payment_Amount"
                   onChange={HandleInput}
@@ -788,7 +788,7 @@ const ContractEditForm = () => {
                 <div className="flex flex-col gap-1">
                   <label>Payment plan</label>
                   <select
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
                     value={contractData.Payment_Plan}
                     name="Payment_Plan"
                     onChange={HandleInput}
@@ -801,7 +801,7 @@ const ContractEditForm = () => {
                   <label>Payment date</label>
                   <input
                     type="date"
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
                     value={paymentDate}
                     name="Payment_Date"
                     onChange={HandleInput}
@@ -813,7 +813,7 @@ const ContractEditForm = () => {
                 <label>Amount payed</label>
                 <input
                   type="text"
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
                   value={contractData.Amount_Payed}
                   name="Amount_Payed"
                   onChange={HandleInput}

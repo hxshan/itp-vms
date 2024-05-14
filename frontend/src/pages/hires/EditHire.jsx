@@ -636,7 +636,7 @@ const EditHire = () => {
                         <button
                             type="button"
                             onClick={cancel}
-                            className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md mr-4"
+                            className="px-4 py-2 bg-gray-300  rounded-md mr-4"
                         >
                             Cancel
                         </button>

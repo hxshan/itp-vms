@@ -140,7 +140,7 @@ const IncomeTable = () => {
           <select
             value={filterSource}
             onChange={(e) => setFilterSource(e.target.value)}
-            className="shadow border rounded w-full min-w-40 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="shadow border rounded w-full min-w-40 py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
           >
             <option value="All">All Sources</option>
             <option value="Hire Income">Hire Income</option>
@@ -149,7 +149,7 @@ const IncomeTable = () => {
           <select
             value={filterStatus}
             onChange={(e) => setFilterStatus(e.target.value)}
-            className="shadow border rounded w-full min-w-40 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="shadow border rounded w-full min-w-40 py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
           >
             <option value="All">All Statuses</option>
             <option value="Pending">Pending</option>
@@ -159,7 +159,7 @@ const IncomeTable = () => {
           <select
             value={filterVehicle}
             onChange={(e) => setFilterVehicle(e.target.value)}
-            className="shadow border rounded w-full min-w-40 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="shadow border rounded w-full min-w-40 py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
           >
             <option value="All">All Vehicles</option>
             {vehicleOptions.map(option => (

@@ -97,14 +97,14 @@ const DriverRecordTable = ({isopen,setIsOpen,reload,setReload}) => {
         recordOpen &&
         <EditDriverRecordFrom driverid={editId} isOpen={recordOpen} setIsOpen={setRecordOpen} reload={reload} setReload={setReload}/>
       }
-        <div className="w-full mt-8">
+        <div className="w-full mt-8 dark:text-white">
           <div className="w-full flex justify-between mb-4">
             <h2 className="font-bold text-xl underline mb-4">Driver Record List</h2>
             <div className="flex w-fit">
               <select name="status"
               value={statusFilter}
               onChange={(e)=>setStatusFilter(e.target.value)}
-               className="shadow appearance-none border rounded w-full min-w-40 mx-2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+               className="shadow appearance-none border rounded w-full min-w-40 mx-2 py-2 px-3  leading-tight focus:outline-none focus:shadow-outline">
                 <option value="">Select Type</option>
                 <option value="positive">Postive</option>
                 <option value="negative">Negative</option>
@@ -113,7 +113,7 @@ const DriverRecordTable = ({isopen,setIsOpen,reload,setReload}) => {
               placeholder="Search"
               value={search}
               onChange={(e)=>{setSearch(e.target.value)}}
-              className="shadow appearance-none border rounded mx-2 min-w-40 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+              className="shadow appearance-none border rounded mx-2 min-w-40 py-2 px-3  leading-tight focus:outline-none focus:shadow-outline" />
 
                <button type="button" onClick={()=>setIsOpen(!isopen)} className="bg-actionBlue mx-2 py-2 px-6 rounded-md text-white whitespace-nowrap font-bold ">Add Record</button>   
             </div>
@@ -144,7 +144,7 @@ const DriverRecordTable = ({isopen,setIsOpen,reload,setReload}) => {
               }).slice(startIdx,endIdx)
               .map((row) => {
                 return (
-                    <tr className="bg-white border-t border-gray-200" key={row._id}>
+                    <tr className="bg-white border-t border-gray-200 dark:bg-navPurpleDarker" key={row._id}>
                       <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{row.user.firstName}</td>
                       {/* <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{row.recordType}</td> */}
                       <td className={`px-6 py-2 whitespace-nowrap border-r border-gray-200`}>{row.occurenceDate.split('T')[0]}</td>

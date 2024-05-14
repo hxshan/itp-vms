@@ -82,7 +82,7 @@ const EmergencyReportForm = ({ trip }) => {
           </select>
         </div>
         <div>
-          <label htmlFor="caseTitle" className="block font-medium text-gray-700">Case Title</label>
+          <label htmlFor="caseTitle" className="block font-medium ">Case Title</label>
           <input
             type="text"
             id="caseTitle"
@@ -94,7 +94,7 @@ const EmergencyReportForm = ({ trip }) => {
           />
         </div>
         <div>
-          <label htmlFor="location" className="block font-medium text-gray-700">Location</label>
+          <label htmlFor="location" className="block font-medium ">Location</label>
           <input
             type="text"
             id="location"
@@ -106,7 +106,7 @@ const EmergencyReportForm = ({ trip }) => {
           />
         </div>
         <div>
-          <label htmlFor="description" className="block font-medium text-gray-700">Description</label>
+          <label htmlFor="description" className="block font-medium ">Description</label>
           <textarea
             id="description"
             name="incidentDescription"
@@ -118,7 +118,7 @@ const EmergencyReportForm = ({ trip }) => {
           />
         </div>
         <div>
-          <label htmlFor="severity" className="block font-medium text-gray-700">Severity</label>
+          <label htmlFor="severity" className="block font-medium ">Severity</label>
           <select
             id="severity"
             name="severity"
@@ -134,7 +134,7 @@ const EmergencyReportForm = ({ trip }) => {
           </select>
         </div>
         <div>
-          <label htmlFor="passengerCount" className="block font-medium text-gray-700">Passenger Count</label>
+          <label htmlFor="passengerCount" className="block font-medium ">Passenger Count</label>
           <input
             type="number"
             id="passengerCount"

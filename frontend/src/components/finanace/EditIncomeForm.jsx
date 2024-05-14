@@ -162,23 +162,23 @@ const EditIncomeForm = ({ income, onSave, onCancel }) => {
         <form onSubmit={handleSubmit}>
           {/* Date */}
           <div className="mb-4">
-            <label htmlFor="date" className="block text-sm font-medium text-gray-700">Date</label>
+            <label htmlFor="date" className="block text-sm font-medium ">Date</label>
             <input
               id="date"
               type="date"
               name="date"
               value={editedIncome.date}
               onChange={handleChange}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
             />
           </div>
           {/* Vehicle */}
           <div className="mb-4">
-            <label htmlFor="vehicle" className="block text-gray-700 text-sm font-bold mb-2">
+            <label htmlFor="vehicle" className="block  text-sm font-bold mb-2">
               Vehicle:
             </label>
             <select
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
               id="vehicle"
               name="vehicle"
               value={editedIncome.vehicle ? editedIncome.vehicle._id : ''}
@@ -193,11 +193,11 @@ const EditIncomeForm = ({ income, onSave, onCancel }) => {
           </div>
           {/* Source */}
           <div className="mb-4">
-            <label htmlFor="source" className="block text-gray-700 text-sm font-bold mb-2">
+            <label htmlFor="source" className="block  text-sm font-bold mb-2">
               Source:
             </label>
             <select
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
               id="source"
               name="source"
               value={editedIncome.source}
@@ -212,11 +212,11 @@ const EditIncomeForm = ({ income, onSave, onCancel }) => {
             <>
               {/* Hire */}
               <div className="mb-4">
-                <label htmlFor="hire" className="block text-gray-700 text-sm font-bold mb-2">
+                <label htmlFor="hire" className="block  text-sm font-bold mb-2">
                   Hire:
                 </label>
                 <select
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
                   id="hire"
                   name="hire"
                   value={editedIncome.hire}
@@ -235,11 +235,11 @@ const EditIncomeForm = ({ income, onSave, onCancel }) => {
               </div>
               {/* Hire Payment Type */}
               <div className="mb-4">
-                <label htmlFor="hirePaymentType" className="block text-gray-700 text-sm font-bold mb-2">
+                <label htmlFor="hirePaymentType" className="block  text-sm font-bold mb-2">
                   Hire Payment Type:
                 </label>
                 <select
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
                   id="hirePaymentType"
                   name="hirePaymentType"
                   value={editedIncome.hirePaymentType}
@@ -254,14 +254,14 @@ const EditIncomeForm = ({ income, onSave, onCancel }) => {
               </div>
 
               <div className="mb-4">
-            <label htmlFor="amount" className="block text-sm font-medium text-gray-700">Amount</label>
+            <label htmlFor="amount" className="block text-sm font-medium ">Amount</label>
             <input
               id="hireAmount"
               type="number"
               name="hireAmount"
               value={editedIncome.hirePayment.hireAmount}
               onChange={handleChange}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
             />
           </div>
             </>
@@ -270,11 +270,11 @@ const EditIncomeForm = ({ income, onSave, onCancel }) => {
             <>
               {/* Contract */}
               <div className="mb-4">
-                <label htmlFor="contract" className="block text-gray-700 text-sm font-bold mb-2">
+                <label htmlFor="contract" className="block  text-sm font-bold mb-2">
                   Contract:
                 </label>
                 <select
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
                   id="contract"
                   name="contract"
                   value={editedIncome.contract}
@@ -289,7 +289,7 @@ const EditIncomeForm = ({ income, onSave, onCancel }) => {
               </div>
               {/* Rental Type */}
               <div className="mb-4">
-                <label htmlFor="rentalType" className="block text-gray-700 text-sm font-bold mb-2">
+                <label htmlFor="rentalType" className="block  text-sm font-bold mb-2">
                   Rental Type:
                 </label>
                 <input
@@ -298,55 +298,55 @@ const EditIncomeForm = ({ income, onSave, onCancel }) => {
                   name="rentalType"
                   value={inputRentalType}
                   readOnly
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
                 />
               </div>
               <div className="mb-4">
-            <label htmlFor="amount" className="block text-sm font-medium text-gray-700">Amount</label>
+            <label htmlFor="amount" className="block text-sm font-medium ">Amount</label>
             <input
               id="rentalAmount"
               type="number"
               name="rentalAmount"
               value={editedIncome.contractIncome.rentalAmount}
               onChange={handleChange}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
             />
           </div>
             </>
           )}
           {/* Description */}
           <div className="mb-4">
-            <label htmlFor="description" className="block text-sm font-medium text-gray-700">Description</label>
+            <label htmlFor="description" className="block text-sm font-medium ">Description</label>
             <input
               id="description"
               type="text"
               name="description"
               value={editedIncome.description}
               onChange={handleChange}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
             />
           </div>
          
          
           {/* Payment Method */}
           <div className="mb-4">
-            <label htmlFor="paymentMethod" className="block text-sm font-medium text-gray-700">Payment Method</label>
+            <label htmlFor="paymentMethod" className="block text-sm font-medium ">Payment Method</label>
             <input
               id="paymentMethod"
               type="text"
               name="paymentMethod"
               value={editedIncome.paymentMethod}
               onChange={handleChange}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
             />
           </div>
           {/* Status */}
 <div className="mb-4">
-  <label htmlFor="status" className="block text-gray-700 text-sm font-bold mb-2">
+  <label htmlFor="status" className="block  text-sm font-bold mb-2">
     Status:
   </label>
   <select
-    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+    className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
     id="status"
     name="status"
     value={editedIncome.status}
@@ -360,13 +360,13 @@ const EditIncomeForm = ({ income, onSave, onCancel }) => {
 
           {/* Comments */}
           <div className="mb-4">
-            <label htmlFor="comments" className="block text-sm font-medium text-gray-700">Comments</label>
+            <label htmlFor="comments" className="block text-sm font-medium ">Comments</label>
             <textarea
               id="comments"
               name="comments"
               value={editedIncome.comments}
               onChange={handleChange}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
             ></textarea>
           </div>
   

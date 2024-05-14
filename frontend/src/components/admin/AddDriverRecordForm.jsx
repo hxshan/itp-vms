@@ -83,7 +83,7 @@ useEffect(()=>{
   if (loading) {
     return (
       <div className={"absolute top-0 left-0 w-full z-20 flex justify-center"}>
-        <div className="bg-white rounded-md w-fit p-8 h-full relative">
+        <div className="bg-white rounded-md w-fit p-8 h-full relative ">
           <ClockLoader color="#36d7b7" size={60} />
         </div>
       </div>
@@ -92,7 +92,7 @@ useEffect(()=>{
 
   return (
     <div className={isOpen ? "absolute top-0 left-0 w-full z-20 flex justify-center" : "hidden"}>
-      <div className="bg-white rounded-md p-8 w-fit mt-8 h-full relative">
+      <div className="bg-white rounded-md p-8 w-fit mt-8 h-full relative dark:bg-navPurpleDarker">
         <button
           onClick={() => setIsOpen(false)}
           className="absolute top-3 right-3 border border-gray-500 rounded-full hover:bg-red-600 hover:text-white"
@@ -105,14 +105,14 @@ useEffect(()=>{
           <div className="grid grid-cols-2 gap-x-4 min-w-[400px]">
             <div className="col-span-2 w-full flex flex-col mb-4">
               <label
-                className="block text-gray-700 text-md font-bold mb-2"
+                className="block  text-md font-bold mb-2"
                 htmlFor="driver"
               >
                 Driver
               </label>
               <select 
               name='driver' 
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
               value={selectedDriver}
               onChange={(e)=>{setSelectedDriver(e.target.value)}}>
                 <option  value="">
@@ -129,13 +129,13 @@ useEffect(()=>{
             </div>
             <div className="col-span-2 w-full flex flex-col mb-4 ">
               <label
-                className="block text-gray-700 text-md font-bold mb-2"
+                className="block  text-md font-bold mb-2"
                 htmlFor="description"
               >
                 Description
               </label>
               <textarea
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
                 name="description"
                 placeholder="Write a description"
                 value={description}
@@ -146,7 +146,7 @@ useEffect(()=>{
             </div>
             <div className="col-span-1 w-full flex flex-col mb-4 ">
               <label
-                className="block text-gray-700 text-md font-bold mb-2"
+                className="block  text-md font-bold mb-2"
                 htmlFor="recordType"
               >
                 Record Type
@@ -154,7 +154,7 @@ useEffect(()=>{
 
               <select 
               name='recordType' 
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
               value={type}
               onChange={(e)=>{setType(e.target.value)}}>
                 <option  value=""> Select Type</option>
@@ -165,7 +165,7 @@ useEffect(()=>{
             </div>
             <div className="col-span-1 w-full flex flex-col mb-4 ">
               <label
-                className="block text-gray-700 text-md font-bold mb-2"
+                className="block  text-md font-bold mb-2"
                 htmlFor="description"
               >
                 Date of Occurrence
@@ -174,7 +174,7 @@ useEffect(()=>{
                name="occurenceDate" 
                value={date}
                onChange={(e)=>{setDate(e.target.value)}}
-               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+               className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black" />
             </div>
           </div>
           {

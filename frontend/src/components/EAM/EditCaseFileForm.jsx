@@ -249,12 +249,12 @@ if(CaseFiles && Object.keys(CaseFiles).length !== 0){
 
       <form onSubmit={handleNext}>
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2">
+          <label className="block  text-sm font-bold mb-2">
             Case Title
           </label>
           <input
             type="text"
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
             value={caseTitle}
             name="caseTitle"
             onChange={(e) => setCaseTitle(e.target.value)}
@@ -262,12 +262,12 @@ if(CaseFiles && Object.keys(CaseFiles).length !== 0){
         </div>
 
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2">
+          <label className="block  text-sm font-bold mb-2">
             Location
           </label>
           <input
             type="text"
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
             value={location}
             name="location"
             onChange={(e) => setLocation(e.target.value)}
@@ -275,12 +275,12 @@ if(CaseFiles && Object.keys(CaseFiles).length !== 0){
         </div>
 
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2">
+          <label className="block  text-sm font-bold mb-2">
             Time of Incident
           </label>
           <input
             type="date"
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
             value={timeOfIncident }
             name="timeOfIncident"
             onChange={(e) => setTimeOfIncident(e.target.value)}
@@ -288,12 +288,12 @@ if(CaseFiles && Object.keys(CaseFiles).length !== 0){
         </div>
 
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2">
+          <label className="block  text-sm font-bold mb-2">
             Licence Plate
           </label>
           <input
             type="text"
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
             value={licencePlate}
             name="licencePlate"
             onChange={(e) => setLicencePlate(e.target.value)}
@@ -301,12 +301,12 @@ if(CaseFiles && Object.keys(CaseFiles).length !== 0){
         </div>
 
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2">
+          <label className="block  text-sm font-bold mb-2">
             Current Condition
           </label>
           <input
             type="text"
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
             value={currentCondition}
             name="currentCondition"
             onChange={(e) => setCurrentCondition(e.target.value)}
@@ -314,12 +314,12 @@ if(CaseFiles && Object.keys(CaseFiles).length !== 0){
         </div>
 
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2">
+          <label className="block  text-sm font-bold mb-2">
             Passenger Count
           </label>
           <input
             type="number"
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
             value={passengerCount}
             name="passengerCount"
             onChange={(e) => setPassengerCount(e.target.value)}
@@ -329,7 +329,7 @@ if(CaseFiles && Object.keys(CaseFiles).length !== 0){
         <div className="mb-4">
           <label
             htmlFor="status"
-            className="block text-gray-700 text-sm font-bold mb-2"
+            className="block  text-sm font-bold mb-2"
           >
             Status
           </label>
@@ -350,12 +350,12 @@ if(CaseFiles && Object.keys(CaseFiles).length !== 0){
         {step === 2 && (
       <form>
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2">
+          <label className="block  text-sm font-bold mb-2">
             Incident Description:
           </label>
           <input
             type="text"
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
             value={incidentDescription}
             name="incidentDescription"
             onChange={(e) => setIncidentDescription(e.target.value)}
@@ -363,7 +363,7 @@ if(CaseFiles && Object.keys(CaseFiles).length !== 0){
         </div>
 
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2">
+          <label className="block  text-sm font-bold mb-2">
             Severity
           </label>
           <select
@@ -379,12 +379,12 @@ if(CaseFiles && Object.keys(CaseFiles).length !== 0){
         </div>
 
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2">
+          <label className="block  text-sm font-bold mb-2">
             Injuries Description
           </label>
           <input
             type="text"
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
             value={injuriesDiscription}
             name="injuriesDiscription"
             onChange={(e) => setInjuriesDiscription(e.target.value)}
@@ -392,10 +392,10 @@ if(CaseFiles && Object.keys(CaseFiles).length !== 0){
         </div>
 
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2">
+          <label className="block  text-sm font-bold mb-2">
             Driver:{" "}
           </label>
-          <select className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          <select className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
           onChange={(e) => setSelectedDriver(e.target.value)}
           value={selectedDriver}
           >
@@ -407,7 +407,7 @@ if(CaseFiles && Object.keys(CaseFiles).length !== 0){
         </div>
 
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2">
+          <label className="block  text-sm font-bold mb-2">
             Is Driver at Fault:
             <input
               
@@ -421,12 +421,12 @@ if(CaseFiles && Object.keys(CaseFiles).length !== 0){
         
 
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2">
+          <label className="block  text-sm font-bold mb-2">
             Witnesses Statement:{" "}
           </label>
           <input
             type="text"
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
             value={witnessesStatement}
             name="witnessesStatement"
             onChange={(e) => setWitnessesStatement(e.target.value)}
@@ -434,7 +434,7 @@ if(CaseFiles && Object.keys(CaseFiles).length !== 0){
         </div>
 
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2">
+          <label className="block  text-sm font-bold mb-2">
             Emergency Services Contacted:{" "}
           </label>
           <select
@@ -449,12 +449,12 @@ if(CaseFiles && Object.keys(CaseFiles).length !== 0){
         </div>
 
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2">
+          <label className="block  text-sm font-bold mb-2">
             Emergency Services Response Time:{" "}
           </label>
           <input
             type="text"
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
             value={emergencyServicesResponseTime}
             name="emergencyServicesResponseTime"
             onChange={(e) => setEmergencyServicesResponseTime(e.target.value)}
@@ -462,12 +462,12 @@ if(CaseFiles && Object.keys(CaseFiles).length !== 0){
         </div>
 
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2">
+          <label className="block  text-sm font-bold mb-2">
             Emergency Services Actions Taken:{" "}
           </label>
           <input
             type="text"
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
             value={emergencyServicesActionsTaken}
             name="emergencyServicesActionsTaken"
             onChange={(e) => setEmergencyServicesActionsTaken(e.target.value)}
@@ -475,11 +475,11 @@ if(CaseFiles && Object.keys(CaseFiles).length !== 0){
         </div>
 
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2">
+          <label className="block  text-sm font-bold mb-2">
             Photo Evidence:
           </label>
           <input
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
             type="file"
             name="photographicEvidence"
             onChange={handleImageChange}
@@ -487,12 +487,12 @@ if(CaseFiles && Object.keys(CaseFiles).length !== 0){
         </div>
 
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2">
+          <label className="block  text-sm font-bold mb-2">
             Insurance Companies Contact Information:{" "}
           </label>
           <input
             type="number"
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
             value={insuranceCompaniesContactInfo}
             name="insuranceCompaniesContactInfo"
             onChange={(e) => setInsuranceCompaniesContactInfo(e.target.value)}
@@ -500,7 +500,7 @@ if(CaseFiles && Object.keys(CaseFiles).length !== 0){
         </div>
 
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2">
+          <label className="block  text-sm font-bold mb-2">
             Insurance Status:{" "}
           </label>
           <select
@@ -515,12 +515,12 @@ if(CaseFiles && Object.keys(CaseFiles).length !== 0){
         </div>
 
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2">
+          <label className="block  text-sm font-bold mb-2">
             Police Report:
           </label>
           <input
             type="file"
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
             name="policeReport"
             onChange={handlePoliceReportUpload}
           />

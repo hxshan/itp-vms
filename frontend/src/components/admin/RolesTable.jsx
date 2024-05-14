@@ -62,7 +62,7 @@ const RolesTable = () => {
     );
   }
   return (
-    <div className="w-full">
+    <div className="w-full dark:text-white">
       <div className="w-full flex justify-between mb-4">
         <h2 className="font-bold text-xl underline mb-4">Role List</h2>
         <div className="flex gap-4 w-fit">
@@ -77,7 +77,7 @@ const RolesTable = () => {
             onChange={(e) => {
               setSearch(e.target.value);
             }}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
           />
         </div>
       </div>
@@ -98,7 +98,7 @@ const RolesTable = () => {
               </th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="dark:bg-navPurpleDarker">
             {roles != null && roles.length > 0 ? (
               roles
                 .filter((role) => {
@@ -110,7 +110,7 @@ const RolesTable = () => {
                 .map((row) => {
                   return (
                     <tr
-                      className="bg-white border-t border-gray-200"
+                      className="bg-white border-t border-gray-200 dark:bg-navPurpleDarker"
                       key={row._id}
                     >
                       <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">

@@ -171,14 +171,14 @@ const ViewClient = () => {
             <div className="flex gap-4 mb-3">
               <div className="flex flex-col gap-1">
                 <label className="font-semibold">First Name</label>
-                <p className="shadow appearance-none border rounded w-[180px] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white">
+                <p className="shadow appearance-none border rounded w-[180px] py-2 px-3  leading-tight focus:outline-none focus:shadow-outline bg-white">
                   {clientData.firstName}
                 </p>
               </div>
 
               <div className="flex flex-col gap-1 ml-6">
                 <label className="font-semibold">Last Name</label>
-                <p className="shadow appearance-none border rounded w-[180px] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white">
+                <p className="shadow appearance-none border rounded w-[180px] py-2 px-3  leading-tight focus:outline-none focus:shadow-outline bg-white">
                   {clientData.lastName}
                 </p>
               </div>
@@ -187,14 +187,14 @@ const ViewClient = () => {
             <div className="flex gap-4 mb-3">
               <div className="flex flex-col gap-1">
                 <label className="font-semibold">Gender</label>
-                <p className="shadow appearance-none border rounded w-[180px] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white">
+                <p className="shadow appearance-none border rounded w-[180px] py-2 px-3  leading-tight focus:outline-none focus:shadow-outline bg-white">
                   {clientData.gender}
                 </p>
               </div>
 
               <div className="flex flex-col gap-1 ml-6">
                 <label className="font-semibold">Date of Birth</label>
-                <p className="shadow appearance-none border rounded w-[180px] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white">
+                <p className="shadow appearance-none border rounded w-[180px] py-2 px-3  leading-tight focus:outline-none focus:shadow-outline bg-white">
                   {clientData.dob}
                 </p>
               </div>
@@ -203,14 +203,14 @@ const ViewClient = () => {
             <div className="flex gap-4 mb-3">
               <div className="flex flex-col gap-1">
                 <label className="font-semibold">Phone number</label>
-                <p className="shadow appearance-none border rounded w-[180px] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white">
+                <p className="shadow appearance-none border rounded w-[180px] py-2 px-3  leading-tight focus:outline-none focus:shadow-outline bg-white">
                   {clientData.phoneNumber}
                 </p>
               </div>
 
               <div className="flex flex-col gap-1 ml-6">
                 <label className="font-semibold">NIC number</label>
-                <p className="shadow appearance-none border rounded w-[180px] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white">
+                <p className="shadow appearance-none border rounded w-[180px] py-2 px-3  leading-tight focus:outline-none focus:shadow-outline bg-white">
                   {clientData.nicNumber}
                 </p>
               </div>
@@ -219,13 +219,13 @@ const ViewClient = () => {
             <div className="flex gap-4 mb-3">
               <div className="flex flex-col gap-1">
                 <label className="font-semibold">Email</label>
-                <p className="shadow appearance-none border rounded w-[180px] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white">
+                <p className="shadow appearance-none border rounded w-[180px] py-2 px-3  leading-tight focus:outline-none focus:shadow-outline bg-white">
                   {clientData.email}
                 </p>
               </div>
               <div className="flex flex-col gap-1 ml-6">
                 <label className="font-semibold">licence number</label>
-                <p className="shadow appearance-none border rounded w-[180px] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white">
+                <p className="shadow appearance-none border rounded w-[180px] py-2 px-3  leading-tight focus:outline-none focus:shadow-outline bg-white">
                   {clientData.licenceNumber ? clientData.licenceNumber : "None"}
                 </p>
               </div>
@@ -233,14 +233,14 @@ const ViewClient = () => {
 
             <div className="flex flex-col mb-4 gap-1">
               <label className="font-semibold">Address</label>
-              <textarea className="shadow appearance-none border rounded w-[400px] h-[100px] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white">
+              <textarea className="shadow appearance-none border rounded w-[400px] h-[100px] py-2 px-3  leading-tight focus:outline-none focus:shadow-outline bg-white">
                 {clientData.Address}
               </textarea>
             </div>
 
             <div className="flex flex-col mb-4 gap-1">
               <label className="font-semibold">Contract Available</label>
-              <p className="shadow appearance-none border rounded w-[180px] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white">
+              <p className="shadow appearance-none border rounded w-[180px] py-2 px-3  leading-tight focus:outline-none focus:shadow-outline bg-white">
                 {clientData.Contract_Available === "Available"
                   ? "Available"
                   : "Not Available"}
@@ -253,7 +253,7 @@ const ViewClient = () => {
               <div>
                 <div className="flex flex-col gap-1 mb-3">
                   <label className="font-semibold">Company Available</label>
-                  <p className="shadow appearance-none border rounded w-[180px] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white">
+                  <p className="shadow appearance-none border rounded w-[180px] py-2 px-3  leading-tight focus:outline-none focus:shadow-outline bg-white">
                     {clientData.Comp_Available ? "Yes" : "No"}
                   </p>
                 </div>
@@ -261,14 +261,14 @@ const ViewClient = () => {
                 <div className="flex gap-4 mb-3">
                   <div className="flex flex-col gap-1 ">
                     <label className="font-semibold">Company name</label>
-                    <p className="shadow appearance-none border rounded w-[180px] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white">
+                    <p className="shadow appearance-none border rounded w-[180px] py-2 px-3  leading-tight focus:outline-none focus:shadow-outline bg-white">
                       {compData.Comp_Name ? compData.Comp_Name : "None"}
                     </p>
                   </div>
 
                   <div className="flex flex-col gap-1 ml-6">
                     <label className="font-semibold">Registration number</label>
-                    <p className="shadow appearance-none border rounded w-[180px] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white">
+                    <p className="shadow appearance-none border rounded w-[180px] py-2 px-3  leading-tight focus:outline-none focus:shadow-outline bg-white">
                       {compData.Reg_Num ? compData.Reg_Num : "None"}
                     </p>
                   </div>
@@ -277,13 +277,13 @@ const ViewClient = () => {
                 <div className="flex gap-4 mb-3">
                   <div className="flex flex-col gap-1">
                     <label className="font-semibold">Tax number</label>
-                    <p className="shadow appearance-none border rounded w-[180px] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white">
+                    <p className="shadow appearance-none border rounded w-[180px] py-2 px-3  leading-tight focus:outline-none focus:shadow-outline bg-white">
                       {compData.Tax_Num ? compData.Tax_Num : "None"}
                     </p>
                   </div>
                   <div className="flex flex-col gap-1 ml-6">
                     <label className="font-semibold">Legal structure</label>
-                    <p className="shadow appearance-none border rounded w-[180px] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white">
+                    <p className="shadow appearance-none border rounded w-[180px] py-2 px-3  leading-tight focus:outline-none focus:shadow-outline bg-white">
                       {compData.Legal_struc ? compData.Legal_struc : "None"}
                     </p>
                   </div>
@@ -292,14 +292,14 @@ const ViewClient = () => {
                 <div className="flex gap-4 mb-3">
                   <div className="flex flex-col gap-1">
                     <label className="font-semibold">Company email</label>
-                    <p className="shadow appearance-none border rounded w-[180px] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white">
+                    <p className="shadow appearance-none border rounded w-[180px] py-2 px-3  leading-tight focus:outline-none focus:shadow-outline bg-white">
                       {compData.Comp_Email ? compData.Comp_Email : "None"}
                     </p>
                   </div>
 
                   <div className="flex flex-col gap-1 ml-6">
                     <label className="font-semibold">Company phone</label>
-                    <p className="shadow appearance-none border rounded w-[180px] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white">
+                    <p className="shadow appearance-none border rounded w-[180px] py-2 px-3  leading-tight focus:outline-none focus:shadow-outline bg-white">
                       {compData.Comp_Phone ? compData.Comp_Phone : "None"}
                     </p>
                   </div>
@@ -307,7 +307,7 @@ const ViewClient = () => {
 
                 <div className="flex flex-col mb-4 gap-1">
                   <label className="font-semibold">Address</label>
-                  <textarea className="shadow appearance-none border rounded w-[400px] h-[100px] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white">
+                  <textarea className="shadow appearance-none border rounded w-[400px] h-[100px] py-2 px-3  leading-tight focus:outline-none focus:shadow-outline bg-white">
                     {compData.Comp_Address ? compData.Comp_Address : "None"}
                   </textarea>
                 </div>

@@ -158,7 +158,7 @@ const ExpenseTable = () => {
           <select
             value={filterCategory}
             onChange={(e) => setFilterCategory(e.target.value)}
-            className="shadow border rounded w-full min-w-40 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="shadow border rounded w-full min-w-40 py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
           >
             <option value="All">All Categories</option>
             <option value="Fuel">Fuel</option>
@@ -173,7 +173,7 @@ const ExpenseTable = () => {
           <select
             value={filterStatus}
             onChange={(e) => setFilterStatus(e.target.value)}
-            className="shadow border rounded w-full min-w-40 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="shadow border rounded w-full min-w-40 py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
           >
             <option value="All">All Statuses</option>
             <option value="Pending">Pending</option>
@@ -184,7 +184,7 @@ const ExpenseTable = () => {
           <select
             value={filterVehicle}
             onChange={(e) => setFilterVehicle(e.target.value)}
-            className="shadow border rounded w-full min-w-40 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="shadow border rounded w-full min-w-40 py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
           >
             <option value="All">All Vehicles</option>
             {vehicleOptions.map(option => (

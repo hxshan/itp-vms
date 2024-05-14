@@ -65,7 +65,7 @@ const MaintainSummary = () => {
       <h1 className='text-2xl font-bold text-black mt-4'>All Maintaince</h1>
       <div className='flex justify-end items-center'>
         <div className="text-xm font-semibold text-black mr-5">Search by</div>
-        <input type="text" value={searchTerm} onChange={handleSearchChange} placeholder="Search by Vehicle Registration Number" className="mb-3 mr-4 shadow grow-0 appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"/>
+        <input type="text" value={searchTerm} onChange={handleSearchChange} placeholder="Search by Vehicle Registration Number" className="mb-3 mr-4 shadow grow-0 appearance-none border rounded py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"/>
       </div>
       <table className='w-full border-collapse border-spacing-2 border-black rounded-md pad shadow-xl p-5'>
         <thead className='bg-secondary text-white'>

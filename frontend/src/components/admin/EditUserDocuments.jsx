@@ -58,7 +58,7 @@ const EditUserDocuments = () => {
         <h2 className="font-bold text-2xl w-fit mb-8">Edit User Documents</h2>
         <div className="col-span-1 w-full flex flex-col mb-4 ">
         <label
-          className="block text-gray-700 text-md font-bold mb-2"
+          className="block  text-md font-bold mb-2"
           htmlFor="empPhoto"
         >
           Employee Photogragh{" "}
@@ -67,7 +67,7 @@ const EditUserDocuments = () => {
           </span>
         </label>
         <input
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
           type="file"
           accept="image/*"
           name="empPhoto"
@@ -81,13 +81,13 @@ const EditUserDocuments = () => {
       
       <div className="col-span-1 w-full flex flex-col mb-4 ">
         <label
-          className="block text-gray-700 text-md font-bold mb-2"
+          className="block  text-md font-bold mb-2"
           htmlFor="nicDocument"
         >
           Nic Document
         </label>
         <input
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
           type="file"
           name="nicDocument"
           id="nicDocument"
@@ -102,13 +102,13 @@ const EditUserDocuments = () => {
 
       <div className="col-span-1 w-full flex flex-col mb-4">
         <label
-          className="block text-gray-700 text-md font-bold mb-2"
+          className="block  text-md font-bold mb-2"
           htmlFor="licenceDoc"
         >
           Licence Document
         </label>
         <input
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
           type="file"
           name="licenceDoc"
           id="licenceDoc"

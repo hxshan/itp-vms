@@ -309,7 +309,7 @@ const ClientEditForm = () => {
               <label>First Name</label>
               <input
                 type="text"
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
                 name="firstName"
                 value={clientData.firstName}
                 onChange={HandleInput}
@@ -320,7 +320,7 @@ const ClientEditForm = () => {
               <label>Last Name</label>
               <input
                 type="text"
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
                 name="lastName"
                 value={clientData.lastName}
                 onChange={HandleInput}
@@ -332,7 +332,7 @@ const ClientEditForm = () => {
             <div className="flex flex-col gap-1">
               <label>Gender</label>
               <select
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
                 name="gender"
                 value={clientData.gender}
                 onChange={HandleInput}
@@ -346,7 +346,7 @@ const ClientEditForm = () => {
               <label>Date of Birth</label>
               <input
                 type="date"
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
                 name="dob"
                 value={formatDOB}
                 onChange={HandleInput}
@@ -359,7 +359,7 @@ const ClientEditForm = () => {
               <label>Phone number</label>
               <input
                 type="text"
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
                 name="phoneNumber"
                 value={clientData.phoneNumber}
                 onChange={HandleInput}
@@ -370,7 +370,7 @@ const ClientEditForm = () => {
               <label>NIC number</label>
               <input
                 type="text"
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
                 name="nicNumber"
                 value={clientData.nicNumber}
                 onChange={HandleInput}
@@ -383,7 +383,7 @@ const ClientEditForm = () => {
               <label>Email</label>
               <input
                 type="text"
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
                 name="email"
                 value={clientData.email}
                 onChange={HandleInput}
@@ -393,7 +393,7 @@ const ClientEditForm = () => {
               <label>licence number</label>
               <input
                 type="text"
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
                 placeholder="optional"
                 name="licenceNumber"
                 value={clientData.licenceNumber}
@@ -405,7 +405,7 @@ const ClientEditForm = () => {
           <div className="flex flex-col mb-4">
             <label>Address</label>
             <textarea
-              className="h-[200px] w-[456px]  shadow appearance-none border rounded  py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="h-[200px] w-[456px]  shadow appearance-none border rounded  py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
               name="Address"
               value={clientData.Address}
               onChange={HandleInput}
@@ -419,7 +419,7 @@ const ClientEditForm = () => {
               <div className="flex flex-col gap-1 mb-3">
                 <label>Company Available</label>
                 <select
-                  className="shadow appearance-none border rounded w-[200px] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  className="shadow appearance-none border rounded w-[200px] py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
                   name="Comp_Available"
                   value={clientData.Comp_Available}
                   onChange={HandleInput}
@@ -435,7 +435,7 @@ const ClientEditForm = () => {
                     <label>Company name</label>
                     <input
                       type="text"
-                      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
                       name="Comp_Name"
                       value={clientData.Comp_Name}
                       onChange={HandleInput}
@@ -446,7 +446,7 @@ const ClientEditForm = () => {
                     <label>Registration number</label>
                     <input
                       type="text"
-                      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
                       name="Reg_Num"
                       value={clientData.Reg_Num}
                       onChange={HandleInput}
@@ -459,7 +459,7 @@ const ClientEditForm = () => {
                     <label>Tax number</label>
                     <input
                       type="text"
-                      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
                       name="Tax_Num"
                       value={clientData.Tax_Num}
                       onChange={HandleInput}
@@ -468,7 +468,7 @@ const ClientEditForm = () => {
                   <div className="flex flex-col gap-1">
                     <label>Legal structure</label>
                     <select
-                      className="shadow appearance-none border rounded w-[210px] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      className="shadow appearance-none border rounded w-[210px] py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
                       name="Legal_struc"
                       value={clientData.Legal_struc}
                       onChange={HandleInput}
@@ -506,7 +506,7 @@ const ClientEditForm = () => {
                     <label>Company email</label>
                     <input
                       type="text"
-                      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
                       name="Comp_Email"
                       value={clientData.Comp_Email}
                       onChange={HandleInput}
@@ -517,7 +517,7 @@ const ClientEditForm = () => {
                     <label>Company phone</label>
                     <input
                       type="text"
-                      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
                       name="Comp_Phone"
                       value={clientData.Comp_Phone}
                       onChange={HandleInput}
@@ -528,7 +528,7 @@ const ClientEditForm = () => {
                 <div className="flex flex-col mb-4">
                   <label>Address</label>
                   <textarea
-                    className="h-[200px] w-[456px]  shadow appearance-none border rounded  py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    className="h-[200px] w-[456px]  shadow appearance-none border rounded  py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
                     name="Comp_Address"
                     value={clientData.Comp_Address}
                     onChange={HandleInput}

@@ -157,7 +157,7 @@ const VehicleDashboard = () => {
 
   return  (
     
-    <div className="w-full place-content-center space-y-4 mt-8 bg-cover bg-center">
+    <div className="w-full place-content-center space-y-4 mt-8 bg-cover bg-center dark:text-white">
       <h1 className="text-xl font-bold">Vehicle Management Dashboard</h1>
       <div className='place-content-center'> 
         <div className=' flex flex-col  p-5'>
@@ -165,14 +165,14 @@ const VehicleDashboard = () => {
           
           <div className="flex m-0 flex-col ">
             <div className='flex flex-row '>
-             <div className="grow-0 p-3 bg-white rounded-md pad justify-satart">
+             <div className="grow-0 p-3 bg-white rounded-md pad justify-satart dark:bg-navPurpleDarker">
              <Pie data={chartData} /> 
              </div>
              
              
              
              <div className='ml-6 grow flex flex-col space-y-2'>
-             <div className='text-black text-sm font-bold mb-2'>Vehicle count summary</div> 
+             <div className='text-sm font-bold mb-2'>Vehicle count summary</div> 
              <div className=" m-0 p-2  bg-gradient-to-r from-navHoverGreen to-actionGreen rounded-md pad">
                <div className="text-xs text-white font-semibold rounded-md pad">Totol vehicle count added in the system<h1 className='text-white text-2xl'>{data.vehiclesCount}</h1> </div>
              </div>

@@ -214,34 +214,34 @@ useEffect(() => {
         <h2 className="text-2xl font-bold mb-4">Edit Expense</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label htmlFor="date" className="block text-sm font-medium text-gray-700">Date</label>
+            <label htmlFor="date" className="block text-sm font-medium ">Date</label>
             <input
               id="date"
               type="date"
               name="date"
               value={editedExpense.date}
               onChange={handleChange}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
             />
           </div>
           <div className="mb-4">
-            <label htmlFor="time" className="block text-sm font-medium text-gray-700">Date</label>
+            <label htmlFor="time" className="block text-sm font-medium ">Date</label>
             <input
               id="time"
               type="time"
               name="time"
               value={editedExpense.time}
               onChange={handleChange}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
             />
           </div>
 
           <div className="mb-4">
-            <label htmlFor="vehicle" className="block text-gray-700 text-sm font-bold mb-2">
+            <label htmlFor="vehicle" className="block  text-sm font-bold mb-2">
               Vehicle:
             </label>
             <select
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
               id="vehicle"
               name="vehicle"
               value={editedExpense.vehicle._id} 
@@ -262,19 +262,19 @@ useEffect(() => {
             </select>
           </div>
           <div className="mb-4">
-            <label htmlFor="editedBy" className="block text-sm font-medium text-gray-700">Edited By</label>
+            <label htmlFor="editedBy" className="block text-sm font-medium ">Edited By</label>
             <input
               id="editedBy"
               type="text"
               name="editedBy"
               value={name}
               readOnly
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
             />
           </div>
           <div className="mb-4">
-        <label htmlFor="tripId" className="block text-gray-700 text-sm font-bold mb-2">Trip:</label>
-        <select  id="tripId" name="tripId" value={editedExpense.tripId._id} onChange={handleChange}  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" >
+        <label htmlFor="tripId" className="block  text-sm font-bold mb-2">Trip:</label>
+        <select  id="tripId" name="tripId" value={editedExpense.tripId._id} onChange={handleChange}  className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black" >
       
         <option value={editedExpense.tripId._id}>
                 {`${editedExpense.tripId.startPoint.city} - ${editedExpense.tripId.endPoint}  (Start Date -${new Date(editedExpense.tripId.startDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}) (Start time - ${editedExpense.tripId.startTime}) (Driver - ${editedExpense.tripId.driver.firstName})`}
@@ -286,8 +286,8 @@ useEffect(() => {
             </div>
       {/* Category */}
       <div className="mb-4">
-        <label htmlFor="category" className="block text-gray-700 text-sm font-bold mb-2">Expense Category:</label>
-        <select id="category" name="category" value={editedExpense.category} onChange={handleChange} required className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+        <label htmlFor="category" className="block  text-sm font-bold mb-2">Expense Category:</label>
+        <select id="category" name="category" value={editedExpense.category} onChange={handleChange} required className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black">
           <option value="">Select category</option>
           <option value="Fuel">Fuel</option>
           <option value="Maintenance and Repairs">Maintenance and Repairs</option>
@@ -307,7 +307,7 @@ useEffect(() => {
           {/* Fuel Type Radio Buttons */}
           <div className="grid grid-cols-2 gap-x-4"></div>
           <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2">Fuel Type:</label>
+            <label className="block  text-sm font-bold mb-2">Fuel Type:</label>
             <div>
               <input type="radio" id="petrol" name="fuelType" value="Petrol" checked={editedExpense.fuelType === 'Petrol'} onChange={handleChange} className="mr-2" />
               <label htmlFor="petrol" className="mr-4">Petrol</label>
@@ -321,24 +321,24 @@ useEffect(() => {
           </div>
           <div className="grid grid-cols-4 gap-x-4">
           <div className="mb-4">
-            <label htmlFor="odometer" className="block text-gray-700 text-sm font-bold mb-2">Odometer/Mileage:</label>
-            <input type="number" id="odometerReading" name="odometerReading" value={editedExpense.odometerReading} onChange={handleChange} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+            <label htmlFor="odometer" className="block  text-sm font-bold mb-2">Odometer/Mileage:</label>
+            <input type="number" id="odometerReading" name="odometerReading" value={editedExpense.odometerReading} onChange={handleChange} className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black" />
           </div>
           {/* Fuel Quantity */}
           
           <div className="mb-4">
-            <label htmlFor="fuelQuantity" className="block text-gray-700 text-sm font-bold mb-2">Fuel Quantity:</label>
-            <input type="number" id="fuelQuantity" name="fuelQuantity" value={editedExpense.fuelQuantity} onChange={handleChange} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+            <label htmlFor="fuelQuantity" className="block  text-sm font-bold mb-2">Fuel Quantity:</label>
+            <input type="number" id="fuelQuantity" name="fuelQuantity" value={editedExpense.fuelQuantity} onChange={handleChange} className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black" />
           </div>
           {/* Fuel Price Per Unit */}
           <div className="mb-4">
-            <label htmlFor="fuelPricePerUnit" className="block text-gray-700 text-sm font-bold mb-2">Fuel Price Per Unit:</label>
-            <input type="number" id="fuelPricePerUnit" name="fuelPricePerUnit" value={editedExpense.fuelPricePerUnit} onChange={handleChange} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+            <label htmlFor="fuelPricePerUnit" className="block  text-sm font-bold mb-2">Fuel Price Per Unit:</label>
+            <input type="number" id="fuelPricePerUnit" name="fuelPricePerUnit" value={editedExpense.fuelPricePerUnit} onChange={handleChange} className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black" />
           </div>
           {/* Total Price (calculated dynamically) */}
           <div className="mb-4">
-            <label htmlFor="totalFuelPrice" className="block text-gray-700 text-sm font-bold mb-2">Total Price:</label>
-            <input type="number" id="totalFuelPrice" name="totalFuelPrice" value={editedExpense.totalFuelPrice} readOnly className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+            <label htmlFor="totalFuelPrice" className="block  text-sm font-bold mb-2">Total Price:</label>
+            <input type="number" id="totalFuelPrice" name="totalFuelPrice" value={editedExpense.totalFuelPrice} readOnly className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black" />
           </div>
         </div>
         </div>
@@ -349,24 +349,24 @@ useEffect(() => {
         <div>
           {/* Maintenance Description */}
           <div className="mb-4">
-            <label htmlFor="maintenanceDescription" className="block text-gray-700 text-sm font-bold mb-2">Maintenance Description:</label>
-            <input type="text" id="maintenanceDescription" name="maintenanceDescription" value={editedExpense.maintenanceDescription} onChange={handleChange} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+            <label htmlFor="maintenanceDescription" className="block  text-sm font-bold mb-2">Maintenance Description:</label>
+            <input type="text" id="maintenanceDescription" name="maintenanceDescription" value={editedExpense.maintenanceDescription} onChange={handleChange} className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black" />
           </div>
           {/* Maintenance Service Provider */}
           <div className="mb-4">
-            <label htmlFor="serviceProvider" className="block text-gray-700 text-sm font-bold mb-2">Service Provider:</label>
-            <input type="text" id="serviceProvider" name="serviceProvider" value={editedExpense.serviceProvider} onChange={handleChange} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+            <label htmlFor="serviceProvider" className="block  text-sm font-bold mb-2">Service Provider:</label>
+            <input type="text" id="serviceProvider" name="serviceProvider" value={editedExpense.serviceProvider} onChange={handleChange} className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black" />
           </div>
           <div className="grid grid-cols-2 gap-x-4">
           {/* Maintenance Invoice Number */}
           <div className="mb-4">
-            <label htmlFor="invoiceNumber" className="block text-gray-700 text-sm font-bold mb-2">Invoice Number:</label>
-            <input type="text" id="invoiceNumber" name="invoiceNumber" value={editedExpense.invoiceNumber} onChange={handleChange} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+            <label htmlFor="invoiceNumber" className="block  text-sm font-bold mb-2">Invoice Number:</label>
+            <input type="text" id="invoiceNumber" name="invoiceNumber" value={editedExpense.invoiceNumber} onChange={handleChange} className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black" />
           </div>
           {/* Maintenance Cost */}
           <div className="mb-4">
-            <label htmlFor="maintenanceCost" className="block text-gray-700 text-sm font-bold mb-2">Maintenance Cost:</label>
-            <input type="number" id="maintenanceCost" name="maintenanceCost" value={editedExpense.maintenanceCost} onChange={handleChange} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+            <label htmlFor="maintenanceCost" className="block  text-sm font-bold mb-2">Maintenance Cost:</label>
+            <input type="number" id="maintenanceCost" name="maintenanceCost" value={editedExpense.maintenanceCost} onChange={handleChange} className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black" />
           </div>
         </div>
         </div>
@@ -378,18 +378,18 @@ useEffect(() => {
           {/* Insurance Provider */}
           <div className="grid grid-cols-3 gap-x-4">
           <div className="mb-4">
-            <label htmlFor="insuranceProvider" className="block text-gray-700 text-sm font-bold mb-2">Insurance Provider:</label>
-            <input type="text" id="insuranceProvider" name="insuranceProvider" value={editedExpense.insuranceProvider} onChange={handleChange} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+            <label htmlFor="insuranceProvider" className="block  text-sm font-bold mb-2">Insurance Provider:</label>
+            <input type="text" id="insuranceProvider" name="insuranceProvider" value={editedExpense.insuranceProvider} onChange={handleChange} className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black" />
           </div>
           {/* Policy Number */}
           <div className="mb-4">
-            <label htmlFor="policyNumber" className="block text-gray-700 text-sm font-bold mb-2">Policy Number:</label>
-            <input type="text" id="policyNumber" name="policyNumber" value={editedExpense.policyNumber} onChange={handleChange} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+            <label htmlFor="policyNumber" className="block  text-sm font-bold mb-2">Policy Number:</label>
+            <input type="text" id="policyNumber" name="policyNumber" value={editedExpense.policyNumber} onChange={handleChange} className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black" />
           </div>
           {/* Premium Amount */}
           <div className="mb-4">
-            <label htmlFor="premiumAmount" className="block text-gray-700 text-sm font-bold mb-2">Premium Amount:</label>
-            <input type="number" id="premiumAmount" name="premiumAmount" value={editedExpense.premiumAmount} onChange={handleChange} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+            <label htmlFor="premiumAmount" className="block  text-sm font-bold mb-2">Premium Amount:</label>
+            <input type="number" id="premiumAmount" name="premiumAmount" value={editedExpense.premiumAmount} onChange={handleChange} className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black" />
           </div>
         </div>
         </div>
@@ -400,9 +400,9 @@ useEffect(() => {
         <div>
           {/* Driver Name */}
           <div className="mb-4">
-            <label htmlFor="driverName" className="block text-gray-700 text-sm font-bold mb-2">Driver Name:</label>
+            <label htmlFor="driverName" className="block  text-sm font-bold mb-2">Driver Name:</label>
         <select
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
           id="driverName"
           name="driverName"
           value={editedExpense.driverName}
@@ -420,18 +420,18 @@ useEffect(() => {
           
           <div className="grid grid-cols-3 gap-x-4">
           <div className="mb-4">
-            <label htmlFor="wagepercentage" className="block text-gray-700 text-sm font-bold mb-2">Wage Percentage:</label>
-            <input type="number" id="wagepercentage" name="wagepercentage" value={editedExpense.wagepercentage} onChange={handleChange} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+            <label htmlFor="wagepercentage" className="block  text-sm font-bold mb-2">Wage Percentage:</label>
+            <input type="number" id="wagepercentage" name="wagepercentage" value={editedExpense.wagepercentage} onChange={handleChange} className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black" />
           </div>
           {/* Hourly Rate */}
           <div className="mb-4">
-            <label htmlFor="tripAmount" className="block text-gray-700 text-sm font-bold mb-2">Trip Amount:</label>
-            <input type="number" id="tripAmount" name="tripAmount" value={editedExpense.tripAmount} onChange={handleChange} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+            <label htmlFor="tripAmount" className="block  text-sm font-bold mb-2">Trip Amount:</label>
+            <input type="number" id="tripAmount" name="tripAmount" value={editedExpense.tripAmount} onChange={handleChange} className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black" />
           </div>
           {/* Total Earning (calculated dynamically) */}
           <div className="mb-4">
-            <label htmlFor="totalEarning" className="block text-gray-700 text-sm font-bold mb-2">Total Earning:</label>
-            <input type="number" id="totalEarning" name="totalEarning" value={editedExpense.totalEarning} readOnly className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+            <label htmlFor="totalEarning" className="block  text-sm font-bold mb-2">Total Earning:</label>
+            <input type="number" id="totalEarning" name="totalEarning" value={editedExpense.totalEarning} readOnly className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black" />
           </div>
         </div>
         </div>
@@ -443,8 +443,8 @@ useEffect(() => {
     {/* License Type */}
     <div className="grid grid-cols-2 gap-x-4">
     <div className="mb-4">
-      <label htmlFor="licenseType" className="block text-gray-700 text-sm font-bold mb-2">License Type:</label>
-      <select id="licenseType" name="licenseType" value={editedExpense.licenseType} onChange={handleChange} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+      <label htmlFor="licenseType" className="block  text-sm font-bold mb-2">License Type:</label>
+      <select id="licenseType" name="licenseType" value={editedExpense.licenseType} onChange={handleChange} className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black">
         <option value="Vehicle Registration">Vehicle Registration</option>
         <option value="Vehicle Emmission Testing">Vehicle Emission Testing</option>
         <option value="Taxi Permit">Taxi Permit</option>
@@ -454,14 +454,14 @@ useEffect(() => {
     
     {/* License Cost */}
     <div className="mb-4">
-      <label htmlFor="licenseCost" className="block text-gray-700 text-sm font-bold mb-2">License Cost:</label>
-      <input type="number" id="licenseCost" name="licenseCost" value={editedExpense.licenseCost} onChange={handleChange} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+      <label htmlFor="licenseCost" className="block  text-sm font-bold mb-2">License Cost:</label>
+      <input type="number" id="licenseCost" name="licenseCost" value={editedExpense.licenseCost} onChange={handleChange} className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black" />
     </div>
     {/* Other Description */}
     {editedExpense.licenseType === 'Other' && (
       <div className="mb-4">
-        <label htmlFor="otherLicensingDescription" className="block text-gray-700 text-sm font-bold mb-2">Other Description:</label>
-        <input type="text" id="otherLicensingDescription" name="otherLicensingDescription" value={editedExpense.otherLicensingDescription} onChange={handleChange} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+        <label htmlFor="otherLicensingDescription" className="block  text-sm font-bold mb-2">Other Description:</label>
+        <input type="text" id="otherLicensingDescription" name="otherLicensingDescription" value={editedExpense.otherLicensingDescription} onChange={handleChange} className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black" />
       </div>
     )}
   </div>
@@ -473,24 +473,24 @@ useEffect(() => {
         <div>
           {/* Description */}
           <div className="mb-4">
-            <label htmlFor="otherDescription" className="block text-gray-700 text-sm font-bold mb-2">Description:</label>
-            <input type="text" id="otherDescription" name="otherDescription" value={editedExpense.otherDescription} onChange={handleChange} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+            <label htmlFor="otherDescription" className="block  text-sm font-bold mb-2">Description:</label>
+            <input type="text" id="otherDescription" name="otherDescription" value={editedExpense.otherDescription} onChange={handleChange} className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black" />
           </div>
           {/* Amount */}
           <div className="mb-4">
-            <label htmlFor="otherAmount" className="block text-gray-700 text-sm font-bold mb-2">Amount:</label>
-            <input type="number" id="otherAmount" name="otherAmount" value={editedExpense.otherAmount} onChange={handleChange} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+            <label htmlFor="otherAmount" className="block  text-sm font-bold mb-2">Amount:</label>
+            <input type="number" id="otherAmount" name="otherAmount" value={editedExpense.otherAmount} onChange={handleChange} className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black" />
           </div>
         </div>
       )}
       <div className="mb-4">
-    <label htmlFor="isReimbursement" className="block text-gray-700 text-sm font-bold mb-2">Is Reimbursement:</label>
+    <label htmlFor="isReimbursement" className="block  text-sm font-bold mb-2">Is Reimbursement:</label>
     <select
       id="isReimbursement"
       name="isReimbursement"
       value={editedExpense.isReimbursement}
       onChange={handleChange}
-      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+      className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
     >
       <option value={false}>No</option>
       <option value={true}>Yes</option>
@@ -499,23 +499,23 @@ useEffect(() => {
   {editedExpense.isReimbursement && (
     <>
       <div className="mb-4">
-        <label htmlFor="reimbursementAmount" className="block text-gray-700 text-sm font-bold mb-2">Reimbursement Amount:</label>
+        <label htmlFor="reimbursementAmount" className="block  text-sm font-bold mb-2">Reimbursement Amount:</label>
         <input
           type="number"
           id="reimbursementAmount"
           name="reimbursementAmount"
           value={editedExpense.reimbursementAmount}
           onChange={handleChange}
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
         />
       </div>
 
       <div className="mb-4">
-        <label htmlFor="reimbursmentPerson" className="block text-gray-700 text-sm font-bold mb-2">
+        <label htmlFor="reimbursmentPerson" className="block  text-sm font-bold mb-2">
           Reimbursement Person:
         </label>
         <select
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
           id="reimbursmentPerson"
           name="reimbursmentPerson"
           value={editedExpense.reimbursmentPerson}
@@ -531,13 +531,13 @@ useEffect(() => {
       </div>
 
       <div className="mb-4">
-        <label htmlFor="reimbursementStatus" className="block text-gray-700 text-sm font-bold mb-2">Reimbursement Status:</label>
+        <label htmlFor="reimbursementStatus" className="block  text-sm font-bold mb-2">Reimbursement Status:</label>
         <select
           id="reimbursementStatus"
           name="reimbursementStatus"
           value={editedExpense.reimbursementStatus}
           onChange={handleChange}
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
         >
           <option value="Pending">Pending</option>
           <option value="Approved">Approved</option>
@@ -551,8 +551,8 @@ useEffect(() => {
 
       {/* Status */}
       <div className="mb-4">
-        <label htmlFor="status" className="block text-gray-700 text-sm font-bold mb-2">Expense Status:</label>
-        <select id="status" name="status" value={editedExpense.status} onChange={handleChange} required className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+        <label htmlFor="status" className="block  text-sm font-bold mb-2">Expense Status:</label>
+        <select id="status" name="status" value={editedExpense.status} onChange={handleChange} required className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black">
           <option value="Pending">Pending</option>
           <option value="Approved">Approved</option>
           <option value="Rejected">Rejected</option>
@@ -562,8 +562,8 @@ useEffect(() => {
       </div>
       {/* Notes */}
       <div className="mb-4">
-        <label htmlFor="notes" className="block text-gray-700 text-sm font-bold mb-2">Notes:</label>
-        <textarea id="notes" name="notes" value={editedExpense.notes} onChange={handleChange} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+        <label htmlFor="notes" className="block  text-sm font-bold mb-2">Notes:</label>
+        <textarea id="notes" name="notes" value={editedExpense.notes} onChange={handleChange} className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black" />
       </div>
 
 

@@ -216,7 +216,7 @@ const personal={
 
 
   return (
-    <div className="shadow-xl bg-white rounded flex flex-col items-center mt-8">
+    <div className="shadow-xl bg-white rounded flex flex-col items-center mt-8 dark:bg-navPurpleDarker dark:text-white">
       <ToastContainer/>
       <form onSubmit={handleSubmit} className="mt-6 px-8 pt-6 pb-8 mb-4 w-full">
         <div id="formPage-1" className={currentForm == 0 ? "" : "hidden"}>
@@ -226,13 +226,13 @@ const personal={
           <div className="grid grid-cols-2 gap-x-4">
             <div className="col-span-1 w-full flex flex-col mb-4 ">
               <label
-                className="block text-gray-700 text-md font-bold mb-2"
+                className="block  text-md font-bold mb-2"
                 htmlFor="firstName"
               >
                 First Name
               </label>
               <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
                 value={personalInfo.firstName}
                 onChange={handlePersonalChange}
                 type="text"
@@ -243,13 +243,13 @@ const personal={
             </div>
             <div className="col-span-1 w-full flex flex-col mb-4 ">
               <label
-                className="block text-gray-700 text-md font-bold mb-2"
+                className="block  text-md font-bold mb-2"
                 htmlFor="middleNames"
               >
                 Middle Names
               </label>
               <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
                 value={personalInfo.middleName}
                 onChange={handlePersonalChange}
                 type="text"
@@ -259,13 +259,13 @@ const personal={
             </div>
             <div className="col-span-1 w-full flex flex-col mb-4 ">
               <label
-                className="block text-gray-700 text-md font-bold mb-2"
+                className="block  text-md font-bold mb-2"
                 htmlFor="lastName"
               >
                 Last Name
               </label>
               <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
                 value={personalInfo.lastName}
                 onChange={handlePersonalChange}
                 type="text"
@@ -276,13 +276,13 @@ const personal={
             </div>
             <div className="col-span-1 w-full flex flex-col mb-4 ">
               <label
-                className="block text-gray-700 text-md font-bold mb-2"
+                className="block  text-md font-bold mb-2"
                 htmlFor="gender"
               >
                 Gender
               </label>
               <select
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
                 name="gender"
                 value={personalInfo.gender}
                 onChange={handlePersonalChange}
@@ -295,13 +295,13 @@ const personal={
             </div>
             <div className="col-span-1 w-full flex flex-col mb-4 ">
               <label
-                className="block text-gray-700 text-md font-bold mb-2"
+                className="block  text-md font-bold mb-2"
                 htmlFor="dob"
               >
                 Date of Birth
               </label>
               <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
                 type="date"
                 name="dob"
                 id="dob"
@@ -312,13 +312,13 @@ const personal={
             </div>
             <div className="col-span-1 w-full flex flex-col mb-4 ">
               <label
-                className="block text-gray-700 text-md font-bold mb-2"
+                className="block  text-md font-bold mb-2"
                 htmlFor="phoneNumber"
               >
                 Phone Number
               </label>
               <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
                 type="text"
                 name="phoneNumber"
                 id="phoneNumber"
@@ -329,13 +329,13 @@ const personal={
             </div>
             <div className="col-span-1 w-full flex flex-col mb-4 ">
               <label
-                className="block text-gray-700 text-md font-bold mb-2"
+                className="block  text-md font-bold mb-2"
                 htmlFor="nicNumber"
               >
                 NIC Number
               </label>
               <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
                 type="text"
                 name="nicNumber"
                 id="nicNumber"
@@ -346,13 +346,13 @@ const personal={
             </div>
             <div className="col-span-1 w-full flex flex-col mb-4 ">
               <label
-                className="block text-gray-700 text-md font-bold mb-2"
+                className="block  text-md font-bold mb-2"
                 htmlFor="nicDocument"
               >
                 Nic Document
               </label>
               <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
                 type="file"
                 name="nicDocument"
                 id="nicDocument"
@@ -362,13 +362,13 @@ const personal={
             </div>
             <div className="col-span-1 w-full flex flex-col mb-4 ">
               <label
-                className="block text-gray-700 text-md font-bold mb-2"
+                className="block  text-md font-bold mb-2"
                 htmlFor="empPhoto"
               >
                 Employee Photogragh <span className="font-normal">(.png .jpg .jpeg are only accepted)</span>
               </label>
               <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
                 type="file"
                 accept=".png .jpg .jpeg"
                 name="empPhoto"
@@ -398,13 +398,13 @@ const personal={
                   >
                     <div className="col-span-1 w-full flex flex-col">
                       <label
-                        className="block text-gray-700 text-md font-bold mb-2"
+                        className="block  text-md font-bold mb-2"
                         htmlFor="emergencyName"
                       >
                         Contact Name
                       </label>
                       <input
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
                         type="text"
                         name="emergencyName"
                         value={emergencyContacts[index].emergencyName}
@@ -415,14 +415,14 @@ const personal={
                     </div>
                     <div className="col-span-1 w-full flex flex-col">
                       <label
-                        className="block text-gray-700 text-md font-bold mb-2"
+                        className="block  text-md font-bold mb-2"
                         htmlFor="emergencyContact"
                       >
                         Contact Number
                       </label>
                       <div className="flex w-full">
                         <input
-                          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                          className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
                           type="text"
                           name="emergencyContact"
                           id={`emergencyContact${index}`}
@@ -452,9 +452,9 @@ const personal={
           </h2>
           <div className="grid grid-cols-2 gap-x-4">
             <div className="col-span-1 w-full flex flex-col mb-4">
-              <label className="block text-gray-700 text-md font-bold mb-2" htmlFor="role">Role</label>
+              <label className="block  text-md font-bold mb-2" htmlFor="role">Role</label>
               <select
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
                 name="role"
                 value={personalInfo.role}
                 onChange={handlePersonalChange}
@@ -470,9 +470,9 @@ const personal={
               </select>
             </div>
             <div className="col-span-1 w-full flex flex-col mb-4">
-              <label className="block text-gray-700 text-md font-bold mb-2" htmlFor="department">Department</label>
+              <label className="block  text-md font-bold mb-2" htmlFor="department">Department</label>
               <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
                 type="text"
                 name="department"
                 id="department"
@@ -481,9 +481,9 @@ const personal={
               />
             </div>
             <div className="col-span-1 w-full flex flex-col mb-4">
-              <label className="block text-gray-700 text-md font-bold mb-2" htmlFor="jobTitle">Job Title</label>
+              <label className="block  text-md font-bold mb-2" htmlFor="jobTitle">Job Title</label>
               <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
                 type="text"
                 name="jobTitle"
                 id="jobTitle"
@@ -492,9 +492,9 @@ const personal={
               />
             </div>
             <div className="col-span-1 w-full flex flex-col mb-4">
-              <label className="block text-gray-700 text-md font-bold mb-2" htmlFor="empDate">Employment Date</label>
+              <label className="block  text-md font-bold mb-2" htmlFor="empDate">Employment Date</label>
               <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
                 type="date"
                 name="empDate"
                 id="empDate"
@@ -503,9 +503,9 @@ const personal={
               />
             </div>
             <div className="col-span-1 w-full flex flex-col mb-4">
-              <label className="block text-gray-700 text-md font-bold mb-2" htmlFor="baseSal">Base Salary</label>
+              <label className="block  text-md font-bold mb-2" htmlFor="baseSal">Base Salary</label>
               <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
                 type="text"
                 name="baseSal"
                 id="baseSal"
@@ -518,9 +518,9 @@ const personal={
               isDriver!=null && isDriver?._id == personalInfo.role ? (
                 <>
                 <div className="col-span-1 w-full flex flex-col mb-4">
-              <label className="block text-gray-700 text-md font-bold mb-2" htmlFor="licenceNum">Licence Number</label>
+              <label className="block  text-md font-bold mb-2" htmlFor="licenceNum">Licence Number</label>
               <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
                 type="text"
                 name="licenceNum"
                 id="licenceNum"
@@ -530,9 +530,9 @@ const personal={
               />
             </div>
             <div className="col-span-1 w-full flex flex-col mb-4">
-              <label className="block text-gray-700 text-md font-bold mb-2" htmlFor="licenceDoc">Licence Document</label>
+              <label className="block  text-md font-bold mb-2" htmlFor="licenceDoc">Licence Document</label>
               <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
                 type="file"
                 name="licenceDoc"
                 id="licenceDoc"
@@ -546,9 +546,9 @@ const personal={
             
 
             <div className="col-span-1 w-full flex flex-col mb-4">
-              <label className="block text-gray-700 text-md font-bold mb-2" htmlFor="status">Status</label>
+              <label className="block  text-md font-bold mb-2" htmlFor="status">Status</label>
               <select
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
                 name="status"
                 value={personalInfo.status}
                 onChange={handlePersonalChange}
@@ -566,9 +566,9 @@ const personal={
           </h2>
           <div className="grid grid-cols-2 gap-x-4">
             <div className="col-span-1 w-full flex flex-col mb-4">
-              <label className="block text-gray-700 text-md font-bold mb-2" htmlFor="email">Email</label>
+              <label className="block  text-md font-bold mb-2" htmlFor="email">Email</label>
               <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
                 type="email"
                 name="email"
                 id="email"
@@ -577,9 +577,9 @@ const personal={
               />
             </div>
             <div className="col-span-1 w-full flex flex-col mb-4">
-              <label className="block text-gray-700 text-md font-bold mb-2" htmlFor="password">Password</label>
+              <label className="block  text-md font-bold mb-2" htmlFor="password">Password</label>
               <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
                 type="password"
                 name="password"
                 id="password"

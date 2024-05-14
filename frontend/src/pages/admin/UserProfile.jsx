@@ -83,31 +83,42 @@ const UserProfile = () => {
   } 
 console.log(data)
   return (
-    <div className="container w-full flex justify-center pt-14 min-h-full">
+    <div className="container w-full flex justify-center pt-14 min-h-full dark:text-white ">
       <ToastContainer/>
-      <div className="w-fit h-fit relative flex flex-col items-center rounded-lg overflow-hidden border-2 border-gray-300 shadow-lg bg-white">
+      <div className="w-fit h-fit relative flex flex-col items-center rounded-lg overflow-hidden border-2 border-gray-300 shadow-lg bg-white dark:bg-navPurpleDarker">
+
         <div className="flex flex-col h-[12rem] w-full mb-[4rem] relative">
           <img src={banner} className="w-full h-full" alt="" />
           <div className="flex h-[10rem] rounded-full overflow-hidden absolute left-1/2 transform -translate-x-1/2 top-1/2 p-1 bg-white">
             <img className="w-full h-full" src={data.empPhoto?`http://localhost:3000/employee_picture/${data.empPhoto}`:user_pfp} alt="profile image" />
           </div>
         </div>
-        <div className="h-58 w-full ">
+        
             <div className="w-full">
-              <p className="text-center text-xl font-bold">{data.firstName} {data.lastName}</p>
+              <p className="text-center text-xl font-bold mt-2">{data.firstName} {data.lastName}</p>
             </div>
             <div className="w-full mt-2">
-              <p className="text-center text-lg font-bold">{data.role?.name}</p>
+              <p className="text-center text-lg font-bold mt-4">{data.role?.name}</p>
             </div>
-            <div className="w-full flex justify-around mt-16 mb-4">
-              <p className="text-center text-xl font-bold">{data.email}</p>
-              <p className="text-center text-xl font-bold">{data.phoneNumber}</p>
-            </div>  
-        </div>
+
+            <div className="w-full flex flex-col px-10">
+
+              <div className='flex justify-between align-baseline my-2'>
+                 <p className="text-xl ">User email :</p>
+                 <p className="text-xl font-bold">{data.email}</p>
+              </div>
+
+              <din className='flex justify-between align-baseline my-2'>
+                 <div className="text-xl ">User mobile :</div>
+                 <div className="text-xl font-bold">{data.phoneNumber}</div>
+              </din>
+             </div>
+
+        
         <button onClick={()=>setMenuOpen(true)} className="bg-blue-600 px-2 py-2 my-4 rounded-md text-white font-bold">
           Change Password
         </button>
-        <div className={`${!menuOpen?'hidden':''} w-fit p-12 gap-4 flex flex-col absolute items-center rounded-md border-2 border-gray-300 shadow-lg bg-white h-fit`}> 
+        <div className={`${!menuOpen?'hidden':''} w-fit p-12 gap-4 flex flex-col absolute items-center rounded-md border-2 border-gray-300 shadow-lg bg-white h-fit dark:bg-navPurpleDarker`}> 
             <button 
             onClick={()=>{setMenuOpen(false);setCurrentPwd('');setNewPwd('')}} 
             className="absolute top-3 right-3 border border-gray-500 rounded-full hover:bg-red-600 hover:text-white">
@@ -116,24 +127,24 @@ console.log(data)
               </div>
             </button>
             
-            <div className="w-full flex flex-col mt-4">
-              <label className="font-bold text-gray-700 mb-1" htmlFor="currentpwd">Current Password</label>
+            <div className="w-full flex flex-col mt-4 d">
+              <label className="font-bold  mb-1" htmlFor="currentpwd">Current Password</label>
               <input
                 type="password"
                 name="currentpwd"
                 onChange={(e)=>setCurrentPwd(e.target.value)}
                 value={currentPwd}
-                className="outline-none border py-2 px-2 bg-gray-100 border-black rounded-md"
+                className="outline-none border py-2 px-2 bg-gray-100 border-black rounded-md dark:bg-black"
               />
             </div>
             <div className="w-full flex flex-col">
-              <label className="font-bold text-gray-700 mb-1" htmlFor="newpwd">New Password</label>
+              <label className="font-bold  mb-1" htmlFor="newpwd">New Password</label>
               <input
                 type="password"
                 onChange={(e)=>setNewPwd(e.target.value)}
                 value={newPwd}
                 name="newpwd"
-                className="outline-none border py-2 px-2 bg-gray-100 border-black rounded-md"
+                className="outline-none border py-2 px-2 bg-gray-100 border-black rounded-md dark:bg-black"
               />
             </div>
             {

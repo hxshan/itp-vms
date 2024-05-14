@@ -151,20 +151,20 @@ export const MaintainOrderTable = () => {
                         <input
                             type='search'
                             placeholder='Search By Number'
-                            className='mb-3 mr-4 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline end-0 '
+                            className='mb-3 mr-4 shadow appearance-none border rounded py-2 px-3  leading-tight focus:outline-none focus:shadow-outline end-0 '
                             onChange={(e) => setSearch(e.target.value)} />
                     </form>
                     <input
                         type="date"
                         value={startDate}
                         onChange={(e) => setStartDate(new Date(e.target.value))}
-                        className="mb-3 mr-4 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline end-0 "
+                        className="mb-3 mr-4 shadow appearance-none border rounded py-2 px-3  leading-tight focus:outline-none focus:shadow-outline end-0 "
                     />
                     <input
                         type="date"
                         value={endDate}
                         onChange={(e) => setEndDate(new Date(e.target.value))}
-                        className="mb-3 mr-4 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline end-0 "
+                        className="mb-3 mr-4 shadow appearance-none border rounded py-2 px-3  leading-tight focus:outline-none focus:shadow-outline end-0 "
                     />
                     <button
                         type="button"

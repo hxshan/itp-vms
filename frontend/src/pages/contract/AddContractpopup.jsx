@@ -70,7 +70,7 @@ const AddContractpopup = ({ isOpen, TogleOpen, clients }) => {
           <div className="flex items-center justify-center gap-3">
             <input
               type="text"
-              className="shadow appearance-none border rounded min-w-40 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border rounded min-w-40 py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
               placeholder="Search"
               name="searchData"
               onChange={handleInput}

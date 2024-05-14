@@ -21,14 +21,14 @@ const ViewVehical = ({ vehicalData, isOpen, Toggle }) => {
               <div className="flex mt-3 gap-12">
                 <div className="flex flex-col gap-1">
                   <label>Vehical Category</label>
-                  <p className="shadow appearance-none border rounded w-[180px] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                  <p className="shadow appearance-none border rounded w-[180px] py-2 px-3  leading-tight focus:outline-none focus:shadow-outline">
                     {vehicalData.category}
                   </p>
                 </div>
 
                 <div className="flex flex-col gap-1">
                   <label>Vehical Type</label>
-                  <p className="shadow appearance-none border rounded w-[180px] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                  <p className="shadow appearance-none border rounded w-[180px] py-2 px-3  leading-tight focus:outline-none focus:shadow-outline">
                     {vehicalData.vehicleType}
                   </p>
                 </div>
@@ -37,14 +37,14 @@ const ViewVehical = ({ vehicalData, isOpen, Toggle }) => {
               <div className="flex mt-3 gap-12">
                 <div className="flex flex-col gap-1">
                   <label>Register Number</label>
-                  <p className="shadow appearance-none border rounded w-[180px] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                  <p className="shadow appearance-none border rounded w-[180px] py-2 px-3  leading-tight focus:outline-none focus:shadow-outline">
                     {vehicalData.vehicleRegister}
                   </p>
                 </div>
 
                 <div className="flex flex-col gap-1">
                   <label>Vehicle Model</label>
-                  <p className="shadow appearance-none border rounded w-[180px] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                  <p className="shadow appearance-none border rounded w-[180px] py-2 px-3  leading-tight focus:outline-none focus:shadow-outline">
                     {vehicalData.vehicleModel}
                   </p>
                 </div>
@@ -53,14 +53,14 @@ const ViewVehical = ({ vehicalData, isOpen, Toggle }) => {
               <div className="flex mt-3 gap-12">
                 <div className="flex flex-col gap-1">
                   <label>Fuel Type</label>
-                  <p className="shadow appearance-none border rounded w-[180px] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                  <p className="shadow appearance-none border rounded w-[180px] py-2 px-3  leading-tight focus:outline-none focus:shadow-outline">
                     {vehicalData.fuelType}
                   </p>
                 </div>
 
                 <div className="flex flex-col gap-1">
                   <label>Manufacture Year</label>
-                  <p className="shadow appearance-none border rounded w-[180px] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                  <p className="shadow appearance-none border rounded w-[180px] py-2 px-3  leading-tight focus:outline-none focus:shadow-outline">
                     {vehicalData.vehicleManuYear}
                   </p>
                 </div>
@@ -69,14 +69,14 @@ const ViewVehical = ({ vehicalData, isOpen, Toggle }) => {
               <div className="flex mt-3 gap-12">
                 <div className="flex flex-col gap-1">
                   <label>Engine Capacity</label>
-                  <p className="shadow appearance-none border rounded w-[180px] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                  <p className="shadow appearance-none border rounded w-[180px] py-2 px-3  leading-tight focus:outline-none focus:shadow-outline">
                     {vehicalData.engineCap} lr
                   </p>
                 </div>
 
                 <div className="flex flex-col gap-1">
                   <label>last Mileage</label>
-                  <p className="shadow appearance-none border rounded w-[180px] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                  <p className="shadow appearance-none border rounded w-[180px] py-2 px-3  leading-tight focus:outline-none focus:shadow-outline">
                     {vehicalData.lastMileage} km
                   </p>
                 </div>
@@ -85,14 +85,14 @@ const ViewVehical = ({ vehicalData, isOpen, Toggle }) => {
               <div className="flex mt-3 gap-12">
                 <div className="flex flex-col gap-1">
                   <label>Vehical Type</label>
-                  <p className="shadow appearance-none border rounded w-[180px] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                  <p className="shadow appearance-none border rounded w-[180px] py-2 px-3  leading-tight focus:outline-none focus:shadow-outline">
                     {vehicalData.vehicleColour}
                   </p>
                 </div>
 
                 <div className="flex flex-col gap-1">
                   <label>Vehical Gear System</label>
-                  <p className="shadow appearance-none border rounded w-[180px] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                  <p className="shadow appearance-none border rounded w-[180px] py-2 px-3  leading-tight focus:outline-none focus:shadow-outline">
                     {vehicalData.vehicleGearSys}
                   </p>
                 </div>
@@ -101,14 +101,14 @@ const ViewVehical = ({ vehicalData, isOpen, Toggle }) => {
               <div className="flex mt-3 gap-12">
                 <div className="flex flex-col gap-1">
                   <label>Air conditioner available?</label>
-                  <p className="shadow appearance-none border rounded w-[180px] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                  <p className="shadow appearance-none border rounded w-[180px] py-2 px-3  leading-tight focus:outline-none focus:shadow-outline">
                     {vehicalData.airCon}
                   </p>
                 </div>
 
                 <div className="flex flex-col gap-1">
                   <label>Number of Seats</label>
-                  <p className="shadow appearance-none border rounded w-[180px] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                  <p className="shadow appearance-none border rounded w-[180px] py-2 px-3  leading-tight focus:outline-none focus:shadow-outline">
                     {vehicalData.numOfSeats}
                   </p>
                 </div>
@@ -119,14 +119,14 @@ const ViewVehical = ({ vehicalData, isOpen, Toggle }) => {
               <div className="flex mt-3 gap-12">
                 <div className="flex flex-col gap-1">
                   <label>Air conditioner available?</label>
-                  <p className="shadow appearance-none border rounded w-[180px] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                  <p className="shadow appearance-none border rounded w-[180px] py-2 px-3  leading-tight focus:outline-none focus:shadow-outline">
                     {vehicalData.airCon}
                   </p>
                 </div>
 
                 <div className="flex flex-col gap-1">
                   <label>Number of Seats</label>
-                  <p className="shadow appearance-none border rounded w-[180px] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                  <p className="shadow appearance-none border rounded w-[180px] py-2 px-3  leading-tight focus:outline-none focus:shadow-outline">
                     {vehicalData.numOfSeats}
                   </p>
                 </div>
@@ -134,14 +134,14 @@ const ViewVehical = ({ vehicalData, isOpen, Toggle }) => {
               <div className="flex mt-3 gap-12">
                 <div className="flex flex-col gap-1">
                   <label>laugage space</label>
-                  <p className="shadow appearance-none border rounded w-[180px] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                  <p className="shadow appearance-none border rounded w-[180px] py-2 px-3  leading-tight focus:outline-none focus:shadow-outline">
                     {vehicalData.lugSpace}
                   </p>
                 </div>
 
                 <div className="flex flex-col gap-1">
                   <label>GPS available?</label>
-                  <p className="shadow appearance-none border rounded w-[180px] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                  <p className="shadow appearance-none border rounded w-[180px] py-2 px-3  leading-tight focus:outline-none focus:shadow-outline">
                     {vehicalData.gps}
                   </p>
                 </div>
@@ -150,14 +150,14 @@ const ViewVehical = ({ vehicalData, isOpen, Toggle }) => {
               <div className="flex mt-3 gap-12">
                 <div className="flex flex-col gap-1">
                   <label>Fridge available?</label>
-                  <p className="shadow appearance-none border rounded w-[180px] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                  <p className="shadow appearance-none border rounded w-[180px] py-2 px-3  leading-tight focus:outline-none focus:shadow-outline">
                     {vehicalData.fridge === "no" ? "unavailable" : "available"}
                   </p>
                 </div>
 
                 <div className="flex flex-col gap-1">
                   <label>TV available?</label>
-                  <p className="shadow appearance-none border rounded w-[180px] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                  <p className="shadow appearance-none border rounded w-[180px] py-2 px-3  leading-tight focus:outline-none focus:shadow-outline">
                     {vehicalData.tv === "no" ? "unavailable" : "available"}
                   </p>
                 </div>

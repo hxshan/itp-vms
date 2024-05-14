@@ -15,7 +15,7 @@ const TripDetailCard = ({ trip }) => {
   {/* Date */}
   <div className="flex-grow md:flex-grow-2 flex items-center">
     <div className="flex items-center">
-      <p className="text-gray-700">{new Date(trip.startDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+      <p className="">{new Date(trip.startDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
     </div>
   </div>
 

@@ -123,8 +123,8 @@ function TripExpenseIncomeTable() {
     <div className="container mx-auto px-4 py-8">
          <h3 className="text-xl font-semibold mb-2">Finance Analysis Based on Hire</h3>
       <div className="mb-4">
-        <label htmlFor="tripId" className="block text-gray-700 text-lg font-bold mb-2">Trip:</label>
-        <select id="tripId" name="tripId" value={selectedTrip.tripId} onChange={handleTripChange} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" >
+        <label htmlFor="tripId" className="block  text-lg font-bold mb-2">Trip:</label>
+        <select id="tripId" name="tripId" value={selectedTrip.tripId} onChange={handleTripChange} className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black" >
           <option value="">Select Trip</option>
           {tripOptions.map(option => (
             <option key={option.value} value={option.value}>{option.label}</option>

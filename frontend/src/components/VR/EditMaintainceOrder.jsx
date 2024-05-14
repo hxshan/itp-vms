@@ -91,8 +91,8 @@ export const EditMaintainceOrder = () => {
                 <form className='flex flex-col gap-4 md:flex-row' onSubmit={handleSubmit}>
                     <div className="w-full">
                         <div className='flex flex-col gap-5 mt-9'>
-                            <label className='block text-gray-700 text-md font-bold mb-2'>Vehicle Number</label>
-                            <label className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'>{vrnumber}</label>
+                            <label className='block  text-md font-bold mb-2'>Vehicle Number</label>
+                            <label className='shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline'>{vrnumber}</label>
                             <input
                                 type="text"
                                 id='vehicleRegister'
@@ -103,33 +103,33 @@ export const EditMaintainceOrder = () => {
                                 readOnly={(e) => setvehicleRegister(e.target.value)}
                         
                                 value={vehicleRegister} />
-                            <label className='block text-gray-700 text-md font-bold mb-2'>Fault of the Vehicle</label>
+                            <label className='block  text-md font-bold mb-2'>Fault of the Vehicle</label>
                             <textarea
                                 type="text"
                                 id='vrissue'
                                 placeholder='Ex:- Front Arm Vibartion '
-                                className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+                                className='shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline'
                                 required
                                 onChange={(e) => setVrissue(e.target.value)}
                                 value={vrissue} />
-                            <label className='block text-gray-700 text-md font-bold mb-2'>Estimated Cost</label>
+                            <label className='block  text-md font-bold mb-2'>Estimated Cost</label>
                             <input
                                 type="number"
                                 id='vrcost'
                                 placeholder='RS:-10,000'
-                                className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+                                className='shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline'
                                 required
                                 onChange={(e) => setVrcost(e.target.value)}
                                 value={vrcost} />
                         </div>
                         <div className="flex flex-col gap-5 mt-5">
-                            <label className='block text-gray-700 text-md font-bold mb-2'>Additional Info</label>
+                            <label className='block  text-md font-bold mb-2'>Additional Info</label>
                             <textarea
                                 type="text"
                                 id='vraddit'
                                 placeholder='Additional Info'
 
-                                className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+                                className='shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline'
                                 onChange={(e) => setVraddit(e.target.value)}
                                 value={vraddit} />
                         </div>
@@ -140,7 +140,7 @@ export const EditMaintainceOrder = () => {
                                 <label className='  font-semibold' >Start Date :</label>
                                 <input type='date'
                                     id='vrsdate'
-                                    className='shadow  rounded  text-gray-700 p-2'
+                                    className='shadow  rounded   p-2'
                                     readOnly
                                     value={vrsdate}
                                 />
@@ -148,7 +148,7 @@ export const EditMaintainceOrder = () => {
                             <div className="flex items-center gap-4">
                                 <label className='font-semibold'>End Date :</label>
                                 <input type='date'
-                                    className='shadow  rounded  text-gray-700 p-2'
+                                    className='shadow  rounded   p-2'
                                     id='vredate'
                                     onChange={(e) => setVredate(e.target.value)}
                                     value={vredate}

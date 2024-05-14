@@ -218,7 +218,7 @@ const ViewContract = () => {
               <div className="flex mt-3">
                 <div className="flex flex-col gap-1">
                   <p className="font-semibold">Client name</p>
-                  <p className="shadow appearance-none border rounded w-[200px] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white">
+                  <p className="shadow appearance-none border rounded w-[200px] py-2 px-3  leading-tight focus:outline-none focus:shadow-outline bg-white">
                     {clientData.firstName} {clientData.lastName}
                   </p>
                 </div>
@@ -228,21 +228,21 @@ const ViewContract = () => {
                 <div className="flex  mt-3">
                   <div className="flex flex-col gap-1">
                     <p className="font-semibold">Client email</p>
-                    <p className="shadow appearance-none border rounded w-[200px] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white">
+                    <p className="shadow appearance-none border rounded w-[200px] py-2 px-3  leading-tight focus:outline-none focus:shadow-outline bg-white">
                       {clientData.email}
                     </p>
                   </div>
 
                   <div className="flex flex-col gap-1 ml-10">
                     <p className="font-semibold">Client National ID</p>
-                    <p className="shadow appearance-none border rounded w-[200px] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white">
+                    <p className="shadow appearance-none border rounded w-[200px] py-2 px-3  leading-tight focus:outline-none focus:shadow-outline bg-white">
                       {clientData.nicNumber}
                     </p>
                   </div>
                 </div>
                 <div className="flex flex-col gap-1">
                   <p className="font-semibold">Phone number</p>
-                  <p className="shadow appearance-none border rounded w-[200px] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white">
+                  <p className="shadow appearance-none border rounded w-[200px] py-2 px-3  leading-tight focus:outline-none focus:shadow-outline bg-white">
                     {clientData.phoneNumber}
                   </p>
                 </div>
@@ -256,33 +256,33 @@ const ViewContract = () => {
 
               <div className="flex flex-col gap-1 mb-3">
                 <p className="font-semibold">Vehical Type</p>
-                <p className="shadow appearance-none border rounded w-[200px] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white">
+                <p className="shadow appearance-none border rounded w-[200px] py-2 px-3  leading-tight focus:outline-none focus:shadow-outline bg-white">
                   {contractData.Vehical_Type}
                 </p>
               </div>
               <div className="flex mb-3">
                 <div className="flex flex-col gap-1">
                   <p className="font-semibold">Contract Start Date</p>
-                  <p className="shadow appearance-none border rounded w-[200px] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white">
+                  <p className="shadow appearance-none border rounded w-[200px] py-2 px-3  leading-tight focus:outline-none focus:shadow-outline bg-white">
                     {contractData.contract_SD}
                   </p>
                 </div>
                 <div className="flex flex-col gap-1 ml-10">
                   <p className="font-semibold">Contract End Date</p>
-                  <p className="shadow appearance-none border rounded w-[200px] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white">
+                  <p className="shadow appearance-none border rounded w-[200px] py-2 px-3  leading-tight focus:outline-none focus:shadow-outline bg-white">
                     {contractData.contract_ED}
                   </p>
                 </div>
               </div>
               <div className="flex flex-col gap-1 mb-3">
                 <p className="font-semibold">Contract Estimated duration</p>
-                <p className="shadow appearance-none border rounded w-[200px] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white">
+                <p className="shadow appearance-none border rounded w-[200px] py-2 px-3  leading-tight focus:outline-none focus:shadow-outline bg-white">
                   {EstimatedDays ? EstimatedDays : "loading"}
                 </p>
               </div>
               <div className="flex flex-col gap-1 mb-3">
                 <p className="font-semibold">Contract Time remaining</p>
-                <p className="shadow appearance-none border rounded w-[450px] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white">
+                <p className="shadow appearance-none border rounded w-[450px] py-2 px-3  leading-tight focus:outline-none focus:shadow-outline bg-white">
                   {countdown ? (
                     <p>
                       {Math.floor(countdown / (1000 * 60 * 60 * 24)) +
@@ -302,7 +302,7 @@ const ViewContract = () => {
 
               <div className="flex flex-col gap-1 mb-4">
                 <p className="font-semibold">Contract Status</p>
-                <p className=" shadow appearance-none border rounded w-[200px] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white">
+                <p className=" shadow appearance-none border rounded w-[200px] py-2 px-3  leading-tight focus:outline-none focus:shadow-outline bg-white">
                   {ContStatus}
                 </p>
               </div>
@@ -333,7 +333,7 @@ const ViewContract = () => {
 
               <div className="flex flex-col gap-1 mt-3">
                 <label className="font-semibold">Insurance source</label>
-                <p className="shadow appearance-none border rounded w-[180px] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white">
+                <p className="shadow appearance-none border rounded w-[180px] py-2 px-3  leading-tight focus:outline-none focus:shadow-outline bg-white">
                   {contractData.Insurance_Source}
                 </p>
               </div>
@@ -343,14 +343,14 @@ const ViewContract = () => {
                   <label className="font-semibold">
                     Name of Insurance provider
                   </label>
-                  <p className="shadow appearance-none border rounded w-[180px] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white">
+                  <p className="shadow appearance-none border rounded w-[180px] py-2 px-3  leading-tight focus:outline-none focus:shadow-outline bg-white">
                     {contractData.Insurace_provider}
                   </p>
                 </div>
 
                 <div className="flex flex-col gap-1 ml-5">
                   <label className="font-semibold">Policy number</label>
-                  <p className="shadow appearance-none border rounded w-[180px] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white">
+                  <p className="shadow appearance-none border rounded w-[180px] py-2 px-3  leading-tight focus:outline-none focus:shadow-outline bg-white">
                     {contractData.Policy_Number}
                   </p>
                 </div>
@@ -358,7 +358,7 @@ const ViewContract = () => {
 
               <div className="flex flex-col mt-3 gap-1">
                 <label className="font-semibold">Coverage Type</label>
-                <p className="shadow appearance-none border rounded w-[180px] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white">
+                <p className="shadow appearance-none border rounded w-[180px] py-2 px-3  leading-tight focus:outline-none focus:shadow-outline bg-white">
                   {contractData.Coverage_Type}
                 </p>
               </div>
@@ -366,7 +366,7 @@ const ViewContract = () => {
               <div className="flex  mt-3">
                 <div className="flex flex-col gap-1">
                   <label className="font-semibold">Coverage amount</label>
-                  <p className="shadow appearance-none border rounded w-[180px] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white">
+                  <p className="shadow appearance-none border rounded w-[180px] py-2 px-3  leading-tight focus:outline-none focus:shadow-outline bg-white">
                     {contractData.Coverage_Amount === "loading"
                       ? "loading"
                       : Number(contractData.Coverage_Amount).toLocaleString()}
@@ -375,7 +375,7 @@ const ViewContract = () => {
 
                 <div className="flex flex-col ml-9 gap-1">
                   <label className="font-semibold">Deductible</label>
-                  <p className="shadow appearance-none border rounded w-[180px]  py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white">
+                  <p className="shadow appearance-none border rounded w-[180px]  py-2 px-3  leading-tight focus:outline-none focus:shadow-outline bg-white">
                     {contractData.Deductible === "loading"
                       ? "loading"
                       : Number(contractData.Deductible).toLocaleString()}
@@ -386,14 +386,14 @@ const ViewContract = () => {
               <div className="flex gap-4 mt-3">
                 <div className="flex flex-col gap-1">
                   <label className="font-semibold">Start date</label>
-                  <p className="shadow appearance-none border rounded w-[180px] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white">
+                  <p className="shadow appearance-none border rounded w-[180px] py-2 px-3  leading-tight focus:outline-none focus:shadow-outline bg-white">
                     {contractData.Insurance_SD}
                   </p>
                 </div>
 
                 <div className="flex flex-col ml-5 gap-1">
                   <label className="font-semibold">End date</label>
-                  <p className="shadow appearance-none border rounded w-[180px] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white">
+                  <p className="shadow appearance-none border rounded w-[180px] py-2 px-3  leading-tight focus:outline-none focus:shadow-outline bg-white">
                     {contractData.Insurance_ED}
                   </p>
                 </div>
@@ -401,7 +401,7 @@ const ViewContract = () => {
 
               <div className="flex flex-col mt-3 gap-1">
                 <label className="font-semibold">Additianol notes</label>
-                <p className="shadow appearance-none border rounded w-[400px] h-[100px] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white">
+                <p className="shadow appearance-none border rounded w-[400px] h-[100px] py-2 px-3  leading-tight focus:outline-none focus:shadow-outline bg-white">
                   {contractData.Insurance_notes}
                 </p>
               </div>
@@ -413,7 +413,7 @@ const ViewContract = () => {
 
               <div className="flex flex-col mt-3 gap-1">
                 <label className="font-semibold">Amount</label>
-                <p className="shadow appearance-none border rounded w-[180px] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white">
+                <p className="shadow appearance-none border rounded w-[180px] py-2 px-3  leading-tight focus:outline-none focus:shadow-outline bg-white">
                   {contractData.Payment_Amount === "loading"
                     ? "loading"
                     : Number(contractData.Payment_Amount).toLocaleString()}
@@ -423,14 +423,14 @@ const ViewContract = () => {
               <div className="flex mt-3">
                 <div className="flex flex-col gap-1">
                   <label className="font-semibold">Payment plan</label>
-                  <p className="shadow appearance-none border rounded w-[180px] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white">
+                  <p className="shadow appearance-none border rounded w-[180px] py-2 px-3  leading-tight focus:outline-none focus:shadow-outline bg-white">
                     {contractData.Payment_Plan}
                   </p>
                 </div>
 
                 <div className="flex flex-col ml-10 gap-1">
                   <label className="font-semibold">Payment date</label>
-                  <p className="shadow appearance-none border rounded w-[180px] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white">
+                  <p className="shadow appearance-none border rounded w-[180px] py-2 px-3  leading-tight focus:outline-none focus:shadow-outline bg-white">
                     {contractData.Payment_Date}
                   </p>
                 </div>
@@ -439,7 +439,7 @@ const ViewContract = () => {
               <div className="flex mt-3">
                 <div className="flex flex-col gap-1">
                   <label className="font-semibold">Amount payed</label>
-                  <p className="shadow appearance-none border rounded w-[180px] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white">
+                  <p className="shadow appearance-none border rounded w-[180px] py-2 px-3  leading-tight focus:outline-none focus:shadow-outline bg-white">
                     {contractData.Amount_Payed === "loading"
                       ? "loading"
                       : Number(contractData.Amount_Payed).toLocaleString()}
@@ -448,7 +448,7 @@ const ViewContract = () => {
 
                 <div className="flex flex-col gap-1 ml-10">
                   <p className="font-semibold">Amount Due</p>
-                  <p className="shadow appearance-none border rounded w-[180px] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white">
+                  <p className="shadow appearance-none border rounded w-[180px] py-2 px-3  leading-tight focus:outline-none focus:shadow-outline bg-white">
                     {contractData.Payment_Amount === "loading" ||
                     contractData.Amount_Payed === "loading"
                       ? "loading"

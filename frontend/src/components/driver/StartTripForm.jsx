@@ -130,7 +130,7 @@ const StartTripForm = ({ trip }) => {
     <form onSubmit={handleSubmit} className="bg-white p-4 rounded-lg shadow-md">
       <div className="mb-4 grid grid-cols-2 gap-4">
   <div>
-    <label htmlFor="pickupLocationNo" className="block text-sm font-medium text-gray-700">
+    <label htmlFor="pickupLocationNo" className="block text-sm font-medium ">
       Pickup Location No:
     </label>
     <input
@@ -142,7 +142,7 @@ const StartTripForm = ({ trip }) => {
     />
   </div>
   <div>
-    <label htmlFor="pickupLocationStreet" className="block text-sm font-medium text-gray-700">
+    <label htmlFor="pickupLocationStreet" className="block text-sm font-medium ">
       Pickup Location Street:
     </label>
     <input
@@ -156,7 +156,7 @@ const StartTripForm = ({ trip }) => {
 </div>
 
       <div className="mb-4">
-        <label htmlFor="pickupLocationCity" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="pickupLocationCity" className="block text-sm font-medium ">
           Pickup Location City:
         </label>
         <input
@@ -168,7 +168,7 @@ const StartTripForm = ({ trip }) => {
         />
       </div>
       <div className="mb-4">
-        <label htmlFor="destination" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="destination" className="block text-sm font-medium ">
           Destination:
         </label>
         <input
@@ -180,7 +180,7 @@ const StartTripForm = ({ trip }) => {
         />
       </div>
       <div className="mb-4">
-        <label htmlFor="vehicle" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="vehicle" className="block text-sm font-medium ">
           Vehicle:
         </label>
         <input
@@ -194,7 +194,7 @@ const StartTripForm = ({ trip }) => {
       
       <div className="mb-4 grid grid-cols-2 gap-4">
   <div>
-    <label htmlFor="startDate" className="block text-sm font-medium text-gray-700">
+    <label htmlFor="startDate" className="block text-sm font-medium ">
       Start Date:
     </label>
     <input
@@ -208,7 +208,7 @@ const StartTripForm = ({ trip }) => {
     />
   </div>
   <div>
-    <label htmlFor="startTime" className="block text-sm font-medium text-gray-700">
+    <label htmlFor="startTime" className="block text-sm font-medium ">
       Start Time:
     </label>
     <input
@@ -224,7 +224,7 @@ const StartTripForm = ({ trip }) => {
 </div>
 
 <div className="mb-4">
-        <label htmlFor="mileage" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="mileage" className="block text-sm font-medium ">
           Starting Mileage:
         </label>
         <input
@@ -238,7 +238,7 @@ const StartTripForm = ({ trip }) => {
       </div>
 
       <div className="mb-4">
-        <label htmlFor="odometerImage" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="odometerImage" className="block text-sm font-medium ">
           Odometer Photo:
         </label>
         <input

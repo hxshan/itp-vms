@@ -188,11 +188,11 @@ useEffect(() => {
                 </div>
               </button>
               <div className='flex flex-col'>
-                <label className="block text-gray-700 text-md font-bold mb-2 px-2" htmlFor="driver">Driver</label>
+                <label className="block  text-md font-bold mb-2 px-2" htmlFor="driver">Driver</label>
                 <select name="driver"
                 value={driverFilter}
                 onChange={(e)=>setDriverFilter(e.target.value)}
-                className="shadow appearance-none border rounded w-full min-w-40 mx-2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                className="shadow appearance-none border rounded w-full min-w-40 mx-2 py-2 px-3  leading-tight focus:outline-none focus:shadow-outline">
                   <option value="">Select Driver</option>
                   {
                     drivers.map((driver)=>{
@@ -204,11 +204,11 @@ useEffect(() => {
                 </select>
               </div>
               <div className='flex flex-col'>
-                <label className="block text-gray-700 text-md font-bold mb-2 px-2" htmlFor="status">Record Type</label>
+                <label className="block  text-md font-bold mb-2 px-2" htmlFor="status">Record Type</label>
                 <select name="status"
                 value={statusFilter}
                 onChange={(e)=>setStatusFilter(e.target.value)}
-                className="shadow appearance-none border rounded w-full min-w-40 mx-2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                className="shadow appearance-none border rounded w-full min-w-40 mx-2 py-2 px-3  leading-tight focus:outline-none focus:shadow-outline">
                   <option value="">Select Type</option>
                   <option value="positive">Postive</option>
                   <option value="negative">Negative</option>
@@ -218,7 +218,7 @@ useEffect(() => {
           placeholder="Search"
           value={search}
           onChange={(e)=>{setSearch(e.target.value)}}
-          className="shadow appearance-none border rounded mx-2 min-w-40 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+          className="shadow appearance-none border rounded mx-2 min-w-40 py-2 px-3  leading-tight focus:outline-none focus:shadow-outline" />
 
           
         </div>

@@ -149,7 +149,7 @@ const EndTripForm = ({ trip }) => {
     <form onSubmit={handleSubmit} className="bg-white p-4 rounded-lg shadow-md">
       <div className="mb-4">
 
-        <label htmlFor="pickupLocation" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="pickupLocation" className="block text-sm font-medium ">
           Pickup Location:
         </label>
         <input
@@ -161,7 +161,7 @@ const EndTripForm = ({ trip }) => {
         />
       </div>
       <div className="mb-4">
-        <label htmlFor="destination" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="destination" className="block text-sm font-medium ">
           Destination:
         </label>
         <input
@@ -174,7 +174,7 @@ const EndTripForm = ({ trip }) => {
         />
       </div>
       <div className="mb-4">
-        <label htmlFor="vehicle" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="vehicle" className="block text-sm font-medium ">
           Vehicle:
         </label>
         <input
@@ -188,7 +188,7 @@ const EndTripForm = ({ trip }) => {
      
       <div className="mb-4 flex gap-4">
   <div>
-    <label htmlFor="endDate" className="block text-sm font-medium text-gray-700">
+    <label htmlFor="endDate" className="block text-sm font-medium ">
       End Date:
     </label>
     <input
@@ -202,7 +202,7 @@ const EndTripForm = ({ trip }) => {
     />
   </div>
   <div>
-    <label htmlFor="endTime" className="block text-sm font-medium text-gray-700">
+    <label htmlFor="endTime" className="block text-sm font-medium ">
       End Time:
     </label>
     <input
@@ -218,7 +218,7 @@ const EndTripForm = ({ trip }) => {
 </div>
 
       <div className="mb-4">
-        <label htmlFor="mileage" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="mileage" className="block text-sm font-medium ">
           Ending Mileage:
         </label>
         <input
@@ -231,7 +231,7 @@ const EndTripForm = ({ trip }) => {
         />
       </div>
       <div className="mb-4">
-        <label htmlFor="odometerImage" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="odometerImage" className="block text-sm font-medium ">
           Odometer Photo:
         </label>
         <input

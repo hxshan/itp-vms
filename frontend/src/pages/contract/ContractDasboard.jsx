@@ -229,7 +229,7 @@ const ContractDasboard = () => {
               name="status"
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="shadow appearance-none border rounded min-w-30 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border rounded min-w-30 py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
             >
               <option value="">Select Status</option>
               <option value="Newly Added">Newly Added</option>
@@ -241,7 +241,7 @@ const ContractDasboard = () => {
             </select>
             <input
               type="text"
-              className="shadow appearance-none border rounded min-w-40 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border rounded min-w-40 py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
               placeholder="Search"
               name="searchData"
               onChange={handleInput}

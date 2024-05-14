@@ -204,21 +204,21 @@ const UserReportTable = ({reload}) => {
                   </div>
               </button>
               <div className='flex flex-col'>
-                <label  className="block text-gray-700 text-md font-bold mb-2 px-2" htmlFor="empfrom">Employed From</label>
+                <label  className="block  text-md font-bold mb-2 px-2" htmlFor="empfrom">Employed From</label>
                 <input
                     value={empFrom}
                     onChange={(e)=>{setEmpFrom(e.target.value)}}
-                    className="shadow appearance-none border rounded w-40 h-fit py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    className="shadow appearance-none border rounded w-40 h-fit py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
                     type="date" name="empto" id="empfrom" 
                 />
               </div>
              
               <div className='flex flex-col'>
-                <label className="block text-gray-700 text-md font-bold mb-2 px-2" htmlFor="rolefilter">Role</label>
+                <label className="block  text-md font-bold mb-2 px-2" htmlFor="rolefilter">Role</label>
                 <select name="rolefilter"
                 value={roleFilter}
                 onChange={(e)=>{setRoleFilter(e.target.value)}}
-                className="shadow appearance-none border rounded h-fit w-40 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                className="shadow appearance-none border rounded h-fit w-40 py-2 px-3  leading-tight focus:outline-none focus:shadow-outline">
                   <option value="">Select Role</option>
                   {
                     roles.map(role=>{
@@ -231,11 +231,11 @@ const UserReportTable = ({reload}) => {
               </div>
 
               <div className='flex flex-col'>
-                <label className="block text-gray-700 text-md font-bold mb-2 px-2" htmlFor="status">Status</label>
+                <label className="block  text-md font-bold mb-2 px-2" htmlFor="status">Status</label>
                 <select name="status"
                 value={statusFilter}
                 onChange={(e)=>{setStatusFilter(e.target.value)}}
-                className="shadow appearance-none border rounded h-fit w-40 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                className="shadow appearance-none border rounded h-fit w-40 py-2 px-3  leading-tight focus:outline-none focus:shadow-outline">
                   <option value="">Select Status</option>
                   <option value="active">Active</option>
                   <option value="inactive">Inactive</option>
@@ -249,7 +249,7 @@ const UserReportTable = ({reload}) => {
               onChange={(e)=>{
                 setSearch(e.target.value); 
               }}
-              className="shadow appearance-none border rounded h-fit py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+              className="shadow appearance-none border rounded h-fit py-2 px-3  leading-tight focus:outline-none focus:shadow-outline" />
             </div>
           </div>
           

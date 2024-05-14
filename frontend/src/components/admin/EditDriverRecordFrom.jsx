@@ -129,14 +129,14 @@ console.log(selectedDriver)
           <div className="grid grid-cols-2 gap-x-4 min-w-[400px]">
             <div className="col-span-2 w-full flex flex-col mb-4">
               <label
-                className="block text-gray-700 text-md font-bold mb-2"
+                className="block  text-md font-bold mb-2"
                 htmlFor="driver"
               >
                 Driver
               </label>
               <select 
               name='driver' 
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
               value={selectedDriver}
               onChange={(e)=>{setSelectedDriver(e.target.value)}}>
                 <option  value="">
@@ -153,13 +153,13 @@ console.log(selectedDriver)
             </div>
             <div className="col-span-2 w-full flex flex-col mb-4 ">
               <label
-                className="block text-gray-700 text-md font-bold mb-2"
+                className="block  text-md font-bold mb-2"
                 htmlFor="description"
               >
                 Description
               </label>
               <textarea
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
                 name="description"
                 placeholder="Write a description"
                 value={description}
@@ -170,7 +170,7 @@ console.log(selectedDriver)
             </div>
             <div className="col-span-1 w-full flex flex-col mb-4 ">
               <label
-                className="block text-gray-700 text-md font-bold mb-2"
+                className="block  text-md font-bold mb-2"
                 htmlFor="recordType"
               >
                 Record Type
@@ -178,7 +178,7 @@ console.log(selectedDriver)
 
               <select 
               name='recordType' 
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black"
               value={type}
               onChange={(e)=>{setType(e.target.value)}}>
                 <option  value=""> Select Type</option>
@@ -189,7 +189,7 @@ console.log(selectedDriver)
             </div>
             <div className="col-span-1 w-full flex flex-col mb-4 ">
               <label
-                className="block text-gray-700 text-md font-bold mb-2"
+                className="block  text-md font-bold mb-2"
                 htmlFor="description"
               >
                 Date of Occurrence
@@ -198,7 +198,7 @@ console.log(selectedDriver)
                name="occurenceDate" 
                value={date}
                onChange={(e)=>{setDate(e.target.value)}}
-               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+               className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline dark:bg-black" />
             </div>
           </div>
           {
