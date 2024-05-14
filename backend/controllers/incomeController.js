@@ -36,6 +36,44 @@ const getIncome = async (req, res)=>{
 
 }
 
+const getIncomebytrip = async (req, res)=>{
+    const {tripid} = req.params
+
+ 
+    if(!mongoose.Types.ObjectId.isValid(tripid)){
+        return res.status(400).json({error: 'invalid id'})
+    }
+
+    const income = await Income.find({'hirePayment.hire': tripid}).populate('vehicle').populate('hirePayment.hire').populate('recordedBy').populate('contractIncome.contract')
+    console.log(income)
+    if(!income)
+    {
+        return res.status(400).json({error: 'No such income'})
+    }
+
+   
+    res.status(200).json(income)
+
+}
+const getIncomebyvehicle = async (req, res)=>{
+    const {vehicleid} = req.params
+
+ 
+    if(!mongoose.Types.ObjectId.isValid(vehicleid)){
+        return res.status(400).json({error: 'invalid id'})
+    }
+
+    const income = await Income.find({vehicle:vehicleid}).populate('vehicle').populate('hirePayment.hire').populate('recordedBy').populate('contractIncome.contract')
+    console.log(income)
+    if(!income)
+    {
+        return res.status(400).json({error: 'No such income'})
+    }
+
+   
+    res.status(200).json(income)
+
+}
 // creata a new expense
 const createIncome = async (req,res) =>{ 
     
@@ -151,5 +189,8 @@ module.exports = {
     getIncome,
     deleteIncome,
     updateIncome,
-    getContractByVehicleID
+    getContractByVehicleID,
+    getIncomebytrip,
+    getIncomebyvehicle
+
 }

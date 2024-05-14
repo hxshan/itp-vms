@@ -18,7 +18,7 @@ const caseFileSchema = new mongoose.Schema(
         type:Boolean,
         default: false
     },
-    
+
     timeOfIncident: {
       type: Date,
     },
@@ -33,11 +33,16 @@ const caseFileSchema = new mongoose.Schema(
     driver: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
-    
+
     },
     hire: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Hire",
+    },
+
+    vehicle: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Vehicles"
     },
 
     passengerCount: {
@@ -63,9 +68,7 @@ const caseFileSchema = new mongoose.Schema(
       type: String,
     },
 
-    witnessesContactInformation: {
-      type: String,
-    },
+
     witnessesStatement: {
       type: String,
     },
@@ -100,7 +103,10 @@ const caseFileSchema = new mongoose.Schema(
   },
 
   {
-    timestamps: { currentTime: () => Date.now() + 5.5 * 60 * 60 * 1000 },
+    timestamps: { 
+      type: Date,
+      default: Date.now
+     },
   }
 );
 const CaseFile = mongoose.model("CaseFile", caseFileSchema);

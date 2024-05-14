@@ -2,6 +2,10 @@ const express = require('express')
 const {
     createExpense,
     getAllExpenses,
+    getReimbursmentByDriverId,
+    getExpensesBytripId,
+    getExpensesByvehicleId,
+    getdriverWageBydriverId,
     getExpense,
     deleteExpense,
     updateExpense
@@ -18,6 +22,14 @@ router.get('/',getAllExpenses )
 // get single finace 
 
 router.get('/:id',getExpense)
+
+router.get('/reimbursment/:driverId',getReimbursmentByDriverId)
+
+router.get('/tripExpense/:tripId',getExpensesBytripId)
+
+router.get('/vehicleExpense/:vehicleId ', getExpensesByvehicleId)
+
+router.get('/driverwage/:driverId',getdriverWageBydriverId)
 
 
 router.post('/', createExpense)
