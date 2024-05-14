@@ -16,6 +16,7 @@ const sendAlert = async (req , res) => {
             caseFile
         })
 
+        
         await newAlert.save()
 
         res.status(201).json({ message: 'Alert Sent' });
