@@ -10,7 +10,11 @@ import DriverTable from "./DriverTable";
 import DriverRecordTable from "./DriverRecordTable";
 import AddDriverRecordForm from "./AddDriverRecordForm";
 import DashboardHero from "./DashboardHero";
+import UserReportTable from './UserReportTable'
+import DriverRecReportTable from './DriverRecReportTable'
 export {
+    DriverRecReportTable,
+    UserReportTable,
     DashboardHero,
     AddDriverRecordForm,
     DriverRecordTable,

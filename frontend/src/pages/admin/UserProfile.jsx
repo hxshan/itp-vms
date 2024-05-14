@@ -5,6 +5,8 @@ import axios from "@/api/axios";
 import {useNavigate , useParams } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
 import { useLogout } from "@/hooks/useLogout";
+import Swal from "sweetalert2";
+import banner from '../../assets/banner.jpg'
 
 const UserProfile = () => {
   const { id } = useParams();
@@ -43,6 +45,11 @@ const UserProfile = () => {
 
   const handleSubmit= async(e)=>{
     e.preventDefault()
+    var pwdregex = /^(?=.*[0-9])(?=.*[!@#$%^&*()-_=+{};:<,.>?])(?=.*[a-zA-Z]).{8,}$/;
+    if (!newPwd.match(pwdregex)){
+      toast.error("New Password is Invalid (please use a strong password)")
+      return
+    }
     await resetPassword()
    
   }
@@ -50,7 +57,11 @@ const UserProfile = () => {
     if(!(resetResponse.length<=0) && !pwdErr){
       console.log(!pwdErr)
       setMenuOpen(false)
-      alert('Password Reset Successfully.You will now be logged out!!')
+      Swal.fire({
+        title: "Success!",
+        text: "Password changed successfully",
+        icon: "success"
+      });
       logout()
     }
   },[resetResponse,pwdErr])
@@ -74,62 +85,31 @@ console.log(data)
   return (
     <div className="container w-full flex justify-center pt-14 min-h-full">
       <ToastContainer/>
-      <div className="w-fit h-fit relative p-10 flex flex-col items-center rounded-md border-2 border-gray-300 shadow-lg bg-white">
-        <div className="flex h-[10rem] w-[10rem] mb-8 rounded-full overflow-hidden">
-          <img className="w-full h-full" src={data.empPhoto?`http://localhost:3000/employee_picture/${data.empPhoto}`:user_pfp} alt="profile image" />
-        </div>
-        <div className="flex flex-col gap-12 py-4">
-          <div className="w-full flex items-center gap-8">
-            <div className="w-full flex flex-col">
-              <label className="font-bold text-gray-700 mb-1" htmlFor="firstName">First Name</label>
-              <input
-                type="text"
-                readOnly={true}
-                value={data?.firstName||''}
-                name="firstName"
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-200"
-              />
-            </div>
-            <div className="w-full flex flex-col">
-              <label className="font-bold text-gray-700 mb-1" htmlFor="lastName">Last Name</label>
-              <input
-                type="text"
-                value={data?.lastName||''}
-                readOnly={true}
-                name="lastName"
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-200"
-              />
-            </div>
-          </div>
-          <div className="w-full flex items-center gap-8">
-            <div className="w-full flex flex-col">
-              <label className="font-bold text-gray-700 mb-1" htmlFor="email">Email</label>
-              <input
-                type="text"
-                value={data?.email||''}
-                readOnly={true}
-                name="email"
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-200"
-              />
-            </div>
-            <div className="w-full flex flex-col">
-              <label className="font-bold text-gray-700 mb-1" htmlFor="phoneNumber">Phone Number</label>
-              <input
-                type="text"
-                value={data?.phoneNumber||''}
-                readOnly={true}
-                name="phoneNumber"
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-200"
-              />
-            </div>
+      <div className="w-fit h-fit relative flex flex-col items-center rounded-lg overflow-hidden border-2 border-gray-300 shadow-lg bg-white">
+        <div className="flex flex-col h-[12rem] w-full mb-[4rem] relative">
+          <img src={banner} className="w-full h-full" alt="" />
+          <div className="flex h-[10rem] rounded-full overflow-hidden absolute left-1/2 transform -translate-x-1/2 top-1/2 p-1 bg-white">
+            <img className="w-full h-full" src={data.empPhoto?`http://localhost:3000/employee_picture/${data.empPhoto}`:user_pfp} alt="profile image" />
           </div>
         </div>
-        <button onClick={()=>setMenuOpen(true)} className="bg-blue-600 px-2 py-2 mt-4 rounded-md text-white font-bold">
+        <div className="h-58 w-full ">
+            <div className="w-full">
+              <p className="text-center text-xl font-bold">{data.firstName} {data.lastName}</p>
+            </div>
+            <div className="w-full mt-2">
+              <p className="text-center text-lg font-bold">{data.role?.name}</p>
+            </div>
+            <div className="w-full flex justify-around mt-16 mb-4">
+              <p className="text-center text-xl font-bold">{data.email}</p>
+              <p className="text-center text-xl font-bold">{data.phoneNumber}</p>
+            </div>  
+        </div>
+        <button onClick={()=>setMenuOpen(true)} className="bg-blue-600 px-2 py-2 my-4 rounded-md text-white font-bold">
           Change Password
         </button>
         <div className={`${!menuOpen?'hidden':''} w-fit p-12 gap-4 flex flex-col absolute items-center rounded-md border-2 border-gray-300 shadow-lg bg-white h-fit`}> 
             <button 
-            onClick={()=>setMenuOpen(false)} 
+            onClick={()=>{setMenuOpen(false);setCurrentPwd('');setNewPwd('')}} 
             className="absolute top-3 right-3 border border-gray-500 rounded-full hover:bg-red-600 hover:text-white">
               <div className="w-8 h-8 flex justify-center items-center">
                 <span>X</span>

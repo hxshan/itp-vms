@@ -1,16 +1,16 @@
 import axios from "@/api/axios";
 import useAxios from "@/hooks/useAxios";
-import { data } from "autoprefixer";
-import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
 import { ClockLoader } from "react-spinners";
 import Swal from "sweetalert2";
 
-const AddDriverRecordForm = ({ isOpen, setIsOpen,reload,setReload }) => {
-  const [drivers, error, loading, axiosFetch] = useAxios();
+const EditDriverRecordFrom = ({ isOpen, setIsOpen,reload,setReload,driverid }) => {
+  const [driversData, error, loading, axiosFetch] = useAxios();
   const [record, recordError, recordLoading, axiosRecordFetch] = useAxios();
-  const [selectedDriver,setSelectedDriver]=useState('')
+
+  const [drivers,setDrivers]=useState([])
+  const [selectedDriver,setSelectedDriver]=useState(isOpen?driverid:'')
   const [description,setDescription]=useState('')
   const [date,setDate]=useState('')
   const [type,setType]=useState('')
@@ -22,6 +22,15 @@ const AddDriverRecordForm = ({ isOpen, setIsOpen,reload,setReload }) => {
         url:'/user/drivers'
     })
   }
+
+  const getRecordData=()=>{
+    axiosRecordFetch({
+        axiosInstance:axios,
+        method:'GET',
+        url:`/user/drivers/records/${driverid}`
+    })
+  }
+
   const handleSubmit =async(e)=>{
     e.preventDefault()
     if(selectedDriver === '' ) {Swal.fire({
@@ -55,8 +64,8 @@ const AddDriverRecordForm = ({ isOpen, setIsOpen,reload,setReload }) => {
 try{
     axiosRecordFetch({
         axiosInstance:axios,
-        method:'POST',
-        url:'/user/record',
+        method:'PATCH',
+        url:`/user/drivers/records/${record._id}`,
         requestConfig:{
             data:{
                 selectedDriver,
@@ -77,10 +86,25 @@ try{
   }
 
 useEffect(()=>{
-    getData()
-},[reload])
+    if(driverid !=='' && isOpen){
+        getData()
+        getRecordData()
+    }
+},[reload,isOpen])
 
-  if (loading) {
+useEffect(()=>{
+    if(driversData){
+        setDrivers(driversData)
+    }
+    if(record){
+        setDescription(record.description)
+        setType(record.recordType)
+        setDate(record.occurenceDate?.split('T')[0])
+        console.log(record)
+    }
+},[record,driversData])
+
+  if (loading || recordLoading) {
     return (
       <div className={"absolute top-0 left-0 w-full z-20 flex justify-center"}>
         <div className="bg-white rounded-md w-fit p-8 h-full relative">
@@ -89,7 +113,7 @@ useEffect(()=>{
       </div>
     );
   }
-
+console.log(selectedDriver)
   return (
     <div className={isOpen ? "absolute top-0 left-0 w-full z-20 flex justify-center" : "hidden"}>
       <div className="bg-white rounded-md p-8 w-fit mt-8 h-full relative">
@@ -192,4 +216,8 @@ useEffect(()=>{
   );
 };
 
-export default AddDriverRecordForm;
+export default EditDriverRecordFrom;
+
+ 
+ 
+ 
