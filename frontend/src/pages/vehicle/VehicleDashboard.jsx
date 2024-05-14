@@ -7,10 +7,8 @@ import axios from "@/api/axios";
 import { ClockLoader } from "react-spinners";
 
 import NewlyAddedTable from '../../components/vehicle/NewlyAddedTable';
-import UnavailableTable from '../../components/vehicle/UnavailableTable';
 import VehicleSearch from "../../components/vehicle/VehicleSearch"
-import SummaryTable from "../../components/vehicle/SummaryTable"
-import DeletedTable from "../../components/vehicle/DeletedVehicle"
+
 
 
 const VehicleDashboard = () => {

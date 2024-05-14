@@ -1,16 +1,18 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Pie } from 'react-chartjs-2';
 import useAxios from '@/hooks/useAxios';
 import axios from '@/api/axios';
-import { useNavigate } from 'react-router-dom';
 import { ClockLoader } from 'react-spinners';
+import { saveAs } from 'file-saver';
+import { jsPDF } from "jspdf";
+import autoTable from 'jspdf-autotable';
+import * as XLSX from 'xlsx';
 
 
 const AllVehicle = () => {
   const [data, error, loading, axiosFetch] = useAxios();
   const [searchTerm, setSearchTerm] = useState('');
   const [searchStatus, setSearchStatus] = useState('');
-  const [category, setCategory] = useState(''); // Add category state
+  const [category, setCategory] = useState('');
   const [vehicleType, setVehicleType] = useState('');
   const [vehicleModel, setVehicleModel] = useState('');
   const [fuelType, setFuelType] = useState('');
@@ -18,6 +20,7 @@ const AllVehicle = () => {
   const [licEndDate, setLicEndDate] = useState('');
   const [insEndDate, setInsEndDate] = useState('');
   const [searchResults, setSearchResults] = useState([]);
+  const componentRef = useRef();
 
 
   const getData = () => {
@@ -67,7 +70,38 @@ const AllVehicle = () => {
     setSearchResults(filteredResults);
   },[searchStatus, category, vehicleType, vehicleModel, fuelType, licEndDate, insEndDate, searchTerm,vehicleGearSys, data]);
   
-  
+  const exportToPdf = () => {
+    const headers = ["Vehicle Registration Number", "Vehicle Model", "Fuel Type", "Number of Seats", "Gear System", "Licence End Date", "Insurance End Date"];
+    const doc = new jsPDF();
+    
+    const tableRows = searchResults.map(data => [
+      data.vehicleRegister,
+      data.vehicleModel,
+      data.fuelType,
+      data.numOfSeats,
+      data.vehicleGearSys,
+      formatDate(data.licEndDate),
+      formatDate(data.insEndDate)
+    ]);
+
+    doc.autoTable({
+      head: [headers],
+      body: tableRows,
+    });
+
+    doc.save('Vehicles_Details_Report.pdf');
+  };
+
+  const exportToExcel = () => {
+    const worksheet = XLSX.utils.json_to_sheet(searchResults);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+
+    const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+    const blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8' });
+
+    saveAs(blob, "vehicles_details.xlsx");
+  };
 
   const handleCategoryChange = event => {
     setCategory(event.target.value);
@@ -117,7 +151,11 @@ const AllVehicle = () => {
     <div className='w-full place-content-center space-y-4 mt-8 bg-cover bg-center mb-10'>
     <h1 className='text-2xl font-bold text-black mt-4'>All Vehicles</h1>
     <div className='flex justify-end items-center'>
-    <div className="text-xm font-semibold text-black mr-5">Search by</div> 
+
+    <button onClick={exportToPdf} className='px-2 py-1 text-white bg-actionBlue h-fit hover:bg-gray-800 focus:outline-none rounded-md mr-4 text-xs font-semibold'>Export to PDF</button>
+    <button onClick={exportToExcel} className='px-2 py-1 text-white bg-actionBlue h-fit hover:bg-gray-800 focus:outline-none rounded-md mr-4 text-xs font-semibold'>Export to Excel</button>
+
+    <div className="text-xs font-semibold text-black mr-5">Search by</div> 
     
     <select value={searchStatus} onChange={handleStatusChange} className="mb-3 mr-4 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
       <option value="">All Statuses</option>
