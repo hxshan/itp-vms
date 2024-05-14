@@ -6,6 +6,7 @@ import { jwtDecode } from 'jwt-decode'
 import {useNavigate} from 'react-router-dom'
 import { IoMoon } from "react-icons/io5"
 import { IoSunny } from "react-icons/io5";
+import logo from "../../assets/Black BG .png"
 
 const TopBar = () => {
   const {user} = useAuthContext()
@@ -33,7 +34,16 @@ const TopBar = () => {
   },[])
   //
   return (
-    <div className='w-screen h-[80px] text-sm fixed z-20 top-0 left-0 shadow-md dark:border-b dark:border-gray-600  bg-white dark:bg-[#121212] dark:text-white flex items-center justify-end'>
+    <div>
+     
+     
+
+    <div className='w-screen h-[80px] text-sm fixed z-20 top-0 left-0 shadow-md dark:border-b dark:border-black  bg-white dark:bg-[#000000] dark:text-white flex justify-between'>
+
+      <div className='ml-4 flex items-center justify-center'>
+           <img src={logo} alt="Description of the image" class="w-28 h-auto" />
+      </div>
+      <div className='flex items-center justify-end'>
          <div className="mr-5 flex items-center">
             <button onClick={()=> darkModeHandler()}>
                 {
@@ -66,6 +76,8 @@ const TopBar = () => {
         )
         
       }
+      </div>
+    </div>
     </div>
   )
 }
