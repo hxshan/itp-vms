@@ -1,9 +1,10 @@
 const  mongoose  = require("mongoose");
 const CaseFile = require("../models/caseFileModel");
+const nodemailer = require('nodemailer')
 
 
 //create Case File
- const createCaseFile = async (req, res) => {
+/* const createCaseFile = async (req, res) => {
 
         try{
             if(
@@ -58,7 +59,7 @@ const CaseFile = require("../models/caseFileModel");
             return res.status(500).send("Internal server error");
         }
     
-};
+};*/
 
 
 //fetch all case files
@@ -116,7 +117,7 @@ const getCaseFiles = async (req, res) => {
                  incidentDescription , 
                  severity,
                  injuriesDiscription,
-                 witnessesContactInformation,
+                 
                  witnessesStatement,
                  emergencyServicesContacted,
                  emergencyServicesResponseTime,
@@ -187,43 +188,114 @@ const getCaseFiles = async (req, res) => {
         
 };
 
-const driverCreateEmergency = async (req, res) => {
+const driverCreateCaseFile = async (req, res) => {
+
+    
     try {
       const {
+        caseType,
         caseTitle,
-        timeOfIncident,
-        driverID,
-        driverName,
-        driverLicenceNumber,
-        licencePlate,
-        passengerCount,
         location,
+        timeOfIncident,
+        licencePlate,
+        driver,
+        hire,
+        vehicle,
+        passengerCount,
+        status,
         incidentDescription,
-        hire, 
         severity
+
       } = req.body.data;
 
-      console.log(req.body)
+      console.log(req.body.data)
   
-      if (!caseTitle || !timeOfIncident || !driverID || !driverName || !driverLicenceNumber || !licencePlate || !passengerCount || !location || !incidentDescription || !hire || !severity) {
+      if (!caseType || !caseTitle || !timeOfIncident || !driver  || !licencePlate || !passengerCount || !location || !incidentDescription || !hire || !severity) {
+        console.log()
         return res.status(400).send("Missing required fields");
       }
   
       const newCaseFile = {
+        caseType,
         caseTitle,
-        timeOfIncident,
-        driverID,
-        driverName,
-        driverLicenceNumber,
-        licencePlate,
-        passengerCount,
         location,
-        incidentDescription,
+        timeOfIncident,
+        licencePlate,
+        driver,
         hire,
+        vehicle,
+        passengerCount,
+        status ,
+        incidentDescription,
         severity
+        
+       
       };
   
       const createdCaseFile = await CaseFile.create(newCaseFile);
+
+      const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        host: "smtp.gmail.com",
+        port: 587,
+        secure: false,
+        tls: {
+            rejectUnauthorized: false,
+        },
+        auth: {
+            user: 'adithyaperera983@gmail.com',
+            pass: 'bkxosfghilscpzqg'
+        },
+
+      });
+
+      sendmail(transporter, {
+        caseType,
+        caseTitle,
+        location,
+        timeOfIncident,
+        licencePlate,
+        driver,
+        hire,
+        vehicle,
+        passengerCount,
+        status ,
+        incidentDescription,
+        severity
+      
+      });
+
+      const sendmail = async (transporter, CaseFileData) => {
+        const mailOptions = {
+            from: 'adithyaperera983@gmail.com',
+            to: 'adithyaperera456@gmail.com',
+            subject: "Emergency alert Reported",
+            html: ` <h1>New Case File Details</h1>
+            <p>Case Type: ${CaseFileData.caseType}</p>
+            <p>Case Title: ${CaseFileData.caseTitle}</p>
+            <p>Time Of Incident: ${CaseFileData.timeOfIncident}</p>
+            <p>Driver Name: ${CaseFileData.driver?.driverName}</p>
+            <p>customer name:${CaseFileData.hire?.cusName} </p>
+            <p>cutomer number: ${CaseFileData.hire?.cusMobile}</p>
+            <p>Passenger Count: ${CaseFileData.passengerCount}</p>
+            <p>Location: ${CaseFileData.location}</p>
+            <p>Licence Plate: ${CaseFileData.licencePlate}</p>
+           
+            <p>Incident Description: ${CaseFileData.incidentDescription}</p>
+            <p>Severity: ${CaseFileData.severity}</p>
+            `,
+        };
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                console.log(error);
+            } else {
+                console.log('Email sent: ' + info.response);
+            }
+        });
+
+    };
+
+      
       return res.status(201).send(createdCaseFile);
     } catch (error) {
       console.error("Error creating case file", error);
@@ -236,33 +308,50 @@ const driverCreateEmergency = async (req, res) => {
   //fetch all driver alerts
 
   const getDriverAlerts = async (req, res) => {
-    try{
-        const driverAlerts = await CaseFile.find({});
+    try {
+        const driverAlerts = await CaseFile.find({}).populate("driver").populate("hire");
         return res.status(200).send(driverAlerts);
-    }catch(error){
+    } catch (error) {
         console.log("Error getting driver alerts", error);
         return res.status(500).send("Internal server error");
     }
-}
+};
 
     //get a specific driver alert by its id
     const getDriverAlertById = async (req, res) => {
-        try{
-            const { id } = req.params;
-            if(!mongoose.Types.ObjectId.isValid(id)){
-                return res.status(400).send("Invalid driver alert id");
-            }
-            const driverAlert = await CaseFile.findById(id);
-            if(!driverAlert){
-                return res.status(404).send("Driver alert not found");
-            }
-            return res.status(200).send(driverAlert);
-        }catch(error){
-            console.log("Error getting driver alert", error);
-            return res.status(500).send("Internal server error");
+        try {
+          const { id } = req.params;
+          if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json("Invalid case file id");
+          }
+          const caseFile = await CaseFile.findById(id).populate("driver") .populate("hire"); 
+            console.log(caseFile)
+      
+          if (!caseFile) {
+            return res.status(404).send("Case file not found");
+          }
+          return res.status(200).json(caseFile);
+        } catch (error) {
+          console.log("Error getting case files", error);
+          return res.status(500).send("Internal server error");
         }
-    }
+      };
+
+   /* const getdriverDetailsById = async (req, res) => {
+        try {
+            const {id} = req.params;
+            const Services = await CaseFile.find({ hire: id }).populate("");
+    
+    
+            console.log(Services)
+            return res.status(201).json(Services);
+    
+        } catch (error) {
+            console.log(error.message);
+            res.status(500).send({ message: error.message })
+        }
+    };*/
   
 
 
-module.exports = {createCaseFile, getCaseFiles, getCaseFileById, updateCaseFileById, deleteCaseFileById, driverCreateEmergency, getDriverAlerts,getDriverAlertById};
+module.exports = { getCaseFiles, getCaseFileById, updateCaseFileById, deleteCaseFileById, driverCreateCaseFile, getDriverAlerts,getDriverAlertById};

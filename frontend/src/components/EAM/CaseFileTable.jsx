@@ -4,7 +4,9 @@ import Spinner from "./Spinner";
 import CaseFileSearch from "./CaseFileSearch";
 
 import { Link } from "react-router-dom";
-
+import Swal from "sweetalert2";
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 const CaseFileTable = () => {
     const [caseFiles, setCaseFiles] = useState([]);
@@ -30,20 +32,36 @@ const CaseFileTable = () => {
         }, []);
 
         const deleteCaseFile = async (id) => {
-            if(confirm("Are you sure you want to delete this case file?")){
+
+            const result = await Swal.fire({
+                title: 'Are you sure?',
+                text: 'Are you sure you want to delete this record?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Confirm!'
+            });
+
+            if(result.isConfirmed){
                 setLoading(true);
                 axios
                  .delete(`http://localhost:3000/api/caseFiles/${id}`)
                  .then(() => {
                         setCaseFiles(caseFiles.filter((caseFile) => caseFile._id !== id));
                         setLoading(false);
-                        alert("Case file deleted successfully!");
+                        toast.success('Case file deleted successfully');
                  })
                  .catch((error) => {
                      console.log("Error deleting case file", error);
                      setLoading(false);
                  });
+
             }
+            
+            
+                
+            
         }
 
         const handleSearch = (e) => {
@@ -120,7 +138,11 @@ const CaseFileTable = () => {
                                     <td className="px-6 py-4 whitespace-nowrap">{caseFile.location}</td>
                                     <td className="px-6 py-4 whitespace-nowrap">{new Date(caseFile.timeOfIncident).toLocaleDateString() }</td>
                                     <td className="px-6 py-4 whitespace-nowrap text-center">{caseFile.passengerCount}</td>
-                                    <td className="px-6 py-4 whitespace-nowrap">{caseFile.severity}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap">
+                                    <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-md ${caseFile.severity === 'minor' ? 'text-yellow-700 bg-yellow-100' : caseFile.severity === 'moderate' ? 'text-orange-700 bg-orange-100' :caseFile.severity === 'severe' ? 'text-red-700 bg-red-100': 'text-orange-600 bg-orange-100'}`}>
+                                        {caseFile.severity.toUpperCase()}
+                                        </span>
+                                    </td>
                                     <td className="px-6 py-4 whitespace-nowrap">
                                     <div  className= {caseFile.status == 'completed' ? `w-full text-white bg-red-500 rounded-md py-1 px-5 `: `w-full text-white bg-green-500 rounded-md py-1 px-4 `}>
                                             {caseFile.status}
@@ -138,7 +160,8 @@ const CaseFileTable = () => {
                                         
                                             <button className="my-1 mx-1 bg-red-700 text-white py-1 px-4 rounded-md text-sm" onClick={() => deleteCaseFile(caseFile._id)}>
                                                 Delete
-                                            </button>  
+                                            </button> 
+                                            < Link to={`/emergency/edit/${caseFile._id}`} className='my-1 mx-1 bg-[#D4D800] text-white py-1 px-4 rounded-md text-sm'>Edit</Link> 
                                             </div>
                                     </td>
                                 </tr>

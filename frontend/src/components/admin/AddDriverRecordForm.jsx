@@ -66,6 +66,10 @@ try{
             }
         }
     })
+    setSelectedDriver('')
+    setDescription('')
+    setType('')
+    setDate('')
     setReload(reload+1)
 }catch(err){
     console.log(err)
@@ -143,17 +147,17 @@ useEffect(()=>{
             <div className="col-span-1 w-full flex flex-col mb-4 ">
               <label
                 className="block text-gray-700 text-md font-bold mb-2"
-                htmlFor="description"
+                htmlFor="recordType"
               >
                 Record Type
               </label>
 
               <select 
-              name='driver' 
+              name='recordType' 
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               value={type}
               onChange={(e)=>{setType(e.target.value)}}>
-                <option  value=""> Select Driver</option>
+                <option  value=""> Select Type</option>
                 <option  value="positive"> Postive </option>
                 <option  value="negative"> Negative</option>
               </select>

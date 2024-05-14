@@ -17,9 +17,10 @@ import VehicleDetailsControl from "./pages/vehicle/VehicleDetailsControl";
 import VehicleViewControl from "./pages/vehicle/VehicleViewControl";
 import AddcustomVehicle from "./pages/vehicle/AddcustomVehicle";
 import VehReport from "./pages/vehicle/VehReport";
+import VehSum from "./pages/vehicle/VehicleSummary";
 
 import AddContract from "./pages/contract/AddContract";
-import { AdminDashboard, Roles, EditRoles,UserProfile,Users, DriverPerformance} from "./pages/admin";
+import { AdminDashboard, Roles, EditRoles,UserProfile,Users, DriverPerformance,Reports} from "./pages/admin";
 import { MaintainceDashboard } from "./pages/Maintains/MaintainceDashboard";
 import { EditMaintainceOrder } from "./components/VR/EditMaintainceOrder";
 import ContractDasboard from "./pages/contract/ContractDasboard";
@@ -44,6 +45,8 @@ import UserReport from "./components/admin/UserReport";
 import EditUser from "./pages/admin/EditUser";
 import PrintReport from "./pages/contract/PrintReport";
 import GenerateReport from "./pages/contract/GenerateReport";
+import {ReportMaintain} from"../src/components/VR/ReportMaintain";
+
 
 
 
@@ -68,10 +71,10 @@ function App() {
       <Routes>
         <Route path="/userauth/failed" element={<UnAuthorized />} />
       </Routes>
-      <main className="flex w-full bg-slate-100 min-h-screen">
+      <main className="flex w-full bg-slate-100 dark:bg-[#282828] min-h-screen">
         <TopBar />
         <Navbar />
-        <div className={"ml-32 w-full mr-14 mt-[90px] lg:ml-80"}>
+        <div className={"ml-32 w-full mr-14 mt-[90px] lg:ml-80 h-full"}>
           <Routes>
             <Route path="/login" element={<Login />} />
             
@@ -87,6 +90,8 @@ function App() {
             />
             
             <Route path="/admin/roles" element={<Roles />} />
+            <Route path="/admin/reports" element={<Reports/>} />
+            
             <Route path="/admin/roles/:id" element={<EditRoles />} />
             <Route path="/admin/edituser/:id" element={<EditUser/>}/>
             <Route path="/admin/users" element={<Users/>}/>
@@ -117,6 +122,7 @@ function App() {
               <Route path="edit/:id" element={<VehicleDetailsControl />} />
               <Route path="view/:id" element={<VehicleViewControl />} />
               <Route path="report" element={<VehReport />} />
+              <Route path="vehsum" element={<VehSum />} />
             </Route>
             
             <Route path="/Vrform" element={<CreateMaintainceForm />}/>
@@ -125,6 +131,8 @@ function App() {
             <Route path="/Mdashboard" element={<MaintainceDashboard />} />
             <Route path="/view/:id" element={<View />} />
             <Route path="/addnote/:id" element={<Servicenote />} />
+            
+            
            
             <Route
               path="/vehiclemaintain/edit/:id"
@@ -153,6 +161,10 @@ function App() {
             <Route
               path="/VehicleService"
               element={<VehicleService />}
+            />
+             <Route
+              path="/maintainsreport"
+              element={<ReportMaintain />}
             />
               <Route path="/requestmaintains" element={<Requestfromdriver />} />
           </Routes>

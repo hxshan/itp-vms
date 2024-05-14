@@ -14,8 +14,6 @@ const validateFormFirstPage = (FormData) => {
     const today = new Date()
     const startDate = new Date(FormData.startDate)
 
-    
-
     if (FormData.endDate === '') {
         error.endDate = 'Please Enter StartDate'
         toast.error('Please Enter End Date')

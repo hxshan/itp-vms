@@ -4,20 +4,26 @@ import { useEffect, useState} from "react"
 import { useAuthContext } from "@/hooks/useAuthContext";
 import { ClockLoader } from 'react-spinners'
 import { useNavigate } from "react-router-dom";
+import EditDriverRecordFrom from "./EditDriverRecordFrom";
 
 
-const DriverRecordTable = ({isopen,setIsOpen,reload}) => {
+const DriverRecordTable = ({isopen,setIsOpen,reload,setReload}) => {
 
     const { user } = useAuthContext()
-    const columns=["Driver Name","Record Type","Date of Occurence","Record Type"]
+    const columns=["Driver Name","Date of Occurence","Record Type"]
     const navigate=useNavigate()
     const [search,setSearch]=useState('')
     const [statusFilter,setStatusFilter]=useState('')
     const [recordData, error, loading, axiosFetch] = useAxios()
     const [records,setRecords]=useState([])
-    // const [reload,setReload]= useState(0)
+
     const [startIdx, setStartIdx] = useState(0);
     const [endIdx, setEndIdx] = useState(6);
+
+    const [recordOpen,setRecordOpen]= useState(false)
+    const [editId,setEditId]=useState('')
+  
+
     
     const getData = ()=>{
         axiosFetch({
@@ -30,29 +36,41 @@ const DriverRecordTable = ({isopen,setIsOpen,reload}) => {
         })
     }
     
-    // const deleteData =async(e) => {
-    //   e.preventDefault()
-    //   if(confirm("Are you sure you want to Delete the following user")){
-    //     await axiosFetch({
-    //       axiosInstance: axios,
-    //       method: "PATCH",
-    //       url: `/user/delete/${e.target.id}`,
-    //     });
-    //     if(!error){
-    //       setReload(reload + 1);
-    //     }   
-    //   }
-    // };
+
+
+    const deleteData =async(e) => {
+      e.preventDefault()
+      if(confirm("Are you sure you want to Delete the following Record")){
+        await axiosFetch({
+          axiosInstance: axios,
+          method: "DELETE",
+          url: `/user/drivers/records/${e.target.id}`,
+          headers:{
+            withCredentials:true,
+            authorization:`Bearer ${user?.accessToken}`
+          }
+        });
+
+        setReload(reload+1)
+      }
+    };
+
+    const openForm = (e)=>{
+      e.preventDefault()
+      setEditId(e.target.id)
+      setRecordOpen(true)
+    }
     
     useEffect(()=>{
-        console.log(recordData)
       if(recordData)
         setRecords(recordData)   
     },[recordData])
     
     useEffect(()=>{
-      if(user?.accessToken)
+      if(user?.accessToken){
         getData()
+        setRecordOpen(false)
+      }
     },[user,reload])
     
       if(loading){
@@ -74,6 +92,11 @@ const DriverRecordTable = ({isopen,setIsOpen,reload}) => {
       }
     
       return (
+      <>
+      {
+        recordOpen &&
+        <EditDriverRecordFrom driverid={editId} isOpen={recordOpen} setIsOpen={setRecordOpen} reload={reload} setReload={setReload}/>
+      }
         <div className="w-full mt-8">
           <div className="w-full flex justify-between mb-4">
             <h2 className="font-bold text-xl underline mb-4">Driver Record List</h2>
@@ -123,16 +146,16 @@ const DriverRecordTable = ({isopen,setIsOpen,reload}) => {
                 return (
                     <tr className="bg-white border-t border-gray-200" key={row._id}>
                       <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{row.user.firstName}</td>
-                      <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{row.recordType}</td>
-                      <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{row.occurenceDate.split('T')[0]}</td>
-                      <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">
-                        <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded -full ${row.recordType=='positive'?'text-green-500 bg-green-100':'text-red-600 bg-red-100'}`}>
-                            {row.recordType}
+                      {/* <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{row.recordType}</td> */}
+                      <td className={`px-6 py-2 whitespace-nowrap border-r border-gray-200`}>{row.occurenceDate.split('T')[0]}</td>
+                      <td className={`px-6 py-2 whitespace-nowrap border-r border-gray-200 text-center font-bold  ${row.recordType=='positive'?'text-green-500 bg-green-100':'text-red-600 bg-red-100'}`}>
+                        <span className={`px-2 inline-flex text-xs leading-4 tracking-wider`}>
+                            {row.recordType.toUpperCase()}
                         </span>
                       </td>
                       <td className="px-6 py-2 whitespace-nowrap justify-between flex">
                       <button className="bg-actionBlue text-white py-1 px-6 rounded-md" id={row._id} onClick={(e)=>navigate(`/admin/userreport/${e.target.id}`) }>View</button>
-                        <button className="bg-actionGreen text-white py-1 px-6 rounded-md" onClick={()=>navigate(`/admin/edituser/${row._id}`)}>Edit</button>
+                        <button className="bg-actionGreen text-white py-1 px-6 rounded-md" id={row.user._id} onClick={(e)=>openForm(e)}>Edit</button>
                         <button type="submit" id={row._id} onClick={(e)=>deleteData(e)} className="bg-actionRed text-white py-1 px-6 rounded-md">Delete</button>
                       </td>   
                   </tr>
@@ -173,7 +196,7 @@ const DriverRecordTable = ({isopen,setIsOpen,reload}) => {
             </button>
           </div>
         </div>
-    
+      </>
       );
 }
 
