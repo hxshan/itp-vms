@@ -143,7 +143,7 @@ const HireList = ({ hireData, searchTerm, searchType, showDropdown }) => {
             
 
 
-            <div className="shadow overflow-hidden border-b border-gray-200 rounded-lg ">
+            <div className="shadow overflow-hidden border-b border-gray-200 rounded-lg min-h-[350px]">
                 <table className="min-w-full divide-y divide-gray-200">
                     {/* Table header */}
                     <thead className="bg-secondary">
