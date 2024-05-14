@@ -4,6 +4,7 @@ import { useEffect, useState} from "react"
 import { useAuthContext } from "@/hooks/useAuthContext";
 import { ClockLoader } from 'react-spinners'
 import { useNavigate } from "react-router-dom";
+import EditDriverRecordFrom from "./EditDriverRecordFrom";
 
 
 const DriverRecordTable = ({isopen,setIsOpen,reload,setReload}) => {
@@ -15,8 +16,14 @@ const DriverRecordTable = ({isopen,setIsOpen,reload,setReload}) => {
     const [statusFilter,setStatusFilter]=useState('')
     const [recordData, error, loading, axiosFetch] = useAxios()
     const [records,setRecords]=useState([])
+
     const [startIdx, setStartIdx] = useState(0);
     const [endIdx, setEndIdx] = useState(6);
+
+    const [recordOpen,setRecordOpen]= useState(false)
+    const [editId,setEditId]=useState('')
+  
+
     
     const getData = ()=>{
         axiosFetch({
@@ -29,6 +36,8 @@ const DriverRecordTable = ({isopen,setIsOpen,reload,setReload}) => {
         })
     }
     
+
+
     const deleteData =async(e) => {
       e.preventDefault()
       if(confirm("Are you sure you want to Delete the following Record")){
@@ -45,6 +54,12 @@ const DriverRecordTable = ({isopen,setIsOpen,reload,setReload}) => {
         setReload(reload+1)
       }
     };
+
+    const openForm = (e)=>{
+      e.preventDefault()
+      setEditId(e.target.id)
+      setRecordOpen(true)
+    }
     
     useEffect(()=>{
       if(recordData)
@@ -52,8 +67,10 @@ const DriverRecordTable = ({isopen,setIsOpen,reload,setReload}) => {
     },[recordData])
     
     useEffect(()=>{
-      if(user?.accessToken)
+      if(user?.accessToken){
         getData()
+        setRecordOpen(false)
+      }
     },[user,reload])
     
       if(loading){
@@ -75,6 +92,11 @@ const DriverRecordTable = ({isopen,setIsOpen,reload,setReload}) => {
       }
     
       return (
+      <>
+      {
+        recordOpen &&
+        <EditDriverRecordFrom driverid={editId} isOpen={recordOpen} setIsOpen={setRecordOpen} reload={reload} setReload={setReload}/>
+      }
         <div className="w-full mt-8">
           <div className="w-full flex justify-between mb-4">
             <h2 className="font-bold text-xl underline mb-4">Driver Record List</h2>
@@ -133,7 +155,7 @@ const DriverRecordTable = ({isopen,setIsOpen,reload,setReload}) => {
                       </td>
                       <td className="px-6 py-2 whitespace-nowrap justify-between flex">
                       <button className="bg-actionBlue text-white py-1 px-6 rounded-md" id={row._id} onClick={(e)=>navigate(`/admin/userreport/${e.target.id}`) }>View</button>
-                        <button className="bg-actionGreen text-white py-1 px-6 rounded-md" onClick={()=>navigate(`/admin/edituser/${row._id}`)}>Edit</button>
+                        <button className="bg-actionGreen text-white py-1 px-6 rounded-md" id={row.user._id} onClick={(e)=>openForm(e)}>Edit</button>
                         <button type="submit" id={row._id} onClick={(e)=>deleteData(e)} className="bg-actionRed text-white py-1 px-6 rounded-md">Delete</button>
                       </td>   
                   </tr>
@@ -174,7 +196,7 @@ const DriverRecordTable = ({isopen,setIsOpen,reload,setReload}) => {
             </button>
           </div>
         </div>
-    
+      </>
       );
 }
 

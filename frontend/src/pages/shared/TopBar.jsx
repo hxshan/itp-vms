@@ -33,7 +33,7 @@ const TopBar = () => {
   },[])
   //
   return (
-    <div className='w-screen h-[80px] text-sm fixed z-20 top-0 left-0 shadow-md bg-white dark:bg-secondary dark:text-white flex items-center justify-end'>
+    <div className='w-screen h-[80px] text-sm fixed z-20 top-0 left-0 shadow-md dark:border-b dark:border-gray-600  bg-white dark:bg-[#121212] dark:text-white flex items-center justify-end'>
          <div className="mr-5 flex items-center">
             <button onClick={()=> darkModeHandler()}>
                 {

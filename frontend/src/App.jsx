@@ -68,7 +68,7 @@ function App() {
       <Routes>
         <Route path="/userauth/failed" element={<UnAuthorized />} />
       </Routes>
-      <main className="flex w-full bg-slate-100 dark:bg-backgroundDark min-h-screen">
+      <main className="flex w-full bg-slate-100 dark:bg-[#282828] min-h-screen">
         <TopBar />
         <Navbar />
         <div className={"ml-32 w-full mr-14 mt-[90px] lg:ml-80 h-full"}>

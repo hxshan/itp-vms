@@ -368,15 +368,18 @@ const getUserDetailsFull = async (req,res)=>{
     const userHires = await Hire.find({driver:user._id})
     let totalHire= 0
     let completedHires = 0
-    let pendingHires = 0
+    let cancelled=0
+    let pendingHires = 0    
     
     if(userHires.length){
        totalHire= userHires.length
-       completedHires = userHires.filter((hire)=>{ return hire.hireStatus == "Completed"})
-       pendingHires = userHires.filter((hire)=>{return hire.status == "Pending"})
+
+       completedHires = userHires.filter((hire)=>{ return hire.hireStatus.toLowerCase() == "completed" || hire.hireStatus.toLowerCase() == "ended"})
+       pendingHires = userHires.filter((hire)=>{return hire.hireStatus.toLowerCase() == "pending"})
+       cancelled = userHires.filter((hire)=>{return hire.hireStatus.toLowerCase() == "cancelled"})
     }
-    const records = await EmpRecord.find({userId:user._id})
-    const userDetail={totalHire,completedHires,pendingHires,records,personal:user}
+    const records = await EmpRecord.find({user:user._id})
+    const userDetail={totalHire,completedHires,pendingHires,cancelled,records,personal:user}  
     return res.status(200).json(userDetail)
   }catch(error){
     return res.status(404).json({message:JSON.stringify(error.message)})
@@ -396,6 +399,19 @@ const getRecords = async (req,res) =>{
 
   }catch(error){
     console.log(error)
+    return res.status(500).json({message:'Internal Server Error'})
+  }
+}
+
+const getRecordByRecordId = async (req,res)=>{
+  try{
+    const {id}=req.params
+    const record = await EmpRecord.findOne({user:id}).exec()
+
+    if(!record) return res.status(400).json({message:'no record found'});
+    return res.status(200).json(record);
+
+  }catch(err){
     return res.status(500).json({message:'Internal Server Error'})
   }
 }
@@ -443,6 +459,7 @@ const resetPassword = async(req,res)=>{
 }
 
 module.exports = {
+  getRecordByRecordId,
   deleteRecord,
   getRecords,
   getUserDetailsFull, 

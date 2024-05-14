@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "@/hooks/useAuthContext";
 import { FaUser,FaShuttleVan,FaTools,FaCarCrash,FaFileContract   } from "react-icons/fa";
-import { FaMapLocationDot,FaMoneyBillTrendUp  } from "react-icons/fa6";
+import { FaMapLocationDot,FaMoneyBillTrendUp,FaAngleDown } from "react-icons/fa6";
+
 const Navbar = () => {
   const navigate = useNavigate();
   const { user } = useAuthContext();
@@ -43,28 +44,31 @@ const Navbar = () => {
     );
   }
   return (
-    <div className="h-screen fixed z-10 top-0 left-0 flex w-20 lg:w-60">
-      <div className=" bg-secondary dark:bg-secondary  text-white w-64 h-full flex flex-col items-start text-sm pt-[90px]">
+    <div className="h-screen fixed z-10 top-0 left-0 flex w-20 lg:w-60 dark:border-r dark:border-gray-600 border-opacity-5">
+      <div className=" bg-secondary dark:bg-[#1a1625]  text-white w-64 h-full flex flex-col items-start text-sm pt-[90px] gap-1">
         {user?.permissions?.userPermissions?.Read && (
           <div className="relative w-full px-4 ">
             <button
               className={`${
                 isOpen.user
-                  ? "bg-navGreen font-bold shadow-teal-900 shadow-md"
+                  ? "bg-navGreen dark:bg-navPurple font-bold shadow-teal-900 shadow-md dark:shadow-navPurpleDarker"
                   : " "
-              } w-full flex flex-row py-4 px-4 text-nowrap rounded-md hover:bg-navHoverGreen hover:shadow-teal-900 hover:shadow-md focus:outline-none`}
+              } w-full flex flex-row py-4 px-4 text-nowrap rounded-md hover:bg-navHoverGreen hover:shadow-teal-900 dark:hover:shadow-navPurpleDarker hover:shadow-md focus:outline-none dark:hover:bg-navPurple items-center`}
               onClick={() => toggleMenu("user")}
             >
               <div className="w-full flex gap-4 items-center">
                 <FaUser />
                 User
               </div>
+              <div className={`w-fit transition-transform ease-linear ${isOpen.user?'rotate-180':''}`}>
+                <FaAngleDown  />
+              </div>
              
             </button>
             {isOpen.user && (
               <div className={`ml-6 flex flex-col gap-1 relative`}>
                 <button
-                  className="w-full py-2 px-4 text-start hover:bg-gray-700 focus:outline-none focus:bg-gray-700"
+                  className="w-full py-2 px-4 text-start hover:font-bold focus:outline-none focus:font-bold"
                   onClick={() => {
                     navigate("/admin");
                   }}
@@ -72,13 +76,13 @@ const Navbar = () => {
                   Dashboard
                 </button>
                 <button
-                  className="w-full py-2 px-4 text-start hover:bg-gray-700 focus:outline-none focus:bg-gray-700"
+                  className="w-full py-2 px-4 text-start hover:font-bold  focus:outline-none focus:font-bold"
                   onClick={() => navigate("/admin/users")}
                 >
                   Manage Users
                 </button>
                 <button
-                  className="w-full py-2 px-4 text-start hover:bg-gray-700 focus:outline-none focus:bg-gray-700"
+                  className="w-full py-2 px-4 text-start hover:font-bold  focus:outline-none focus:font-bold"
                   onClick={() => {
                     navigate("/admin/roles");
                   }}
@@ -86,13 +90,19 @@ const Navbar = () => {
                   Manage Roles
                 </button>
                 <button
-                  className="w-full py-2 px-4 text-start hover:bg-gray-700 focus:outline-none focus:bg-gray-700"
+                  className="w-full py-2 px-4 text-start hover:font-bold  focus:outline-none focus:font-bold"
                   onClick={() => navigate("/admin/drivers")}
                 >
                   Driver Performance
                 </button>
                 <button
-                  className="w-full py-2 px-4 text-start hover:bg-gray-700 focus:outline-none focus:bg-gray-700"
+                  className="w-full py-2 px-4 text-start hover:font-bold  focus:outline-none focus:font-bold"
+                  onClick={() => navigate("/admin/useractivity")}
+                >
+                    User Activity
+                </button>
+                <button
+                  className="w-full py-2 px-4 text-start hover:font-bold  focus:outline-none focus:font-bold"
                   onClick={() => navigate("/admin/reports")}
                 >
                     Reports
@@ -110,31 +120,33 @@ const Navbar = () => {
                 isOpen.vehicle
                   ? "bg-navGreen font-bold shadow-green-800 shadow-md"
                   : " "
-              } w-full flex flex-row py-4 px-4 text-nowrap rounded-md hover:bg-navHoverGreen hover:shadow-green-800 hover:shadow-md focus:outline-none`}
+              } w-full flex flex-row py-4 px-4 text-nowrap rounded-md hover:bg-navHoverGreen hover:shadow-green-800 hover:shadow-md focus:outline-none items-center`}
               onClick={() => toggleMenu("vehicle")}
             >
                <div className="w-full flex gap-4 items-center">
                 <FaShuttleVan  />
                 Vehicle
               </div>
-               
+              <div className={`w-fit transition-transform ease-linear ${isOpen.vehicle?'rotate-180':''}`}>
+                <FaAngleDown  />
+              </div>
             </button>
             {isOpen.vehicle && (
               <div className="ml-6">
                 <button
-                  className="w-full py-2 px-4 text-start hover:bg-gray-700 focus:outline-none focus:bg-gray-700"
+                  className="w-full py-2 px-4 text-start hover:font-bold  focus:outline-none focus:font-bold"
                   onClick={() => navigate("/vehicle")}
                 >
                   Vehicle Dashboard
                 </button>
                 <button
-                  className="w-full py-2 px-4 text-start hover:bg-gray-700 focus:outline-none focus:bg-gray-700"
+                  className="w-full py-2 px-4 text-start hover:font-bold  focus:outline-none focus:font-bold"
                   onClick={() => navigate("/vehicle/add")}
                 >
                   Add Vehicle
                 </button>
                 <button
-                  className="w-full py-2 px-4 text-start hover:bg-gray-700 focus:outline-none focus:bg-gray-700"
+                  className="w-full py-2 px-4 text-start hover:font-bold  focus:outline-none focus:font-bold"
                   onClick={() => navigate("/vehicle/report")}
                 >
                   Vehicle Reports
@@ -152,31 +164,33 @@ const Navbar = () => {
                 isOpen.maintenance
                   ? "bg-navGreen font-bold shadow-green-800 shadow-md"
                   : " "
-              } w-full flex flex-row py-4 px-4 text-nowrap rounded-md hover:bg-navHoverGreen hover:shadow-green-800 hover:shadow-md focus:outline-none`}
+              } w-full flex flex-row py-4 px-4 text-nowrap rounded-md hover:bg-navHoverGreen hover:shadow-green-800 hover:shadow-md focus:outline-none items-center`}
               onClick={() => toggleMenu("maintenance")}
             >
               <div className="w-full flex gap-4 items-center">
                 <FaTools  />
                 Maintenance 
               </div>
-              
+              <div className={`w-fit transition-transform ease-linear ${isOpen.maintenance?'rotate-180':''}`}>
+                <FaAngleDown  />
+              </div>
             </button>
             {isOpen.maintenance && (
               <div className="ml-6">
                 <button
-                  className="w-full py-2 px-4 text-start hover:bg-gray-700 focus:outline-none focus:bg-gray-700"
+                  className="w-full py-2 px-4 text-start hover:font-bold  focus:outline-none focus:font-bold"
                   onClick={() => navigate("/requestmaintains")}
                 >
                   Request Maintains
                 </button>
                 <button
-                  className="w-full py-2 px-4 text-start hover:bg-gray-700 focus:outline-none focus:bg-gray-700"
+                  className="w-full py-2 px-4 text-start hover:font-bold  focus:outline-none focus:font-bold"
                   onClick={() => navigate("/Mdashboard")}
                 >
                   Maintenance Records
                 </button>
                 <button
-                  className="w-full py-2 px-4 text-start hover:bg-gray-700 focus:outline-none focus:bg-gray-700"
+                  className="w-full py-2 px-4 text-start hover:font-bold  focus:outline-none focus:font-bold"
                   onClick={() => navigate("/VehicleService")}
                 >
                   Service Records
@@ -193,31 +207,33 @@ const Navbar = () => {
                 isOpen.hire
                   ? "bg-navGreen font-bold shadow-green-800 shadow-md"
                   : " "
-              } w-full flex flex-row py-4 px-4 text-nowrap rounded-md hover:bg-navHoverGreen hover:shadow-green-800 hover:shadow-md focus:outline-none`}
+              } w-full flex flex-row py-4 px-4 text-nowrap rounded-md hover:bg-navHoverGreen hover:shadow-green-800 hover:shadow-md focus:outline-none items-center`}
               onClick={() => toggleMenu("hire")}
             >
               <div className="w-full flex gap-4 items-center">
                 <FaMapLocationDot />
                 Hire
               </div>
-              
+              <div className={`w-fit transition-transform ease-linear ${isOpen.hire?'rotate-180':''}`}>
+                <FaAngleDown  />
+              </div>
             </button>
             {isOpen.hire && (
               <div className="ml-6">
                 <button
-                  className="w-full py-2 px-4 text-start hover:bg-gray-700 focus:outline-none focus:bg-gray-700"
+                  className="w-full py-2 px-4 text-start hover:font-bold  focus:outline-none focus:font-bold"
                   onClick={() => navigate("/hires")}
                 >
                   Dashboard
                 </button>
                 <button
-                  className="w-full py-2 px-4 text-start hover:bg-gray-700 focus:outline-none focus:bg-gray-700"
+                  className="w-full py-2 px-4 text-start hover:font-bold  focus:outline-none focus:font-bold"
                   onClick={() => navigate("/hires/add")}
                 >
                   Add Hire
                 </button>
                 <button
-                  className="w-full py-2 px-4 text-start hover:bg-gray-700 focus:outline-none focus:bg-gray-700"
+                  className="w-full py-2 px-4 text-start hover:font-bold  focus:outline-none focus:font-bold"
                   onClick={() => navigate("/hires/rates")}
                 >
                   Hire Rates
@@ -234,7 +250,7 @@ const Navbar = () => {
                 isOpen.emergency
                   ? "bg-navGreen font-bold shadow-green-800 shadow-md"
                   : " "
-              } w-full flex flex-row py-4 px-4 text-nowrap rounded-md hover:bg-navHoverGreen hover:shadow-green-800 hover:shadow-md focus:outline-none`}
+              } w-full flex flex-row py-4 px-4 text-nowrap rounded-md hover:bg-navHoverGreen hover:shadow-green-800 hover:shadow-md focus:outline-none items-center`}
               onClick={() => toggleMenu("emergency")}
             >
               <div className="w-full flex gap-4 items-center">
@@ -242,17 +258,20 @@ const Navbar = () => {
                 Emergency 
                 
               </div>
+              <div className={`w-fit transition-transform ease-linear ${isOpen.emergency?'rotate-180':''}`}>
+                <FaAngleDown  />
+              </div>
             </button>
             {isOpen.emergency && (
               <div className="ml-6">
                 <button
-                  className="w-full py-2 px-4 text-start hover:bg-gray-700 focus:outline-none focus:bg-gray-700"
+                  className="w-full py-2 px-4 text-start hover:font-bold  focus:outline-none focus:font-bold"
                   onClick={() => navigate("/emergency/create")}
                 >
                   Create Case File
                 </button>
                 <button
-                  className="w-full py-2 px-4 text-start hover:bg-gray-700 focus:outline-none focus:bg-gray-700"
+                  className="w-full py-2 px-4 text-start hover:font-bold  focus:outline-none focus:font-bold"
                   onClick={() =>
                     handleItemClick("Emergency Management", "Sub Fun")
                   }
@@ -260,7 +279,7 @@ const Navbar = () => {
                   Edit Case File
                 </button>
                 <button
-                  className="w-full py-2 px-4 text-start hover:bg-gray-700 focus:outline-none focus:bg-gray-700"
+                  className="w-full py-2 px-4 text-start hover:font-bold  focus:outline-none focus:font-bold"
                   onClick={() => navigate("/emergency")}
                 >
                   View Case File Logs
@@ -276,7 +295,7 @@ const Navbar = () => {
                 isOpen.contract
                   ? "bg-navGreen font-bold shadow-green-800 shadow-md"
                   : " "
-              } w-full flex flex-row py-4 px-4 text-nowrap rounded-md hover:bg-navHoverGreen hover:shadow-green-800 hover:shadow-md focus:outline-none`}
+              } w-full flex flex-row py-4 px-4 text-nowrap rounded-md hover:bg-navHoverGreen hover:shadow-green-800 hover:shadow-md focus:outline-none items-center`}
               onClick={() => toggleMenu("contract")}
             >
               <div className="w-full flex gap-4 items-center">
@@ -284,23 +303,26 @@ const Navbar = () => {
                 Contract 
                 
               </div>
+              <div className={`w-fit transition-transform ease-linear ${isOpen.contract?'rotate-180':''}`}>
+                <FaAngleDown  />
+              </div>
             </button>
             {isOpen.contract && (
               <div className="ml-6">
                 <button
-                  className="w-full py-2 px-4 text-start hover:bg-gray-700 focus:outline-none focus:bg-gray-700"
+                  className="w-full py-2 px-4 text-start hover:font-bold  focus:outline-none focus:font-bold"
                   onClick={() => navigate("/client")}
                 >
                   Client dashboard
                 </button>
                 <button
-                  className="w-full py-2 px-4 text-start hover:bg-gray-700 focus:outline-none focus:bg-gray-700"
+                  className="w-full py-2 px-4 text-start hover:font-bold  focus:outline-none focus:font-bold"
                   onClick={() => navigate("/Contract/Dashbored")}
                 >
                   Contract dashboard
                 </button>
                 <button
-                  className="w-full py-2 px-4 text-start hover:bg-gray-700 focus:outline-none focus:bg-gray-700"
+                  className="w-full py-2 px-4 text-start hover:font-bold  focus:outline-none focus:font-bold"
                   onClick={() => navigate("/Report")}
                 >
                   Report
@@ -317,7 +339,7 @@ const Navbar = () => {
                 isOpen.finance
                   ? "bg-navGreen font-bold shadow-green-800 shadow-md"
                   : " "
-              } w-full flex flex-row py-4 px-4 text-nowrap rounded-md hover:bg-navHoverGreen hover:shadow-green-800 hover:shadow-md focus:outline-none`}
+              } w-full flex flex-row py-4 px-4 text-nowrap rounded-md hover:bg-navHoverGreen hover:shadow-green-800 hover:shadow-md focus:outline-none items-center`}
               onClick={() => toggleMenu("finance")}
             >
               <div className="w-full flex gap-4 items-center">
@@ -325,23 +347,26 @@ const Navbar = () => {
               
                 Finance 
               </div>
+              <div className={`w-fit transition-transform ease-linear ${isOpen.finance?'rotate-180':''}`}>
+                <FaAngleDown  />
+              </div>
             </button>
             {isOpen.finance && (
               <div className="ml-6">
                 <button
-                  className="w-full py-2 px-4 text-start hover:bg-gray-700 focus:outline-none focus:bg-gray-700"
+                  className="w-full py-2 px-4 text-start hover:font-bold  focus:outline-none focus:font-bold"
                   onClick={() => navigate("/finance/financeDashboard")}
                 >
                   Finance Dashboard
                 </button>
                 <button
-                  className="w-full py-2 px-4 text-start hover:bg-gray-700 focus:outline-none focus:bg-gray-700"
+                  className="w-full py-2 px-4 text-start hover:font-bold  focus:outline-none focus:font-bold"
                   onClick={() => navigate("/finance/expenseTracking")}
                 >
                   Expense Tracking
                 </button>
                 <button
-                  className="w-full py-2 px-4 text-start hover:bg-gray-700 focus:outline-none focus:bg-gray-700"
+                  className="w-full py-2 px-4 text-start hover:font-bold  focus:outline-none focus:font-bold"
                   onClick={() => navigate("/finance/incomeTracking")}
                 >
                   Income Tracking

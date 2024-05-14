@@ -4,12 +4,45 @@ import useAxios from "@/hooks/useAxios";
 import { useNavigate, useParams } from "react-router-dom";
 import placeholder from "../../assets/placeholder.png";
 import ReactToPrint from "react-to-print";
+import { Pie } from "react-chartjs-2";
+
+
 
 const UserReport = () => {
   const ref = useRef(null);
   const { id } = useParams();
   const [user, error, loading, axiosFetch] = useAxios();
   const [image, setImage] = useState("");
+  const [counts,setCounts]=useState([0,0])
+ 
+
+  const chartData = {
+    labels: ["negative", "positive",],
+    datasets: [
+      {
+        label: "No of Users",
+        data: counts,
+        backgroundColor: [
+          "rgba(116, 248, 53, 0.8)",
+          "rgba(255, 46, 46, 0.8)",
+          "rgba(255, 138, 43, 0.8)",
+          "rgba(75, 192, 192, 0.2)",
+          "rgba(153, 102, 255, 0.2)",
+          "rgba(255, 159, 64, 0.2)",
+        ],
+        borderColor: [
+          "rgba(82, 255, 0, 0.8)",
+          "rgba(255, 0, 0, 0.8)",
+          "rgba(255, 115, 0, 0.8)",
+          "rgba(75, 192, 192, 1)",
+          "rgba(153, 102, 255, 1)",
+          "rgba(255, 159, 64, 1)",
+        ],
+        borderWidth: 1,
+      },
+    ],
+  };
+
   const getData = () => {
     axiosFetch({
       axiosInstance: axios,
@@ -18,10 +51,17 @@ const UserReport = () => {
     });
   };
   useEffect(() => {
-    console.log(user);
+    
+    if(user?.records?.length){
+      console.log(user.records)
+      let pos=user.records.filter(record=>record.recordType == 'positive')
+      let neg=user.records.filter(record=>record.recordType == 'negative')
+      setCounts([neg.length,pos.length])
+    }
     if (user?.personal?.empPhoto) {
       setImage(user.personal.empPhoto);
     }
+
   }, [user]);
   useEffect(() => {
     getData();
@@ -34,10 +74,11 @@ const UserReport = () => {
     return <p>Unexpected Error Occurrend!</p>;
   }
 
+  console.log(user);
   return (
     <div className="w-full bg-white  rounded-lg shadow-md mb-12 pb-8">
-      <div ref={ref} className=" flex flex-col p-12 mt-8">
-        <h1 className="text-2xl w-full text-center font-bold mb-8">
+      <div ref={ref} className=" flex flex-col px-12 pt-12 pb-0 mt-8">
+        <h1 className="text-3xl w-full text-center font-bold mb-8">
           Comprehensive {user?.personal?.role?.name == 'DRIVER'?'Driver':'User'}  Report
         </h1>
         <div className="flex gap-14 mb-4">
@@ -114,11 +155,36 @@ const UserReport = () => {
         {
           user?.personal?.role?.name ==='DRIVER' && 
 
-          <div className="my-4 pt-4 border-t-2 border-gray-600">
-            <h3 className="text-lg font-bold mb-2">Driver Details</h3>
-            {/* 
-              remider to add a chart and the hire data if its a driver along with the report
-            */}
+          <div className="my-4 pt-4 border-t-2 border-gray-600 w-full">
+            <h3 className="text-lg font-bold mb-2 ml-2">Driver Details</h3>
+            {
+              user?.records &&
+              <div className="flex w-full gap-16 h-fit">
+                <div className="w-[300px] flex flex-col items-center">
+                  <Pie data={chartData} />
+                  <p className="w-fit text-sm">Performance Chart</p>
+                </div>
+                <div className="flex flex-col gap-4 mt-20">
+                    <div className="w-[12rem] p-2 border border-gray-500 rounded-md flex justify-between">
+                        <p>Pending Hires : </p>    
+                        <p className="mr-4">{user?.pendingHires?.length}</p>                 
+                    </div>
+                    <div className="w-[12rem] p-2 border border-gray-500 rounded-md flex justify-between">
+                        <p>Cancelled Hires : </p>   
+                        <p className="mr-4">{user?.cancelled?.length}</p>                     
+                    </div>
+                    <div className="w-[12rem] p-2 border border-gray-500 rounded-md flex justify-between">
+                        <p>Completed Hires : </p> 
+                        <p className="mr-4">{user?.completedHires?.length}</p>                       
+                    </div>
+                    <div className="w-[12rem] p-2 border border-gray-500 rounded-md flex justify-between">
+                        <p>Total Hires : </p>            
+                        <p className="mr-4">{user?.pendingHires?.length}</p>            
+                    </div>
+                </div>
+              </div>
+
+            }
         </div>
         }
         

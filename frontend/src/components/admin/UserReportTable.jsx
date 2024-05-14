@@ -122,24 +122,23 @@ const UserReportTable = ({reload}) => {
         if(search.toLowerCase != '')
          return user.firstName.toLowerCase().includes(search)
         })
-        setFilteredusers(basefiltered)
         if(empFrom !== ''){  
-          setFilteredusers(()=>{
-            basefiltered.filter(user => {
-              const employmentDate = new Date(user.employmentDate);
-              const fromDate = new Date(empFrom);
-              return employmentDate >= fromDate;
-            });
-          })
+          
+          basefiltered=basefiltered.filter(user => {
+            const employmentDate = new Date(user.employmentDate);
+            const fromDate = new Date(empFrom);
+            return employmentDate >= fromDate;
+          });
+          
         }
         if(roleFilter !== ""){
-          setFilteredusers(()=>{
-            return basefiltered.filter(user => {
-              return user.role?.name == roleFilter;
-            });
-          })
+          basefiltered=basefiltered.filter(user => {
+            return user.role?.name == roleFilter;
+          });
         }
-
+        
+        setFilteredusers(basefiltered)
+        
     }
     
     
@@ -155,7 +154,7 @@ const UserReportTable = ({reload}) => {
 
     useEffect(() => {
       filterData();
-    }, [search, statusFilter, empFrom,roleFilter]);
+    }, [search, statusFilter, empFrom, roleFilter]);
     
     useEffect(()=>{
       if(user?.accessToken){
