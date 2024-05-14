@@ -144,7 +144,7 @@ const VehicleService = () => {
               <th className="border border-white p-2">Vehicle Last-Mileage</th>
               <th className="border border-white p-2">Status</th>
               <th className="border border-white p-2">Limit</th>
-              <th className="border border-white p-2">Actions</th>
+              <th className="border border-white p-2 column-to-hide">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -166,7 +166,7 @@ const VehicleService = () => {
                   <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200 text-center">{getLatestKilometerLimit(vehicle._id)}km</td>
                   <td className="px-2 py-2 whitespace-nowrap border-r border-gray-200 flex justify-center">
                     <button
-                      className="my-1 mx-1 bg-blue-700 text-white py-1 px-4 rounded-md text-sm font-semibold"
+                      className="my-1 mx-1 bg-blue-700 text-white py-1 px-4 rounded-md text-sm font-semibold column-to-hide"
                       id={vehicle._id}
                       onClick={() => handleAddnoteClick(vehicle._id)}
                     >
