@@ -1,6 +1,7 @@
 import { useState , useEffect } from 'react';
 import { useNavigate} from 'react-router-dom'
 import axios from 'axios'
+import { useAuthContext } from "@/hooks/useAuthContext";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { CarForm } from '../../components/vehicle/';
@@ -44,6 +45,7 @@ const AddVehicle = () => {
     
     const [formState, setFormState] = useState(initialFormState);
     const [error,setError] = useState('')
+    const { user } = useAuthContext()
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
 
@@ -76,7 +78,14 @@ const AddVehicle = () => {
         setError('')
 
         try {
-          const response = await axios.post(`http://localhost:3000/api/vehicle/`, formState)
+          const response = await axios.post(`http://localhost:3000/api/vehicle/`, formState,
+          {
+            headers:{
+            withCredentials:true,
+            authorization:`Bearer ${user?.accessToken}`
+            }
+          }
+        )
           const newVehicle = await response.data;
           
           if(!newVehicle){

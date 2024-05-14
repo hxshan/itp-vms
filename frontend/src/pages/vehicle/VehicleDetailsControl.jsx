@@ -8,7 +8,7 @@ import VanEditForm from '../../components/vehicle/VanEditForm'
 import BusEditForm from '../../components/vehicle/BusEditForm'
 import LorryEditForm from '../../components/vehicle/LorryEditForm'
 import TruckEditForm from '../../components/vehicle/TruckEditForm'
-
+import { useAuthContext } from "@/hooks/useAuthContext";
 
 const VehicleDetailsControl = () => {
 
@@ -16,6 +16,7 @@ const { id } = useParams();
 const [data, setData] = useState(null);
 const [error, setError] = useState(null);
 const [loading, setLoading] = useState(false);
+const { user } = useAuthContext()
 const navigate = useNavigate();
 
 const [formData, setFormData] = useState({
@@ -134,7 +135,14 @@ fetchData();
   
       // If everything is valid, proceed with the update
       if (window.confirm("Are you sure you want to update the following vehicle?")) {
-        await axios.patch(`/vehicle/${id}`, formData);
+        await axios.patch(`/vehicle/${id}`, formData,
+        {
+          headers:{
+          withCredentials:true,
+          authorization:`Bearer ${user?.accessToken}`
+          }
+        }
+        );
         alert('Vehicle updated successfully!');
         navigate(`/vehicle/view/${id}`)
         setData(formData);

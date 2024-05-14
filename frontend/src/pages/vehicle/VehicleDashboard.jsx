@@ -35,11 +35,7 @@ const VehicleDashboard = () => {
     getData()
   },[])
 
-  useEffect(() => {
-    if (data) {
-      
-    }
-  }, [data]);
+
 
 
   if(loading){
