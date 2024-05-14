@@ -58,8 +58,19 @@ export const CreateMaintainceForm = () => {
                 navigate('/Mdashboard');
             })
             .catch(error => {
-                console.error('Error submitting form:', error);
+                if (error.response) {
+                    console.log(error.response.data);
+                    console.log(error.response.status);
+                    console.log(error.response.headers);
 
+                    // Show message using alert
+                    alert(error.response.data.message);
+                } else if (error.request) {
+                    console.log(error.request);
+                } else {
+                    console.log('Error', error.message);
+                }
+                console.log(error.config);
             });
     };
 
@@ -100,9 +111,9 @@ export const CreateMaintainceForm = () => {
 
         <main className='w-full  flex flex-col justify-center items-center'>
             <div className=" sm:w-3/4 bg-white p-10 flex flex-col rounded-2xl ">
-            <h1 className='font-bold text-xl'>
-                Create Maintaince Form
-            </h1>
+                <h1 className='font-bold text-xl'>
+                    Create Maintaince Form
+                </h1>
                 <form className='flex flex-col gap-4 md:flex-row' onSubmit={handleSubmit}>
                     <div className="w-full">
 
@@ -207,7 +218,7 @@ export const CreateMaintainceForm = () => {
                 <div className="flex justify-end  items-center mt-6">
                     <button onClick={handleSubmit}
                         className="bg-actionBlue py-2 px-3 rounded-md text-white font-bold mr-5">
-                         Add To Maintaince List
+                        Add To Maintaince List
                     </button>
                     <Link to={`/Mdashboard`}>
                         <button className="my-1 mx-1 text-white bg-actionGreen py-2 px-3 rounded-md font-bold">Back</button>

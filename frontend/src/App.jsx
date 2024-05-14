@@ -45,6 +45,8 @@ import UserReport from "./components/admin/UserReport";
 import EditUser from "./pages/admin/EditUser";
 import PrintReport from "./pages/contract/PrintReport";
 import GenerateReport from "./pages/contract/GenerateReport";
+import {ReportMaintain} from"../src/components/VR/ReportMaintain";
+
 
 
 
@@ -125,6 +127,8 @@ function App() {
             <Route path="/Mdashboard" element={<MaintainceDashboard />} />
             <Route path="/view/:id" element={<View />} />
             <Route path="/addnote/:id" element={<Servicenote />} />
+            
+            
            
             <Route
               path="/vehiclemaintain/edit/:id"
@@ -153,6 +157,10 @@ function App() {
             <Route
               path="/VehicleService"
               element={<VehicleService />}
+            />
+             <Route
+              path="/maintainsreport"
+              element={<ReportMaintain />}
             />
               <Route path="/requestmaintains" element={<Requestfromdriver />} />
           </Routes>
