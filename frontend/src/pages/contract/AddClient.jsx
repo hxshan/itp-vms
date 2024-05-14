@@ -2,10 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useAxios from "@/hooks/useAxios";
 import axios from "@/api/axios";
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer, toast } from "react-toastify";
 import { formatVal } from "./constants";
-
-
+import Swal from "sweetalert2";
 
 const AddClient = () => {
   const navigate = useNavigate();
@@ -32,20 +31,27 @@ const AddClient = () => {
     Comp_Address: "",
   });
 
-
   const [client, error, isLoading, FetchClient] = useAxios();
 
-  useEffect(()=>{
-    if(!isLoading){
-      if(error){
-        alert(error)
-      }else if(client.message === "client created succesfully" ){
-        navigate('/client')
-      }else{
-        console.log(client)
+  useEffect(() => {
+    if (!isLoading) {
+      if (error) {
+        alert(error);
+      } else if (client.message === "client created succesfully") {
+        Swal.fire({
+          icon: "success",
+          title: "Success",
+          text: "Client created succesfully",
+          timer: 2500,
+          showConfirmButton: false,
+        }).then(() => {
+          navigate("/client", { replace: true, state: { forceRefresh: true } });
+        });
+      } else {
+        console.log(client);
       }
     }
-  },[isLoading])
+  }, [isLoading]);
 
   const handleInput = (e) => {
     const { name, value } = e.target;
@@ -81,107 +87,125 @@ const AddClient = () => {
     }
   };
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    
-
-    if (!clientData.firstName || !clientData.firstName.match(formatVal.nameReg)) {
-        toast.error("Invalid First Name");
-        return;
-    } else if (!clientData.lastName || !clientData.lastName.match(formatVal.nameReg)) {
-        toast.error("Invalid Last Name");
-        return;
+    if (
+      !clientData.firstName ||
+      !clientData.firstName.match(formatVal.nameReg)
+    ) {
+      toast.error("Invalid First Name");
+      return;
+    } else if (
+      !clientData.lastName ||
+      !clientData.lastName.match(formatVal.nameReg)
+    ) {
+      toast.error("Invalid Last Name");
+      return;
     } else if (!clientData.gender) {
-        toast.error("Invalid Gender");
-        return;
+      toast.error("Invalid Gender");
+      return;
     } else if (!clientData.dob) {
-        toast.error("Enter Date of Birth");
-        return;
+      toast.error("Enter Date of Birth");
+      return;
     } else {
-        const birthDate = new Date(clientData.dob);
-        const today = new Date();
-        let age = today.getFullYear() - birthDate.getFullYear();
-        const monthDiff = today.getMonth() - birthDate.getMonth();
-        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
-            age--;
-        }
-        if (age < 18) {
-            toast.error("Age should be greater than 18");
-            return;
-        }
+      const birthDate = new Date(clientData.dob);
+      const today = new Date();
+      let age = today.getFullYear() - birthDate.getFullYear();
+      const monthDiff = today.getMonth() - birthDate.getMonth();
+      if (
+        monthDiff < 0 ||
+        (monthDiff === 0 && today.getDate() < birthDate.getDate())
+      ) {
+        age--;
+      }
+      if (age < 18) {
+        toast.error("Age should be greater than 18");
+        return;
+      }
     }
-    if (!clientData.phoneNumber || !clientData.phoneNumber.match(formatVal.phoneReg)) {
-        toast.error("Invalid Phone number");
-        return;
-    } else if (!clientData.nicNumber || !clientData.nicNumber.match(formatVal.nicReg)) {
-        toast.error("Invalid NIC number");
-        return;
-    } else if (!clientData.email || !clientData.email.match(formatVal.emailReg)) {
-        toast.error("Invalid Email Address");
-        return;
-    } else if (clientData.licenceNumber && !clientData.licenceNumber.match(formatVal.licenseReg)) {
-        toast.error("Invalid license number");
-        return;
+    if (
+      !clientData.phoneNumber ||
+      !clientData.phoneNumber.match(formatVal.phoneReg)
+    ) {
+      toast.error("Invalid Phone number");
+      return;
+    } else if (
+      !clientData.nicNumber ||
+      !clientData.nicNumber.match(formatVal.nicReg)
+    ) {
+      toast.error("Invalid NIC number");
+      return;
+    } else if (
+      !clientData.email ||
+      !clientData.email.match(formatVal.emailReg)
+    ) {
+      toast.error("Invalid Email Address");
+      return;
+    } else if (
+      clientData.licenceNumber &&
+      !clientData.licenceNumber.match(formatVal.licenseReg)
+    ) {
+      toast.error("Invalid license number");
+      return;
     } else if (!clientData.Address) {
-        toast.error("Enter Address");
-        return;
+      toast.error("Enter Address");
+      return;
     } else if (!clientData.Comp_Available) {
-        toast.error("Choose Company Availability");
-        return;
+      toast.error("Choose Company Availability");
+      return;
     } else if (!clientData.Comp_Available) {
-        if (!clientData.Comp_Name) {
-            toast.error("Enter Company Name");
-            return;
-        } else if (!clientData.Reg_Num || !clientData.Reg_Num.match(formatVal.regNumReg)) {
-            toast.error("Invalid Registration number");
-            return;
-        } else if (!clientData.Tax_Num || !clientData.Tax_Num.match(formatVal.taxNumReg)) {
-            toast.error("Invalid Tax number");
-            return;
-        } else if (!clientData.Legal_struc) {
-            toast.error("Please select Legal Structure");
-            return;
-        } else if (!clientData.Comp_Email || !clientData.Comp_Email.match(formatVal.emailReg)) {
-            toast.error("Invalid Company email");
-            return;
-        } else if (!clientData.Comp_Phone || !clientData.Comp_Phone.match(formatVal.phoneReg)) {
-            toast.error("Invalid Company Phone number");
-            return;
-        } else if (!clientData.Comp_Address) {
-            toast.error("Enter Company Address");
-            return;
-        }
+      if (!clientData.Comp_Name) {
+        toast.error("Enter Company Name");
+        return;
+      } else if (
+        !clientData.Reg_Num ||
+        !clientData.Reg_Num.match(formatVal.regNumReg)
+      ) {
+        toast.error("Invalid Registration number");
+        return;
+      } else if (
+        !clientData.Tax_Num ||
+        !clientData.Tax_Num.match(formatVal.taxNumReg)
+      ) {
+        toast.error("Invalid Tax number");
+        return;
+      } else if (!clientData.Legal_struc) {
+        toast.error("Please select Legal Structure");
+        return;
+      } else if (
+        !clientData.Comp_Email ||
+        !clientData.Comp_Email.match(formatVal.emailReg)
+      ) {
+        toast.error("Invalid Company email");
+        return;
+      } else if (
+        !clientData.Comp_Phone ||
+        !clientData.Comp_Phone.match(formatVal.phoneReg)
+      ) {
+        toast.error("Invalid Company Phone number");
+        return;
+      } else if (!clientData.Comp_Address) {
+        toast.error("Enter Company Address");
+        return;
+      }
     }
 
-
-    
-      
-         await FetchClient({
-          axiosInstance: axios,
-          method: "POST",
-          url: `/contract/createClient`,
-          requestConfig: {
-            data: { ...clientData },
-          },
-        })
-
-        
-
-        
-
+    await FetchClient({
+      axiosInstance: axios,
+      method: "POST",
+      url: `/contract/createClient`,
+      requestConfig: {
+        data: { ...clientData },
+      },
+    });
   };
-
-  
- 
-
 
   return (
     <div className="w-full flex flex-col justify-center items-center py-5">
       <div className="flex items-center justify-center mb-4 border-b-2">
         <p className=" text-[50px] font-bold ">ADD CLIENT</p>
-        <ToastContainer/>
+        <ToastContainer />
       </div>
       <div className="shadow-xl bg-white w-[90%] h-fit rounded-lg py-8 flex justify-evenly ">
         <div>
@@ -410,13 +434,13 @@ const AddClient = () => {
           </div>
           <div className="flex justify-end gap-4">
             <button
-              className=" bg-actionBlue text-white px-5 py-2 rounded-xl w-[120px] font-bold "
+              className=" bg-actionBlue text-white px-5 py-2 rounded-lg w-[150px] font-bold "
               onClick={handleSubmit}
             >
               Add
             </button>
             <button
-              className=" bg-actionRed text-white px-5 py-2 rounded-xl w-[120px] font-bold "
+              className=" bg-actionRed text-white px-5 py-2 rounded-lg w-[150px] font-bold "
               onClick={() => {
                 navigate(`/client`);
               }}
