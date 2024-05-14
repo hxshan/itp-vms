@@ -3,6 +3,7 @@ import useAxios from "@/hooks/useAxios";
 import { useNavigate } from "react-router-dom";
 import axios from "@/api/axios";
 import { ClipLoader } from "react-spinners";
+import Request from "./Request";
 
 const ClientDashboard = () => {
   const navigate = useNavigate();
@@ -14,6 +15,11 @@ const ClientDashboard = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [results, setResults] = useState([]);
 
+  const [clientReq, setClientReq] = useState([]);
+
+  const [openRequest, setOpenRequest] = useState(false);
+  console.log(openRequest);
+
   const titles = [
     "Client NIC",
     "Client Name",
@@ -24,12 +30,21 @@ const ClientDashboard = () => {
   ];
 
   const [data, error, loading, axiosFetch] = useAxios();
+  const [Reqdata, Reqerror, Reqloading, ReqaxiosFetch] = useAxios();
 
   const getClients = () => {
     axiosFetch({
       axiosInstance: axios,
       method: "GET",
       url: `/contract/getClients`,
+    });
+  };
+
+  const getRequests = () => {
+    ReqaxiosFetch({
+      axiosInstance: axios,
+      method: "GET",
+      url: `/contract/getAllRequest`,
     });
   };
 
@@ -73,10 +88,19 @@ const ClientDashboard = () => {
   }, [data]);
 
   useEffect(() => {
+    if (Reqerror) {
+      alert(Reqerror);
+    } else if (Reqdata) {
+      setClientReq(Reqdata);
+    }
+  }, [Reqdata]);
+
+  useEffect(() => {
     getClients();
+    getRequests();
   }, []);
 
-  if (loading) {
+  if (loading && Reqloading) {
     return (
       <div className="flex justify-center items-center h-screen">
         <div className="sweet-loading">
@@ -91,7 +115,23 @@ const ClientDashboard = () => {
       <div className="flex items-center justify-center border-b-2 mb-4">
         <h1 className=" text-[50px] font-bold ">Client Dashboard</h1>
       </div>
-      <div className="flex justify-end mb-5">
+      <div className="flex justify-between mb-5">
+        <button
+          className=" bg-orange-400 text-white px-5 py-2 rounded-lg w-[150px] text-[16px] font-bold  uppercase "
+          onClick={() => {
+            setOpenRequest(!openRequest);
+          }}
+        >
+          Requests
+        </button>
+        <Request
+          isOpen={openRequest}
+          Toggle={() => {
+            setOpenRequest(!openRequest);
+          }}
+          ReqData={clientReq}
+          getRequests={getRequests}
+        />
         <button
           className=" bg-actionBlue text-white px-5 py-2 rounded-lg w-[150px] text-[16px] font-bold  uppercase "
           onClick={() => {
