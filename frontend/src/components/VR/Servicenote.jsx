@@ -4,8 +4,6 @@ import axios from 'axios';
 import useAxios from '@/hooks/useAxios';
 import { Serviceview } from './Serviceview';
 
-// import statements
-
 export const Servicenote = () => {
     const [data, error, loading, axiosFetch] = useAxios();
     const { id } = useParams();
@@ -100,6 +98,7 @@ export const Servicenote = () => {
     return (
         <main className='w-full flex flex-col justify-center items-center'>
             <Serviceview />
+            <div className="border-b-4 border-black w-full mb-8"></div>
             <div className="sm:w-1/2 bg-white p-10 flex flex-col rounded-2xl ">
                 <h1 className='font-bold text-xl mb-6 text-center'>
                     Add Service Note

@@ -5,7 +5,7 @@ import axios from 'axios';
 import useAxios from '@/hooks/useAxios';
 import { Link } from 'react-router-dom';
 import {
-    validateVehicleType,
+
     // validateVehicleId,
     validateVehicleIssue,
     validateVehicleCost,
@@ -17,7 +17,6 @@ import {
 
 
 export const CreateMaintainceForm = () => {
-    const [files, setFiles] = useState([]);
     const [data, error, loading, axiosFetch] = useAxios()
     const currentDate = new Date().toISOString().split('T')[0];
 
@@ -103,9 +102,7 @@ export const CreateMaintainceForm = () => {
     }
 
 
-    const handleImageSubmit = () => {
 
-    }
 
     return (
 
@@ -185,34 +182,11 @@ export const CreateMaintainceForm = () => {
                                     className="shadow  rounded  text-gray-700 p-2"
                                     onChange={handlechange}
                                     value={formdata.availability}>
-                                    <option value='available'>Available</option>
                                     <option value='Unavailable'>Unavailable</option>
                                 </select>
                             </div>
                         </div>
-                        <p className='font-medium'>
-                            Format Images :
-                            <span
-                                className='text-slate-600 font-normal'>
-                                If Have any Report or Document
-                            </span>
-                        </p>
 
-                        <div className="flex gap-4">
-                            <input
-                                type="file"
-                                id='vrdocument'
-                                accept='image/*'
-                                multiple
-                                className='p-3 border border-gray-800 w-full rounded-lg'
-                                onChange={(e) => setFiles(e.target.files)} />
-                            <button
-                                className='p-3 border border-green-600 rounded-lg font-semibold text-green-600 hover:shadow-lg disabled:opacity-50'
-                                type='button'
-                                onClick={handleImageSubmit}>
-                                Upload
-                            </button>
-                        </div>
                     </div>
                 </form>
                 <div className="flex justify-end  items-center mt-6">
