@@ -5,21 +5,24 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
 import Swal from "sweetalert2";
-
+import { useAuthContext } from "@/hooks/useAuthContext";
 
 
 const CreateUserForm = ({ reload,setReload }) => {
   //Api Hooks
   const [roleData,roleError, roleloading, axiosFetch] = useAxios()
-  const [user,usererror, userloading, useraxiosFetch,axiosupdatedFetch] = useAxios()
-  
-  const navigate = useNavigate()
+  const [userData,usererror, userloading, useraxiosFetch,axiosupdatedFetch] = useAxios()
+  const { user } = useAuthContext()
+
 
   const getRoleData =()=>{
     axiosFetch({
      axiosInstance: axios,
      method: "GET",
      url: `/role/`,
+      headers:{
+        authorization:`Bearer ${user?.accessToken}`
+      }
    });
  }
 
@@ -112,10 +115,10 @@ const personal={
       }
     });
    
-    if(nicDocument == null){
-      toast.error("Please upload Nic Document")
-      return
-    }
+    // if(nicDocument == null){
+    //   toast.error("Please upload Nic Document")
+    //   return
+    // }
 
     setCurrentForm(currentForm+1)
      
@@ -177,6 +180,7 @@ const personal={
       data: formDataToSend,
       headers: {
         'Content-Type': 'multipart/form-data',
+        authorization:`Bearer ${user?.accessToken}`
       },
     });
     console.log('ran')
@@ -533,7 +537,7 @@ const personal={
                 name="licenceDoc"
                 id="licenceDoc"
                 onChange={(e)=>{setLicenceDocument(e.target.files[0])}}
-                required
+              
               />
             </div>
                 </>

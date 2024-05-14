@@ -30,7 +30,7 @@ const createUser = async (req, res) => {
       emergencyContacts,
     } = req.body;
 
- console.log(req.body)
+ 
     if (!firstName || !lastName || !email || !password)
       return res.status(400).json({ msg: "Not all fields have been entered." });
   
@@ -45,13 +45,10 @@ const createUser = async (req, res) => {
     const salt = await bcrypt.genSalt();
     const passwordHash = await bcrypt.hash(password, salt);
 
-    if (!req.files.nicDocument) {
-      return res.status(400).json({ message: 'NIC document is required' });
-    }
-
-    const nicDocumentPath = req.files.nicDocument[0].path||null;
-    const empPhotoName=req.files.empPhoto[0].filename;
-
+ 
+    const nicDocumentPath = "";
+    const empPhotoName=req?.files?.empPhoto[0]?.filename;
+    console.log("nic passed")
     // console.log(empPhotoName)
     //match front and back names
     const user = new User({
@@ -93,9 +90,9 @@ const createUser = async (req, res) => {
       return res.status(500).json({ message: err.message });
     }
 
-    // console.log(user)
+     console.log(user)
     await user.save();
-    // console.log('saved')
+     console.log('saved')
 
     await logUserActivity(req,200,'CREATE',`created new user ${user.email}`)
     return res.status(200).json({ message: "User created succesfully" });
