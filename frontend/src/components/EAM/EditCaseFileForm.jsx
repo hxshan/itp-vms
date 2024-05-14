@@ -5,6 +5,9 @@ import axios from "@/api/axios";
 import { useNavigate, useParams } from "react-router-dom";
 import Spinner from "@/components/EAM/Spinner";
 import useAxios from "@/hooks/useAxios";
+import Swal from "sweetalert2";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const EditCaseFileForm = () => {
   const [caseTitle, setCaseTitle] = useState("");
@@ -18,8 +21,7 @@ const EditCaseFileForm = () => {
   const [severity, setSeverity] = useState("");
   const [injuriesDiscription, setInjuriesDiscription] = useState("");
   
-  const [witnessesContactInformation, setWitnessesContactInformation] =
-    useState("");
+  
   const [witnessesStatement, setWitnessesStatement] = useState("");
   const [emergencyServicesContacted, setEmergencyServicesContacted] =
     useState("");
@@ -42,6 +44,7 @@ const EditCaseFileForm = () => {
   const [driver, setDriver] = useState([]);
 
   const [selectedDriver, setSelectedDriver] = useState("");
+  const [step, setStep] = useState(1);
   
 
   const navigate = useNavigate();
@@ -60,10 +63,18 @@ const EditCaseFileForm = () => {
     axiosDataFetch({
       axiosInstance: axios,
      method: "GET",
-     url: `/caseFiles/${id}`,
+     url: `/caseFiles/driverAlerts/${id}`,
     })
 
   }
+
+  const handleNext = () => {
+    setStep(step + 1);
+  };
+
+  const handlePrevious = () => {
+    setStep(step - 1);
+  };
 
   // /useEffect(() => {
   //   setLoading(true);
@@ -115,7 +126,7 @@ const EditCaseFileForm = () => {
       setIncidentDescription(CaseFiles.incidentDescription);
       setSeverity(CaseFiles.severity);
       setInjuriesDiscription(CaseFiles.injuriesDiscription);
-     
+      setSelectedDriver(CaseFiles.driver?.firstName);
       
       setWitnessesStatement(CaseFiles.witnessesStatement);
       setEmergencyServicesContacted(CaseFiles.emergencyServicesContacted);
@@ -136,44 +147,60 @@ const EditCaseFileForm = () => {
   
 
   const handleEdit = async () => {
-    const updatedCaseFile = {
-      caseTitle,
-      location,
-      timeOfIncident,
-      licencePlate,
-      currentCondition,
-      passengerCount,
-      status,
-      incidentDescription,
-      severity,
-      injuriesDiscription,
-      selectedDriver,
-      witnessesContactInformation,
-      witnessesStatement,
-      emergencyServicesContacted,
-      emergencyServicesResponseTime,
-      emergencyServicesActionsTaken,
-      photographicEvidence,
-      insuranceCompaniesContactInfo,
-      insuranceStatus,
-      policeReport,
-      isDriverFault,
-    };
-    const confirm = window.confirm(
-      "Are you sure you want to submit this form?"
-    );
-    if (confirm) {
+
+    const resutl = await Swal.fire({
+      title: "Are you sure?",
+      text: "Are you sure you want to submit this form?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Confirm!",
+    });
+
+    if (resutl.isConfirmed) {
       try {
+        const formData = new FormData();
+        formData.append("photographicEvidence", photographicEvidence);
+        formData.append("policeReport", policeReport);
+
         axiosDataFetch({
           axiosInstance: axios,
          method: "PUT",
          url: `/caseFiles/${id}`,
          requestConfig:{
           data:{
-            ...updatedCaseFile
+            caseTitle,
+            location,
+            timeOfIncident,
+            licencePlate,
+            currentCondition,
+            passengerCount,
+            status,
+            incidentDescription,
+            severity,
+            injuriesDiscription,
+            selectedDriver,
+            witnessesStatement,
+            emergencyServicesContacted,
+            emergencyServicesResponseTime,
+            emergencyServicesActionsTaken,
+            photographicEvidence,
+            insuranceCompaniesContactInfo,
+            insuranceStatus,
+            policeReport,
+            isDriverFault,
           }
         }
+        });
+        Swal.fire({
+          icon: "success",
+          title: "Case file updated successfully",
+          timer: 1400,
+          showConfirmButton: false
+        
         })
+
       } catch (error) {
         console.log("Error updating case file", error);
       } finally {
@@ -181,6 +208,7 @@ const EditCaseFileForm = () => {
         navigate("/emergency");
       }
     }
+    
   };
 
   
@@ -217,9 +245,9 @@ if(CaseFiles && Object.keys(CaseFiles).length !== 0){
         Edit Case File
       </h1>
 
-      
+      {step ===1 && (
 
-      <form>
+      <form onSubmit={handleNext}>
         <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2">
             Case Title
@@ -316,6 +344,11 @@ if(CaseFiles && Object.keys(CaseFiles).length !== 0){
           </select>
         </div>
 
+        <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Next</button>
+        </form>
+      )}
+        {step === 2 && (
+      <form>
         <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2">
             Incident Description:
@@ -385,18 +418,7 @@ if(CaseFiles && Object.keys(CaseFiles).length !== 0){
           </label>
         </div>
 
-        <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2">
-            Witnesses Contact Information:{" "}
-          </label>
-          <input
-            type="text"
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            value={witnessesContactInformation}
-            name="witnessesContactInformation"
-            onChange={(e) => setWitnessesContactInformation(e.target.value)}
-          />
-        </div>
+        
 
         <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2">
@@ -469,7 +491,7 @@ if(CaseFiles && Object.keys(CaseFiles).length !== 0){
             Insurance Companies Contact Information:{" "}
           </label>
           <input
-            type="text"
+            type="number"
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             value={insuranceCompaniesContactInfo}
             name="insuranceCompaniesContactInfo"
@@ -505,6 +527,10 @@ if(CaseFiles && Object.keys(CaseFiles).length !== 0){
         </div>
 
         <div className="flex items-center justify-between">
+        <button type="button" onClick={handlePrevious}
+        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+            Back
+          </button>
           <button
             type="button"
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
@@ -523,6 +549,7 @@ if(CaseFiles && Object.keys(CaseFiles).length !== 0){
           </button>
         </div>
       </form>
+    )}
     </div>
   );
 }
