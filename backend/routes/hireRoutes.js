@@ -1,10 +1,12 @@
 const express = require('express')  
 const router = express.Router()
-const {addHire, fetchHires,editHire, deleteHire } = require('../controllers/hireController')
+const {addHire, fetchHires,editHire, deleteHire, generateCombinedReport, fetchVehicles, getHireById } = require('../controllers/hireController')
 const {fetchHiresRates, addHireRates, editHireRate} = require('../controllers/hireRatesController.js')
 const{getHiresByDriverId,updateHireDriver,  getPastTripsForDriver, getSingleHire, getHiresByVehicleId} =   require('../controllers/driverController')
 
   router.get('/', fetchHires)
+  
+  router.get('/get/:id', getHireById)
 
   router.get('/driver/:driverId', getHiresByDriverId)
 
@@ -20,12 +22,16 @@ const{getHiresByDriverId,updateHireDriver,  getPastTripsForDriver, getSingleHire
 
   router.patch('/driverEdit/:id', updateHireDriver)
 
-  router.delete('/:id', deleteHire)
+  router.put('/cancel/:id', deleteHire)
 
   router.get('/rates', fetchHiresRates)
 
   router.post('/rates/add', addHireRates)
 
   router.put('/rates/edit/:id',editHireRate)
+
+  router.get('/report', generateCombinedReport)
+
+  router.get('/vehicles', fetchVehicles)
 
 module.exports = router

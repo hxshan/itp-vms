@@ -116,7 +116,7 @@ const EditCaseFileForm = () => {
       setSeverity(CaseFiles.severity);
       setInjuriesDiscription(CaseFiles.injuriesDiscription);
      
-      setWitnessesContactInformation(CaseFiles.witnessesContactInformation);
+      
       setWitnessesStatement(CaseFiles.witnessesStatement);
       setEmergencyServicesContacted(CaseFiles.emergencyServicesContacted);
       setEmergencyServicesResponseTime(CaseFiles.emergencyServicesResponseTime);

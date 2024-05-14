@@ -1,5 +1,7 @@
 import HireForm from "@/components/hires/HireForm"
 
+import { ToastContainer, toast } from 'react-toastify';
+
 const CreateHire = () => {
     
   return (
@@ -13,6 +15,8 @@ const CreateHire = () => {
                 <HireForm />
             </div>
         </div>
+
+        <ToastContainer />
     </div>
   )
 }

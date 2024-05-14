@@ -11,8 +11,10 @@ const VehicleSearch = () => {
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(0);
   const navigate = useNavigate();
-
   const { vehicles = [] } = data;
+  const [availabilityStatuses, setAvailabilityStatuses] = useState({});
+  const [stateFilter, setStateFilter] = useState('');
+  const [availabilityFilter, setAvailabilityFilter] = useState('');
 
   const handleViewClick = (id) => {
     navigate(`view/${id}`);
@@ -23,13 +25,25 @@ const VehicleSearch = () => {
   };
 
   const deactiveVehicle = async (id) => {
-    if (confirm("Are you sure you want to delete the following vehicle?")) {
+    if (confirm("Are you sure you want to deactive the following vehicle?")) {
       try {
         await axios.patch(`/vehicle/delete/${id}`);
         setReload(reload + 1);
         alert('Vehicle deactivated successfully!');
       } catch (error) {
         toast.error('Failed to deactivate vehicle. Please try again later.');
+      }
+    }
+  };
+
+  const recoverVehicle = async (id) => {
+    if (confirm("Are you sure you want to active the following vehicle?")) {
+      try {
+        await axios.patch(`/vehicle/recover/${id}`);
+        setReload(reload + 1);
+        alert('Vehicle activated successfully!');
+      } catch (error) {
+        toast.error('Failed to activate vehicle. Please try again later.');
       }
     }
   };
@@ -45,6 +59,43 @@ const VehicleSearch = () => {
   useEffect(() => {
     getData();
   }, [reload]);
+
+  const getAvailabilityData = async () => {
+    try {
+      const statuses = {};
+      for (const vehicle of vehicles) {
+        const response = await axios.get(`/vehicle/availability/${vehicle._id}`);
+        const vehicleAvailability = response.data;
+        let status = "Available";
+        for (const availabilityRecord of vehicleAvailability) {
+          const startDate = new Date(availabilityRecord.unavailableStartDate);
+          const endDate = new Date(availabilityRecord.unavailableEndDate);
+          const currentDate = new Date();
+          const avaStatus = availabilityRecord.status
+
+          if (currentDate >= startDate && currentDate <= endDate) {
+            status =  avaStatus ;
+            break; 
+          }
+        }
+        statuses[vehicle._id] = status;
+      }
+      setAvailabilityStatuses(statuses);
+    } catch (error) {
+      console.error('Error fetching availability data:', error);
+  
+    }
+  };
+
+  useEffect(() => {
+    getAvailabilityData();
+  }, [vehicles]);
+
+
+  useEffect(() => {
+    getData();
+  }, [reload]);
+  
 
   if (loading) {
     return (
@@ -65,19 +116,25 @@ const VehicleSearch = () => {
 
   const filteredVehicles = vehicles.filter((vehicle) => {
     const searchTerm = search.toLowerCase().trim();
-    if (searchTerm === "") {
-      return true;
-    } else {
-      return (
-        (vehicle.vehicleType && vehicle.vehicleType.toLowerCase().includes(searchTerm)) ||
-        (vehicle.vehicleModel && vehicle.vehicleModel.toLowerCase().includes(searchTerm)) ||
-        (vehicle.vehicleRegister && vehicle.vehicleRegister.toLowerCase().includes(searchTerm)) ||
-        (vehicle.category && vehicle.category.toLowerCase().includes(searchTerm))
-      );
-    }
-  });
+    const stateFilterLowerCase = stateFilter.toLowerCase();
+    const matchSearch = (
+        vehicle.vehicleType.toLowerCase().includes(searchTerm) ||
+        vehicle.vehicleModel.toLowerCase().includes(searchTerm) ||
+        vehicle.vehicleRegister.toLowerCase().includes(searchTerm) ||
+        vehicle.category.toLowerCase().includes(searchTerm)
+    );
 
-  const chunkSize = 5;
+    // If state filter is selected, apply additional filtering based on vehicle state
+    const matchStateFilter = !stateFilterLowerCase || vehicle.statusVehicle.toLowerCase() === stateFilterLowerCase;
+
+    // If availability filter is selected, apply additional filtering based on availability
+    const matchAvailabilityFilter = !availabilityFilter || availabilityStatuses[vehicle._id] === availabilityFilter;
+
+    return matchSearch && matchStateFilter && matchAvailabilityFilter;
+  });
+    
+
+  const chunkSize = 10;
   const totalPages = Math.ceil(filteredVehicles.length / chunkSize);
 
   const handleNextPage = () => {
@@ -104,17 +161,42 @@ const VehicleSearch = () => {
 
       <ToastContainer />
 
-      <div className='flex justify-end'>
-        <input
-          type="text"
-          name="Search"
-          placeholder="Search"
-          value={search}
-          onChange={(e) => {
-            setSearch(e.target.value);
-          }}
-          className="mb-3 mr-4 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline end-0 "
-        />
+      <div className='flex justify-end items-center'>
+
+      <div className="text-xm font-semibold text-black mr-5">Search by</div>  
+
+      <select
+        value={stateFilter}
+        onChange={(e) => setStateFilter(e.target.value)}
+        className="mb-3 mr-4 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+    >
+        <option value="">All</option>
+        <option value="Active">Active</option>
+        <option value="Deactive">Deactive</option>
+      </select>
+
+      <select
+        value={availabilityFilter}
+        onChange={(e) => setAvailabilityFilter(e.target.value)}
+        className="mb-3 mr-4 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+    >
+        <option value="">All</option>
+        <option value="Available">Available</option>
+        <option value="Hire">Hire</option>
+        <option value="maintain">Maintain</option>
+        <option value="reserved">reserved</option>
+      </select>
+
+
+      <input
+        type="text"
+        name="Search"
+        placeholder="Search"
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        className="mb-3 mr-4 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline end-0 "
+      />
+   
       </div>
 
       <table className='w-full border-collapse border-spacing-2 border-black rounded-md pad shadow-xl p-5'>
@@ -125,6 +207,7 @@ const VehicleSearch = () => {
             <th className='border border-white p-2'>Vehicle Model</th>
             <th className='border border-white p-2'>Vehicle Register</th>
             <th className='border border-white p-2'>Vehicle State</th>
+            <th className='border border-white p-2'>Avalability</th>
             <th className='border border-white p-2'>Actions</th>
           </tr>
         </thead>
@@ -140,16 +223,36 @@ const VehicleSearch = () => {
                   {vehicle.statusVehicle.toUpperCase()}
                 </span>
               </td>
+              <td className={`px-6 py-2 whitespace-nowrap border-r text-center font-semibold border-gray-200 ${vehicle.statusVehicle === 'Active' ? (availabilityStatuses[vehicle._id] === 'Available' || availabilityStatuses[vehicle._id] === '' ? 'text-green-500 bg-green-100' : 'text-red-600 bg-red-300') : ''}`}>
+                {vehicle.statusVehicle === 'Active' ? 
+                  (availabilityStatuses[vehicle._id] || 'Available') : 
+                  (availabilityStatuses[vehicle._id] === 'Unavailable' ? 'Unavailable' : availabilityStatuses[vehicle._id])}
+              </td>
               <td className="px-2 py-2 whitespace-nowrap border-r border-gray-200 flex justify-center">
-                <button className="my-1 mx-1 bg-actionBlue text-white py-1 px-4 rounded-md text-sm" onClick={() => handleViewClick(vehicle._id)}>
-                  View
-                </button>
-                <button className="my-1 mx-1 bg-yellow-300 text-white py-1 px-4 rounded-md text-sm" onClick={() => handleEditClick(vehicle._id)}>
-                  Edit
-                </button>
-                <button className="my-1 mx-1 bg-actionRed text-white py-1 px-4 rounded-md text-sm" onClick={() => deactiveVehicle(vehicle._id)}>
-                  Delete
-                </button>
+                    {vehicle.statusVehicle === 'Active' && (
+                    <>
+                      <button className="my-1 mx-1 bg-actionBlue text-white py-1 px-4 rounded-md text-sm" onClick={() => handleViewClick(vehicle._id)}>
+                          View
+                      </button>
+                      <button className="my-1 mx-1 bg-yellow-300 text-white py-1 px-4 rounded-md text-sm" onClick={() => handleEditClick(vehicle._id)}>
+                          Edit
+                      </button>
+                      <button className="my-1 mx-1 bg-actionRed text-white py-1 px-4 rounded-md text-sm" onClick={() => deactiveVehicle(vehicle._id)}>
+                          Deactive
+                      </button>
+                    </>
+                    )}
+                    {vehicle.statusVehicle === 'Deactive' && (
+                    <> 
+                    <button className="my-1 mx-1 bg-actionBlue text-white py-1 px-9 rounded-md text-sm" onClick={() => handleViewClick(vehicle._id)}>
+                       View
+                    </button>
+                     
+                    <button className="my-1 mx-1 bg-green-500 text-white py-1 px-9 rounded-md text-sm" onClick={() => recoverVehicle(vehicle._id)}>
+                        Active
+                    </button>
+                    </> 
+                     )}
               </td>
             </tr>
           ))}

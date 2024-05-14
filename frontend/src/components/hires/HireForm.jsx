@@ -6,6 +6,8 @@ import {useNavigate} from "react-router-dom";
 
 import { ClockLoader } from "react-spinners";
 import Swal from 'sweetalert2';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 const Form = () => { 
@@ -58,7 +60,6 @@ const Form = () => {
     estimatedTotal,
     finalTotal: null,
     advancedPayment,
-    hireStatus: "Pending",
     vehicleNo,
     driverName
   }
@@ -112,7 +113,7 @@ const Form = () => {
     axiosFetchVehicles({
           axiosInstance: axios,
           method: "GET",
-          url: "/vehicle/",
+          url: '/hire/vehicles',
       });
   };
 
@@ -124,19 +125,38 @@ const Form = () => {
 
   //Filter Vehicles
   const [filteredVehicles, setFilteredVehicles] = useState([]);
+  const [isVehicleAvailable, setIsVehicleAvailable] = useState(true);
   
   const filterVehicles = () => {
     console.log("Filter Vehicles")
 
     console.log("Selected Vehicle : " + vehicleType)
-    const selectedVehicles = vehiclesData.vehicles.filter((vehicle) => vehicle.category.toLowerCase() === vehicleType.toLowerCase());
+    const selectedVehicles = vehiclesData.filter(vehicle => vehicle.category.toLowerCase() === vehicleType.toLowerCase());
     console.log(selectedVehicles)
 
-    setFilteredVehicles(selectedVehicles); 
-    if(selectedVehicles.length === 0 ){
-      console.log("No vehicles Available")
-      alert("No vehicles Available")
-    }
+    setFilteredVehicles(selectedVehicles);
+
+    const filteredByAvailability = selectedVehicles.filter(vehicle => {
+      // Check if any availability record overlaps with the specified date range
+      return !vehicle.availability.some(availability => {
+        return (
+          (availability.unavailableStartDate <= startDate && availability.unavailableEndDate >= endDate) ||
+          (availability.unavailableStartDate >= startDate && availability.unavailableStartDate <= endDate) ||
+          (availability.unavailableEndDate >= startDate && availability.unavailableEndDate <= endDate)
+        );
+      });
+    });
+
+    setFilteredVehicles(filteredByAvailability);
+
+    if (filteredVehicles.length === 0) {
+      console.log("No vehicles Available");
+      toast.error("No vehicles Available");
+      setIsVehicleAvailable(false);
+  } else {
+      setIsVehicleAvailable(true);
+  }
+    
 
     if(vehiclesError){
     return(
@@ -238,19 +258,26 @@ const Form = () => {
       }
   };
 
-
-  
   //Handle Steps
   const handleNextStep = (e) => {
     e.preventDefault()
 
     let errors = {};
     if(step == 1) {
+
+      filterVehicles()
       
       errors = validateFormFirstPage(formData)
+
+      if(!isVehicleAvailable ){
+        return 
+      } 
+
       if(Object.keys(errors).length === 0) {
         setStep(step + 1);
       }
+
+      
     }
 
     if(step == 2) {
@@ -415,11 +442,14 @@ const [vehicleRates, Verror, Vloading, VaxiosFetch] = useAxios();
       console.log(vehiclesData)
     }, [])
 
-    useEffect(() => {
-      if(step === 2) {
-        filterVehicles()
-      }
-    }, [step, vehicleType])
+   /* if (vehicleRates.length === 0 || DriversData.length === 0 || vehiclesData.length === 0) [
+      Swal.fire({
+        icon: 'error',
+        title: 'Error fetching Data',
+        confirmButtonText: 'OK',
+      })
+    ]
+*/
 
     if (loading || vehiclesLoading|| DriversLoading || Vloading) {
       return (
@@ -430,6 +460,8 @@ const [vehicleRates, Verror, Vloading, VaxiosFetch] = useAxios();
         </div>
       );
     }
+
+    
   
 
     return (

@@ -2,12 +2,14 @@ import { useState, useEffect } from "react";
 import axios from "@/api/axios";
 import useAxios from "@/hooks/useAxios";
 import {useNavigate , useParams } from "react-router-dom";
+import { useAuthContext } from "@/hooks/useAuthContext";
 
 
 const EditRoleForm = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [data, error, loading, axiosFetch] = useAxios()
+  const { user } = useAuthContext()
 
   const [roleData, setRoleData] = useState({
     _id: "",
@@ -62,12 +64,14 @@ const EditRoleForm = () => {
       axiosInstance: axios,
       method: "GET",
       url: `/role/${id}`,
+      headers:{
+        authorization:`Bearer ${user?.accessToken}`
+      }
     });
 
   }
 
   useEffect(()=>{
-    console.log(data)
     if(error){
       alert(error)
       navigate('/admin')
@@ -78,8 +82,9 @@ const EditRoleForm = () => {
   },[data])
 
   useEffect(()=>{
+    if(user?.accessToken)
     getData()
-  },[])
+  },[user])
 
   const handlePermissionChange = (permission, type, checked) => {
      const updatedRoleData = { ...roleData };
@@ -123,6 +128,9 @@ const EditRoleForm = () => {
         data:{
           ...roleData
         }
+      },
+      headers:{
+        authorization:`Bearer ${user?.accessToken}`
       }
     })
     if(error){
@@ -140,6 +148,7 @@ const EditRoleForm = () => {
     )
   }
 
+  
   return (
     <div>
       <form onSubmit={handleSubmit}>
@@ -495,7 +504,7 @@ const EditRoleForm = () => {
                     <input
                       type="checkbox"
                       name="Create"
-                      value={roleData.emergencyPermissions.Create}
+                      checked={roleData.emergencyPermissions.Create}
                       onChange={(e) => {
                         handlePermissionChange(
                           "emergency",
@@ -509,7 +518,7 @@ const EditRoleForm = () => {
                     <input
                       type="checkbox"
                       name="Read"
-                      value={roleData.emergencyPermissions.Read}
+                      checked={roleData.emergencyPermissions.Read}
                       onChange={(e) => {
                         handlePermissionChange(
                           "emergency",
@@ -523,7 +532,7 @@ const EditRoleForm = () => {
                     <input
                       type="checkbox"
                       name="Update"
-                      value={roleData.emergencyPermissions.Update}
+                      checked={roleData.emergencyPermissions.Update}
                       onChange={(e) => {
                         handlePermissionChange(
                           "emergency",
@@ -537,7 +546,7 @@ const EditRoleForm = () => {
                     <input 
                       type="checkbox"
                       name="Delete"
-                      value={roleData.emergencyPermissions.Delete}
+                      checked={roleData.emergencyPermissions.Delete}
                       onChange={(e) => {
                         handlePermissionChange(
                           "emergency",

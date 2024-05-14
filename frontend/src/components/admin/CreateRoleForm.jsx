@@ -1,9 +1,11 @@
 import axios from "@/api/axios";
 import useAxios from "@/hooks/useAxios";
 import { useState } from "react";
+import { useAuthContext } from "@/hooks/useAuthContext";
 
 const CreateRoleForm = () => {
   const [response, error, loading, axiosFetch] = useAxios()
+  const { user } = useAuthContext()
   const [roleData, setRoleData] = useState({
     name: "",
     userPermissions: {
@@ -90,6 +92,9 @@ const CreateRoleForm = () => {
             data:{
               ...roleData
             }
+          },
+          headers:{
+            authorization:`Bearer ${user?.accessToken}`
           }
         })
        

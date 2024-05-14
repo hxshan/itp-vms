@@ -6,7 +6,7 @@ const User = require("../models/userModel");
 const decideDashboard=(role)=>{
     if(role.userPermissions.Read) return 'admin'
     if(role.vehiclePermissions.Read) return 'vehicle'
-    if(role.vehicleMaintenencePermissions.Read) return 'admin'
+    if(role.vehicleMaintenencePermissions.Read) return 'Mdashboard'
     if(role.hirePermissions.Read) return 'hires'
     if(role.contractPermissions.Read) return 'Contract/Dashbored'
     if(role.emergencyPermissions.Read) return 'emergency'
@@ -97,18 +97,6 @@ const logout = (req,res) =>{
     res.json({message:'cookie cleared'})
 
 }
-
-
-
-
-
-
- 
-
-
-
-
-
 
 
 

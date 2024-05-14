@@ -9,22 +9,25 @@ const serviceschema = mongoose.Schema(
         },
 
         servicedate: {
-            type: Date,
-            required: true,
+            type: Date, 
+            default: Date.now 
         },
         lastmilage: {
             type: Number,
-            required: true,
+            
+        },
+        kilometerLimit: { 
+            type: Number 
         },
 
         Snote: {
             type: String,
-            required: true,
+            
         },
         
         Scost: {
             type: Number,
-            required: true,
+            
 
         }
 

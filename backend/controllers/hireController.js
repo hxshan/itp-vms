@@ -1,4 +1,7 @@
 const Hire = require("../models/hireModel");
+const { Vehicles } = require("../models/vehicleModel");
+const Availability = require("../models/vehicleAvailability");
+
 const { v4: uuid } = require('uuid');
 const mongoose = require('mongoose');
 
@@ -18,6 +21,18 @@ const fetchHires = async (req, res) => {
   }
 }
 
+//Fetch all vehicles
+const fetchVehicles = async (req, res) => {
+  try {
+    const vehicles = await Vehicles.find({ statusVehicle: 'Active' }).populate('availability');
+    //console.log(vehicles)
+    res.json(vehicles);
+  } catch (error) {
+    console.error('Error fetching vehicles:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+}
+ 
 //Add new hire
 const addHire = async (req, res) => {
   try {
@@ -44,7 +59,6 @@ const addHire = async (req, res) => {
       estimatedTotal,
       finalTotal,
       advancedPayment,
-      hireStatus,
       vehicleNo,
       driverName
     } = req.body.data;
@@ -74,11 +88,21 @@ const addHire = async (req, res) => {
       estimatedTotal,
       finalTotal,
       advancedPayment,
-      hireStatus
     });
 
     
     await newHire.save();
+
+    const newAvailability = new Availability({
+      vehicle: vehicle,
+      status: 'Hire',
+      unavailableStartDate: startDate,
+      unavailableEndDate: endDate
+    });
+
+    await newAvailability.save();
+
+    await Vehicles.findByIdAndUpdate(vehicle, { $push: { availability: newAvailability._id } });
     
     sendmail(transporter, {
       startDate,
@@ -109,6 +133,58 @@ const addHire = async (req, res) => {
     res.status(500).json({ message: 'Internal server error' });
   }
 }
+
+//Find Hire By Id
+const getHireById = async (req, res) => {
+  try {
+    const hireId = req.params.id;
+
+    // Find the hire document by its ID
+    const hire = await Hire.findById(hireId)
+      .populate('vehicle')
+      .populate('driver');
+
+    if (!hire) {
+      return res.status(404).json({ message: 'Hire not found' });
+    }
+
+    res.json(hire);
+  } catch (error) {
+    console.error('Error fetching hire:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
+//Delete hire automatically
+const cron = require('node-cron');
+
+const deletePendingHires = async () => {
+  try {
+    console.log("Running Auto")
+    const dateCount = new Date();
+    dateCount.setDate(dateCount.getDate() - 1);
+
+    const pendingHires = await Hire.find({
+      hireStatus: 'Pending',
+      createdAt: { $lte: dateCount },
+    });
+
+    if (pendingHires.length > 0) {
+      for (const hire of pendingHires) {
+        await Hire.findByIdAndUpdate(hire._id, { hireStatus: 'Cancelled' });
+        console.log(`Updated hire status to cancelled for ID: ${hire._id}`);
+      }
+    }
+  } catch (error) {
+    console.error('Error updating pending hires to cancelled:', error);
+  }
+};
+
+
+cron.schedule('0 23 * * *', deletePendingHires, {
+  timezone: 'Asia/Colombo',
+});
+
 
 //Edit Hire
 const editHire = async (req, res) => {
@@ -176,6 +252,7 @@ const editHire = async (req, res) => {
   }
 };
 
+/*
 //Delete Hire
 const deleteHire = async (req, res) => {
   try {
@@ -190,6 +267,46 @@ const deleteHire = async (req, res) => {
     res.json({ message: 'Hire deleted successfully' });
   } catch (error) {
     res.status(500).json({ message: 'Error deleting hire', error: error.message });
+  }
+};*/
+
+const deleteHire = async (req, res) => {
+  try {
+    const hireId = req.params.id;
+    if (!mongoose.Types.ObjectId.isValid(hireId)) {
+      return res.status(400).json({ message: 'Invalid hire ID' });
+    }
+
+    const hire = await Hire.findById(hireId);
+    if (!hire) {
+      return res.status(404).json({ message: 'Hire not found' });
+    }
+
+    // Get the vehicle and startDate from the hire document
+    const { vehicle, startDate } = hire;
+
+    // Find and update the corresponding availability document
+    const updatedAvailability = await Availability.findOneAndUpdate(
+      {
+        vehicle,
+        unavailableStartDate: startDate,
+      },
+      
+    );
+
+    if (updatedAvailability) {
+      // Update the availability array in the Vehicles collection
+      await Vehicles.updateOne(
+        { _id: vehicle },
+        { $set: { 'availability.$[elem]': updatedAvailability } },
+        { arrayFilters: [{ 'elem._id': updatedAvailability._id }] }
+      );
+      await Hire.findByIdAndUpdate(hire._id, { hireStatus: 'Cancelled' })
+    }
+
+    res.json({ message: 'Hire status updated successfully' });
+  } catch (error) {
+    res.status(500).json({ message: 'Error updating hire status', error: error.message });
   }
 };
 
@@ -250,6 +367,18 @@ const sendmail = async (transporter, hireData) => {
     });
   });
 
+  // Add header
+  //const logoPath = 'path/to/your/logo.png';
+  const companyName = 'Your Company Name';
+
+  // Add header
+  //pdfDoc.image(logoPath, 50, 25, { width: 50 });
+  pdfDoc.fontSize(16).text(companyName, { align: 'center' });
+  pdfDoc.moveTo(50, 90)
+    .lineTo(550, 90)
+    .stroke();
+  pdfDoc.moveDown();
+
   // Add content to PDF
   pdfDoc.fontSize(20).text('Hire Confirmation', { align: 'center' , lineGap: 15 });
 
@@ -283,5 +412,96 @@ const sendmail = async (transporter, hireData) => {
 
 };
 
-module.exports = { addHire, fetchHires, editHire, deleteHire };
+  // Generate Report 
+  const generateCombinedReport = async (req, res) => {
+  try {
+    const today = new Date();
+    const todayMonth = today.getMonth() + 1;
+    const todayYear = today.getFullYear();
+
+    const allHires = await Hire.find()
+
+     // Filter hires to only include hires with the same month and year as today
+    const filteredHires = allHires.filter(hire => {
+      const hireMonth = hire.createdAt.getMonth() + 1;  // getMonth() returns 0-indexed month
+      const hireYear = hire.createdAt.getFullYear();
+      
+      return hireMonth === todayMonth && hireYear === todayYear;
+    });
+
+     // Count hires with each status
+     const activeCount = filteredHires.filter(hire => hire.hireStatus === 'Active').length;
+     const pendingCount = filteredHires.filter(hire => hire.hireStatus === 'Pending').length;
+     const canceledCount = filteredHires.filter(hire => hire.hireStatus === 'Cancelled').length;
+     const completedCount = filteredHires.filter(hire => hire.hireStatus === 'Completed').length;
+
+      const totalHires = filteredHires.length;
+      const totalRevenue = filteredHires.reduce((acc, hire) => acc + hire.finalTotal, 0);
+      const averageDistance = filteredHires.reduce((acc, hire) => acc + hire.actualDistance, 0) / totalHires;
+      const averageTimeTaken = filteredHires.reduce((acc, hire) => acc + parseFloat(hire.actualTimeTaken), 0) / totalHires;
+      const totalAdvancedPayments = filteredHires.reduce((acc, hire) => acc + hire.advancedPayment, 0);
+      const averageAdvancedPayment = totalAdvancedPayments / totalHires;
+
+      // Fetch unique customers
+      const uniqueCustomers = [...new Set(filteredHires.map(hire => hire.cusEmail))];
+
+      // Customer Metrics
+      const totalCustomers = uniqueCustomers.length;
+
+      // Calculate metrics for top spending customers
+      const topCustomers = uniqueCustomers.slice(0, 5); // Assuming top 5 customers
+      const topCustomersHires = filteredHires.filter(hire => topCustomers.includes(hire.cusEmail));
+      const totalRevenueTopCustomers = topCustomersHires.reduce((acc, hire) => acc + hire.finalTotal, 0);
+      const averageDistanceTopCustomers = topCustomersHires.reduce((acc, hire) => acc + hire.actualDistance, 0) / topCustomersHires.length;
+      const averageTimeTakenTopCustomers = topCustomersHires.reduce((acc, hire) => acc + parseFloat(hire.actualTimeTaken), 0) / topCustomersHires.length;
+      const averageSpendingPerHireTopCustomers = totalRevenueTopCustomers / topCustomersHires.length;
+
+      // Combined Metrics
+      const percentageRevenueTopCustomers = (totalRevenueTopCustomers / totalRevenue) * 100;
+
+      // Generate Report
+      const report = {
+        hireCounts: {
+          totalHires,
+          active: activeCount,
+          pending: pendingCount,
+          canceled: canceledCount,
+          completed: completedCount
+        },
+
+          businessPerformance: {
+              totalRevenue,
+              averageDistance,
+              averageTimeTaken,
+              totalAdvancedPayments,
+              averageAdvancedPayment
+          },
+          customerMetrics: {
+              totalCustomers,
+              topCustomers: topCustomers.length ? topCustomers : 'No top customers found',
+              totalRevenueTopCustomers,
+              averageDistanceTopCustomers,
+              averageTimeTakenTopCustomers,
+              averageSpendingPerHireTopCustomers
+          },
+          combinedMetrics: {
+              percentageRevenueTopCustomers
+          }
+      };
+
+      //console.log(report);
+
+      res.status(200).json(report);
+      return report;
+
+  } catch (error) {
+      console.error('Error generating combined report:', error);
+      res.status(500).json({ message: 'Internal Server Error' });
+      throw error;
+  }
+};
+
+
+
+module.exports = { addHire, fetchHires, editHire, deleteHire, generateCombinedReport, fetchVehicles, getHireById };
 

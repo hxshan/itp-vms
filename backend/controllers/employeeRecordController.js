@@ -21,6 +21,30 @@ const createRecord = async (req, res) => {
   }
 };
 
+const updateRecord=async (req,res)=>{
+  try{
+    const {id}=req.params
+    const { selectedDriver, description, type, date } = req.body.data;
+    
+    if(!selectedDriver || !description || !type || !date)  return res.status(400).json({ message: "Not all feilds are filled" });
+
+    const updatedrecord = await EmpRecord.findByIdAndUpdate(id,{
+      user:selectedDriver,
+      recordType:type,
+      description,
+      occurenceDate:date
+    }).exec()
+    if(!updatedrecord) return res.status(400).json({message:'no record found'});
+    return res.status(200).json(record);
+
+  }catch(err){
+    return res.status(500).json({message:'Internal Server Error'})
+  }
+
+}
+
+
 module.exports = {
-    createRecord
+    createRecord,
+    updateRecord
 }

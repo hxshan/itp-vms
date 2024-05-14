@@ -45,7 +45,7 @@ const HireList = ({ hireData, searchTerm, searchType, showDropdown }) => {
     };*/
         if (result.isConfirmed) {
             try {
-                await axios.delete(`/hire/${id}`);
+                await axios.put(`/hire/cancel/${id}`);
                 window.location.reload()
                 console.log('Hire deleted successfully');
             } catch (error) {
@@ -57,16 +57,18 @@ const HireList = ({ hireData, searchTerm, searchType, showDropdown }) => {
     // Search function
     useEffect(() => {
         const result = hireData.filter((hire) => {
+          if (hire.hireStatus.toLowerCase() !== 'cancelled') {
             if (searchType === 'vehicleNumber') {
-                return hire.vehicle?.vehicleRegister?.toLowerCase().includes(searchTerm.toLowerCase()) || false;
-                //return hire.vehicle.toLowerCase().includes(searchTerm.toLowerCase());
+              return hire.vehicle?.vehicleRegister?.toLowerCase().includes(searchTerm.toLowerCase()) || false;
             } else if (searchType === 'customerMobile') {
-                return hire.cusMobile.includes(searchTerm);
+              return hire.cusMobile.includes(searchTerm);
             }
-            return hireData;
+            return true;
+          }
+          return false;
         });
         setResults(result);
-    }, [hireData, searchTerm, searchType]);
+      }, [hireData, searchTerm, searchType]);
 
     //Filter Function
 
@@ -166,7 +168,12 @@ const HireList = ({ hireData, searchTerm, searchType, showDropdown }) => {
                                 <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{new Date(hire.startDate).toLocaleDateString()}</td>
                                 <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{new Date(hire.endDate).toLocaleDateString()}</td>
                                 <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{hire.cusMobile}</td>
-                                <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{hire.hireStatus}</td>
+                                <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">
+                                    <div className={` text-center rounded-md ${hire.hireStatus.toLowerCase() === 'active' ? 'text-green-600 bg-green-100' : hire.hireStatus.toLowerCase() === 'pending' ? 'text-yellow-600 bg-yellow-100' : hire.hireStatus.toLowerCase() === 'ongoing' ? 'text-green-600 bg-green-100' : hire.hireStatus.toLowerCase() === 'completed' ? 'text-blue-600 bg-blue-100' : 'text-orange-600 bg-orange-100'}`}>
+                                        {hire.hireStatus.toUpperCase()}
+                                    </div>
+                                    
+                                </td>
                                 <td className="px-4 py-4 flex justify-between items-baseline">
                                     <button className="py-2 px-6 bg-actionBlue text-white rounded-md mr-2" onClick={() => handleView(hire._id)}>View</button>
                                     <button className="hidden xl:grid py-2 px-6 bg-actionRed text-white rounded-md" onClick={() => deleteHire(hire._id)}>Delete</button>
@@ -182,7 +189,7 @@ const HireList = ({ hireData, searchTerm, searchType, showDropdown }) => {
             {/* Pagination */}
             <div className="flex justify-center mt-4">
                 <ul className="flex list-none border border-gray-300 rounded-md">
-                    {Array.from({ length: Math.ceil(hireData.length / itemsPerPage) }).map((_, index) => (
+                    {Array.from({ length: Math.ceil(results.length / itemsPerPage) }).map((_, index) => (
                         <li key={index} className={`cursor-pointer px-4 py-2 ${currentPage === index + 1 ? 'bg-gray-200' : ''}`} onClick={() => paginate(index + 1)}>{index + 1}</li>
                     ))}
                 </ul>
