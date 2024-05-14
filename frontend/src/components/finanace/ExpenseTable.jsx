@@ -4,6 +4,7 @@ import axios from '@/api/axios';
 import { ReactToPrint } from 'react-to-print';
 import ViewExpense from './ViewExpense';
 import EditExpenseForm from './EditExpenseForm';
+import { useAuthContext } from "@/hooks/useAuthContext";
 
 const ExpenseTable = () => {
   const [expenses, setExpenses] = useState([]);
@@ -18,6 +19,7 @@ const ExpenseTable = () => {
   const [vehicleData, vehicleerror, vehicleloading, vehicleAxiosFetch] = useAxios();
   const [selectedExpense, setSelectedExpense] = useState(null);
   const [EditselectedExpense, setEditSelectedExpense] = useState(null);
+  const { user } = useAuthContext()
 
   const [expensesData, expensesError, expensesLoading, expensesAxiosFetch] = useAxios();
   const [deleteResponse, deleteError, deleteLoading, deleteAxiosFetch] = useAxios();
@@ -87,6 +89,10 @@ const ExpenseTable = () => {
       requestConfig: {
         data: editedExpense
       },
+      headers:{
+        withCredentials:true,
+        authorization:`Bearer ${user?.accessToken}`
+      }
     });
     setEditSelectedExpense(null);
   };
@@ -106,6 +112,10 @@ const ExpenseTable = () => {
             axiosInstance: axios,
             method: 'DELETE',
             url: `/expense/${id}`,
+            headers:{
+              withCredentials:true,
+              authorization:`Bearer ${user?.accessToken}`
+            }
           });
           setReload((prevReload) => prevReload + 1);
         } catch (error) {

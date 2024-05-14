@@ -9,6 +9,7 @@ const {
     getIncomebytrip,
     getIncomebyvehicle
 } = require('../controllers/incomeController')
+const Auth = require('../middleware/Auth')
 
 
 
@@ -29,13 +30,13 @@ router.get('/vehicleIncome/:vehicleid',getIncomebyvehicle)
 router.get('/tripIncome/:tripid',getIncomebytrip)
 
 
-router.post('/',  createIncome)
+router.post('/',Auth,createIncome)
    
 
 
 
-router.delete('/:id', deleteIncome)
+router.delete('/:id', Auth,deleteIncome)
 
-router.patch('/:id', updateIncome)
+router.patch('/:id', Auth,updateIncome)
 
 module.exports = router
