@@ -1,6 +1,7 @@
 const  mongoose  = require("mongoose");
 const CaseFile = require("../models/caseFileModel");
-const nodemailer = require('nodemailer')
+const nodemailer = require('nodemailer');
+const EmpRecord = require('../models/employeeRecordModel');
 
 
 //create Case File
@@ -125,7 +126,8 @@ const getCaseFiles = async (req, res) => {
                  photographicEvidence,
                  insuranceCompaniesContactInfo,
                  insuranceStatus,
-                 policeReport} = req.body.data;
+                 policeReport,
+                isDriverFault} = req.body.data;
         
         try{
             
@@ -153,12 +155,26 @@ const getCaseFiles = async (req, res) => {
                  photographicEvidence,
                  insuranceCompaniesContactInfo,
                  insuranceStatus,
-                 policeReport
+                 policeReport,
+                 isDriverFault
             
         }, { new: true });
         
             if(!updatedCaseFile){
                 return res.status(404).send("Case file not found");
+            }
+
+            if(isDriverFault){
+                
+                const record=new EmpRecord({
+                    user:selectedDriver,
+                    recordType:"negative",
+                    description:incidentDescription,
+                    occurenceDate:timeOfIncident,
+                    caseFile:updatedCaseFile._id
+                })
+                console.log(record)
+                await record.save();
             }
         
             return res.status(200).send({ message: "Case file updated successfully"});
