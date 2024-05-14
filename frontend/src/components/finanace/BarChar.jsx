@@ -140,6 +140,10 @@ const calculateExpenseAmount = (expense) => {
       return expense.licenseCost;
     case 'Driver Wages':
       return expense.totalEarning;
+    case 'Tolls and Parking':
+        return expense.otherAmount;
+    case 'Driver Hire Expense':
+      return expense.otherAmount;
     case 'Other':
       return expense.otherAmount;
     default:

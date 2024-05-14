@@ -5,6 +5,8 @@ const IncomeExpenseBarChart = ({ expenses, incomes }) => {
   useEffect(() => {
     // Do any necessary initialization or cleanup here
   }, []);
+  console.log(incomes)
+  console.log(expenses)
 
   const getCategoryAmount = (category, item) => {
     switch (category) {

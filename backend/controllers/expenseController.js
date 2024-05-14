@@ -1,5 +1,6 @@
 const Expense = require('../models/expenseModel');
 const mongoose = require('mongoose');
+const logUserActivity = require("../middleware/logUserActivity");
 
 // Get all expenses
 const getAllExpenses = async (req, res) => {
