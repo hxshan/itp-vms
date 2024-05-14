@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import useAxios from '@/hooks/useAxios';
 import axios from '@/api/axios';
-import { Bar } from 'react-chartjs-2';
+import { Pie } from 'react-chartjs-2';
 
 const BarChart = () => {
   const [incomeData, setIncomeData] = useState([]);
   const [expenseData, setExpenseData] = useState([]);
   const [filteredIncome, setFilteredIncome] = useState([]);
   const [filteredExpense, setFilteredExpense] = useState([]);
-  const [dateLabels, setDateLabels] = useState([]);
   const [incomeStatusFilter, setIncomeStatusFilter] = useState('All');
   const [expenseStatusFilter, setExpenseStatusFilter] = useState('All');
 
@@ -57,89 +56,93 @@ const BarChart = () => {
     setFilteredExpense(filteredExpense);
   }, [expenseData, expenseStatusFilter]);
 
-  useEffect(() => {
-    // Combine all unique dates from income and expense data
-    const allDates = new Set([...filteredIncome.map((income) => income.date), ...filteredExpense.map((expense) => expense.date)]);
-    setDateLabels(Array.from(allDates).sort());
+  // Calculate total income
+  const totalIncome = filteredIncome.reduce((acc, income) => acc + calculateIncomeAmount(income), 0);
 
-    console.log(allDates)
-  }, [filteredIncome, filteredExpense]);
+  // Calculate total expense
+  const totalExpense = filteredExpense.reduce((acc, expense) => acc + calculateExpenseAmount(expense), 0);
 
-  
-
-  const calculateTotalIncomeForDate = (date) => {
-    return filteredIncome.reduce((total, income) => {
-      return income.date === date ? total + calculateIncomeAmount(income) : total;
-    }, 0);
-  };
-
-  const calculateTotalExpenseForDate = (date) => {
-    return filteredExpense.reduce((total, expense) => {
-      return expense.date === date ? total + calculateExpenseAmount(expense) : total;
-    }, 0);
-  };
-
-  const calculateIncomeAmount = (income) => {
-    let totalIncome = 0;
-    if (income.source === 'Hire Income' && income.hirePayment) {
-      totalIncome += income.hirePayment.hireAmount;
-    } else if (income.source === 'Rental Income' && income.contractIncome) {
-      totalIncome += income.contractIncome.rentalAmount;
-    }
-    return totalIncome;
-  };
-  
-  const calculateExpenseAmount = (expense) => {
-    let totalExpense = 0;
-    switch (expense.category) {
-      case 'Fuel':
-        totalExpense += expense.fuelDetails.totalPrice;
-        break;
-      case 'Maintenance and Repairs':
-        totalExpense += expense.maintenanceDetails.maintenanceCost;
-        break;
-      case 'Insurance':
-        totalExpense += expense.insuranceDetails.premiumAmount;
-        break;
-      case 'Licensing and Permits':
-        totalExpense += expense.licensingDetails.licenseCost;
-        break;
-      case 'Driver Wages':
-        totalExpense += expense.driverWages.totalEarning;
-        break;
-      case 'Other':
-        totalExpense += expense.other.amount;
-        break;
-      default:
-        break;
-    }
-    return totalExpense;
-  };
-  
-  const barChartData = {
-    labels: dateLabels.map((date) => new Date(date).toLocaleDateString()),
+  const pieChartData = {
+    labels: ['Income', 'Expense'],
     datasets: [
       {
-        label: 'Income',
-        data: dateLabels.map((date) => calculateTotalIncomeForDate(date)),
-        backgroundColor: 'green',
-      },
-      {
-        label: 'Expense',
-        data: dateLabels.map((date) => calculateTotalExpenseForDate(date)),
-        backgroundColor: 'red',
+        data: [totalIncome, totalExpense],
+        backgroundColor: ['green', 'red'],
       },
     ],
   };
 
+  // Handle status filter change for income
+  const handleIncomeStatusFilterChange = (event) => {
+    setIncomeStatusFilter(event.target.value);
+  };
+
+  // Handle status filter change for expense
+  const handleExpenseStatusFilterChange = (event) => {
+    setExpenseStatusFilter(event.target.value);
+  };
+
   return (
-    <div>
-      
+    <div className="flex">
+      <div className="w-1/3 p-4">
         <h3 className="text-xl font-semibold mb-2">Income vs Expense</h3>
-        <Bar data={barChartData} />
+        <div className="mb-4">
+          <label htmlFor="incomeStatusFilter" className="block mb-1">Income Status:</label>
+          <select id="incomeStatusFilter" value={incomeStatusFilter} onChange={handleIncomeStatusFilterChange} className="w-full">
+            <option value="All">All</option>
+            <option value="Pending">Pending</option>
+            <option value="Recieved">Recieved</option>
+            <option value="Confirmed">Confirmed</option>
+            {/* Add more options as needed */}
+          </select>
+        </div>
+        <div>
+          <label htmlFor="expenseStatusFilter" className="block mb-1">Expense Status:</label>
+          <select id="expenseStatusFilter" value={expenseStatusFilter} onChange={handleExpenseStatusFilterChange} className="w-full">
+            <option value="All">All</option>
+            <option value="Pending">Pending</option>
+            <option value="Approved">Approved</option>
+            <option value="Paid ">Paid</option>
+            <option value="Rejected">Rejected</option>
+            {/* Add more options as needed */}
+          </select>
+        </div>
       </div>
-   
+      <div className="w-1/3 p-4">
+        <Pie data={pieChartData} />
+      </div>
+    </div>
   );
 };
 
 export default BarChart;
+
+// Helper function to calculate income amount
+const calculateIncomeAmount = (income) => {
+  if (income.source === 'Hire Income' && income.hirePayment) {
+    return income.hirePayment.hireAmount;
+  } else if (income.source === 'Rental Income' && income.contractIncome) {
+    return income.contractIncome.rentalAmount;
+  }
+  return 0;
+};
+
+// Helper function to calculate expense amount
+const calculateExpenseAmount = (expense) => {
+  switch (expense.category) {
+    case 'Fuel':
+      return expense.totalFuelPrice;
+    case 'Maintenance and Repairs':
+      return expense.maintenanceCost;
+    case 'Insurance':
+      return expense.premiumAmount;
+    case 'Licensing and Permits':
+      return expense.licenseCost;
+    case 'Driver Wages':
+      return expense.totalEarning;
+    case 'Other':
+      return expense.otherAmount;
+    default:
+      return 0;
+  }
+};

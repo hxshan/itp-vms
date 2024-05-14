@@ -18,7 +18,7 @@ const caseFileSchema = new mongoose.Schema(
         type:Boolean,
         default: false
     },
-    
+
     timeOfIncident: {
       type: Date,
     },
@@ -33,7 +33,7 @@ const caseFileSchema = new mongoose.Schema(
     driver: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
-    
+
     },
     hire: {
       type: mongoose.Schema.Types.ObjectId,
@@ -67,8 +67,6 @@ const caseFileSchema = new mongoose.Schema(
     injuriesDiscription: {
       type: String,
     },
-
-    
     witnessesStatement: {
       type: String,
     },

@@ -79,12 +79,13 @@ const ExpenseTable = () => {
   };
 
   const handleSaveExpense = (editedExpense) => {
+    console.log(editedExpense)
     updateAxiosFetch({
       axiosInstance: axios,
       method: 'PATCH',
       url: `/expense/${editedExpense._id}/`,
       requestConfig: {
-        data: editedExpense,
+        data: editedExpense
       },
     });
     setEditSelectedExpense(null);
@@ -122,7 +123,7 @@ const ExpenseTable = () => {
   const getAmountBasedOnCategory = (expense) => {
     switch (expense.category) {
       case 'Fuel':
-        return `Rs.${expense.totalFuelPrice.toFixed(2)}`;
+        return `Rs.${expense.totalFuelPrice}`;
       case 'Maintenance and Repairs':
         return `Rs.${expense.maintenanceCost.toFixed(2)}`;
       case 'Insurance':

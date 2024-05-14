@@ -6,6 +6,7 @@ import IncomeTable from "./IncomeTable";
 import EditIncomeForm from "./EditIncomeForm";
 import BarChart from "./BarChar";
 import Total from "./Total";
+import TripExpenseIncomeTable from "./TripExpenseIncomeTable";
 
 export{
     ExpenseForm,
@@ -15,7 +16,8 @@ export{
     IncomeTable,
     EditIncomeForm,
     Total ,
-    BarChart
+    BarChart,
+    TripExpenseIncomeTable
 
     
 }

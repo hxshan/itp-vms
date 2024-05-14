@@ -105,8 +105,8 @@ const getCaseFiles = async (req, res) => {
 
         const { id } = req.params;
         const  { 
-                caseType,
-                caseTitle, 
+                
+                 caseTitle, 
                  location, 
                  timeOfIncident, 
                  passengerCount, 
@@ -133,7 +133,7 @@ const getCaseFiles = async (req, res) => {
            
         
             const updatedCaseFile = await CaseFile.findByIdAndUpdate(id, { 
-                caseType,
+                
                 caseTitle,
                 location, 
                  timeOfIncident, 
@@ -145,7 +145,7 @@ const getCaseFiles = async (req, res) => {
                  incidentDescription , 
                  severity,
                  injuriesDiscription,
-                 witnessesContactInformation,
+                
                  witnessesStatement,
                  emergencyServicesContacted,
                  emergencyServicesResponseTime,
@@ -187,6 +187,7 @@ const getCaseFiles = async (req, res) => {
         }
         
 };
+
 
 const driverCreateCaseFile = async (req, res) => {
 
@@ -231,8 +232,12 @@ const driverCreateCaseFile = async (req, res) => {
         
        
       };
-  
+      
+     
       const createdCaseFile = await CaseFile.create(newCaseFile);
+
+
+      const populatedCaseFile = await CaseFile.findById(createdCaseFile._id).populate('driver').populate('hire');
 
       const transporter = nodemailer.createTransport({
         service: 'gmail',
@@ -249,40 +254,43 @@ const driverCreateCaseFile = async (req, res) => {
 
       });
 
-      sendmail(transporter, {
-        caseType,
-        caseTitle,
-        location,
-        timeOfIncident,
-        licencePlate,
-        driver,
-        hire,
-        vehicle,
-        passengerCount,
-        status ,
-        incidentDescription,
-        severity
-      
-      });
 
-      const sendmail = async (transporter, CaseFileData) => {
+      sendmail(transporter,populatedCaseFile)
+
+      return res.status(201).send(createdCaseFile);
+    } catch (error) {
+        console.error("Error creating case file", error);
+        return res.status(500).send("Internal server error");
+      }
+  
+      
+     
+    };
+
+      const sendmail = async (transporter, populatedCaseFile) => {
+        try {
+
+            
+
+            
+        
+        
         const mailOptions = {
             from: 'adithyaperera983@gmail.com',
-            to: 'adithyaperera456@gmail.com',
-            subject: "Emergency alert Reported",
+            to: ['adithyaperera456@gmail.com', 'j.chamod914@gmail.com','malithgihan000@gmail.com','galgodageheshan@gmail.com'],
+            subject: "Incident alert Reported!",
             html: ` <h1>New Case File Details</h1>
-            <p>Case Type: ${CaseFileData.caseType}</p>
-            <p>Case Title: ${CaseFileData.caseTitle}</p>
-            <p>Time Of Incident: ${CaseFileData.timeOfIncident}</p>
-            <p>Driver Name: ${CaseFileData.driver?.driverName}</p>
-            <p>customer name:${CaseFileData.hire?.cusName} </p>
-            <p>cutomer number: ${CaseFileData.hire?.cusMobile}</p>
-            <p>Passenger Count: ${CaseFileData.passengerCount}</p>
-            <p>Location: ${CaseFileData.location}</p>
-            <p>Licence Plate: ${CaseFileData.licencePlate}</p>
-           
-            <p>Incident Description: ${CaseFileData.incidentDescription}</p>
-            <p>Severity: ${CaseFileData.severity}</p>
+            <p>Case Type: ${populatedCaseFile.caseType}</p>
+            <p>Case Title: ${populatedCaseFile.caseTitle}</p>
+            <p>Time Of Incident: ${populatedCaseFile.timeOfIncident}</p>
+            <p>Driver Name: ${populatedCaseFile.driver ? populatedCaseFile.driver.firstName : 'N/A'}</p>
+            <p>Customer Name: ${populatedCaseFile.hire ? populatedCaseFile.hire.cusName : 'N/A'}</p>
+            <p>Customer Number: ${populatedCaseFile.hire ? populatedCaseFile.hire.cusMobile : 'N/A'}</p>
+            <p>Passenger Count: ${populatedCaseFile.passengerCount}</p>
+            <p>Location: ${populatedCaseFile.location}</p>
+            <p>Licence Plate: ${populatedCaseFile.licencePlate}</p>
+            <p>Incident Description: ${populatedCaseFile.incidentDescription}</p>
+            <p>Severity: ${populatedCaseFile.severity}</p>
             `,
         };
         transporter.sendMail(mailOptions, (error, info) => {
@@ -292,19 +300,14 @@ const driverCreateCaseFile = async (req, res) => {
                 console.log('Email sent: ' + info.response);
             }
         });
-
+    }catch(error){
+        console.log(error)
+    }
     };
 
       
-      return res.status(201).send(createdCaseFile);
-    } catch (error) {
-      console.error("Error creating case file", error);
-      return res.status(500).send("Internal server error");
-    }
-
+      
     
-   
-  };
   //fetch all driver alerts
 
   const getDriverAlerts = async (req, res) => {
@@ -353,5 +356,5 @@ const driverCreateCaseFile = async (req, res) => {
     };*/
   
 
-
 module.exports = { getCaseFiles, getCaseFileById, updateCaseFileById, deleteCaseFileById, driverCreateCaseFile, getDriverAlerts,getDriverAlertById};
+

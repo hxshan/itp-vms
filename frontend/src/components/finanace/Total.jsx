@@ -60,16 +60,16 @@ const Total = () => {
         if (expenseStatusFilter === 'All' || expense.status === expenseStatusFilter) {
           switch (expense.category) {
             case 'Fuel':
-              total += expense.fuelDetails.totalPrice;
+              total += expense.totalFuelPrice;
               break;
             case 'Maintenance and Repairs':
-              total += expense.maintenanceDetails.maintenanceCost;
+              total += expense.maintenanceCost;
               break;
             case 'Insurance':
-              total += expense.insuranceDetails.premiumAmount;
+              total += expense.premiumAmount;
               break;
             case 'Licensing and Permits':
-              total += expense.licensingDetails.licenseCost;
+              total += expense.licenseCost;
               break;
             case 'Driver Wages':
               total += expense.driverWages.totalEarning;
