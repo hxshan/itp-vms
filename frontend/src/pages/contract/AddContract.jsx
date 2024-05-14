@@ -402,7 +402,7 @@ const AddContract = () => {
   }, [client]);
 
   useEffect(() => {
-    if (ContractData.Vehical) {
+    if (ContractData.Vehical || ContractData.Vehical === "") {
       fetchvehicaldat();
     }
   }, [ContractData.Vehical]);
