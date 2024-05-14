@@ -45,7 +45,7 @@ const addservice = async (req, res) => {
             vehicle:vehicle._id,
             recordedBy:"Shenal",
             category:'Maintenance and Repairs',
-            status:'Approved',
+            status:'Pending',
             maintenanceDescription:req.body.Snote,
             serviceProvider:"VMS-Service",
             invoiceNumber:'0',

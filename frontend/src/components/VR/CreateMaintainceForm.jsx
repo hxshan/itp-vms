@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import useAxios from '@/hooks/useAxios';
 import { Link } from 'react-router-dom';
@@ -19,12 +19,15 @@ import {
 export const CreateMaintainceForm = () => {
     const [data, error, loading, axiosFetch] = useAxios()
     const currentDate = new Date().toISOString().split('T')[0];
+    const location = useLocation();
+    const navigate = useNavigate();
+    const vehicleId = location?.state?.vehicleId;
 
 
     const [formdata, setFormdata] = useState({
         //type change into category
 
-        vehicleRegister: '',
+        vehicleRegister: vehicleId || '',
         vrissue: '',
         vrcost: '',
         vraddit: '',
@@ -33,7 +36,7 @@ export const CreateMaintainceForm = () => {
         availability: 'Unavailable'
     });
 
-    const navigate = useNavigate();
+
     const handleSubmit = () => {
         if (!validateForm()) {
             // If validation fails, display an alert
@@ -45,7 +48,7 @@ export const CreateMaintainceForm = () => {
             .then(response => {
                 console.log('Submission successful:', response);
                 setFormdata({
-                    vehicleRegister: '',
+                    vehicleRegister: vehicleId || '',
                     vrissue: '',
                     vrcost: '',
                     vraddit: '',

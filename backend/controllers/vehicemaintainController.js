@@ -167,7 +167,7 @@ const completemaintain = async (req, res) => {
             vehicle: req.body.vehicleRegister,
             recordedBy: "Shenal",
             category: 'Maintenance and Repairs',
-            status: 'Approved',
+            status: 'Pending',
             maintenanceDescription: req.body.vrissue,
             serviceProvider: "VMS-Maintains",
             invoiceNumber: '0',
