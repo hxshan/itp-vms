@@ -17,6 +17,7 @@ import VehicleDetailsControl from "./pages/vehicle/VehicleDetailsControl";
 import VehicleViewControl from "./pages/vehicle/VehicleViewControl";
 import AddcustomVehicle from "./pages/vehicle/AddcustomVehicle";
 import VehReport from "./pages/vehicle/VehReport";
+import VehSum from "./pages/vehicle/VehicleSummary";
 
 import AddContract from "./pages/contract/AddContract";
 import { AdminDashboard, Roles, EditRoles,UserProfile,Users, DriverPerformance,Reports} from "./pages/admin";
@@ -44,6 +45,8 @@ import UserReport from "./components/admin/UserReport";
 import EditUser from "./pages/admin/EditUser";
 import PrintReport from "./pages/contract/PrintReport";
 import GenerateReport from "./pages/contract/GenerateReport";
+import {ReportMaintain} from"../src/components/VR/ReportMaintain";
+
 
 
 
@@ -117,6 +120,7 @@ function App() {
               <Route path="edit/:id" element={<VehicleDetailsControl />} />
               <Route path="view/:id" element={<VehicleViewControl />} />
               <Route path="report" element={<VehReport />} />
+              <Route path="vehsum" element={<VehSum />} />
             </Route>
             
             <Route path="/Vrform" element={<CreateMaintainceForm />}/>
@@ -125,6 +129,8 @@ function App() {
             <Route path="/Mdashboard" element={<MaintainceDashboard />} />
             <Route path="/view/:id" element={<View />} />
             <Route path="/addnote/:id" element={<Servicenote />} />
+            
+            
            
             <Route
               path="/vehiclemaintain/edit/:id"
@@ -153,6 +159,10 @@ function App() {
             <Route
               path="/VehicleService"
               element={<VehicleService />}
+            />
+             <Route
+              path="/maintainsreport"
+              element={<ReportMaintain />}
             />
               <Route path="/requestmaintains" element={<Requestfromdriver />} />
           </Routes>

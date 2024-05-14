@@ -1,5 +1,6 @@
 const vehicleMaintain = require ('../models/vehicleMaintananceModel')
 const {Vehicles} = require('../models/vehicleModel')
+const Availability = require('../models/vehicleAvailability');
 
 
 //Add maintain to the system
@@ -14,15 +15,12 @@ const createmaintain = async (req, res) => {
 
         const currentDate = new Date();
         
-       
-        
         const vehicle = await Vehicles.findOne({ vehicleRegister: req.body.vehicleRegister });
 
         if (!vehicle) {
             return res.status(400).send({ message: "Invalid category or vehicle register provided." });
         }
 
-        
         const maintain = {
            
             vehicleRegister: vehicle._id,
@@ -34,16 +32,19 @@ const createmaintain = async (req, res) => {
             vredate: req.body.vredate,
             availability: req.body.availability
         };
-
-       
-        if (currentDate >= new Date(maintain.vrsdate) && currentDate <= new Date(maintain.vredate)) {
-            maintain.availability = 'unavailable';
-        } else {
-            maintain.availability = 'available';
-        }
-
-       
+ 
         const newMaintain = await vehicleMaintain.create(maintain);
+
+        const newAvailability = new Availability({
+            vehicle:  vehicle._id,
+            status: 'Maintain',
+            unavailableStartDate: req.body.vrsdate,
+            unavailableEndDate: req.body.vredate
+        });
+        
+          await newAvailability.save();
+        
+          await Vehicles.findByIdAndUpdate(vehicle, { $push: { availability: newAvailability._id } });
         
         return res.status(201).send(newMaintain);
     } catch (error) {
@@ -52,10 +53,7 @@ const createmaintain = async (req, res) => {
     }
 };
 
-
-
-
-//Get all maintains from system
+//Get all maintains 
 const getallmaintains = async(req , res)=>{
     try{
         const maintains = await vehicleMaintain.find({});
@@ -71,12 +69,44 @@ const getallmaintains = async(req , res)=>{
 const getonemaintain = async(req, res)=>{
     try {
         const { id } = req.params;
-        const maintain = await vehicleMaintain.findById(id);
-        return res.status(200).json(maintain);
+
+        // Find the maintenance record by its _id
+        const maintain = await vehicleMaintain.findById(id).populate("vehicleRegister");
+
+        // If no maintenance record found, return a message
+        if (!maintain) {
+            return res.status(404).json({ message: 'Maintenance record not found.' });
+        }
+
+        res.status(200).json(maintain); // Return all matching maintenance records
+    } catch (error) {
+        console.error('Error fetching maintenance records:', error);
+        res.status(500).json({ message: 'Server error' });
     }
-    catch (error) {
-        console.log(error);
-        res.status(500).send({ message: error.message })
+};
+
+const getonemaintains = async(req, res)=>{
+    try {
+        const { id } = req.params;
+
+        // Find the maintenance record by its _id
+        const maintain = await vehicleMaintain.findById(id);
+
+        // Extract vehicleRegister from the found maintenance record
+        const vehicleRegisterId = maintain.vehicleRegister;
+
+        // Find all maintenance records associated with the vehicleRegister
+        const maintains = await vehicleMaintain.find({ vehicleRegister: vehicleRegisterId });
+
+        // Handle cases where no matching records are found
+        if (!maintains.length) {
+            return res.status(200).json({ message: 'No maintenance records found for this vehicle.' });
+        }
+
+        res.status(200).json(maintains); // Return all matching maintenance records
+    } catch (error) {
+        console.error('Error fetching maintenance records:', error);
+        res.status(500).json({ message: 'Server error' });
     }
 };
 
@@ -167,4 +197,7 @@ const driverMaintenanceRequest = async (req, res) => {
     }
 };
 
-module.exports = {createmaintain, getallmaintains, getonemaintain , editmaintain , deletemaintain, driverMaintenanceRequest}
+
+
+
+module.exports = {createmaintain, getallmaintains, getonemaintain,getonemaintains , editmaintain , deletemaintain, driverMaintenanceRequest}

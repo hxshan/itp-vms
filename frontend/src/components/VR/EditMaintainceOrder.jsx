@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import {
-    validateVehicleType,
+    
     validateVehicleId,
     validateVehicleIssue,
     validateVehicleCost,
@@ -23,19 +23,21 @@ export const EditMaintainceOrder = () => {
     const [vraddit, setVraddit] = useState('');
     const [vrsdate, setVrsdate] = useState();
     const [vredate, setVredate] = useState();
-
+    const [vrnumber, setVrnumber] = useState();
 
     useEffect(() => {
         axios.get(`http://localhost:3000/api/vehiclemaintain/${id}`)
             .then((response) => {
                 const data = response.data;
+                setVrnumber(data.vehicleRegister.vehicleRegister)
                 setcategory(data.category);
                 setvehicleRegister(data.vehicleRegister);
                 setVrissue(data.vrissue);
                 setVrcost(data.vrcost);
                 setVraddit(data.vraddit);
-                setVrsdate(new Date(data.vrsdate).toISOString().split('T')[0]);
-                setVredate(new Date(data.vredate).toISOString().split('T')[0]);
+                setVrsdate(data?.vrsdate?.split('T')[0]);
+                setVredate(data?.vredate?.split('T')[0]);
+                
             })
             .catch((error) => {
                 console.log(error);
@@ -48,7 +50,6 @@ export const EditMaintainceOrder = () => {
             validateVehicleIssue(vrissue) &&
             validateVehicleCost(vrcost) &&
             validateAdditionalInfo(vraddit) &&
-
             validateEDate(vrsdate, vredate)
         );
     };
@@ -79,6 +80,8 @@ export const EditMaintainceOrder = () => {
             });
     };
 
+  
+
     return (
         <main className='w-full  flex flex-col justify-center items-center '>
             <div className=" sm:w-3/4 bg-white p-10 flex flex-col rounded-2xl ">
@@ -89,14 +92,16 @@ export const EditMaintainceOrder = () => {
                     <div className="w-full">
                         <div className='flex flex-col gap-5 mt-9'>
                             <label className='block text-gray-700 text-md font-bold mb-2'>Vehicle Number</label>
+                            <label className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'>{vrnumber}</label>
                             <input
                                 type="text"
                                 id='vehicleRegister'
                                 placeholder='AAA1234 OR AA-1234 OR 12-1234'
-                                className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+                                className='hidden'
                                 maxLength='7'
                                 required
                                 readOnly={(e) => setvehicleRegister(e.target.value)}
+                        
                                 value={vehicleRegister} />
                             <label className='block text-gray-700 text-md font-bold mb-2'>Fault of the Vehicle</label>
                             <textarea
