@@ -583,18 +583,13 @@ const ContractEditForm = () => {
 
               <div className="flex flex-col mt-3 gap-1">
                 <label>Vehical Type</label>
-                <select
+                <p
                   name="Vehical_Type"
                   className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  value={contractData.Vehical_Type}
-                  onChange={HandleInput}
+
                 >
-                  {vehicals.map((item, index) => (
-                    <option key={index} value={item.name}>
-                      {item.name}
-                    </option>
-                  ))}
-                </select>
+                  {contractData.Vehical_Type}
+                </p>
               </div>
 
               <div>
