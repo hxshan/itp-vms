@@ -1,6 +1,7 @@
 const  mongoose  = require("mongoose");
 const CaseFile = require("../models/caseFileModel");
-const nodemailer = require('nodemailer')
+const nodemailer = require('nodemailer');
+const EmpRecord = require('../models/employeeRecordModel');
 
 
 //create Case File
@@ -125,7 +126,8 @@ const getCaseFiles = async (req, res) => {
                  photographicEvidence,
                  insuranceCompaniesContactInfo,
                  insuranceStatus,
-                 policeReport} = req.body.data;
+                 policeReport,
+                isDriverFault} = req.body.data;
         
         try{
             
@@ -153,12 +155,26 @@ const getCaseFiles = async (req, res) => {
                  photographicEvidence,
                  insuranceCompaniesContactInfo,
                  insuranceStatus,
-                 policeReport
+                 policeReport,
+                 isDriverFault
             
         }, { new: true });
         
             if(!updatedCaseFile){
                 return res.status(404).send("Case file not found");
+            }
+
+            if(isDriverFault){
+                
+                const record=new EmpRecord({
+                    user:selectedDriver,
+                    recordType:"negative",
+                    description:incidentDescription,
+                    occurenceDate:timeOfIncident,
+                    caseFile:updatedCaseFile._id
+                })
+                console.log(record)
+                await record.save();
             }
         
             return res.status(200).send({ message: "Case file updated successfully"});
@@ -279,11 +295,12 @@ const driverCreateCaseFile = async (req, res) => {
             from: 'adithyaperera983@gmail.com',
             to: ['adithyaperera456@gmail.com', 'j.chamod914@gmail.com','malithgihan000@gmail.com','galgodageheshan@gmail.com'],
             subject: "Incident alert Reported!",
-            html: ` <h1>New Case File Details</h1>
+            html: `<h1>${populatedCaseFile.driver ? populatedCaseFile.driver.firstName : 'N/A'} Reported an incident</h1> 
+            <p> Case File Details</p>
             <p>Case Type: ${populatedCaseFile.caseType}</p>
             <p>Case Title: ${populatedCaseFile.caseTitle}</p>
             <p>Time Of Incident: ${populatedCaseFile.timeOfIncident}</p>
-            <p>Driver Name: ${populatedCaseFile.driver ? populatedCaseFile.driver.firstName : 'N/A'}</p>
+            <p>Driver Name: ${populatedCaseFile.driver ? populatedCaseFile.driver.firstName : 'N/A'}${populatedCaseFile.driver ? populatedCaseFile.driver.lastName : 'N/A'}</p>
             <p>Customer Name: ${populatedCaseFile.hire ? populatedCaseFile.hire.cusName : 'N/A'}</p>
             <p>Customer Number: ${populatedCaseFile.hire ? populatedCaseFile.hire.cusMobile : 'N/A'}</p>
             <p>Passenger Count: ${populatedCaseFile.passengerCount}</p>
@@ -327,7 +344,7 @@ const driverCreateCaseFile = async (req, res) => {
           if (!mongoose.Types.ObjectId.isValid(id)) {
             return res.status(400).json("Invalid case file id");
           }
-          const caseFile = await CaseFile.findById(id).populate("driver") .populate("hire"); 
+          const caseFile = await CaseFile.findById(id).populate("driver") .populate("hire").populate("alert"); 
             console.log(caseFile)
       
           if (!caseFile) {

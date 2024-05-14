@@ -288,6 +288,12 @@ const Navbar = () => {
                 >
                   View Case File Logs
                 </button>
+                <button
+                  className="w-full py-2 px-4 text-start hover:font-bold  focus:outline-none focus:font-bold"
+                  onClick={() => navigate("/emergency/alertTable")}
+                >
+                 Alert Logs
+                </button>
               </div>
             )}
           </div>

@@ -11,6 +11,8 @@ import EAMDashboard  from "./pages/EAM/EAMDashboard";
 import { CreateMaintainceForm } from "./components/VR/CreateMaintainceForm";
 import ViewCaseFile from "./components/EAM/viewCaseFile";
 import EditCaseFileForm from "./components/EAM/EditCaseFileForm";
+import ViewAlert from "./components/EAM/AlertForm"
+import AlertTable from "./pages/EAM/AlertTable";
 
 import AddVehicle from "./pages/vehicle/AddVehicle";
 import VehicleDetailsControl from "./pages/vehicle/VehicleDetailsControl";
@@ -104,7 +106,10 @@ function App() {
             <Route path="/emergency/CaseFileTable" element={<CaseFileTable />} />
             <Route path="/emergency/view/:id" element={<ViewCaseFile />} />
             <Route path="/emergency/edit/:id" element={<EditCaseFileForm />} />
+            <Route path="/emergency/alert/:id" element={<ViewAlert />} />
+            <Route path="/emergency/alertTable" element={<AlertTable />} />
             <Route path="/user/:id" element={<UserProfile/>}/>
+
               
             <Route path="/hires">
               <Route index={true} element={<HireDashboard />} />

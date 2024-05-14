@@ -50,7 +50,12 @@ const CaseFileTable = () => {
                  .then(() => {
                         setCaseFiles(caseFiles.filter((caseFile) => caseFile._id !== id));
                         setLoading(false);
-                        toast.success('Case file deleted successfully');
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success!',
+                            text: 'Case file deleted successfully!',
+                        });
+                        
                  })
                  .catch((error) => {
                      console.log("Error deleting case file", error);
@@ -162,6 +167,7 @@ const CaseFileTable = () => {
                                                 Delete
                                             </button> 
                                             < Link to={`/emergency/edit/${caseFile._id}`} className='my-1 mx-1 bg-[#D4D800] text-white py-1 px-4 rounded-md text-sm'>Edit</Link> 
+                                            
                                             </div>
                                     </td>
                                 </tr>

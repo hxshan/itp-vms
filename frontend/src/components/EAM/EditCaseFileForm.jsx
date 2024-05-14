@@ -35,6 +35,7 @@ const EditCaseFileForm = () => {
   const [insuranceStatus, setInsuranceStatus] = useState("");
   const [policeReport, setPoliceReport] = useState("");
   const [isDriverFault, setIsDriverFault] = useState("");
+  const [perfomanceDescription, setPerfomanceDescription] = useState("");
 
 
 
@@ -126,7 +127,7 @@ const EditCaseFileForm = () => {
       setIncidentDescription(CaseFiles.incidentDescription);
       setSeverity(CaseFiles.severity);
       setInjuriesDiscription(CaseFiles.injuriesDiscription);
-      setSelectedDriver(CaseFiles.driver?.firstName);
+      setSelectedDriver(CaseFiles.driver?._id);
       
       setWitnessesStatement(CaseFiles.witnessesStatement);
       setEmergencyServicesContacted(CaseFiles.emergencyServicesContacted);
@@ -136,6 +137,8 @@ const EditCaseFileForm = () => {
       setInsuranceStatus(CaseFiles.insuranceStatus);
       setPoliceReport(CaseFiles.policeReport);
       setIsDriverFault(CaseFiles.isDriverFault);
+      
+      
 
     }
 
@@ -190,6 +193,7 @@ const EditCaseFileForm = () => {
             insuranceStatus,
             policeReport,
             isDriverFault,
+            perfomanceDescription
           }
         }
         });
@@ -414,10 +418,26 @@ if(CaseFiles && Object.keys(CaseFiles).length !== 0){
               type="checkbox"
               checked={isDriverFault}
               onChange={(e) => setIsDriverFault(e.target.checked)}
+
             />
           </label>
         </div>
-
+            {
+              isDriverFault && 
+                <div>
+                  <label className="block text-gray-700 text-sm font-bold mb-2">
+            Discription
+          </label>
+          <input
+            type="text"
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            value={perfomanceDescription}
+            name="perfomanceDescription"
+            onChange={(e) => setPerfomanceDescription(e.target.value)}
+          />
+                    
+                </div>
+            }
         
 
         <div className="mb-4">
