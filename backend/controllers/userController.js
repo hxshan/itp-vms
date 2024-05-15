@@ -32,7 +32,7 @@ const createUser = async (req, res) => {
       emergencyContacts,
     } = req.body;
 
- 
+    
     if (!firstName || !lastName || !email || !password)
       return res.status(400).json({ msg: "Not all fields have been entered." });
   
