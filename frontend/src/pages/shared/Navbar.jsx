@@ -117,7 +117,7 @@ const Navbar = () => {
           <div className="relative w-full px-4 ">
             <button
               className={`${
-                isOpen.user
+                isOpen.vehicle
                   ? "bg-navGreen dark:bg-navPurple font-bold shadow-teal-900 shadow-md dark:shadow-navPurpleDarker"
                   : " "
               } w-full flex flex-row py-4 px-4 text-nowrap rounded-md hover:bg-navHoverGreen hover:shadow-teal-900 dark:hover:shadow-navPurpleDarker hover:shadow-md focus:outline-none dark:hover:bg-navPurple items-center`}
@@ -161,7 +161,7 @@ const Navbar = () => {
           <div className="relative w-full px-4 ">
             <button
               className={`${
-                isOpen.user
+                isOpen.maintenance
                   ? "bg-navGreen dark:bg-navPurple font-bold shadow-teal-900 shadow-md dark:shadow-navPurpleDarker"
                   : " "
               } w-full flex flex-row py-4 px-4 text-nowrap rounded-md hover:bg-navHoverGreen hover:shadow-teal-900 dark:hover:shadow-navPurpleDarker hover:shadow-md focus:outline-none dark:hover:bg-navPurple items-center`}
@@ -210,7 +210,7 @@ const Navbar = () => {
           <div className="relative w-full px-4 ">
             <button
               className={`${
-                isOpen.user
+                isOpen.hire
                   ? "bg-navGreen dark:bg-navPurple font-bold shadow-teal-900 shadow-md dark:shadow-navPurpleDarker"
                   : " "
               } w-full flex flex-row py-4 px-4 text-nowrap rounded-md hover:bg-navHoverGreen hover:shadow-teal-900 dark:hover:shadow-navPurpleDarker hover:shadow-md focus:outline-none dark:hover:bg-navPurple items-center`}
@@ -259,7 +259,7 @@ const Navbar = () => {
           <div className="relative w-full px-4 ">
             <button
               className={`${
-                isOpen.user
+                isOpen.emergency
                   ? "bg-navGreen dark:bg-navPurple font-bold shadow-teal-900 shadow-md dark:shadow-navPurpleDarker"
                   : " "
               } w-full flex flex-row py-4 px-4 text-nowrap rounded-md hover:bg-navHoverGreen hover:shadow-teal-900 dark:hover:shadow-navPurpleDarker hover:shadow-md focus:outline-none dark:hover:bg-navPurple items-center`}
@@ -302,7 +302,7 @@ const Navbar = () => {
           <div className="relative w-full px-4 ">
             <button
               className={`${
-                isOpen.user
+                isOpen.contract
                   ? "bg-navGreen dark:bg-navPurple font-bold shadow-teal-900 shadow-md dark:shadow-navPurpleDarker"
                   : " "
               } w-full flex flex-row py-4 px-4 text-nowrap rounded-md hover:bg-navHoverGreen hover:shadow-teal-900 dark:hover:shadow-navPurpleDarker hover:shadow-md focus:outline-none dark:hover:bg-navPurple items-center`}
@@ -346,7 +346,7 @@ const Navbar = () => {
           <div className="relative w-full px-4 ">
             <button
               className={`${
-                isOpen.user
+                isOpen.finance
                   ? "bg-navGreen dark:bg-navPurple font-bold shadow-teal-900 shadow-md dark:shadow-navPurpleDarker"
                   : " "
               } w-full flex flex-row py-4 px-4 text-nowrap rounded-md hover:bg-navHoverGreen hover:shadow-teal-900 dark:hover:shadow-navPurpleDarker hover:shadow-md focus:outline-none dark:hover:bg-navPurple items-center`}
