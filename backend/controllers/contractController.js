@@ -69,6 +69,9 @@ const createClient = async (req, res) => {
         .json({ message: "Account available for this nic number" });
     }
 
+    const salt = await bcrypt.genSalt();
+    const passwordHash = await bcrypt.hash(nicNumber, salt);
+
     const client = new Client({
       firstName,
       lastName,
@@ -89,7 +92,10 @@ const createClient = async (req, res) => {
       Comp_Address,
       status: "active",
       Contract_Available: "unAvailable",
+      password:passwordHash
     });
+
+    
 
     await client.save();
     await logUserActivity(req,200,'CREATE',"client created")
@@ -449,7 +455,7 @@ const getContractbyClientID = async (req, res) => {
     );
 
     if (!contractExist) {
-      return res.status(400).json({ error: "contract dosent exist" });
+      return res.status(200).json(contractExist);
     }
 
     const currentDate = new Date();
