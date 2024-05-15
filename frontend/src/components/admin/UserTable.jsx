@@ -131,9 +131,13 @@ useEffect(()=>{
                   </td>
                   <td className="px-6 py-3 whitespace-nowrap justify-between flex">
                   <button className="bg-actionBlue text-white py-1 px-6 rounded-md" id={row._id} onClick={(e)=>navigate(`/admin/userreport/${e.target.id}`) }>View</button>
-                    <button className="bg-actionGreen text-white py-1 px-6 rounded-md" onClick={()=>navigate(`/admin/edituser/${row._id}`)}>Edit</button>
+                    {user?.permissions?.userPermissions?.Update ===true &&
+                      <button className="bg-actionGreen text-white py-1 px-6 rounded-md" onClick={()=>navigate(`/admin/edituser/${row._id}`)}>Edit</button>
+                    }
+                    {user?.permissions?.userPermissions.Delete ===true &&
                     <button type="submit" id={row._id} onClick={(e)=>{deleteData(e);setReload(reload+1)}} className="bg-actionRed text-white py-1 px-6 rounded-md">Delete</button>
-                  </td>   
+                    }
+                    </td>   
               </tr>
             );
           })):(

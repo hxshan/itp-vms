@@ -41,7 +41,7 @@ const TopBar = () => {
     <div className='w-screen h-[80px] text-sm fixed z-20 top-0 left-0 shadow-md dark:border-b dark:border-black  bg-white dark:bg-[#000000] dark:text-white flex justify-between'>
 
       <div className='ml-4 flex items-center justify-center'>
-           <img src={logo} alt="Description of the image" class="w-28 h-auto" />
+           <img src={logo} alt="Description of the image" className="w-28 h-auto" />
       </div>
       <div className='flex items-center justify-end'>
          <div className="mr-5 flex items-center">
