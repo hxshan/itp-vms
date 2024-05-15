@@ -82,7 +82,7 @@ const Alert = () => {
         return (
             <div className="w-full h-full flex flex-col px-2 py-[20px] justify-center align-center xl:px-[60px] xl:py-[50px] ">
                 <div className="pt-[10px] pb-8 border-b-2 border-[#37A000] ">
-                    <h1 className="text-xl font-bold xl:text-xl text-center text-red-700">Happilla Huttooo</h1>
+                    <h1 className="text-xl font-bold xl:text-xl text-center text-red-700">Alert</h1>
                 </div>
 
                 <div>

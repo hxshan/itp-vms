@@ -276,12 +276,15 @@ const Navbar = () => {
             </button>
             {isOpen.emergency && (
               <div className="ml-6">
+                {user?.permissions?.emergencyPermissions?.Create ==true &&
+
                 <button
                   className="w-full py-2 px-4 text-start hover:font-bold  focus:outline-none focus:font-bold"
                   onClick={() => navigate("/emergency/create")}
                 >
                   Create Case File
                 </button>
+                }
                 <button
                   className="w-full py-2 px-4 text-start hover:font-bold  focus:outline-none focus:font-bold"
                   onClick={() => navigate("/emergency")}
