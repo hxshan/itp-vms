@@ -71,7 +71,7 @@ const DriverTable = () => {
       }
     
       return (
-        <div className="w-full">
+        <div className="w-full  dark:text-white">
           <div className="w-full flex justify-between mb-4">
             <h2 className="font-bold text-xl underline mb-4">Driver List</h2>
             <div className="flex gap-4 w-fit">
@@ -93,11 +93,11 @@ const DriverTable = () => {
           </div>
           
         <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-        <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-secondary">
+        <table className="min-w-full divide-y divide-gray-200 ">
+            <thead className="bg-secondary ">
               <tr>
                 {columns.map((col,index) => {
-                  return <th className="px-6 py-3 border-r border-white text-left text-xs font-bold text-white uppercase tracking-wider" key={index}>{col}</th>
+                  return <th className="px-6 py-3 border-r  border-white text-left text-xs font-bold text-white uppercase tracking-wider" key={index}>{col}</th>
                 })}
                 <th className="relative px-6 py-3">
                   <span className="text-center text-xs font-bold text-white uppercase tracking-wider">Action</span>
@@ -121,15 +121,15 @@ const DriverTable = () => {
               .map((row) => {
                 return (
                     <tr className="bg-white border-t border-gray-200" key={row._id}>
-                      <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{row.firstName}</td>
-                      <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{row.email}</td>
-                      <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{row.licenceNumber}</td>
-                      <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">
+                      <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200 dark:bg-secondaryDark">{row.firstName}</td>
+                      <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200 dark:bg-secondaryDark">{row.email}</td>
+                      <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200 dark:bg-secondaryDark">{row.licenceNumber}</td>
+                      <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200 dark:bg-secondaryDark">
                         <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded -full ${row.status=='active'?'text-green-500 bg-green-100': row.status=='inactive'?'text-red-600 bg-red-100':'text-orange-600 bg-orange-100'}`}>
                           {row.status.toUpperCase()}
                         </span>
                       </td>
-                      <td className="px-6 py-2 whitespace-nowrap justify-between flex">
+                      <td className="px-6 py-2 whitespace-nowrap justify-between flex dark:bg-secondaryDark">
                       <button className="bg-actionBlue text-white py-1 px-6 rounded-md" id={row._id} onClick={(e)=>navigate(`/admin/userreport/${e.target.id}`) }>View</button>
                       {user?.permissions?.userPermissions.Update ===true &&
                         <button className="bg-actionGreen text-white py-1 px-6 rounded-md" onClick={()=>navigate(`/admin/edituser/${row._id}`)}>Edit</button>

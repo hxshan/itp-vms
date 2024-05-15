@@ -77,7 +77,7 @@ export const ReportMaintain = ({ vehicleId }) => {
                                 {!completed && (
                                 <td className="px-4 py-4 flex justify-center ">
                                     <button onClick={() => handleEdit(alert)} className="bg-blue-500 hover:bg-blue-700 text-white py-2 px-3 rounded-md font-bold">
-                                        Edit
+                                        Add to Maintain
                                     </button>
                                 </td>
                                  )}

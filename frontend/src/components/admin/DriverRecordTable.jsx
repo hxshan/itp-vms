@@ -97,7 +97,7 @@ const DriverRecordTable = ({isopen,setIsOpen,reload,setReload}) => {
         recordOpen &&
         <EditDriverRecordFrom recordid={editId} isOpen={recordOpen} setIsOpen={setRecordOpen} reload={reload} setReload={setReload}/>
       }
-        <div className="w-full mt-8">
+        <div className="w-full mt-8 dark:text-white">
           <div className="w-full flex justify-between mb-4">
             <h2 className="font-bold text-xl underline mb-4">Driver Record List</h2>
             <div className="flex w-fit">
@@ -147,15 +147,15 @@ const DriverRecordTable = ({isopen,setIsOpen,reload,setReload}) => {
                 console.log(row)
                 return (
                     <tr className="bg-white border-t border-gray-200" key={row._id}>
-                      <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{row.user.firstName}</td>
+                      <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200 dark:bg-secondaryDark">{row.user.firstName}</td>
                       {/* <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{row.recordType}</td> */}
-                      <td className={`px-6 py-2 whitespace-nowrap border-r border-gray-200`}>{row.occurenceDate.split('T')[0]}</td>
-                      <td className={`px-6 py-2 whitespace-nowrap border-r border-gray-200 text-center font-bold  ${row.recordType=='positive'?'text-green-500 bg-green-100':'text-red-600 bg-red-100'}`}>
+                      <td className={`px-6 py-2 whitespace-nowrap border-r border-gray-200 dark:bg-secondaryDark`}>{row.occurenceDate.split('T')[0]}</td>
+                      <td className={`px-6 py-2 whitespace-nowrap border-r border-gray-200 dark:bg-secondaryDark text-center font-bold  ${row.recordType=='positive'?'text-green-500 bg-green-100':'text-red-600 bg-red-100'}`}>
                         <span className={`px-2 inline-flex text-xs leading-4 tracking-wider`}>
                             {row.recordType.toUpperCase()}
                         </span>
                       </td>
-                      <td className="px-6 py-2 whitespace-nowrap justify-between flex">
+                      <td className="px-6 py-2 whitespace-nowrap justify-between flex dark:bg-secondaryDark">
                       <button className="bg-actionBlue text-white py-1 px-6 rounded-md" id={row._id} onClick={(e)=>navigate(`/admin/userreport/${e.target.id}`) }>View</button>
                       {user?.permissions?.userPermissions.Update ===true &&
                         <button className="bg-actionGreen text-white py-1 px-6 rounded-md" id={row._id} onClick={(e)=>openForm(e)}>Edit</button>
