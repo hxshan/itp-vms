@@ -186,7 +186,7 @@ const UserReportTable = ({reload}) => {
         <div className="w-full">
           <div className="w-full flex justify-between mb-4 gap-4 items-end">
             <h2 className="font-bold text-xl underline mb-4 w-fit text-nowrap">Users List</h2> 
-            <div className="flex gap-6 w-full items-end justify-end">
+            <div className="flex gap-2 w-full items-end justify-end">
             <button 
                 onClick={exportToPdf}
                 className="px-4 py-2 text-white bg-actionBlue h-fit text-nowrap hover:bg-gray-800 focus:outline-none rounded-md mr-4">
@@ -249,7 +249,7 @@ const UserReportTable = ({reload}) => {
               onChange={(e)=>{
                 setSearch(e.target.value); 
               }}
-              className="shadow appearance-none border rounded h-fit py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+              className="w-[180px] shadow appearance-none border rounded h-fit py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
             </div>
           </div>
           

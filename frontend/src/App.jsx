@@ -76,7 +76,7 @@ function App() {
       <main className="flex w-full bg-slate-100 dark:bg-[#282828] min-h-screen">
         <TopBar />
         <Navbar />
-        <div className={"ml-32 w-full mr-14 mt-[90px] lg:ml-80 h-full"}>
+        <div className={"pl-32 w-full mr-14 mt-[90px] lg:pl-80 h-full"}>
           <Routes>
             <Route path="/login" element={<Login />} />
             

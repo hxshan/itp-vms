@@ -67,8 +67,8 @@ if(error){
        
       </div>
       
-    <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-    <table className="min-w-full divide-y divide-gray-200">
+    <div className="shadow overflow-auto border-b border-gray-200 sm:rounded-lg mr-8">
+    <table className="table-auto divide-y divide-gray-200">
         <thead className="bg-secondary">
           <tr>
             {columns.map((col,index) => {

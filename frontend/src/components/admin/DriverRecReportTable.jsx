@@ -169,7 +169,7 @@ useEffect(() => {
     <div className="w-full mt-8">
       <div className="w-full flex justify-between mb-4 gap-4 items-end">
       <h2 className="font-bold text-xl underline mb-4 w-fit text-nowrap">Driver Records List</h2> 
-        <div className="flex gap-6 w-full items-end justify-end">
+        <div className="flex gap-2 w-full items-end justify-end">
              <button 
                 onClick={exportToPdf}
                 className="px-4 py-2 text-white bg-actionBlue h-fit text-nowrap hover:bg-gray-800 focus:outline-none rounded-md mr-4">

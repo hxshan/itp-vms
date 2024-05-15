@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 
 const DashboardHero = () => {
   const [users, error, loading, axiosFetch] = useAxios();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [image, setImage] = useState("");
   const { user } = useAuthContext();
 
@@ -31,7 +31,7 @@ const DashboardHero = () => {
   };
 
   useEffect(() => {
-    console.log(users)
+    console.log(users);
     if (users?.empPhoto) {
       setImage(users.empPhoto);
     }
@@ -45,7 +45,7 @@ const DashboardHero = () => {
     datasets: [
       {
         label: "No of Users",
-        data: [users?.active,users?.inactive,users?.suspended],
+        data: [users?.active, users?.inactive, users?.suspended],
         backgroundColor: [
           "rgba(116, 248, 53, 0.8)",
           "rgba(255, 46, 46, 0.8)",
@@ -67,16 +67,25 @@ const DashboardHero = () => {
     ],
   };
 
-  const columns=["Email","Endpoint","Action","Action Type","Date","Time","Status"]
-
+  const columns = [
+    "Email",
+    "Endpoint",
+    "Action",
+    "Action Type",
+    "Date",
+    "Time",
+    "Status",
+  ];
 
   return (
     <>
-      <div className="w-full h-fit bg-white dark:bg-slate-800 p-8 rounded-md flex shadow-lg flex-col gap-16">
+      <div className="w-full h-fit overflow-auto bg-white dark:bg-slate-800 p-8 rounded-md flex shadow-lg flex-col gap-16 mr-8">
         <div className="flex flex-col lg:flex-row gap-16">
           <div>
-            <h2 className="font-bold text-center text-xl underline">Stores user details</h2>
-            <div className="mt-8 w-[300px] h-[300px] lg:w-[400px] lg:h-[400px]">
+            <h2 className="font-bold text-center text-xl underline">
+              Stores user details
+            </h2>
+            <div className="mt-8 w-[280px] h-[280px] lg:w-[400px] lg:h-[400px]">
               <Pie data={chartData} />
             </div>
           </div>
@@ -120,11 +129,13 @@ const DashboardHero = () => {
               </h2>
               <div className="w-full lg:flex lg:w-fit lg:justify-between gap-8 xl:gap-16">
                 {users?.latestusers?.map((user) => {
-                  console.log(user)
+                  console.log(user);
                   return (
                     <div
                       id={user._id}
-                      onClick={(e)=>{handleClick(e)}}
+                      onClick={(e) => {
+                        handleClick(e);
+                      }}
                       key={user.email}
                       className="lg:w-[12rem] xl:w-[16rem] pb-4 bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-navHoverGreen h-fit"
                     >
@@ -159,52 +170,78 @@ const DashboardHero = () => {
                 })}
               </div>
             </div>
-          </div>     
+          </div>
         </div>
 
-        <div className="w-full h-fit pr-8 py-8 pl-16  flex  flex-col">
-                <h2 className="font-bold text-left text-xl underline mb-8">Lastest Activity</h2>
-                <div className="flex gap-2 w-fit">
-                <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-secondary">
-            <tr>
-              {columns.map((col,index) => {
-                return <th className="px-6 py-3 border-r border-white text-left text-xs font-bold text-white uppercase tracking-wider" key={index}>{col}</th>
-              })}
-            
-            </tr>
-          </thead>
-          <tbody>
-            {
-              users?.activity?.map((row) => {
-                console.log(row)
-                let date = new Date(row.date)
-                let hours = date.getHours();
-                const minutes = date.getMinutes();
-              
-                // Determine AM or PM suffix
-                const ampm = hours >= 12 ? 'PM' : 'AM';
-                const formattedMinutes = minutes < 10 ? '0' + minutes : minutes;
-                const formattedTime = `${hours}:${formattedMinutes} ${ampm}`;
-              return (
-                  <tr className="bg-white dark:bg-secondaryDark dark:text-white border-t border-gray-200" key={row._id}>
-                    <td className="px-6 py-3 whitespace-nowrap border-r border-gray-200">{row.user.email}</td>
-                    <td className="px-6 py-3 whitespace-nowrap border-r border-gray-200">{row.endpoint}</td>
-                    <td className="px-6 py-3 whitespace-nowrap border-r border-gray-200">{row.action}</td>
-                    <td className="px-6 py-3 whitespace-nowrap border-r border-gray-200">{row.requestType}</td>
-                    <td className="px-6 py-3 whitespace-nowrap border-r border-gray-200">{row.date.split('T')[0]}</td>
-                    <td className="px-6 py-3 whitespace-nowrap border-r border-gray-200">{formattedTime}</td>
-                    <td
-                    className={`px-6 py-3 whitespace-nowrap border-r border-gray-200 text-center font-semibold leading-5 ${row.status=='success'?'text-green-500 bg-green-100':'text-red-600 bg-red-100'}`}>
-                        {row.status.toUpperCase()}
-                    </td>
-                  
+        <div className="w-full h-fit pr-8 py-8 pl-16  flex flex-col">
+          <h2 className="font-bold text-left text-xl underline mb-8">
+            Lastest Activity
+          </h2>
+          <div className="w-full flex gap-2 overflow-auto">
+            <table className="divide-y divide-gray-200">
+              <thead className="bg-secondary">
+                <tr>
+                  {columns.map((col, index) => {
+                    return (
+                      <th
+                        className="px-6 py-3 border-r border-white text-left text-xs font-bold text-white uppercase tracking-wider"
+                        key={index}
+                      >
+                        {col}
+                      </th>
+                    );
+                  })}
                 </tr>
-              );
-            })}
-          </tbody>
-        </table>       
-                </div>
+              </thead>
+              <tbody>
+                {users?.activity?.map((row) => {
+                  console.log(row);
+                  let date = new Date(row.date);
+                  let hours = date.getHours();
+                  const minutes = date.getMinutes();
+
+                  // Determine AM or PM suffix
+                  const ampm = hours >= 12 ? "PM" : "AM";
+                  const formattedMinutes =
+                    minutes < 10 ? "0" + minutes : minutes;
+                  const formattedTime = `${hours}:${formattedMinutes} ${ampm}`;
+                  return (
+                    <tr
+                      className="bg-white dark:bg-secondaryDark dark:text-white border-t border-gray-200"
+                      key={row._id}
+                    >
+                      
+                      <td className="px-6 py-3 whitespace-nowrap border-r border-gray-200">
+                        {row.user.email}
+                      </td>
+                       <td className="px-6 py-3 whitespace-nowrap border-r border-gray-200 ">{row.endpoint}</td> 
+                      <td className="px-6 py-3 whitespace-nowrap border-r border-gray-200">
+                        {row.action}
+                      </td>
+                      <td className="px-6 py-3 whitespace-nowrap border-r border-gray-200">
+                        {row.requestType}
+                      </td>
+                      <td className="px-6 py-3 whitespace-nowrap border-r border-gray-200">
+                        {row.date.split("T")[0]}
+                      </td>
+                      <td className="px-6 py-3 whitespace-nowrap border-r border-gray-200">
+                        {formattedTime}
+                      </td>
+                      <td
+                        className={`px-6 py-3 whitespace-nowrap border-r border-gray-200 text-center font-semibold leading-5 ${
+                          row.status == "success"
+                            ? "text-green-500 bg-green-100"
+                            : "text-red-600 bg-red-100"
+                        }`}
+                      >
+                        {row.status.toUpperCase()}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </>
