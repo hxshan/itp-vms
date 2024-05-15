@@ -171,12 +171,21 @@ function VehicleExpenseIncomeTable() {
       </div>
     );
   };
-
+  const getAmountBasedOnSource = (source,income) => {
+    switch (source) {
+      case 'Hire Income':
+        return income.hirePayment.hireAmount;
+      case 'Rental Income':
+        return income.contractIncome.rentalAmount;
+      default:
+        return 'Unknown';
+    }
+  };
   
   
 
-  const expenseTotal = filteredExpenseOptions.reduce((acc, expense) => acc + getCategoryAmount(expense.category, expense), 0);
-  const incomeTotal = filteredIncomeOptions.reduce((acc, income) => acc + income.hirePayment.hireAmount, 0);
+  const expenseTotal = filteredExpenseOptions ? filteredExpenseOptions.reduce((acc, expense) => acc + getCategoryAmount(expense.category, expense), 0) : 0;
+  const incomeTotal = filteredIncomeOptions ? filteredIncomeOptions.reduce((acc, income) => acc + getAmountBasedOnSource(income.source,income), 0) : 0;
   
 console.log(expenseTotal)
 console.log(incomeTotal)
@@ -252,7 +261,7 @@ console.log(incomeTotal)
                   <th className="border px-4 py-2">Type</th>
                   <th className="border px-4 py-2">Category</th>
                   <th className="border px-4 py-2">Status</th>
-                  <th className="border px-4 py-2">Amount</th>
+                  <th className="border px-4 py-2">Amount (Rs.)</th>
                 </tr>
               </thead>
               <tbody>
@@ -261,9 +270,9 @@ console.log(incomeTotal)
                   <tr key={item._id} style={{ color: item.type === 'Income' ? 'green' : 'red' }}>
                     <td className="border px-4 py-2">{new Date(item.date).toLocaleDateString()}</td>
                     <td className="border px-4 py-2">{item.type}</td>
-                    <td className="border px-4 py-2">{item.type === 'Expense' ? item.category : item.hirePayment.hirePaymentType}</td>
+                    <td className="border px-4 py-2">{item.type === 'Expense' ? item.category : item.source}</td>
                     <td className="border px-4 py-2">{item.status}</td>
-                    <td className="border px-4 py-2">{item.type === 'Expense' ? getCategoryAmount(item.category, item) : item.hirePayment.hireAmount}</td>
+                    <td className="border px-4 py-2">{item.type === 'Expense' ? getCategoryAmount(item.category, item) : getAmountBasedOnSource(item.source,item)}</td>
                   </tr>
                 ))}
               </tbody>
