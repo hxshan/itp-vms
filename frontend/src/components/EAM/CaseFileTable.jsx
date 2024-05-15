@@ -1,4 +1,4 @@
-import  { useEffect, useState} from "react";
+import React,  { useEffect, useState} from "react";
 import  axios  from "axios";
 import Spinner from "./Spinner";
 import CaseFileSearch from "./CaseFileSearch";
@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import { ReactToPrint} from 'react-to-print';
 
 const CaseFileTable = () => {
     const [caseFiles, setCaseFiles] = useState([]);
@@ -101,7 +102,7 @@ const CaseFileTable = () => {
         });
 
     
-        
+        const componentRef = React.createRef();
 
      
 
@@ -110,19 +111,32 @@ const CaseFileTable = () => {
   
 
     return (
+        
         <div className="container mx-auto">
+            <div className="flex justify-between mt-10 items-center">
             <CaseFileSearch
                 searchTerm={searchTerm}
                 handleSearch={handleSearch}
                 filterField={filterField}
                 handleFilterChange={handleFilterChange}
-            />
-          
+                />
+
+                    <ReactToPrint
+                        trigger={() => (
+                            <button
+                                className="bg-actionRed text-white rounded-lg text-sm font-semibold py-3 px-1 mb-5"
+                            >
+                                Generate a Report
+                            </button>
+                        )}
+                        content={() => componentRef.current}/>
+            </div>
+
             {loading ? (
                 <Spinner />
             ) : (
 
-                
+                <div ref={componentRef}>
                 <div className="mt- 10" >
                     <table className="min-w-full divide-y divide-gray-200" >
                         <thead className="bg-gray-50">
@@ -133,7 +147,7 @@ const CaseFileTable = () => {
                                 <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Passenger Count</th>
                                 <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Severity</th>
                                 <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider column-to-hide">Actions</th>
                             </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200">
@@ -155,7 +169,7 @@ const CaseFileTable = () => {
 
                                     </td>
 
-                                    <td className="px-6 py-4 whitespace-nowrap">
+                                    <td className="px-6 py-4 whitespace-nowrap column-to-hide">
                                        <div className="flex">
                                             <Link to={`/emergency/view/${caseFile._id}`} className="my-1 mx-1 bg-blue-700 text-white py-1 px-4 rounded-md text-sm" >
                                            
@@ -176,9 +190,11 @@ const CaseFileTable = () => {
                     </table>
                     
                 </div>
+                </div>
             
             )}
         </div>
+        
 
     );
 }

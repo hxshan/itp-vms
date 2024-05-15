@@ -21,7 +21,7 @@ const ViewCaseFile = () => {
 
   const [CaseFiles, error, loading, axiosDataFetch] = useAxios();
 
-
+  const [Alert, aerror, aloading, axiosAlertFetch] = useAxios();
 
   const cancel = () => {
     navigate('/emergency');
@@ -35,9 +35,31 @@ const ViewCaseFile = () => {
     })
   };
 
+  const fetchAlert = () => {
+    if (CaseFiles && CaseFiles._id) {
+      axiosAlertFetch({
+        axiosInstance: axios,
+        method: "GET",
+        url: `/alert/caseFile/get/${CaseFiles._id}`,
+      });
+    }
+  };
+
   useEffect(() => {
     fetchCaseFile();
   }, []);
+
+  useEffect(() => {
+    if (CaseFiles && CaseFiles._id) {
+      fetchAlert()
+    }
+  }, [CaseFiles]);
+
+  useEffect(() => {
+    if(Alert){
+      console.log(Alert) 
+    }
+  } , [Alert])
 
   // useEffect (() => {
   //   setLoading(true);
@@ -99,7 +121,7 @@ const ViewCaseFile = () => {
               <p className="text-lg font-semibold mb-2">Customer Mobile: {CaseFiles.hire?.cusMobile || 'N/A'}</p>
               <p className="text-lg font-semibold mb-2">Start Date: {new Date(CaseFiles.hire?.startDate).toLocaleDateString() || 'N/A'}</p>
               <p className="text-lg font-semibold mb-2">End Date: {new Date(CaseFiles.hire?.endDate).toLocaleDateString() || 'N/A'}</p>
-              <p className="text-lg font-semibold mb-2">Hire Status: {CaseFiles.alert?.hireStatus || 'N/A'}</p>
+              <p className="text-lg font-semibold mb-2">Hire Status: {Alert.hireStatus || 'Pending' || 'N/A'}</p>
             </div>
           <div className="p-8">
             <h1 className="text-3xl font-semibold mb-8">Incident Details</h1>
@@ -130,22 +152,14 @@ const ViewCaseFile = () => {
           </div>
         </div>
         <div className="mr-[20px] mt-10 flex justify-between items-baseline">
-          <Link to={`/emergency/edit/${CaseFiles._id}`} className="px-4 py-2 bg-[#D4D800] text-white rounded-md mr-2">
+          <Link to={`/emergency/edit/${CaseFiles._id}`} className="px-4 py-2 bg-blue-700 text-white rounded-md mr-2">
             Edit
           </Link>
           <Link to={`/emergency/alert/${CaseFiles._id}`} className="px-4 py-2 bg-[#D4D800] text-white rounded-md mr-2">
                                                  Alert
                                                     </Link>
          
-          <ReactToPrint
-            bodyClass="print-case-file"
-            content={() => ref.current}
-            trigger={() => (
-              <button className="px-4 py-2 text-white bg-actionBlue hover:bg-gray-800 focus:outline-none rounded-md mr-4">
-                Print
-              </button>
-            )}
-          />
+          
           <button className="px-4 py-2 bg-[#A90000] text-white rounded-md" onClick={cancel}>
             Cancel
           </button>
