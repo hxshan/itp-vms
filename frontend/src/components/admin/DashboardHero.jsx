@@ -79,7 +79,7 @@ const DashboardHero = () => {
 
   return (
     <>
-      <div className="w-full h-fit overflow-auto bg-white dark:bg-slate-800 p-8 rounded-md flex shadow-lg flex-col gap-16 mr-8">
+      <div className="w-[95%] h-fit overflow-auto bg-white dark:bg-slate-800 p-8 rounded-md flex shadow-lg flex-col gap-16 mr-8">
         <div className="flex flex-col lg:flex-row gap-16">
           <div>
             <h2 className="font-bold text-center text-xl underline">
