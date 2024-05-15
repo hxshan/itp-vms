@@ -519,25 +519,18 @@ console.log(users)
         />
       </div>
 
+      
       <div className="mb-4">
-        <label htmlFor="reimbursmentPerson" className="block text-gray-700 text-sm font-bold mb-2">
-          Reimbursement Person:
-        </label>
-        <select
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          id="reimbursmentPerson"
-          name="reimbursmentPerson"
-          value={editedExpense.reimbursmentPerson}
-          onChange={handleChange}
-        >
-          <option value="">Select Person</option>
-          {users.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
-      </div>
+            <label htmlFor="editedBy" className="block text-sm font-medium text-gray-700"> Reimbursement Person:</label>
+            <input
+              id="reimbursmentPerson"
+              type="text"
+              name="reimbursmentPerson"
+              value={editedExpense.reimbursmentPerson.firstName}
+              readOnly
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            />
+          </div>
 
       <div className="mb-4">
         <label htmlFor="reimbursementStatus" className="block text-gray-700 text-sm font-bold mb-2">Reimbursement Status:</label>
