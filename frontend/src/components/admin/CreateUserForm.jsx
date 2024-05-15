@@ -115,10 +115,10 @@ const personal={
       }
     });
    
-    // if(nicDocument == null){
-    //   toast.error("Please upload Nic Document")
-    //   return
-    // }
+    if(empPhoto == null){
+      toast.error("Please upload a Photograph")
+      return
+    }
 
     setCurrentForm(currentForm+1)
      
@@ -189,9 +189,15 @@ const personal={
         title: "Success!",
         text: "A new user has been created",
         icon: "success"
+      }).then(()=>{
+        setCurrentForm(0)
       });  
     }
     setPersonalInfo(personal)
+    setNicDocument(null)
+    setLicenceDocument(null)
+    setEmpPhoto(null)
+    setEmergencyContacts([emptyContact])
     setReload(reload+1)
   }
 
@@ -469,28 +475,33 @@ const personal={
                 }
               </select>
             </div>
-            <div className="col-span-1 w-full flex flex-col mb-4">
-              <label className="block text-gray-700 text-md font-bold mb-2" htmlFor="department">Department</label>
-              <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                type="text"
-                name="department"
-                id="department"
-                value={personalInfo.department}
-                onChange={handlePersonalChange}
-              />
+            {
+              isDriver==null || isDriver?._id !== personalInfo.role  &&
+              <>
+              <div className="col-span-1 w-full flex flex-col mb-4">
+                <label className="block text-gray-700 text-md font-bold mb-2" htmlFor="department">Department</label>
+                <input
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  type="text"
+                  name="department"
+                  id="department"
+                  value={personalInfo.department}
+                  onChange={handlePersonalChange}
+                />
+              </div>
+              <div className="col-span-1 w-full flex flex-col mb-4">
+                <label className="block text-gray-700 text-md font-bold mb-2" htmlFor="jobTitle">Job Title</label>
+                <input
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  type="text"
+                  name="jobTitle"
+                  id="jobTitle"
+                  value={personalInfo.jobTitle}
+                  onChange={handlePersonalChange}
+                />
             </div>
-            <div className="col-span-1 w-full flex flex-col mb-4">
-              <label className="block text-gray-700 text-md font-bold mb-2" htmlFor="jobTitle">Job Title</label>
-              <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                type="text"
-                name="jobTitle"
-                id="jobTitle"
-                value={personalInfo.jobTitle}
-                onChange={handlePersonalChange}
-              />
-            </div>
+            </>
+              }
             <div className="col-span-1 w-full flex flex-col mb-4">
               <label className="block text-gray-700 text-md font-bold mb-2" htmlFor="empDate">Employment Date</label>
               <input

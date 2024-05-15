@@ -114,8 +114,9 @@ const DriverRecordTable = ({isopen,setIsOpen,reload,setReload}) => {
               value={search}
               onChange={(e)=>{setSearch(e.target.value)}}
               className="shadow appearance-none border rounded mx-2 min-w-40 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
-
+            {user?.permissions?.userPermissions.Delete ===true &&
                <button type="button" onClick={()=>setIsOpen(!isopen)} className="bg-actionBlue mx-2 py-2 px-6 rounded-md text-white whitespace-nowrap font-bold ">Add Record</button>   
+            }
             </div>
           </div>
           
@@ -156,9 +157,13 @@ const DriverRecordTable = ({isopen,setIsOpen,reload,setReload}) => {
                       </td>
                       <td className="px-6 py-2 whitespace-nowrap justify-between flex">
                       <button className="bg-actionBlue text-white py-1 px-6 rounded-md" id={row._id} onClick={(e)=>navigate(`/admin/userreport/${e.target.id}`) }>View</button>
+                      {user?.permissions?.userPermissions.Update ===true &&
                         <button className="bg-actionGreen text-white py-1 px-6 rounded-md" id={row._id} onClick={(e)=>openForm(e)}>Edit</button>
+                      }
+                      {user?.permissions?.userPermissions.Delete ===true &&
                         <button type="submit" id={row._id} onClick={(e)=>deleteData(e)} className="bg-actionRed text-white py-1 px-6 rounded-md">Delete</button>
-                      </td>   
+                      }
+                        </td>   
                   </tr>
                 );
               })):(

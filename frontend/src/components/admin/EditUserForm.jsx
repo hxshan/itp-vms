@@ -7,12 +7,13 @@ import { ToastContainer, toast } from 'react-toastify';
 import{ ClockLoader } from 'react-spinners'
 import Swal from "sweetalert2";
 import { data } from "autoprefixer";
+import { useAuthContext } from "@/hooks/useAuthContext";
 
 const EditUserForm = () => {
-
+  const { user } = useAuthContext()
   //Api Hooks
   const [roleData,roleError, roleloading, axiosFetch] = useAxios()
-  const [user,usererror, userloading, useraxiosFetch,axiosupdatedFetch] = useAxios()
+  const [userData,usererror, userloading, useraxiosFetch,axiosupdatedFetch] = useAxios()
   const navigate = useNavigate()
   const [reload,setReload]=useState(0)
   const {id} = useParams()
@@ -70,31 +71,31 @@ const getRoleData = async()=>{
         return roleData.find(role=>role.name.toUpperCase() == 'DRIVER')
       })
     }
-    if(user && Object.keys(user).length !== 0){
-      console.log(user)
+    if(userData && Object.keys(userData).length !== 0){
+      console.log(userData)
       
         setPersonalInfo({
-            firstName:user.firstName,
-            middleName: user.middleName,
-            lastName: user.lastName,
-            gender: user.gender ,
-            dob:user.dob.split('T')[0],
-            phoneNumber: user.phoneNumber ,
-            nicNumber: user.nicNumber ,
-            role:user.role._id,
-            department: user.department,
-            jobTitle: user.jobTitle,
-            empDate: user.employmentDate.split('T')[0],
-            baseSal: user.baseSalary,
-            licenceNum: user.licenceNum,
-            status: user.status,
-            email: user.email,
+            firstName:userData.firstName,
+            middleName: userData.middleName,
+            lastName: userData.lastName,
+            gender: userData.gender ,
+            dob:userData.dob.split('T')[0],
+            phoneNumber: userData.phoneNumber ,
+            nicNumber: userData.nicNumber ,
+            role:userData.role._id,
+            department: userData.department,
+            jobTitle: userData.jobTitle,
+            empDate: userData.employmentDate.split('T')[0],
+            baseSal: userData.baseSalary,
+            licenceNum: userData.licenceNum,
+            status: userData.status,
+            email: userData.email,
             password:''
         })
        
     }
     
-  },[user,roleData])
+  },[userData,roleData])
 
   useEffect(()=>{
     getUserData()
@@ -156,6 +157,9 @@ const getRoleData = async()=>{
       url: `/user/personal/${id}`,
       requestConfig:{
         data:{...personalInfo}
+      },
+      headers:{
+        authorization:`Bearer ${user?.accessToken}`
       }
     })
     if(!usererror){
@@ -474,7 +478,7 @@ const getRoleData = async()=>{
             type="submit"
             className={currentForm == 1 ? "bg-actionGreen py-2 px-6 rounded-md text-white font-bold " : "hidden"}
           >
-            Create
+            Update
           </button>
         </div>
       </form>

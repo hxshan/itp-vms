@@ -10,6 +10,7 @@ import { Pie } from "react-chartjs-2";
 
 const UserReport = () => {
   const ref = useRef(null);
+  const navigate = useNavigate()
   const { id } = useParams();
   const [user, error, loading, axiosFetch] = useAxios();
   const [image, setImage] = useState("");
@@ -82,14 +83,14 @@ const UserReport = () => {
           Comprehensive {user?.personal?.role?.name == 'DRIVER'?'Driver':'User'}  Report
         </h1>
         <div className="flex gap-14 mb-4">
-          <div className="w-[30%] h-[30%] rounded-md mr-4">
+          <div className="w-[300px] h-[300px] flex rounded-md mr-4">
             {image != "" && !error ? (
-              <img
+              <img className="w-full h-full"
                 src={`http://localhost:3000/employee_picture/${image}`}
                 alt="image"
               />
             ) : (
-              <img src={placeholder} alt="image" />
+              <img className="w-full h-full" src={placeholder} alt="image" />
             )}
           </div>
           <div>
@@ -189,12 +190,16 @@ const UserReport = () => {
         }
         
       </div>
-      <div className="w-full flex justify-end">
+      <div className="w-full flex justify-between">
+        <button  className="px-4 py-2 text-white bg-actionBlue hover:bg-gray-800 focus:outline-none rounded-md ml-8"
+        onClick={()=>{navigate('/admin/users')}}>
+          Back
+        </button>
         <ReactToPrint
           bodyClass="print-userreport"
           content={() => ref.current}
           trigger={() => (
-            <button className="px-4 py-2 text-white bg-actionBlue hover:bg-gray-800 focus:outline-none rounded-md mr-4">
+            <button className="px-4 py-2 text-white bg-actionBlue hover:bg-gray-800 focus:outline-none rounded-md mr-8">
               Print
             </button>
           )}

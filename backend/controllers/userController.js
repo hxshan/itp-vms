@@ -164,7 +164,7 @@ const updateUserPersonal = async(req,res) =>{
       if (!updatedUser) {
         return res.status(500).json({ message: "Update Failed" });
       }
-      await logUserActivity(req,200,'UPDATE',`Updated a users (${firstName}) info`)
+      //await logUserActivity(req,200,'UPDATE',`Updated a users (${firstName}) info`)
       return res.status(200).json(updatedUser);
 
     //return res.status(200).json({ message: "User Updated succesfully" });
