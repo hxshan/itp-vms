@@ -36,11 +36,11 @@ const NewlyAddedTable = ({ category, categoryData }) => {
   };
 
   return (
-  <div className='flex flex-col p-0 mb-10'> 
+  <div className='flex flex-col p-0 mb-10 dark:text-white'> 
     <div className='mt-4' key={category}>
     
       <div className='p-4'>
-      <h2 className='mb-2 text-xl font-bold text-black'>New added vehicles</h2>
+      <h2 className='mb-2 text-xl font-bold '>New added vehicles</h2>
       <table className='w-full border-collapse border-spacing-2 border-black rounded-md pad shadow-xl p-5 mb-3'>
         <thead className='bg-secondary text-white'>
           <tr>
@@ -53,7 +53,7 @@ const NewlyAddedTable = ({ category, categoryData }) => {
         </thead>
         <tbody>
           {categoryData.map((vehicle) => (
-            <tr className="bg-white border-t border-gray-200" key={vehicle._id}>
+            <tr className="bg-white border-t border-gray-200 dark:bg-tablebackgroundDark" key={vehicle._id}>
               <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200 font-semibold text-center">{vehicle.vehicleType}</td>
               <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200 font-semibold text-center">{vehicle.vehicleModel}</td>
               <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200 font-semibold text-center">{vehicle.vehicleRegister}</td>

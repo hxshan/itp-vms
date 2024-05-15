@@ -18,6 +18,7 @@ export default {
         'secondary':'#212529',
         'secondaryDark':'#11112c',
         'backgroundDark':'#000000',
+        'tablebackgroundDark':'#12001C',
         'backgroundDarkSecond':'#11112c',
         'dimWhite':" rgba(239, 239, 239, 0.75)",
       },

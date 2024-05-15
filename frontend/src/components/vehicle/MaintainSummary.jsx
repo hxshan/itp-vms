@@ -93,8 +93,8 @@ const MaintainSummary = () => {
    
   return(
    
-    <div className='w-full place-content-center space-y-4 mt-8 bg-cover bg-center mb-10'>
-      <h1 className='text-2xl font-bold text-black mt-4'>All Maintaince</h1>
+    <div className='w-full place-content-center space-y-4 mt-8 bg-cover bg-center mb-10 dark:text-white'>
+      <h1 className='text-2xl font-bold  mt-4'>All Maintaince</h1>
       <div className='flex justify-end items-center'>
 
         <button onClick={exportToPdf} className='px-2 py-1 text-white bg-actionBlue h-fit hover:bg-gray-800 focus:outline-none rounded-md mr-4 text-xs font-semibold'>Export to PDF</button>
@@ -114,7 +114,7 @@ const MaintainSummary = () => {
         </thead>
         <tbody>
           {searchResults.map(maintain => (
-            <tr key={maintain._id} className="bg-white border-t border-gray-200" >
+            <tr key={maintain._id} className="bg-white border-t border-gray-200 dark:bg-tablebackgroundDark" >
               <td className="px-6 text-center font-semibold py-2 whitespace-nowrap border-r border-gray-200">{maintain.vrvehicleRegister}</td>
               <td className="px-6 text-center font-semibold py-2 whitespace-nowrap border-r border-gray-200">
                  {maintain.vraddit} 

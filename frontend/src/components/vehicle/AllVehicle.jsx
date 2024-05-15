@@ -148,14 +148,14 @@ const AllVehicle = () => {
 
 
   return (
-    <div className='w-full place-content-center space-y-4 mt-8 bg-cover bg-center mb-10'>
-    <h1 className='text-2xl font-bold text-black mt-4'>All Vehicles</h1>
+    <div className='w-full place-content-center space-y-4 mt-8 bg-cover bg-center mb-10 dark:text-white'>
+    <h1 className='text-2xl font-bold  mt-4'>All Vehicles</h1>
     <div className='flex justify-end items-center'>
 
     <button onClick={exportToPdf} className='px-2 py-1 text-white bg-actionBlue h-fit hover:bg-gray-800 focus:outline-none rounded-md mr-4 text-xs font-semibold'>Export to PDF</button>
     <button onClick={exportToExcel} className='px-2 py-1 text-white bg-actionBlue h-fit hover:bg-gray-800 focus:outline-none rounded-md mr-4 text-xs font-semibold'>Export to Excel</button>
 
-    <div className="text-xs font-semibold text-black mr-5">Search by</div> 
+    <div className="text-xs font-semibold  mr-5">Search by</div> 
     
     <select value={searchStatus} onChange={handleStatusChange} className="mb-3 mr-4 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
       <option value="">All Statuses</option>
@@ -211,7 +211,7 @@ const AllVehicle = () => {
           </thead>
           <tbody>
             {searchResults.map(data => (
-              <tr key={data._id} className="bg-white border-t border-gray-200">
+              <tr key={data._id} className="bg-white border-t border-gray-200 dark:bg-tablebackgroundDark">
                 <td className="px-6 text-center font-semibold py-2 whitespace-nowrap border-r border-gray-200">{data.vehicleRegister}</td>
                 <td className="px-6 text-center font-semibold py-2 whitespace-nowrap border-r border-gray-200">{data.vehicleModel }</td>
                 <td className="px-6 text-center font-semibold py-2 whitespace-nowrap border-r border-gray-200">{data.fuelType}</td>
