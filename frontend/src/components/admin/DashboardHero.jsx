@@ -68,8 +68,8 @@ const DashboardHero = () => {
   };
 
   const columns = [
+    "Name",
     "Email",
-    "Endpoint",
     "Action",
     "Action Type",
     "Date",
@@ -210,11 +210,13 @@ const DashboardHero = () => {
                       className="bg-white dark:bg-secondaryDark dark:text-white border-t border-gray-200"
                       key={row._id}
                     >
-                      
+                      <td className="px-6 py-3 whitespace-nowrap border-r border-gray-200">
+                        {row.user.firstName}
+                      </td>
                       <td className="px-6 py-3 whitespace-nowrap border-r border-gray-200">
                         {row.user.email}
                       </td>
-                       <td className="px-6 py-3 whitespace-nowrap border-r border-gray-200 ">{row.endpoint}</td> 
+                       {/* <td className="px-6 py-3 whitespace-nowrap border-r border-gray-200 ">{row.endpoint}</td>  */}
                       <td className="px-6 py-3 whitespace-nowrap border-r border-gray-200">
                         {row.action}
                       </td>

@@ -6,6 +6,10 @@ const router = express.Router()
 
 router.post('/login',login)
 
+
+router.post('/client/login',login)
+
+
 router.get("/refresh",refresh)
 router.get("/logout",logout)
 
