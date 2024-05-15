@@ -86,7 +86,7 @@ const clientLogin = async (req,res)=>{
             {expiresIn:'10d'}
         )
         
-        return res.status(200).json({accessToken,refreshToken,email})
+        return res.status(200).json({id:user._id,accessToken,refreshToken,email})
     }catch(error){
         return res.status(401).json({message:'Unauthorized'})
     }
@@ -140,4 +140,4 @@ const logout = (req,res) =>{
 
 
 
-module.exports = { login, refresh,logout};
+module.exports = { login, refresh,logout,clientLogin    };
