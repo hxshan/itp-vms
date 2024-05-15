@@ -138,6 +138,10 @@ const getData = ()=>{
     axiosInstance:axios,
     method:'GET',
     url:'/user/',
+    headers:{
+      withCredentials:true,
+      authorization:`Bearer ${user?.accessToken}`
+    }
    
   })
 }
@@ -248,6 +252,10 @@ const handleExpenseChange = (e) => {
         data: {
           ...formData
         }
+      },
+      headers:{
+        withCredentials:true,
+        authorization:`Bearer ${user?.accessToken}`
       }
     });
     alert("Expense created successfully");

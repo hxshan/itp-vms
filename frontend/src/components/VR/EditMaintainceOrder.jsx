@@ -2,8 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import useAxios from '@/hooks/useAxios';
+
+
 import {
-    
+
     validateVehicleId,
     validateVehicleIssue,
     validateVehicleCost,
@@ -15,7 +18,7 @@ import {
 export const EditMaintainceOrder = () => {
     const { id } = useParams();
     const navigate = useNavigate();
-
+    const axiosFetch = useAxios();
     const [category, setcategory] = useState('');
     const [vehicleRegister, setvehicleRegister] = useState('');
     const [vrissue, setVrissue] = useState('');
@@ -24,6 +27,7 @@ export const EditMaintainceOrder = () => {
     const [vrsdate, setVrsdate] = useState();
     const [vredate, setVredate] = useState();
     const [vrnumber, setVrnumber] = useState();
+    const [completed, setCompleted] = useState(false);
 
     useEffect(() => {
         axios.get(`http://localhost:3000/api/vehiclemaintain/${id}`)
@@ -37,12 +41,18 @@ export const EditMaintainceOrder = () => {
                 setVraddit(data.vraddit);
                 setVrsdate(data?.vrsdate?.split('T')[0]);
                 setVredate(data?.vredate?.split('T')[0]);
-                
+
+                const completionStatus = localStorage.getItem(`completed_${id}`);
+                if (completionStatus === 'true') {
+                    setCompleted(true);
+                }
             })
             .catch((error) => {
                 console.log(error);
             });
     }, [id]);
+
+
     const validateForm = () => {
         return (
 
@@ -80,7 +90,36 @@ export const EditMaintainceOrder = () => {
             });
     };
 
-  
+    const deleteData = async () => {
+        if (window.confirm("Are you sure you want to delete the following?")) {
+            await axios({
+                method: "DELETE",
+                url: `http://localhost:3000/api/vehiclemaintain/${id}`,
+            });
+            navigate('/Mdashboard');
+        }
+    };
+
+    const handleComplete = () => {
+        setCompleted(true);
+        localStorage.setItem(`completed_${id}`, 'true');
+        const data = {
+            vehicleRegister,
+            vrissue,
+            vrcost,
+            vraddit,
+            vrsdate,
+            vredate
+        };
+        axios.post(`http://localhost:3000/api/vehiclemaintain/expense/${id}`, data)
+            .then(() => {
+                alert("Completed");
+                navigate('/Mdashboard');
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
 
     return (
         <main className='w-full  flex flex-col justify-center items-center '>
@@ -101,7 +140,7 @@ export const EditMaintainceOrder = () => {
                                 maxLength='7'
                                 required
                                 readOnly={(e) => setvehicleRegister(e.target.value)}
-                        
+
                                 value={vehicleRegister} />
                             <label className='block text-gray-700 text-md font-bold mb-2'>Fault of the Vehicle</label>
                             <textarea
@@ -155,42 +194,27 @@ export const EditMaintainceOrder = () => {
                                 />
                             </div>
                         </div>
-                        <p className='font-medium'>
-                            Format Images :
-                            <span
-                                className='text-slate-600 font-normal'>
-                                If Have any Report or Document
-                            </span>
-                        </p>
 
-                        <div className="flex gap-4">
-                            <input
-                                type="file"
-                                id='vrdocument'
-                                accept='image/*'
-                                multiple
-                                className='p-3 border border-gray-800 w-full rounded-lg'
-                            />
-                            <button
-                                className='p-3 border border-green-600 rounded-lg font-semibold text-green-600 hover:shadow-lg disabled:opacity-50'
-                                type='button'
-                            >
-                                Upload
-                            </button>
-                        </div>
                     </div>
                 </form>
                 <div className="flex justify-end  items-center mt-6">
-                    <button onClick={handleSubmit}
-                        className="bg-actionBlue py-2 px-3 rounded-md text-white font-bold mr-5">
-                        Update Maintaince Order
-                    </button>
+                    {!completed && (
+                        <>
+                            <button onClick={handleSubmit} className="bg-actionBlue py-2 px-3 rounded-md text-white font-bold mr-5">
+                                Update Maintenance Order
+                            </button>
+                            <button className="bg-actionGreen py-2 px-3 rounded-md text-white font-bold mr-5" onClick={handleComplete}>
+                                Completed
+                            </button>
+                            <button className="my-1 mx-1 bg-actionRed text-white py-2 px-3 rounded-md font-bold" onClick={deleteData}>
+                                Delete
+                            </button>
+                        </>
+                    )}
                     <Link to={`/Mdashboard`}>
                         <button className="my-1 mx-1 text-white bg-actionGreen py-2 px-3 rounded-md font-bold">Back</button>
                     </Link>
                 </div>
-
-
             </div>
         </main>
     );

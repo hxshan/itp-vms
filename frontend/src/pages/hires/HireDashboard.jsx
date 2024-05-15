@@ -17,6 +17,8 @@ const HireDashboard = () => {
     const [searchTerm , setSearchTerm] = useState('');
     const [searchType, setSearchType] = useState('');
 
+    const [filteredData, setFilteredData] = useState([]);
+
     const handleSearch = (vehicle, searchT) => {
         setSearchTerm(vehicle);
         setSearchType(searchT);
@@ -35,6 +37,7 @@ const HireDashboard = () => {
         };
 
         fetchHires();
+        setFilteredData(hireData)
     }, []);
 
     //Filter function Dropdown
@@ -50,6 +53,7 @@ const HireDashboard = () => {
     const [reportData, setReportData] = useState(null);
     const [showReport, setShowReport] = useState(false)
 
+    /*
     const generateReport = async () => {
         setShowReport(true)
         try {
@@ -64,7 +68,12 @@ const HireDashboard = () => {
             toast.error('Error generating report. Please try again.')
         }
     };
+*/
 
+    const generateReport = () => {
+        setShowReport(true)
+        toast.success('Report generated successfully!')
+    }
     
 
     
@@ -106,6 +115,7 @@ const HireDashboard = () => {
                         </div>
 
                         <div className="pt-5 mr-8">
+                            
                             <button 
                                 className="py-2 px-6 text-white bg-actionBlue rounded-md hover:bg-gray-800 focus:outline-none"
                                 onClick={generateReport}
@@ -114,9 +124,9 @@ const HireDashboard = () => {
                             </button>
                         </div>
 
-                        {showReport && reportData && (
+                        {showReport && (
                             <div className="mt-5">
-                                <Report reportData={reportData} setShowReport={setShowReport}/>
+                                <Report filteredData={filteredData} setShowReport={setShowReport} />
                             </div>
                         )}
 
@@ -130,7 +140,7 @@ const HireDashboard = () => {
                 </div>
 
                 <div>
-                    <HireList hireData={hireData.slice().reverse()} searchTerm={searchTerm} searchType={searchType} axiosFetch={axiosFetch} showDropdown={showDropdown}/>
+                    <HireList hireData={hireData.slice().reverse()} searchTerm={searchTerm} searchType={searchType} axiosFetch={axiosFetch} showDropdown={showDropdown} setFilteredData={setFilteredData}/>
                 </div>
                 
 

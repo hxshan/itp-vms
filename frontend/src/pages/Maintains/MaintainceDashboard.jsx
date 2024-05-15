@@ -9,7 +9,7 @@ export const MaintainceDashboard = () => {
 
 
   return (
-    <main className='w-full place-content-center space-y-4 mt-8 bg-cover bg-center'>
+    <main className='w-full place-content-center space-y-4 mt-8 bg-cover bg-center dark:text-white'>
       <h1 className='font-bold text-xl'>Maintenance Dashboard</h1>
       <div className="flex flex-row justify-end gap-10">
 

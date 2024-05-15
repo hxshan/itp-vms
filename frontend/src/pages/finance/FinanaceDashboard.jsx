@@ -1,4 +1,4 @@
-import { BarChart, Total, TripExpenseIncomeTable } from '@/components/finanace';
+import { BarChart, Total, TripExpenseIncomeTable, VehicleExpenseIncomeTable } from '@/components/finanace';
 
 import React, { useState } from 'react';
 
@@ -13,6 +13,9 @@ const FinanceDashboard = () => {
       </div>
       <div className="mt-8">
         <TripExpenseIncomeTable />
+      </div>
+      <div className="mt-8">
+        <VehicleExpenseIncomeTable />
       </div>
     </div>
   );

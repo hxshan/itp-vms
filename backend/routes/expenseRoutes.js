@@ -10,6 +10,7 @@ const {
     deleteExpense,
     updateExpense
 } = require('../controllers/expenseController')
+const Auth = require('../middleware/Auth')
 
 
 
@@ -27,18 +28,18 @@ router.get('/reimbursment/:driverId',getReimbursmentByDriverId)
 
 router.get('/tripExpense/:tripId',getExpensesBytripId)
 
-router.get('/vehicleExpense/:vehicleId ', getExpensesByvehicleId)
+router.get('/vehicleExpense/:vehicleId', getExpensesByvehicleId)
 
 router.get('/driverwage/:driverId',getdriverWageBydriverId)
 
 
-router.post('/', createExpense)
+router.post('/',Auth,createExpense)
    
 
 
 
-router.delete('/:id', deleteExpense)
+router.delete('/:id', Auth,deleteExpense)
 
-router.patch('/:id', updateExpense)
+router.patch('/:id',Auth,updateExpense)
 
 module.exports = router

@@ -6,9 +6,12 @@ import { ToastContainer, toast } from "react-toastify";
 import { ClipLoader } from "react-spinners";
 import ViewVehical from "./ViewVehical";
 import Swal from "sweetalert2";
+import { useAuthContext } from "@/hooks/useAuthContext";
 
 const ContractEditForm = () => {
   const params = useParams();
+
+  const { user } = useAuthContext();
 
   const navigate = useNavigate();
 
@@ -32,6 +35,10 @@ const ContractEditForm = () => {
       axiosInstance: axios,
       method: "DELETE",
       url: `/contract/deleteContract/${contractID}`,
+      headers: {
+        withCredentials: true,
+        authorization: `Bearer ${user?.accessToken}`,
+      },
     });
   };
 
@@ -182,6 +189,10 @@ const ContractEditForm = () => {
       url: `/contract/updateContract/${contractID}`,
       requestConfig: {
         data: contractData,
+      },
+      headers: {
+        withCredentials: true,
+        authorization: `Bearer ${user?.accessToken}`,
       },
     });
   };

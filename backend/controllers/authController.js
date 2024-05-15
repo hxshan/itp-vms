@@ -1,7 +1,7 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require("../models/userModel");
-
+const Client = require("../models/clientModel")
 
 const decideDashboard=(role)=>{
     if(role.userPermissions.Read) return 'admin'
@@ -54,6 +54,45 @@ const login = async (req,res)=>{
     }
 }
 
+const clientLogin = async (req,res)=>{
+    try{
+        const {email,password}=req.body
+        if(!email||!password) return res.status(400).json({message:'All felds must be filled'})
+        const user =await Client.findOne({email}).exec()
+
+        if(!user) return res.status(401).json({message:'No such User'})
+        if(user.status=='inactive') return res.status(401).json({message:`Account is ${user.status}`})
+
+        const match = await bcrypt.compare(password,user.password)
+        if(!match) return res.status(401).json({message:'Unauthorized'})
+
+        const accessToken = jwt.sign(
+            {
+                UserInfo:{
+                    "id":user._id,
+                    "name":user.firstName,
+                    "email":user.email,
+                    
+                    
+                }
+            },
+            process.env.SECRET,
+            {expiresIn:'1d'}
+        )
+
+        const refreshToken = jwt.sign(
+            {"email":user.email},
+            process.env.REFRESH_SECRET,
+            {expiresIn:'10d'}
+        )
+        
+        return res.status(200).json({id:user._id,accessToken,refreshToken,email})
+    }catch(error){
+        return res.status(401).json({message:'Unauthorized'})
+    }
+}
+
+
 const refresh = (req,res) =>{
     const cookie = req.cookies;
     console.log(cookie)
@@ -101,4 +140,4 @@ const logout = (req,res) =>{
 
 
 
-module.exports = { login, refresh,logout};
+module.exports = { login, refresh,logout,clientLogin    };

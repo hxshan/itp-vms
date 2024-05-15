@@ -174,6 +174,10 @@ const IncomeForm = ({ onFormSubmit }) => {
           data: {
             ...formData
           }
+        },
+        headers:{
+          withCredentials:true,
+          authorization:`Bearer ${user?.accessToken}`
         }
       });
       alert("Income created successfully");

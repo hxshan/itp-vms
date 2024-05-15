@@ -3,7 +3,8 @@
 @tailwind utilities;
 
 @media print {
-    .column-to-hide{
+
+    .column-to-hide {
         display: none;
     }
 }

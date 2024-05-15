@@ -166,10 +166,10 @@ useEffect(() => {
   }
 
   return (
-    <div className="w-full mt-8">
+    <div className="w-full mt-8 dark:text-white">
       <div className="w-full flex justify-between mb-4 gap-4 items-end">
       <h2 className="font-bold text-xl underline mb-4 w-fit text-nowrap">Driver Records List</h2> 
-        <div className="flex gap-6 w-full items-end justify-end">
+        <div className="flex gap-2 w-full items-end justify-end">
              <button 
                 onClick={exportToPdf}
                 className="px-4 py-2 text-white bg-actionBlue h-fit text-nowrap hover:bg-gray-800 focus:outline-none rounded-md mr-4">
@@ -188,7 +188,7 @@ useEffect(() => {
                 </div>
               </button>
               <div className='flex flex-col'>
-                <label className="block text-gray-700 text-md font-bold mb-2 px-2" htmlFor="driver">Driver</label>
+                <label className="block text-gray-700 text-md font-bold mb-2 px-2 dark:text-white" htmlFor="driver">Driver</label>
                 <select name="driver"
                 value={driverFilter}
                 onChange={(e)=>setDriverFilter(e.target.value)}
@@ -204,7 +204,7 @@ useEffect(() => {
                 </select>
               </div>
               <div className='flex flex-col'>
-                <label className="block text-gray-700 text-md font-bold mb-2 px-2" htmlFor="status">Record Type</label>
+                <label className="block text-gray-700 text-md font-bold mb-2 px-2 dark:text-white" htmlFor="status">Record Type</label>
                 <select name="status"
                 value={statusFilter}
                 onChange={(e)=>setStatusFilter(e.target.value)}
@@ -238,10 +238,10 @@ useEffect(() => {
           .map((row) => {
             return (
                 <tr className="bg-white border-t border-gray-200" key={row._id}>
-                  <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{row.user.firstName}</td>
+                  <td className="px-6 py-2 whitespace-nowrap border-r dark:bg-secondaryDark border-gray-200">{row.user.firstName}</td>
                   {/* <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{row.description}</td> */}
-                  <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{row.occurenceDate.split('T')[0]}</td>
-                  <td className={`px-6 py-2 whitespace-nowrap border-r border-gray-200 text-center font-bold  ${row.recordType=='positive'?'text-green-500 bg-green-100':'text-red-600 bg-red-100'}`}>
+                  <td className="px-6 py-2 whitespace-nowrap border-r dark:bg-secondaryDark border-gray-200">{row.occurenceDate.split('T')[0]}</td>
+                  <td className={`px-6 py-2 whitespace-nowrap border-r dark:bg-secondaryDark border-gray-200 text-center font-bold  ${row.recordType=='positive'?'text-green-500 bg-green-100':'text-red-600 bg-red-100'}`}>
                     <span className={`px-2 inline-flex text-xs leading-4 tracking-wider`}>
                         {row.recordType.toUpperCase()}
                     </span>
@@ -250,7 +250,7 @@ useEffect(() => {
             );
           })):(
             <tr className="bg-white border-t border-gray-200">
-              <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200" colSpan={columns.length}>No data available</td>
+              <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200 dark:bg-secondaryDark" colSpan={columns.length}>No data available</td>
             </tr>
           )}
         </tbody>

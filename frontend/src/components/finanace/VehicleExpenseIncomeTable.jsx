@@ -4,57 +4,65 @@ import axios from '@/api/axios';
 import IncomeExpenseBarChart from './incomeExpenseBarChart'; // Corrected import with uppercase initial letter
 import ReactToPrint from 'react-to-print'; // Changed import to default import
 
-function TripExpenseIncomeTable() {
-  const [selectedTrip, setSelectedTrip] = useState('');
+function VehicleExpenseIncomeTable() {
+  const [selectedVehicle, setSelectedVehicle] = useState('');
   const [expenseOptions, setExpenseOptions] = useState([]);
-  const [selectedTripDetails, setSelectedTripDetails] = useState(null);
+  const [selectedVehicleDetails, setselectedVehicleDetails] = useState(null);
   const [incomeOptions, setIncomeOptions] = useState([]);
-  const [tripOptions, setTripOptions] = useState([]);
+  
   const [selectedStatusOptions, setSelectedStatusOptions] = useState(['All']); // Initially set 'All'
 
   const [expenseData, expenseError, expenseLoading, expenseAxiosFetch] = useAxios();
   const [incomeData, incomeError, incomeLoading, incomeAxiosFetch] = useAxios();
-  const [tripData, tripError, tripLoading, tripAxiosFetch] = useAxios();
+  const [vehicleOptions, setVehicleOptions] = useState([]);
+  const [vehicleData, vehicleerror, vehicleloading, vehicleAxiosFetch] = useAxios();
 
   const chartRef = useRef(null);
 
-  const getTripData = () => {
-    tripAxiosFetch({
-      axiosInstance: axios,
-      method: "GET",
-      url: `/hire/`,
-    });
-  }
 
-  const getExpenseData = (tripId) => {
-    expenseAxiosFetch({
+  const getVehicleData = () => {
+    vehicleAxiosFetch({
       axiosInstance: axios,
       method: "GET",
-      url: `/expense/tripExpense/${tripId}`,
-    });
-  }
-
-  const getIncomeData = (tripId) => {
-    incomeAxiosFetch({
-      axiosInstance: axios,
-      method: "GET",
-      url: `/income/tripIncome/${tripId}`,
+      url: `/vehicle/`,
     });
   }
 
   useEffect(() => {
-    getTripData();
+    getVehicleData();
   }, []);
 
   useEffect(() => {
-    if (tripData) {
-      const options = tripData.map(hire => ({
-        value: hire._id,
-        label: `${hire.startPoint.city} - ${hire.endPoint} ${hire.vehicle.vehicleRegister}  (Start Date -${new Date(hire.startDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}) (Start time - ${hire.startTime}) (Driver - ${hire.driver.firstName})`,
+    if (vehicleData && vehicleData.vehicles) {
+      const options = vehicleData.vehicles.map(vehicle => ({
+        value: vehicle._id,
+        label: `${vehicle.vehicleRegister}`,
       }));
-      setTripOptions(options);
+      setVehicleOptions(options);
     }
-  }, [tripData]);
+  }, [vehicleData]);
+
+  
+
+  const getExpenseData = (vehicleId) => {
+    expenseAxiosFetch({
+      axiosInstance: axios,
+      method: "GET",
+      url: `/expense/vehicleExpense/${vehicleId}`,
+    });
+  }
+
+  const getIncomeData = (vehicleId) => {
+    incomeAxiosFetch({
+      axiosInstance: axios,
+      method: "GET",
+      url: `/income/vehicleIncome/${vehicleId}`,
+    });
+  }
+
+ 
+
+  
 
   useEffect(() => {
     if (expenseData) {
@@ -68,21 +76,26 @@ function TripExpenseIncomeTable() {
     }
   }, [incomeData]);
 
-  const handleTripChange = (event) => {
-    const selectedTripId = event.target.value;
-    setSelectedTrip(selectedTripId);
-    if (selectedTripId) {
-      getIncomeData(selectedTripId);
-      getExpenseData(selectedTripId)
+  const handleVehicleChange = (event) => {
+    const selectedVehicleId = event.target.value;
+    setSelectedVehicle(selectedVehicleId);
+    const selectedVehicleDetails = vehicleData.vehicles.find(vehicle => vehicle._id === selectedVehicleId);
+    if (selectedVehicleId) {
+        setselectedVehicleDetails(selectedVehicleDetails);
+      getIncomeData(selectedVehicleId);
+      getExpenseData(selectedVehicleId)
     }
   };
 
-  useEffect(() => {
-    // When selectedTrip changes, find and assign the details of the selected trip
-    const selectedTripDetails = tripData.find(trip => trip._id === selectedTrip);
-    setSelectedTripDetails(selectedTripDetails);
-  }, [selectedTrip, tripData]);
+  console.log(selectedVehicleDetails)
+//   useEffect(() => {
+//     // When selectedTrip changes, find and assign the details of the selected trip
+//     const selectedVehicleDetails = vehicleData.vehicles.find(vehicle => vehicle._id === selectedVehicle);
+//     setselectedVehicleDetails(selectedVehicleDetails);
+//   }, [selectedVehicle, vehicleData]);
 
+ console.log(incomeOptions)
+ console.log(expenseOptions)
   const handleStatusChange = (event) => {
     const { value, checked } = event.target;
     if (value === 'All' && checked) {
@@ -137,20 +150,20 @@ function TripExpenseIncomeTable() {
     let analysisResult = '';
     let tag ='';
     if (netIncome > 0) {
-      analysisResult = 'As seen in the barchart the income bar surpasses that of the expense thus this hire has an income over the expenses so leading to a profit generated from the hire';
+      analysisResult = 'The bar chart provides a clear visual representation of the vehicles financial performance, revealing that income consistently surpasses expenses. This positive trend indicates effective management and operational efficiency. The sustained profitability suggests that the vehicles revenue streams are robust and well-aligned with its expenditure structure. Consequently, the vehicles operation is generating a surplus, contributing to overall financial health and viability. In summary, the analysis underscores the successful balance between income generation and expense management, positioning the vehicle for continued success in its operations.';
       tag ='Profit'
     } else if (netIncome === 0) {
-      analysisResult = 'As seen in the barchart the income bar equals that of the expense thus this hire has broken even expense with income so leading to neither a profit nor a loss';
+      analysisResult = 'Expenses equal income according to the bar chart, it indicates a break-even point in the vehicles financial performance. This equilibrium suggests that the vehicles operations generate enough revenue to cover its expenses, resulting in neither profit nor loss. While achieving a balance between income and expenses is desirable, its essential to continually assess and optimize operational efficiency to enhance profitability. Additionally, maintaining financial stability at the break-even point allows for strategic planning and investment in future growth opportunities. Therefore, the analysis indicates a stable financial position but emphasizes the importance of ongoing monitoring and improvement efforts to sustain competitiveness and profitability in the long term.';
       tag ='Profit/Loss'
     } else {
-      analysisResult = 'As seen in the barchart the expense bar surpasses that of the income thus this hire has expenses over income so leading to a loss generated from the hire';
+      analysisResult = 'The bar chart vividly illustrates that expenses consistently exceed income, indicating a concerning trend in the vehicles financial performance. This imbalance suggests potential issues with revenue generation or inefficient cost management. It is crucial to address these discrepancies promptly to avoid financial strain and ensure the sustainability of the vehicles operations. Strategies such as cost reduction measures or revenue enhancement initiatives may be necessary to realign the vehicles financial trajectory. In conclusion, the analysis underscores the urgent need for corrective action to mitigate losses and restore financial equilibrium in the vehicles operations';
       tag ='Loss'
     }
   
     return (
       <div className="print:bg-blue-100 print:border print:border-blue-200 print:p-4 print:rounded-md print:mt-4">
         <h4 className="text-transparent print:text-lg print:font-semibold print:mb-2">Financial Analysis</h4>
-        <p className="text-transparent print:text-lg print:text-gray-700 print:mb-2">This report provides a detailed analysis of the expenses and income for the selected hire based on the relevant statuses of income and expense.</p>
+        <p className="text-transparent print:text-lg print:text-gray-700 print:mb-2">This report provides a detailed analysis of the expenses and income for the selected vehicle based on the relevant statuses of income and expense.</p>
         <p className=" text-transparent print:text-lg print:text-gray-700 print:mb-2">Cumulative Income: {cumulativeIncome}</p>
         <p className="text-transparent print:text-lg print:text-gray-700 print:mb-2">Cumulative Expense: {cumulativeExpense}</p>
         <p className="text-transparent print:text-lg print:text-gray-700 print:mb-2">{tag}: {netIncome}</p>
@@ -158,43 +171,51 @@ function TripExpenseIncomeTable() {
       </div>
     );
   };
-
-  const tripParagraph = () => {
-  
-    return (
-      <div className="bg-blue-100 border border-blue-200 p-4 rounded-md mt-4">
-        
-        {selectedTripDetails && (
-          <div>
-            
-            <h1>Trip that commenced on the {new Date(selectedTripDetails.startDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })} at {selectedTripDetails.startTime} from {selectedTripDetails.startPoint.city} and concluded at {selectedTripDetails.endPoint} on {new Date(selectedTripDetails.endDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })} at {selectedTripDetails.endTime}.Our driver, {selectedTripDetails.driver.firstName}, navigated the journey with vehicle {selectedTripDetails.vehicle.vehicleRegister},  ensuring a smooth and secure ride for customer {selectedTripDetails.cusName}.  </h1>
-          </div>
-        )}
-      </div>
-    );
+  const getAmountBasedOnSource = (source,income) => {
+    switch (source) {
+      case 'Hire Income':
+        return income.hirePayment.hireAmount;
+      case 'Rental Income':
+        return income.contractIncome.rentalAmount;
+      default:
+        return 'Unknown';
+    }
   };
   
+  
 
-  const expenseTotal = filteredExpenseOptions.reduce((acc, expense) => acc + getCategoryAmount(expense.category, expense), 0);
-  const incomeTotal = filteredIncomeOptions.reduce((acc, income) => acc + income.hirePayment.hireAmount, 0);
+  const expenseTotal = filteredExpenseOptions ? filteredExpenseOptions.reduce((acc, expense) => acc + getCategoryAmount(expense.category, expense), 0) : 0;
+  const incomeTotal = filteredIncomeOptions ? filteredIncomeOptions.reduce((acc, income) => acc + getAmountBasedOnSource(income.source,income), 0) : 0;
   
 console.log(expenseTotal)
 console.log(incomeTotal)
   return (
     <div className="container mx-auto px-4 py-8">
-      <h3 className="text-xl font-semibold mb-2">Finance Analysis Based on Hire</h3>
+      <h3 className="text-xl font-semibold mb-2">Finance Analysis Based on Vehicle</h3>
+      
+
       <div className="mb-4">
-        <label htmlFor="tripId" className="block text-gray-700 text-lg font-bold mb-2">Trip:</label>
-        <select id="tripId" name="tripId" value={selectedTrip} onChange={handleTripChange} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" >
-          <option value="">Select Trip</option>
-          {tripOptions.map(option => (
-            <option key={option.value} value={option.value}>{option.label}</option>
+        <label htmlFor="vehicle" className="block text-gray-700 text-sm font-bold mb-2">
+          Vehicle:
+        </label>
+        <select
+          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          id="vehicle"
+          name="vehicle"
+          value={selectedVehicle}
+          onChange={handleVehicleChange}
+        >
+          <option value="">Select Vehicle</option>
+          {vehicleOptions.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
           ))}
         </select>
       </div>
       
 
-      {selectedTrip && (
+      {selectedVehicle && (
         <>
           {/* Filter options for status */}
           <ReactToPrint
@@ -208,10 +229,10 @@ console.log(incomeTotal)
             
           <h3 className="text-transparent print:text-black print:text-2xl print:font-bold print:mb-12 print:underline">Financial Analysis Based on Hire</h3>
           
-          {selectedTripDetails && (
+          {selectedVehicleDetails && (
               <div className="print:mt-4 m-0">
-                <h3 className="text-transparent print:text-black print:text-xl print:font-semibold print:mb-2 m-0">Selected Trip Details</h3>
-                <h1 className="text-transparent print:text-black print:text-lg print:mb-16 m-0">Trip that commenced on {new Date(selectedTripDetails.startDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })} at {selectedTripDetails.startTime} from {selectedTripDetails.startPoint.city} and concluded at {selectedTripDetails.endPoint} on {new Date(selectedTripDetails.endDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })} at {selectedTripDetails.endTime}.Our driver, {selectedTripDetails.driver.firstName}, navigated the journey with vehicle {selectedTripDetails.vehicle.vehicleRegister},  ensuring a smooth and secure ride for customer {selectedTripDetails.cusName}.  </h1>
+                <h3 className="text-transparent print:text-black print:text-xl print:font-semibold print:mb-2 m-0">Selected Vehicle : {selectedVehicleDetails.vehicleRegister} ({selectedVehicleDetails.vehicleModel})</h3>
+               
               </div>
             )}
           <div className="status-filter mb-4">
@@ -240,7 +261,7 @@ console.log(incomeTotal)
                   <th className="border px-4 py-2">Type</th>
                   <th className="border px-4 py-2">Category</th>
                   <th className="border px-4 py-2">Status</th>
-                  <th className="border px-4 py-2">Amount</th>
+                  <th className="border px-4 py-2">Amount (Rs.)</th>
                 </tr>
               </thead>
               <tbody>
@@ -249,9 +270,9 @@ console.log(incomeTotal)
                   <tr key={item._id} style={{ color: item.type === 'Income' ? 'green' : 'red' }}>
                     <td className="border px-4 py-2">{new Date(item.date).toLocaleDateString()}</td>
                     <td className="border px-4 py-2">{item.type}</td>
-                    <td className="border px-4 py-2">{item.type === 'Expense' ? item.category : item.hirePayment.hirePaymentType}</td>
+                    <td className="border px-4 py-2">{item.type === 'Expense' ? item.category : item.source}</td>
                     <td className="border px-4 py-2">{item.status}</td>
-                    <td className="border px-4 py-2">{item.type === 'Expense' ? getCategoryAmount(item.category, item) : item.hirePayment.hireAmount}</td>
+                    <td className="border px-4 py-2">{item.type === 'Expense' ? getCategoryAmount(item.category, item) : getAmountBasedOnSource(item.source,item)}</td>
                   </tr>
                 ))}
               </tbody>
@@ -272,4 +293,4 @@ console.log(incomeTotal)
   );
 }
 
-export default TripExpenseIncomeTable;
+export default  VehicleExpenseIncomeTable;

@@ -28,9 +28,20 @@ const IncomeExpenseBarChart = ({ expenses, incomes }) => {
         return '';
     }
   };
+
+  const getAmountBasedOnSource = (source,income) => {
+    switch (source) {
+      case 'Hire Income':
+        return income.hirePayment.hireAmount;
+      case 'Rental Income':
+        return income.contractIncome.rentalAmount;
+      default:
+        return 'Unknown';
+    }
+  };
   // Calculate the cumulative amounts for expenses and incomes
   const expenseTotal = expenses.reduce((acc, expense) => acc + getCategoryAmount(expense.category, expense), 0);
-  const incomeTotal = incomes.reduce((acc, income) => acc + income.hirePayment.hireAmount, 0);
+  const incomeTotal = incomes.reduce((acc, income) => acc + getAmountBasedOnSource(income.source,income), 0);
 
   // Data for the bar chart
   const data = {

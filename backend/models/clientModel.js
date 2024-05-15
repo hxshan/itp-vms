@@ -68,6 +68,9 @@ const clientSchema =new Schema({
     },
     Contract_Available:{
         type:String,
+    },
+    password:{
+        type:String
     }
 })
 

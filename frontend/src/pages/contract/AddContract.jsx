@@ -7,11 +7,14 @@ import { vehicalInstance } from "./constants";
 import { ClipLoader } from "react-spinners";
 import ViewVehical from "./ViewVehical";
 import Swal from "sweetalert2";
+import { useAuthContext } from "@/hooks/useAuthContext";
 
 const AddContract = () => {
   const params = useParams();
 
   const navigate = useNavigate();
+
+  const { user } = useAuthContext()
 
   const clientID = params.id;
 
@@ -352,8 +355,13 @@ const AddContract = () => {
       method: "POST",
       url: `/contract/${clientID}/create`,
       requestConfig: {
+        
         data: { ...ContractData },
       },
+      headers:{
+        withCredentials:true,
+        authorization: `Bearer ${user?.accessToken} `
+      }
     });
   };
 

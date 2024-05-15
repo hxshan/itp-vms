@@ -183,10 +183,10 @@ const UserReportTable = ({reload}) => {
       }
     
       return (
-        <div className="w-full">
+        <div className="w-full dark:text-white">
           <div className="w-full flex justify-between mb-4 gap-4 items-end">
             <h2 className="font-bold text-xl underline mb-4 w-fit text-nowrap">Users List</h2> 
-            <div className="flex gap-6 w-full items-end justify-end">
+            <div className="flex gap-2 w-full items-end justify-end">
             <button 
                 onClick={exportToPdf}
                 className="px-4 py-2 text-white bg-actionBlue h-fit text-nowrap hover:bg-gray-800 focus:outline-none rounded-md mr-4">
@@ -204,7 +204,7 @@ const UserReportTable = ({reload}) => {
                   </div>
               </button>
               <div className='flex flex-col'>
-                <label  className="block text-gray-700 text-md font-bold mb-2 px-2" htmlFor="empfrom">Employed From</label>
+                <label  className="block text-gray-700 text-md font-bold mb-2 px-2 dark:text-white" htmlFor="empfrom">Employed From</label>
                 <input
                     value={empFrom}
                     onChange={(e)=>{setEmpFrom(e.target.value)}}
@@ -214,11 +214,11 @@ const UserReportTable = ({reload}) => {
               </div>
              
               <div className='flex flex-col'>
-                <label className="block text-gray-700 text-md font-bold mb-2 px-2" htmlFor="rolefilter">Role</label>
+                <label className="block text-gray-700 text-md font-bold mb-2 px-2 dark:text-white" htmlFor="rolefilter">Role</label>
                 <select name="rolefilter"
                 value={roleFilter}
                 onChange={(e)=>{setRoleFilter(e.target.value)}}
-                className="shadow appearance-none border rounded h-fit w-40 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                className="shadow appearance-none border rounded h-fit w-40 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ">
                   <option value="">Select Role</option>
                   {
                     roles.map(role=>{
@@ -231,7 +231,7 @@ const UserReportTable = ({reload}) => {
               </div>
 
               <div className='flex flex-col'>
-                <label className="block text-gray-700 text-md font-bold mb-2 px-2" htmlFor="status">Status</label>
+                <label className="block text-gray-700 text-md font-bold mb-2 px-2 dark:text-white" htmlFor="status">Status</label>
                 <select name="status"
                 value={statusFilter}
                 onChange={(e)=>{setStatusFilter(e.target.value)}}
@@ -249,7 +249,7 @@ const UserReportTable = ({reload}) => {
               onChange={(e)=>{
                 setSearch(e.target.value); 
               }}
-              className="shadow appearance-none border rounded h-fit py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+              className="w-[180px] shadow appearance-none border rounded h-fit py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
             </div>
           </div>
           
@@ -268,11 +268,11 @@ const UserReportTable = ({reload}) => {
                 
                 return (
                     <tr className="bg-white border-t border-gray-200" key={row._id}>
-                      <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{row?.firstName}</td>
-                      <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{row?.email}</td>
-                      <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{row?.role?.name}</td>
-                      <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{row?.employmentDate?.split('T')[0]}</td>
-                      <td className={`px-6 py-2 whitespace-nowrap border-r border-gray-200 text-center font-bold ${row.status=='active'?'text-green-500 bg-green-100': row.status=='inactive'?'text-red-600 bg-red-100':'text-orange-600 bg-orange-100'}`}>
+                      <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200 dark:bg-secondaryDark">{row?.firstName}</td>
+                      <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200 dark:bg-secondaryDark">{row?.email}</td>
+                      <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200 dark:bg-secondaryDark">{row?.role?.name}</td>
+                      <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200 dark:bg-secondaryDark">{row?.employmentDate?.split('T')[0]}</td>
+                      <td className={`px-6 py-2 whitespace-nowrap border-r border-gray-200 dark:bg-secondaryDark text-center font-bold ${row.status=='active'?'text-green-500 bg-green-100': row.status=='inactive'?'text-red-600 bg-red-100':'text-orange-600 bg-orange-100'}`}>
                         <span className={`px-2 inline-flex text-xs leading-4 tracking-wider`}>
                           {row?.status?.toUpperCase()}
                         </span>

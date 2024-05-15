@@ -4,6 +4,7 @@ import axios from '@/api/axios';
 import { ReactToPrint } from 'react-to-print';
 import ViewExpense from './ViewExpense';
 import EditExpenseForm from './EditExpenseForm';
+import { useAuthContext } from "@/hooks/useAuthContext";
 
 const ExpenseTable = () => {
   const [expenses, setExpenses] = useState([]);
@@ -18,6 +19,9 @@ const ExpenseTable = () => {
   const [vehicleData, vehicleerror, vehicleloading, vehicleAxiosFetch] = useAxios();
   const [selectedExpense, setSelectedExpense] = useState(null);
   const [EditselectedExpense, setEditSelectedExpense] = useState(null);
+  const [filterReimbursement, setFilterReimbursement] = useState('All');
+
+  const { user } = useAuthContext()
 
   const [expensesData, expensesError, expensesLoading, expensesAxiosFetch] = useAxios();
   const [deleteResponse, deleteError, deleteLoading, deleteAxiosFetch] = useAxios();
@@ -60,13 +64,14 @@ const ExpenseTable = () => {
         return (
           (filterVehicle === 'All' || (expense.vehicle && expense.vehicle._id === filterVehicle)) &&
           (filterCategory === 'All' || expense.category === filterCategory) &&
-          (filterStatus === 'All' || expense.status === filterStatus)
+          (filterStatus === 'All' || expense.status === filterStatus)&&
+          (filterReimbursement === 'All' || (expense.isReimbursement ? 'true' : 'false') === filterReimbursement)
         );
       });
       setExpenses(filteredExpenses);
       setCurrentPage(1); // Reset to first page when filters change
     }
-  }, [expensesData, filterDate, filterCategory, filterStatus, filterVehicle]);
+  }, [expensesData, filterDate, filterCategory, filterStatus, filterVehicle, filterReimbursement]);
 
   useEffect(() => {
     if (updateResponse) {
@@ -87,6 +92,10 @@ const ExpenseTable = () => {
       requestConfig: {
         data: editedExpense
       },
+      headers:{
+        withCredentials:true,
+        authorization:`Bearer ${user?.accessToken}`
+      }
     });
     setEditSelectedExpense(null);
   };
@@ -106,6 +115,10 @@ const ExpenseTable = () => {
             axiosInstance: axios,
             method: 'DELETE',
             url: `/expense/${id}`,
+            headers:{
+              withCredentials:true,
+              authorization:`Bearer ${user?.accessToken}`
+            }
           });
           setReload((prevReload) => prevReload + 1);
         } catch (error) {
@@ -121,6 +134,7 @@ const ExpenseTable = () => {
   };
 
   const getAmountBasedOnCategory = (expense) => {
+    console.log(expense.isReimbursement)
     switch (expense.category) {
       case 'Fuel':
         return `Rs.${expense.totalFuelPrice}`;
@@ -142,6 +156,8 @@ const ExpenseTable = () => {
         return 'Unknown';
     }
   };
+
+  
 
   // Pagination
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -191,7 +207,18 @@ const ExpenseTable = () => {
               <option key={option.value} value={option.value}>{option.label}</option>
             ))}
           </select>
-        </div>
+          
+        <select
+    value={filterReimbursement}
+    onChange={(e) => setFilterReimbursement(e.target.value)}
+    className="shadow border rounded w-full min-w-40 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+  >
+    <option value="All">All Expenses</option>
+    <option value="true">Reimbursement Expense</option>
+    <option value="false">Non Reimbursement Expense</option>
+  </select>
+</div>
+
         <ReactToPrint
           trigger={() => (
             <button className="bg-actionRed hover:bg-red-800 text-white py-2 px-4 rounded shadow-md transition duration-300 ease-in-out">
@@ -211,6 +238,7 @@ const ExpenseTable = () => {
                 <th className="px-6 py-3 border-r border-white text-left text-xs font-bold text-white uppercase tracking-wider">Category</th>
                 <th className="px-6 py-3 border-r border-white text-left text-xs font-bold text-white uppercase tracking-wider">Status</th>
                 <th className="px-6 py-3 border-r border-white text-left text-xs font-bold text-white uppercase tracking-wider">Amount</th>
+                <th className="px-6 py-3 border-r border-white text-left text-xs font-bold text-white uppercase tracking-wider">Reimbursement</th>
                 <th className="px-6 py-3 border-r border-white text-left text-xs font-bold text-white uppercase tracking-wider print:hidden">Actions</th>
               </tr>
             </thead>
@@ -222,6 +250,9 @@ const ExpenseTable = () => {
                   <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{expense.category}</td>
                   <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{expense.status}</td>
                   <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{getAmountBasedOnCategory(expense)}</td>
+                  <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{expense.isReimbursement ? 'Yes' : 'No'}</td>
+
+
                   <td className="px-6 py-2 whitespace-nowrap justify-between flex">
                     <button
                       onClick={() => handleViewExpense(expense)}

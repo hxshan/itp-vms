@@ -115,10 +115,10 @@ const personal={
       }
     });
    
-    // if(nicDocument == null){
-    //   toast.error("Please upload Nic Document")
-    //   return
-    // }
+    if(empPhoto == null){
+      toast.error("Please upload a Photograph")
+      return
+    }
 
     setCurrentForm(currentForm+1)
      
@@ -189,9 +189,15 @@ const personal={
         title: "Success!",
         text: "A new user has been created",
         icon: "success"
+      }).then(()=>{
+        setCurrentForm(0)
       });  
     }
     setPersonalInfo(personal)
+    setNicDocument(null)
+    setLicenceDocument(null)
+    setEmpPhoto(null)
+    setEmergencyContacts([emptyContact])
     setReload(reload+1)
   }
 
@@ -216,7 +222,7 @@ const personal={
 
 
   return (
-    <div className="shadow-xl bg-white rounded flex flex-col items-center mt-8">
+    <div className="shadow-xl bg-white rounded flex flex-col items-center mt-8 dark:bg-secondaryDark dark:text-white">
       <ToastContainer/>
       <form onSubmit={handleSubmit} className="mt-6 px-8 pt-6 pb-8 mb-4 w-full">
         <div id="formPage-1" className={currentForm == 0 ? "" : "hidden"}>
@@ -226,7 +232,7 @@ const personal={
           <div className="grid grid-cols-2 gap-x-4">
             <div className="col-span-1 w-full flex flex-col mb-4 ">
               <label
-                className="block text-gray-700 text-md font-bold mb-2"
+                className="block text-gray-700 text-md font-bold mb-2 dark:text-white"
                 htmlFor="firstName"
               >
                 First Name
@@ -243,7 +249,7 @@ const personal={
             </div>
             <div className="col-span-1 w-full flex flex-col mb-4 ">
               <label
-                className="block text-gray-700 text-md font-bold mb-2"
+                className="block text-gray-700 text-md font-bold mb-2 dark:text-white"
                 htmlFor="middleNames"
               >
                 Middle Names
@@ -259,7 +265,7 @@ const personal={
             </div>
             <div className="col-span-1 w-full flex flex-col mb-4 ">
               <label
-                className="block text-gray-700 text-md font-bold mb-2"
+                className="block text-gray-700 text-md font-bold mb-2 dark:text-white"
                 htmlFor="lastName"
               >
                 Last Name
@@ -276,7 +282,7 @@ const personal={
             </div>
             <div className="col-span-1 w-full flex flex-col mb-4 ">
               <label
-                className="block text-gray-700 text-md font-bold mb-2"
+                className="block text-gray-700 text-md font-bold mb-2 dark:text-white"
                 htmlFor="gender"
               >
                 Gender
@@ -295,7 +301,7 @@ const personal={
             </div>
             <div className="col-span-1 w-full flex flex-col mb-4 ">
               <label
-                className="block text-gray-700 text-md font-bold mb-2"
+                className="block text-gray-700 text-md font-bold mb-2 dark:text-white"
                 htmlFor="dob"
               >
                 Date of Birth
@@ -312,7 +318,7 @@ const personal={
             </div>
             <div className="col-span-1 w-full flex flex-col mb-4 ">
               <label
-                className="block text-gray-700 text-md font-bold mb-2"
+                className="block text-gray-700 text-md font-bold mb-2 dark:text-white"
                 htmlFor="phoneNumber"
               >
                 Phone Number
@@ -329,7 +335,7 @@ const personal={
             </div>
             <div className="col-span-1 w-full flex flex-col mb-4 ">
               <label
-                className="block text-gray-700 text-md font-bold mb-2"
+                className="block text-gray-700 text-md font-bold mb-2 dark:text-white"
                 htmlFor="nicNumber"
               >
                 NIC Number
@@ -346,7 +352,7 @@ const personal={
             </div>
             <div className="col-span-1 w-full flex flex-col mb-4 ">
               <label
-                className="block text-gray-700 text-md font-bold mb-2"
+                className="block text-gray-700 text-md font-bold mb-2 dark:text-white"
                 htmlFor="nicDocument"
               >
                 Nic Document
@@ -362,7 +368,7 @@ const personal={
             </div>
             <div className="col-span-1 w-full flex flex-col mb-4 ">
               <label
-                className="block text-gray-700 text-md font-bold mb-2"
+                className="block text-gray-700 text-md font-bold mb-2 dark:text-white"
                 htmlFor="empPhoto"
               >
                 Employee Photogragh <span className="font-normal">(.png .jpg .jpeg are only accepted)</span>
@@ -379,7 +385,7 @@ const personal={
             </div>
             <div className="grid grid-cols-2 col-span-2 w-full ">
               <div className="col-span-2 mt -10 flex justify-between mb-8 items-center">
-                <h2 className="font-bold text-2xl w-fit ">Emergency Contact</h2>
+                <h2 className="font-bold text-2xl w-fit dark:text-white">Emergency Contact</h2>
                 <button
                 className="bg-actionBlue py-2 px-6 rounded-md text-white font-bold mt-2"
                   onClick={() => {
@@ -398,7 +404,7 @@ const personal={
                   >
                     <div className="col-span-1 w-full flex flex-col">
                       <label
-                        className="block text-gray-700 text-md font-bold mb-2"
+                        className="block text-gray-700 text-md font-bold mb-2 dark:text-white"
                         htmlFor="emergencyName"
                       >
                         Contact Name
@@ -415,7 +421,7 @@ const personal={
                     </div>
                     <div className="col-span-1 w-full flex flex-col">
                       <label
-                        className="block text-gray-700 text-md font-bold mb-2"
+                        className="block text-gray-700 text-md font-bold mb-2 dark:text-white"
                         htmlFor="emergencyContact"
                       >
                         Contact Number
@@ -447,12 +453,12 @@ const personal={
           </div>
         </div>
         <div id="formPage-2" className={currentForm == 1 ? "" : "hidden"}>
-          <h2 className="font-bold text-2xl w-fit mt-5 mb-8">
+          <h2 className="font-bold text-2xl w-fit mt-5 mb-8 dark:text-white">
             Employee Information
           </h2>
           <div className="grid grid-cols-2 gap-x-4">
             <div className="col-span-1 w-full flex flex-col mb-4">
-              <label className="block text-gray-700 text-md font-bold mb-2" htmlFor="role">Role</label>
+              <label className="block text-gray-700 text-md font-bold mb-2 dark:text-white" htmlFor="role">Role</label>
               <select
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 name="role"
@@ -469,30 +475,35 @@ const personal={
                 }
               </select>
             </div>
-            <div className="col-span-1 w-full flex flex-col mb-4">
-              <label className="block text-gray-700 text-md font-bold mb-2" htmlFor="department">Department</label>
-              <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                type="text"
-                name="department"
-                id="department"
-                value={personalInfo.department}
-                onChange={handlePersonalChange}
-              />
+            {
+              isDriver==null || isDriver?._id !== personalInfo.role  &&
+              <>
+              <div className="col-span-1 w-full flex flex-col mb-4">
+                <label className="block text-gray-700 text-md font-bold mb-2 dark:text-white" htmlFor="department">Department</label>
+                <input
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  type="text"
+                  name="department"
+                  id="department"
+                  value={personalInfo.department}
+                  onChange={handlePersonalChange}
+                />
+              </div>
+              <div className="col-span-1 w-full flex flex-col mb-4">
+                <label className="block text-gray-700 text-md font-bold mb-2 dark:text-white" htmlFor="jobTitle">Job Title</label>
+                <input
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  type="text"
+                  name="jobTitle"
+                  id="jobTitle"
+                  value={personalInfo.jobTitle}
+                  onChange={handlePersonalChange}
+                />
             </div>
+            </>
+              }
             <div className="col-span-1 w-full flex flex-col mb-4">
-              <label className="block text-gray-700 text-md font-bold mb-2" htmlFor="jobTitle">Job Title</label>
-              <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                type="text"
-                name="jobTitle"
-                id="jobTitle"
-                value={personalInfo.jobTitle}
-                onChange={handlePersonalChange}
-              />
-            </div>
-            <div className="col-span-1 w-full flex flex-col mb-4">
-              <label className="block text-gray-700 text-md font-bold mb-2" htmlFor="empDate">Employment Date</label>
+              <label className="block text-gray-700 text-md font-bold mb-2 dark:text-white" htmlFor="empDate">Employment Date</label>
               <input
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 type="date"
@@ -503,7 +514,7 @@ const personal={
               />
             </div>
             <div className="col-span-1 w-full flex flex-col mb-4">
-              <label className="block text-gray-700 text-md font-bold mb-2" htmlFor="baseSal">Base Salary</label>
+              <label className="block text-gray-700 text-md font-bold mb-2 dark:text-white" htmlFor="baseSal">Base Salary</label>
               <input
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 type="text"
@@ -518,7 +529,7 @@ const personal={
               isDriver!=null && isDriver?._id == personalInfo.role ? (
                 <>
                 <div className="col-span-1 w-full flex flex-col mb-4">
-              <label className="block text-gray-700 text-md font-bold mb-2" htmlFor="licenceNum">Licence Number</label>
+              <label className="block text-gray-700 text-md font-bold mb-2 dark:text-white" htmlFor="licenceNum">Licence Number</label>
               <input
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 type="text"
@@ -530,7 +541,7 @@ const personal={
               />
             </div>
             <div className="col-span-1 w-full flex flex-col mb-4">
-              <label className="block text-gray-700 text-md font-bold mb-2" htmlFor="licenceDoc">Licence Document</label>
+              <label className="block text-gray-700 text-md font-bold mb-2 dark:text-white" htmlFor="licenceDoc">Licence Document</label>
               <input
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 type="file"
@@ -546,7 +557,7 @@ const personal={
             
 
             <div className="col-span-1 w-full flex flex-col mb-4">
-              <label className="block text-gray-700 text-md font-bold mb-2" htmlFor="status">Status</label>
+              <label className="block text-gray-700 text-md font-bold mb-2 dark:text-white" htmlFor="status">Status</label>
               <select
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 name="status"
@@ -566,7 +577,7 @@ const personal={
           </h2>
           <div className="grid grid-cols-2 gap-x-4">
             <div className="col-span-1 w-full flex flex-col mb-4">
-              <label className="block text-gray-700 text-md font-bold mb-2" htmlFor="email">Email</label>
+              <label className="block text-gray-700 text-md font-bold mb-2 dark:text-white" htmlFor="email">Email</label>
               <input
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 type="email"
@@ -577,7 +588,7 @@ const personal={
               />
             </div>
             <div className="col-span-1 w-full flex flex-col mb-4">
-              <label className="block text-gray-700 text-md font-bold mb-2" htmlFor="password">Password</label>
+              <label className="block text-gray-700 text-md font-bold mb-2 dark:text-white" htmlFor="password">Password</label>
               <input
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 type="password"

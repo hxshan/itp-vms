@@ -4,9 +4,11 @@ import axios from "@/api/axios";
 import { ToastContainer, toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { ClockLoader } from "react-spinners";
+import { useAuthContext } from "@/hooks/useAuthContext";
 
 const VehicleSearch = () => {
   const [data, error, loading, axiosFetch] = useAxios();
+  const { user } = useAuthContext()
   const [reload, setReload] = useState(0);
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(0);
@@ -27,7 +29,12 @@ const VehicleSearch = () => {
   const deactiveVehicle = async (id) => {
     if (confirm("Are you sure you want to deactive the following vehicle?")) {
       try {
-        await axios.patch(`/vehicle/delete/${id}`);
+        await axios.patch(`/vehicle/delete/${id}`,{},{
+          headers:{
+          withCredentials:true,
+          authorization:`Bearer ${user?.accessToken}`
+          }
+        });
         setReload(reload + 1);
         alert('Vehicle deactivated successfully!');
       } catch (error) {
@@ -39,7 +46,12 @@ const VehicleSearch = () => {
   const recoverVehicle = async (id) => {
     if (confirm("Are you sure you want to active the following vehicle?")) {
       try {
-        await axios.patch(`/vehicle/recover/${id}`);
+        await axios.patch(`/vehicle/recover/${id}`,{},{
+          headers:{
+          withCredentials:true,
+          authorization:`Bearer ${user?.accessToken}`
+          }
+        });
         setReload(reload + 1);
         alert('Vehicle activated successfully!');
       } catch (error) {
@@ -154,16 +166,16 @@ const VehicleSearch = () => {
   const currentChunk = filteredVehicles.slice(startIndex, endIndex);
 
   return (
-    <div className='w-full place-content-center space-y-4 mt-8 bg-cover bg-center mb-10'>
+    <div className='w-full flex mx-0 flex-col justify-center mt-8 bg-cover bg-center mb-10'>
 
       <div className="border-b-4 border-black w-full"></div>
-      <div className='text-2xl font-bold text-black mt-4'>Search Vehicle</div>
+      <div className='text-2xl font-bold  mt-4'>Search Vehicle</div>
 
       <ToastContainer />
 
       <div className='flex justify-end items-center'>
 
-      <div className="text-xm font-semibold text-black mr-5">Search by</div>  
+      <div className="text-xm font-semibold  mr-5">Search by</div>  
 
       <select
         value={stateFilter}
@@ -183,7 +195,8 @@ const VehicleSearch = () => {
         <option value="">All</option>
         <option value="Available">Available</option>
         <option value="Hire">Hire</option>
-        <option value="maintain">Maintain</option>
+        <option value="Maintain">Maintain</option>
+        <option value="Contract">Contract</option>
         <option value="reserved">reserved</option>
       </select>
 
@@ -199,7 +212,7 @@ const VehicleSearch = () => {
    
       </div>
 
-      <table className='w-full border-collapse border-spacing-2 border-black rounded-md pad shadow-xl p-5'>
+      <table className='min-w-full divide-y divide-gray-200 mb-5'>
         <thead className='bg-secondary text-white'>
           <tr>
             <th className='border border-white p-2'>Vehicle Category</th>
@@ -213,11 +226,11 @@ const VehicleSearch = () => {
         </thead>
         <tbody>
           {currentChunk.map(vehicle => (
-            <tr className="bg-white border-t border-gray-200" key={vehicle._id}>
-              <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{vehicle.category}</td>
-              <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{vehicle.vehicleType}</td>
-              <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{vehicle.vehicleModel}</td>
-              <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">{vehicle.vehicleRegister}</td>
+            <tr className="bg-white border-t border-gray-200 dark:bg-tablebackgroundDark" key={vehicle._id}>
+              <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200 font-semibold text-center">{vehicle.category}</td>
+              <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200 font-semibold text-center">{vehicle.vehicleType}</td>
+              <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200 font-semibold text-center">{vehicle.vehicleModel}</td>
+              <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200 font-semibold text-center">{vehicle.vehicleRegister}</td>
               <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200 text-center">
                 <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-md ${vehicle.statusVehicle === 'Active' ? 'text-green-500 bg-green-100' : vehicle.statusVehicle === 'Deactive' ? 'text-red-600 bg-red-100' : 'text-orange-600 bg-orange-100'}`}>
                   {vehicle.statusVehicle.toUpperCase()}

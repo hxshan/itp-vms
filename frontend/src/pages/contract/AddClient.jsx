@@ -5,9 +5,12 @@ import axios from "@/api/axios";
 import { ToastContainer, toast } from "react-toastify";
 import { formatVal } from "./constants";
 import Swal from "sweetalert2";
+import { useAuthContext } from "@/hooks/useAuthContext";
 
 const AddClient = () => {
   const navigate = useNavigate();
+
+  const { user } = useAuthContext();
 
   const [openComp, setopenComp] = useState(false);
 
@@ -197,6 +200,10 @@ const AddClient = () => {
       url: `/contract/createClient`,
       requestConfig: {
         data: { ...clientData },
+      },
+      headers: {
+        withCredentials: true,
+        authorization: `Bearer ${user?.accessToken} `,
       },
     });
   };

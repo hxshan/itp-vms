@@ -2,7 +2,7 @@ import React,  { useEffect, useState} from "react";
 import  axios  from "axios";
 import Spinner from "./Spinner";
 import CaseFileSearch from "./CaseFileSearch";
-
+import { useAuthContext } from "@/hooks/useAuthContext";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
@@ -12,7 +12,7 @@ import { ReactToPrint} from 'react-to-print';
 const CaseFileTable = () => {
     const [caseFiles, setCaseFiles] = useState([]);
     const [loading, setLoading] = useState(true);
-
+    const { user } = useAuthContext()
     const [searchTerm, setSearchTerm] = useState("");
     const [filterField, setFilterField] = useState("");
 
@@ -177,11 +177,15 @@ const CaseFileTable = () => {
                                             
                                             </Link>
                                         
+                                        {user?.permissions?.emergencyPermissions?.Delete &&
+
                                             <button className="my-1 mx-1 bg-red-700 text-white py-1 px-4 rounded-md text-sm" onClick={() => deleteCaseFile(caseFile._id)}>
                                                 Delete
                                             </button> 
+                                        }
+                                        {user?.permissions?.emergencyPermissions?.Update &&
                                             < Link to={`/emergency/edit/${caseFile._id}`} className='my-1 mx-1 bg-[#D4D800] text-white py-1 px-4 rounded-md text-sm'>Edit</Link> 
-                                            
+                                        }
                                             </div>
                                     </td>
                                 </tr>

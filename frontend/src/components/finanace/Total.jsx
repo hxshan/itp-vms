@@ -72,10 +72,16 @@ const Total = () => {
               total += expense.licenseCost;
               break;
             case 'Driver Wages':
-              total += expense.driverWages.totalEarning;
+              total += expense.totalEarning;
+              break;
+            case 'Tolls and Parking':
+              total += expense.otherAmount;
+              break;
+            case 'Driver Hire Expense':
+              total += expense.otherAmount;
               break;
             case 'Other':
-              total += expense.other.amount;
+              total += expense.otherAmount;
               break;
             default:
               break;

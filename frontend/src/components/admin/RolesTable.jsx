@@ -62,7 +62,7 @@ const RolesTable = () => {
     );
   }
   return (
-    <div className="w-full">
+    <div className="w-full dark:text-white">
       <div className="w-full flex justify-between mb-4">
         <h2 className="font-bold text-xl underline mb-4">Role List</h2>
         <div className="flex gap-4 w-fit">
@@ -91,11 +91,13 @@ const RolesTable = () => {
                   Role
                 </span>
               </th>
+              {user?.permissions?.userPermissions.Create ===true &&
               <th className="relative px-6 py-3">
                 <span className="text-center text-xs font-bold text-white uppercase tracking-wider">
                   Action
                 </span>
               </th>
+              }
             </tr>
           </thead>
           <tbody>
@@ -113,59 +115,63 @@ const RolesTable = () => {
                       className="bg-white border-t border-gray-200"
                       key={row._id}
                     >
-                      <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">
+                      <td className="px-6 py-2 whitespace-nowrap border-r dark:bg-secondaryDark border-gray-200">
                         {row.name}
                       </td>
-                      {row?.isSystemRole ? (
-                        <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200">
+                      {user?.permissions?.userPermissions.Create ===true && row?.isSystemRole ? (
+                        <td className="px-6 py-2 whitespace-nowrap border-r dark:bg-secondaryDark border-gray-200">
                           <p>System Role cannot be changed</p>
                         </td>
                       ) : (
-                        <td className="px-6 py-2 whitespace-nowrap justify-evenly flex">
-                          <button
-                            className="bg-actionBlue text-white py-1 px-6 rounded-md"
-                            id={row._id}
-                            onClick={(e) => {
-                              navigate(e.target.id);
-                            }}
-                          >
-                            View
-                          </button>
-                          {decodedToken?.UserInfo?.role?.userPermissions[
-                            "Update"
-                          ] && (
+                        <>
+                        {user?.permissions?.userPermissions.Create ===true &&
+                          <td className="px-6 py-2 whitespace-nowrap justify-evenly flex dark:bg-secondaryDark">
                             <button
-                              className="bg-actionGreen text-white py-1 px-6 rounded-md"
+                              className="bg-actionBlue text-white py-1 px-6 rounded-md "
                               id={row._id}
                               onClick={(e) => {
                                 navigate(e.target.id);
                               }}
                             >
-                              Edit
+                              View
                             </button>
-                          )}
+                            {decodedToken?.UserInfo?.role?.userPermissions[
+                              "Update"
+                            ] && (
+                              <button
+                                className="bg-actionGreen text-white py-1 px-6 rounded-md"
+                                id={row._id}
+                                onClick={(e) => {
+                                  navigate(e.target.id);
+                                }}
+                              >
+                                Edit
+                              </button>
+                            )}
 
-                          {decodedToken?.UserInfo?.role?.userPermissions[
-                            "Delete"
-                          ] && (
-                            <button
-                              className="bg-actionRed text-white py-1 px-6 rounded-md"
-                              id={row._id}
-                              onClick={(e) => {
-                                deleteData(e);
-                              }}
-                            >
-                              Delete
-                            </button>
-                          )}
+                            {decodedToken?.UserInfo?.role?.userPermissions[
+                              "Delete"
+                            ] && (
+                              <button
+                                className="bg-actionRed text-white py-1 px-6 rounded-md"
+                                id={row._id}
+                                onClick={(e) => {
+                                  deleteData(e);
+                                }}
+                              >
+                                Delete
+                              </button>
+                            )}
 
-                        </td>
-                      )}
+                          </td>
+                        }
+                        </>
+                      )}  
                     </tr>
                   );
                 })
             ) : (
-              <tr className="bg-white border-t border-gray-200">
+              <tr className="bg-white border-t border-gray-200 ">
                 <td colSpan={roles.length}>No data available</td>
               </tr>
             )}

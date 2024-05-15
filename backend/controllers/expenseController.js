@@ -1,5 +1,6 @@
 const Expense = require('../models/expenseModel');
 const mongoose = require('mongoose');
+const logUserActivity = require("../middleware/logUserActivity");
 
 // Get all expenses
 const getAllExpenses = async (req, res) => {
@@ -72,12 +73,14 @@ const getExpensesBytripId = async (req, res) => {
 const getExpensesByvehicleId = async (req, res) => {
     const { vehicleId } = req.params;
 
+    
     if (!mongoose.Types.ObjectId.isValid(vehicleId)) {
         return res.status(400).json({ error: 'Invalid id' });
     }
 
     try {
-        const expense = await Expense.find({vehicle:vehicleId}).populate('vehicle').populate('tripId').populate('reimbursmentPerson').populate('driverName');
+        const expense = await Expense.find({vehicle:vehicleId,category: { $in: ['Fuel', 'Maintenance and Repairs', 'Insurance', 'Licensing and Permits'] }
+    }).populate('vehicle').populate('tripId').populate('reimbursmentPerson').populate('driverName');
         if (!expense) {
             return res.status(404).json({ error: 'Expense not found' });
         }
@@ -114,8 +117,10 @@ const createExpense = async (req, res) => {
     try {
         const expense = await Expense.create(expenseData);
         console.log(expense)
+        await logUserActivity(req,200,'CREATE',`created Expense`)
         res.status(201).json(expense);
     } catch (error) {
+        await logUserActivity(req,500,'CREATE',`created Expense`)
         res.status(400).json({ error: error.message });
         console.log({ error: error.message })
     }
@@ -134,6 +139,7 @@ const deleteExpense = async (req, res) => {
         if (!expense) {
             return res.status(404).json({ error: 'Expense not found' });
         }
+        await logUserActivity(req,200,'DELETE',`Deleted Expense`)
         res.status(200).json(expense);
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -160,8 +166,10 @@ const updateExpense = async (req, res) => {
         if (!expense) {
             return res.status(404).json({ error: 'Expense not found' });
         }
+        await logUserActivity(req,200,'UPDATE',`Updated Expense`)
         res.status(200).json(expense);
     } catch (error) {
+        await logUserActivity(req,500,'UPDATE',`created new hire`)
         res.status(500).json({ error: error.message });
     }
 }

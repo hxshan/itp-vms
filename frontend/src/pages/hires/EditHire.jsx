@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react'
 
 import axios from '@/api/axios';
 import useAxios from "@/hooks/useAxios";
-
+import { useAuthContext } from "@/hooks/useAuthContext";
 import { ClockLoader } from "react-spinners";
 import Swal from 'sweetalert2';
 
@@ -13,6 +13,7 @@ const EditHire = () => {
     const viewHireData = location.state.viewHireData
 
     const navigate = useNavigate();
+    const { user } = useAuthContext()
 
 
     const [startDate, setStartDate] = useState(viewHireData.startDate);
@@ -64,7 +65,8 @@ const EditHire = () => {
               cusMobile,
               cusNic,
               hireStatus,
-              finalTotal
+              finalTotal,
+              advancedPayment:viewHireData.advancedPayment
           };
   
           const swalWithBootstrapButtons = Swal.mixin({
@@ -93,6 +95,10 @@ const EditHire = () => {
                               data: {
                                   ...editedData
                               }
+                          },
+                          headers:{
+                            withCredentials:true,
+                            authorization:`Bearer ${user?.accessToken}`
                           }
                       });
   
@@ -131,37 +137,37 @@ const EditHire = () => {
   
           console.log("Response:", response.data);
   
-          if (hireStatus === "Active") {
-              // Create income object
-              console.log('cameeee Data:');
-              const incomeData = {
-                  date: new Date(),
-                  vehicle: viewHireData.vehicle, // Assuming viewHireData contains vehicle details
-                  recordedBy: viewHireData.driver, // Change to the actual recorded user ID
-                  source: 'Hire Income',
-                  hirePayment: {
+        //   if (hireStatus === "Active") {
+        //       // Create income object
+        //       console.log('cameeee Data:');
+            //   const incomeData = {
+            //       date: new Date(),
+            //       vehicle: viewHireData.vehicle, // Assuming viewHireData contains vehicle details
+            //       recordedBy: viewHireData.driver, // Change to the actual recorded user ID
+            //       source: 'Hire Income',
+            //       hirePayment: {
 
-                      hirePaymentType: 'Advance Payment', // Assuming it's an advance payment
-                      hire: viewHireData._id,
-                      hireAmount:viewHireData.advancedPayment
-                  },
-                  description: 'Income generated from active hire',
-                  paymentMethod: 'Cash', // Example payment method
-                  status: 'Pending', // Income status
-                  comments: 'Income generated from advance of active hire',
-              };
+            //           hirePaymentType: 'Advance Payment', // Assuming it's an advance payment
+            //           hire: viewHireData._id,
+            //           hireAmount:viewHireData.advancedPayment
+            //       },
+            //       description: 'Income generated from active hire',
+            //       paymentMethod: 'Cash', // Example payment method
+            //       status: 'Pending', // Income status
+            //       comments: 'Income generated from advance of active hire',
+            //   };
   
-              await incomeAxiosFetch({
-                  axiosInstance: axios,
-                  method: 'POST',
-                  url: `/income`,
-                  requestConfig: {
-                      data: {
-                          ...incomeData
-                      }
-                  }
-              })
-          }
+        //     //   await incomeAxiosFetch({
+        //     //       axiosInstance: axios,
+        //     //       method: 'POST',
+        //     //       url: `/income`,
+        //     //       requestConfig: {
+        //     //           data: {
+        //     //               ...incomeData
+        //     //           }
+        //     //       }
+        //     //   })
+        //   }
       } catch (error) {
           console.error("Error:", error);
           alert("An error occurred. Please try again.");

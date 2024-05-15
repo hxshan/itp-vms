@@ -1,115 +1,195 @@
+import Modal from 'react-modal';
 import PropTypes from 'prop-types';
-import { useNavigate } from 'react-router-dom'
-import { useEffect, useState, useRef  } from 'react';
+import { Pie } from 'react-chartjs-2';
 import ReactToPrint from "react-to-print";
+import { usePDF } from 'react-to-pdf';
 
+Modal.setAppElement('#root');
 
-const ViewHire = ({setViewHire , viewHireData}) => {
-
-    ViewHire.propTypes = {
-        setViewHire: PropTypes.func.isRequired,
-        viewHireData: PropTypes.object.isRequired
-      };
-
-      const navigate = useNavigate()
-      const [reload, setReload] = useState(false);
-
-    const cancel = () => {
-        setViewHire(false)
-      }
-
-    const handleEdit = () => {
-      navigate(`/hires/edit/${viewHireData._id}`, {state: {viewHireData} })
+const Report = ({ reportData, setShowReport }) => {
+    if (!reportData) {
+        return null;
     }
 
-    useEffect(() => {
-      if (reload) {
-          window.location.reload();
-      }
-  }, [reload])
+    const {hireCounts, businessPerformance, customerMetrics, combinedMetrics } = reportData;
+    const { toPDF, targetRef } = usePDF({
+        filename: 'page.pdf',
+        options: {
+            format: 'A4',
+            orientation: 'portrait',
+            margin: {
+                top: '10cm',
+                right: '1cm',
+                left: '1cm',
+                bottom: '1cm'
+            },
+        },
+    });
+    
 
-  const ref = useRef(null);
+    const pieData = {
+        labels: ['Top Customers', 'Other Customers'],
+        datasets: [{
+            data: [combinedMetrics.percentageRevenueTopCustomers, 100 - combinedMetrics.percentageRevenueTopCustomers],
+            backgroundColor: ['#FF6384', '#36A2EB'],
+            hoverBackgroundColor: ['#FF6384', '#36A2EB'],
+        }],
+    }
 
-  return (
-    <div>
-        <div className=" absolute  bg-white border-2 border-[#0E6300] w-[75%] mb-6 top-11 right-11 xl:top-5">
-         <div className=' xl:flex xl:flex-col justify-between mx-10 my-5' >
+    const cancel = () => {
+        setShowReport(false);
+    };
 
-          <div ref={ref} className='mx-10 my-5'>
-              <div className='mr-[20px]'>
-                <h1 className="text-2xl underline font-bold text-center mb-5">Trip Details</h1>
 
-                <div className=' xl:flex justify-between'>
-                  <div>
-                  <p className=' text-lg font-semibold leading-8'>Hire ID : &nbsp;&nbsp; {viewHireData._id} </p>
-                    <p className=' text-lg font-semibold leading-8'>Start Date : &nbsp;&nbsp; {new Date(viewHireData.startDate).toLocaleDateString()} </p>
-                    <p className=' text-lg font-semibold leading-8'>End Date : &nbsp;&nbsp; {new Date(viewHireData.endDate).toLocaleDateString()}</p>
-                    <p className=' text-lg font-semibold leading-8'>Start Time : &nbsp;&nbsp; {viewHireData.startTime}</p>
-                    <p className={`text-lg font-semibold leading-8 ${viewHireData.endTime === '' ? 'hidden' : 'block' }`}>End Time : &nbsp;&nbsp; {viewHireData.endTime}</p>
-                    <p className=' text-lg font-semibold leading-8'>Vehicle Type : &nbsp;&nbsp;{viewHireData.vehicleType}</p>
-                    <p className=' text-lg font-semibold leading-8'>Vehicle Sub-Catagory : &nbsp;&nbsp; {viewHireData.vehicle.vehicleType}</p>
-                    <p className=' text-lg font-semibold leading-8'>Air Condition : &nbsp;&nbsp; {viewHireData.airCondition ? "Yes" : "No"}</p>
-                    <p className=' text-lg font-semibold leading-8'>No of Passengers : &nbsp;&nbsp; {viewHireData.passengerCount}</p>
-                  </div>
 
-                  <div>
-                    <p className=' text-lg font-semibold leading-8'>Assigned Vehicle : &nbsp;&nbsp; {viewHireData.vehicle?.vehicleRegister || 'N/A'}</p>
-                    <p className=' text-lg font-semibold leading-8'>Vehicle Model: &nbsp;&nbsp; BMW 5</p>
-                    <p className=' text-lg font-semibold leading-8'>Assigned Driver : &nbsp;&nbsp; {viewHireData.driver?.firstName || 'N/A'}</p>
-                    <p className='text-lg font-semibold leading-8'>Start Point :&nbsp;&nbsp; {viewHireData.startPoint.no} {viewHireData.startPoint.street} {viewHireData.startPoint.city}</p>
-                    <p className=' text-lg font-semibold leading-8'>End Point : &nbsp;&nbsp; {viewHireData.endPoint}</p>
-                    <p className=' text-lg font-semibold leading-8'>Round Trip : &nbsp;&nbsp; {viewHireData.tripType ? "yes" : "No"}</p>
-                    <p className=' text-lg font-semibold leading-8'>Estimated Distance : &nbsp;&nbsp; {viewHireData.estimatedDistance}</p>
-                  </div>
+    const pieDataHireStats = {
+        labels: ['Active', 'Pending', 'Canceled', 'Completed'],
+        datasets: [{
+            data: [
+                hireCounts.active || 0,
+                hireCounts.pending || 0,
+                hireCounts.canceled || 0,
+                hireCounts.completed || 0
+            ],
+            backgroundColor: ['#10B981', '#FBBF24', '#F97316', '#3B82F6'],
+            hoverBackgroundColor: ['#047857', '#B45309', '#B45309', '#1E3A8A'],
+        }],
+    };
+    
+
+    return (
+
+        <Modal
+            isOpen={true}
+            onRequestClose={() => setShowReport(false)}
+            style={{
+              content: {
+                  position: 'absolute',
+                  top: '50%',
+                  left: '50%',
+                  transform: 'translate(-50%, -50%)',
+                  backgroundColor: 'white',
+                  borderWidth: '2px',
+                  borderColor: 'green-600',
+                  width: '80%',
+                  height: '90%',
+                  marginBottom: 'mb-6',
+                  boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+                  padding: 'p-6'
+              },
+              overlay: {
+                  position: 'fixed',
+                  top: '0',
+                  left: '0',
+                  right: '0',
+                  bottom: '0',
+                  backgroundColor: 'transparent',
+                  bgOpacity: '50',
+                  zIndex: '50',
+                  backdropFilter: 'blur(4px)',
+              },
+          }}
+        >
+            <div className='px-10 py-5'>
+                <div className="mb-5 p-6" ref={targetRef}>
+                    <h2 className="text-xl font-bold mb-5 text-center">Month Summery</h2>
+
+                    <div className="mb-5">
+                        <h3 className="text-lg font-semibold mb-2">Hire Statics</h3>
+                        <div className='flex justify-between items-center space-x-10'>
+                            <ul className='leading-loose '>
+                                <li>Total Hires: {hireCounts.totalHires}</li>
+                                <li>Pending Hires: {hireCounts.pending || 'N/A'}</li>
+                                <li>Active Hires: {hireCounts.active || 'N/A'} </li>
+                                <li>Completed Hires: {hireCounts.completed || 'N/A'} </li>
+                                <li>Canceled Hires: {hireCounts.canceled || 'N/A'}</li>
+                            </ul>
+
+                            <div className='w-[300px] h-[300px]'>
+                                <Pie data={pieDataHireStats} />
+                            </div>
+                        </div>                  
+                    </div>
+
+                    {/* Business Performance Metrics */}
+                    <div className="w-full md:w-1/2 mb-5">
+                        <h3 className="text-lg font-semibold mb-2">Business Performance Metrics</h3>
+                        <ul className='leading-loose '>
+                            <li>Total Hires: {hireCounts.totalHires}</li>
+                            <li>Total Revenue: Rs. {businessPerformance?.totalRevenue.toFixed(2) || 'N/A'}</li>
+                            <li>Average Distance: {businessPerformance?.averageDistance.toFixed(2) || 'N/A'} miles</li>
+                            <li>Average Time Taken: {businessPerformance?.averageTimeTaken?.toFixed(2) ?? 'N/A'} hours</li>
+                            <li>Total Advanced Payments: Rs. {businessPerformance?.totalAdvancedPayments.toFixed(2) || 'N/A'}</li>
+                            <li>Average Advanced Payment: Rs. {businessPerformance?.averageAdvancedPayment.toFixed(2) || 'N/A'}</li>
+                        </ul>
+                    </div>
+
+                    {/* Customer Metrics */}
+                    <div className="w-full md:w-1/2 mb-5">
+                        <h3 className="text-lg font-semibold mb-2">Customer Metrics</h3>
+                        <ul className='leading-loose '>
+                            <li>Total Customers: {customerMetrics.totalCustomers}</li>
+                            <li>Total Revenue from Top Customers: Rs. {customerMetrics?.totalRevenueTopCustomers.toFixed(2) || 'N/A'}</li>
+                            <li>Average Distance for Top Customers: {customerMetrics?.averageDistanceTopCustomers.toFixed(2) || 'N/A'} miles</li>
+                            <li>Average Time Taken for Top Customers: {customerMetrics?.averageTimeTakenTopCustomers?.toFixed(2) ?? 'N/A'} hours</li>
+                            <li>Average Spending Per Hire for Top Customers: Rs. {customerMetrics?.averageSpendingPerHireTopCustomers.toFixed(2) || 'N/A'}</li>
+                        </ul>
+                    </div>
+
+                    {/* Combined Metrics */}
+                    <div>
+                        <h3 className="text-lg font-semibold mb-2">Combined Metrics</h3>
+                        <ul className='leading-loose '>
+                            <li>Percentage of Revenue from Top Customers: {combinedMetrics?.percentageRevenueTopCustomers.toFixed(2) || 'N/A'}%</li>
+                        </ul>
+                    </div>
                 </div>
-                
-                
-                
-              </div>
 
-              <div className='mr-[20px]'>
-                <h1 className="text-2xl underline font-bold text-center mb-5">Customer Details</h1>
-
-                
-                <p className=' text-lg font-semibold leading-8'>Customer Name : &nbsp;&nbsp; {viewHireData.cusName}</p>
-                <p className=' text-lg font-semibold leading-8'>Customer Email : &nbsp;&nbsp; {viewHireData.cusEmail}</p>
-                <p className=' text-lg font-semibold leading-8'>Customer Mobile : &nbsp;&nbsp; {viewHireData.cusMobile}</p>
-                <p className=' text-lg font-semibold leading-8'>Customer NIC : &nbsp;&nbsp; {viewHireData.cusNic}</p>
-
-              </div>
-
-              <div className='mr-[20px]'>
-                <h1 className="text-2xl underline font-bold text-center mb-5">Payment info</h1>
-
-                
-                <p className=' text-lg font-semibold leading-8'>Status : &nbsp;&nbsp; {viewHireData.hireStatus}</p>
-                <p className=' text-lg font-semibold leading-8'>Estimated Total : &nbsp;&nbsp; {viewHireData.estimatedTotal}</p>
-                <p className=' text-lg font-semibold leading-8'>Advanced Payment : &nbsp;&nbsp; {viewHireData.advancedPayment}</p>
-                <p className={`text-lg font-semibold leading-8 ${viewHireData.finalTotal === null ? 'hidden' : 'block' }`}>Final Total : &nbsp;&nbsp; {viewHireData.finalTotal}</p>
-
-              </div>
-
-          </div>
+                <div className="flex justify-between">
+                    <button className="py-2 px-6 bg-actionBlue text-white rounded-md mr-4" onClick={cancel}>Cancel</button>
               
+                    <button className="py-2 px-6 text-white bg-actionRed focus:outline-none rounded-md mr-4" onClick={() => toPDF()}>Save</button>  
+                </div>
 
-              <div className='mr-[20px] mt-10 flex justify-between items-baseline'>  
-                <button className="px-4 py-2 bg-gray-300  text-gray-700 rounded-md mr-4 " onClick={cancel}>Cancel</button> 
-                <button className="px-7 py-2 bg-actionGreen text-white rounded-md mr-4" onClick={handleEdit}>Edit</button>
-               
+                
+                
+            </div>
+            
 
-                <ReactToPrint
-                    bodyClass="print-agreement"
-                    content={() => ref.current}
-                    trigger={() => (
-                      <button className="px-4 py-2 text-white bg-actionBlue hover:bg-gray-800 focus:outline-none rounded-md mr-4">Print</button>
-                    )}
-                  />
-              </div>
-              
-          </div>
-        </div>
-    </div>
-  )
-}
+        </Modal>
+        
+    );
+};
 
-export default ViewHire
+Report.propTypes = {
+    reportData: PropTypes.shape({
+        hireCounts: PropTypes.shape({
+            totalHires: PropTypes.number.isRequired,
+            active: PropTypes.number.isRequired,
+            pending: PropTypes.number.isRequired,
+            canceled: PropTypes.number,
+            completed: PropTypes.number.isRequired,
+        }).isRequired,
+        businessPerformance: PropTypes.shape({
+            totalRevenue: PropTypes.number.isRequired,
+            averageDistance: PropTypes.number.isRequired,
+            averageTimeTaken: PropTypes.number,
+            totalAdvancedPayments: PropTypes.number.isRequired,
+            averageAdvancedPayment: PropTypes.number.isRequired,
+        }).isRequired,
+        customerMetrics: PropTypes.shape({
+            totalCustomers: PropTypes.number.isRequired,
+            topCustomers: PropTypes.arrayOf(PropTypes.string).isRequired,
+            totalRevenueTopCustomers: PropTypes.number.isRequired,
+            averageDistanceTopCustomers: PropTypes.number.isRequired,
+            averageTimeTakenTopCustomers: PropTypes.number,
+            averageSpendingPerHireTopCustomers: PropTypes.number.isRequired,
+        }).isRequired,
+        combinedMetrics: PropTypes.shape({
+            percentageRevenueTopCustomers: PropTypes.number.isRequired,
+        }).isRequired,  
+    }),
+    setShowReport: PropTypes.func.isRequired,
+};
+
+export default Report;

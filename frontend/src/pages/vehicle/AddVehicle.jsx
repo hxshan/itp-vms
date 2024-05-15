@@ -1,6 +1,7 @@
 import { useState , useEffect } from 'react';
 import { useNavigate} from 'react-router-dom'
 import axios from 'axios'
+import { useAuthContext } from "@/hooks/useAuthContext";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { CarForm } from '../../components/vehicle/';
@@ -38,11 +39,13 @@ const AddVehicle = () => {
         vehicleBookImage: null,
         vehicleLicenceImage: null,
         vehicleInsuImage: null, 
-        statusVehicle:'Active'   
+        statusVehicle:'Active',
+        categoryCustom:false     
     }
     
     const [formState, setFormState] = useState(initialFormState);
     const [error,setError] = useState('')
+    const { user } = useAuthContext()
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
 
@@ -75,7 +78,14 @@ const AddVehicle = () => {
         setError('')
 
         try {
-          const response = await axios.post(`http://localhost:3000/api/vehicle/`, formState)
+          const response = await axios.post(`http://localhost:3000/api/vehicle/`, formState,
+          {
+            headers:{
+            withCredentials:true,
+            authorization:`Bearer ${user?.accessToken}`
+            }
+          }
+        )
           const newVehicle = await response.data;
           
           if(!newVehicle){
@@ -99,13 +109,13 @@ const AddVehicle = () => {
           <p className="flex flex-col items-center justify-center h-screen text-center">Loading... Please check your internet connection.</p>
         ) : (
 
-        <div className="place-content-center mt-8 bg-cover bg-center">
+        <div className="place-content-center mt-8 bg-cover bg-center dark:text-white">
 
             <div className='flex flex-row justify-between'>
             <h1 className="text-2xl font-bold">Add Vehicle Details</h1>
               <div>
                <button className='mx-1 px-3 py-1 rounded-md bg-actionBlue text-white text-sm text-bold' onClick={() => navigate('custom')}>Add Custom Vehicle</button>
-               <button className='mx-1 px-3 py-1 rounded-md bg-actionBlue text-white text-sm text-bold' onClick={() => navigate('/')}>Dashboard</button>
+               <button className='mx-1 px-3 py-1 rounded-md bg-actionBlue text-white text-sm text-bold' onClick={() => navigate(`/vehicle`)}>Dashboard</button>
               </div>
             </div>
 

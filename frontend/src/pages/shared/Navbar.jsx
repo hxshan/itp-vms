@@ -44,8 +44,8 @@ const Navbar = () => {
     );
   }
   return (
-    <div className="h-screen fixed z-10 top-0 left-0 flex w-20 lg:w-60 dark:border-r dark:border-gray-600 border-opacity-5">
-      <div className=" bg-secondary dark:bg-[#1a1625]  text-white w-64 h-full flex flex-col items-start text-sm pt-[90px] gap-1">
+    <div className="h-screen fixed z-10 top-0 left-0 flex w-20 lg:w-60 dark:border-r dark:border-black border-opacity-5">
+      <div className=" bg-secondary dark:bg-[#12001C]  text-white w-64 h-full flex flex-col items-start text-sm pt-[90px] gap-1">
         {user?.permissions?.userPermissions?.Read && (
           <div className="relative w-full px-4 ">
             <button
@@ -118,9 +118,9 @@ const Navbar = () => {
             <button
               className={`${
                 isOpen.vehicle
-                  ? "bg-navGreen font-bold shadow-green-800 shadow-md"
+                  ? "bg-navGreen dark:bg-navPurple font-bold shadow-teal-900 shadow-md dark:shadow-navPurpleDarker"
                   : " "
-              } w-full flex flex-row py-4 px-4 text-nowrap rounded-md hover:bg-navHoverGreen hover:shadow-green-800 hover:shadow-md focus:outline-none items-center`}
+              } w-full flex flex-row py-4 px-4 text-nowrap rounded-md hover:bg-navHoverGreen hover:shadow-teal-900 dark:hover:shadow-navPurpleDarker hover:shadow-md focus:outline-none dark:hover:bg-navPurple items-center`}
               onClick={() => toggleMenu("vehicle")}
             >
                <div className="w-full flex gap-4 items-center">
@@ -162,9 +162,9 @@ const Navbar = () => {
             <button
               className={`${
                 isOpen.maintenance
-                  ? "bg-navGreen font-bold shadow-green-800 shadow-md"
+                  ? "bg-navGreen dark:bg-navPurple font-bold shadow-teal-900 shadow-md dark:shadow-navPurpleDarker"
                   : " "
-              } w-full flex flex-row py-4 px-4 text-nowrap rounded-md hover:bg-navHoverGreen hover:shadow-green-800 hover:shadow-md focus:outline-none items-center`}
+              } w-full flex flex-row py-4 px-4 text-nowrap rounded-md hover:bg-navHoverGreen hover:shadow-teal-900 dark:hover:shadow-navPurpleDarker hover:shadow-md focus:outline-none dark:hover:bg-navPurple items-center`}
               onClick={() => toggleMenu("maintenance")}
             >
               <div className="w-full flex gap-4 items-center">
@@ -199,7 +199,7 @@ const Navbar = () => {
                   className="w-full py-2 px-4 text-start hover:bg-gray-700 focus:outline-none focus:bg-gray-700"
                   onClick={() => navigate("/maintainsreport")}
                 >
-                  Report
+                 Emergency Requests
                 </button>
               </div>
             )}
@@ -211,9 +211,9 @@ const Navbar = () => {
             <button
               className={`${
                 isOpen.hire
-                  ? "bg-navGreen font-bold shadow-green-800 shadow-md"
+                  ? "bg-navGreen dark:bg-navPurple font-bold shadow-teal-900 shadow-md dark:shadow-navPurpleDarker"
                   : " "
-              } w-full flex flex-row py-4 px-4 text-nowrap rounded-md hover:bg-navHoverGreen hover:shadow-green-800 hover:shadow-md focus:outline-none items-center`}
+              } w-full flex flex-row py-4 px-4 text-nowrap rounded-md hover:bg-navHoverGreen hover:shadow-teal-900 dark:hover:shadow-navPurpleDarker hover:shadow-md focus:outline-none dark:hover:bg-navPurple items-center`}
               onClick={() => toggleMenu("hire")}
             >
               <div className="w-full flex gap-4 items-center">
@@ -244,6 +244,12 @@ const Navbar = () => {
                 >
                   Hire Rates
                 </button>
+                <button
+                  className="w-full py-2 px-4 text-start hover:font-bold  focus:outline-none focus:font-bold"
+                  onClick={() => navigate("/hires/alert")}
+                >
+                  Alert
+                </button>
               </div>
             )}
           </div>
@@ -254,9 +260,9 @@ const Navbar = () => {
             <button
               className={`${
                 isOpen.emergency
-                  ? "bg-navGreen font-bold shadow-green-800 shadow-md"
+                  ? "bg-navGreen dark:bg-navPurple font-bold shadow-teal-900 shadow-md dark:shadow-navPurpleDarker"
                   : " "
-              } w-full flex flex-row py-4 px-4 text-nowrap rounded-md hover:bg-navHoverGreen hover:shadow-green-800 hover:shadow-md focus:outline-none items-center`}
+              } w-full flex flex-row py-4 px-4 text-nowrap rounded-md hover:bg-navHoverGreen hover:shadow-teal-900 dark:hover:shadow-navPurpleDarker hover:shadow-md focus:outline-none dark:hover:bg-navPurple items-center`}
               onClick={() => toggleMenu("emergency")}
             >
               <div className="w-full flex gap-4 items-center">
@@ -270,12 +276,15 @@ const Navbar = () => {
             </button>
             {isOpen.emergency && (
               <div className="ml-6">
+                {user?.permissions?.emergencyPermissions?.Create ==true &&
+
                 <button
                   className="w-full py-2 px-4 text-start hover:font-bold  focus:outline-none focus:font-bold"
                   onClick={() => navigate("/emergency/create")}
                 >
                   Create Case File
                 </button>
+                }
                 <button
                   className="w-full py-2 px-4 text-start hover:font-bold  focus:outline-none focus:font-bold"
                   onClick={() => navigate("/emergency")}
@@ -297,9 +306,9 @@ const Navbar = () => {
             <button
               className={`${
                 isOpen.contract
-                  ? "bg-navGreen font-bold shadow-green-800 shadow-md"
+                  ? "bg-navGreen dark:bg-navPurple font-bold shadow-teal-900 shadow-md dark:shadow-navPurpleDarker"
                   : " "
-              } w-full flex flex-row py-4 px-4 text-nowrap rounded-md hover:bg-navHoverGreen hover:shadow-green-800 hover:shadow-md focus:outline-none items-center`}
+              } w-full flex flex-row py-4 px-4 text-nowrap rounded-md hover:bg-navHoverGreen hover:shadow-teal-900 dark:hover:shadow-navPurpleDarker hover:shadow-md focus:outline-none dark:hover:bg-navPurple items-center`}
               onClick={() => toggleMenu("contract")}
             >
               <div className="w-full flex gap-4 items-center">
@@ -341,9 +350,9 @@ const Navbar = () => {
             <button
               className={`${
                 isOpen.finance
-                  ? "bg-navGreen font-bold shadow-green-800 shadow-md"
+                  ? "bg-navGreen dark:bg-navPurple font-bold shadow-teal-900 shadow-md dark:shadow-navPurpleDarker"
                   : " "
-              } w-full flex flex-row py-4 px-4 text-nowrap rounded-md hover:bg-navHoverGreen hover:shadow-green-800 hover:shadow-md focus:outline-none items-center`}
+              } w-full flex flex-row py-4 px-4 text-nowrap rounded-md hover:bg-navHoverGreen hover:shadow-teal-900 dark:hover:shadow-navPurpleDarker hover:shadow-md focus:outline-none dark:hover:bg-navPurple items-center`}
               onClick={() => toggleMenu("finance")}
             >
               <div className="w-full flex gap-4 items-center">
