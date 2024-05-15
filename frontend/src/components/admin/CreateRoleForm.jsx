@@ -130,13 +130,13 @@ const CreateRoleForm = () => {
   */
 
   return (
-    <div >
-      <h1 className="text-2xl font-bold underline mt-4 mb-8">Create Role</h1>
+    <div className="dark:text-white" >
+      <h1 className="text-2xl font-bold underline mt-4 mb-8 dark:text-white">Create Role</h1>
       <form onSubmit={handleSubmit}>
         <div>
           <div className="col-span-1 w-full flex flex-col mb-4 ">
             <label
-              className="block text-gray-700 text-md font-bold mb-2"
+              className="block text-gray-700 text-md font-bold mb-2 dark:text-white"
               htmlFor="name"
             >
               Role Name
@@ -162,7 +162,7 @@ const CreateRoleForm = () => {
         </div>
 
           <div className='w-full mt-8 rounded-lg'>
-            <table className="min-w-full divide-y divide-gray-200 border-x border-b border-gray-200">
+            <table className="min-w-full divide-y divide-gray-200 border-x border-b border-gray-200 ">
               <thead className="bg-secondary">
                 <tr>
                   <th className="px-6 py-3 text-xs font-bold text-white text-center uppercase tracking-wider border-r border-white">Permissions</th>
@@ -173,7 +173,7 @@ const CreateRoleForm = () => {
                 </tr>
               </thead>
               <tbody>
-                <tr className="bg-white border-t border-gray-200">
+                <tr className="bg-white border-t dark:bg-secondaryDark border-gray-200">
                   <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200 font-semibold">
                     <span>User Permissions</span>
                   </td>
@@ -234,7 +234,7 @@ const CreateRoleForm = () => {
                     />
                   </td>
                 </tr>
-                <tr className="bg-white border-t border-gray-200">
+                <tr className="bg-white border-t border-gray-200 dark:bg-secondaryDark">
                   <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200 font-semibold">
                     <span>vehiclePermissions</span>
                   </td>
@@ -295,7 +295,7 @@ const CreateRoleForm = () => {
                     />
                   </td>
                 </tr>
-                <tr className="bg-white border-t border-gray-200">
+                <tr className="bg-white border-t border-gray-200 dark:bg-secondaryDark">
                   <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200 font-semibold">
                     <span>vehicle Maintenence Permissions</span>
                   </td>
@@ -356,7 +356,7 @@ const CreateRoleForm = () => {
                     />
                   </td>
                 </tr>
-                <tr className="bg-white border-t border-gray-200">
+                <tr className="bg-white border-t border-gray-200 dark:bg-secondaryDark">
                   <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200 font-semibold">
                     <span>Hire Permissions</span>
                   </td>
@@ -417,7 +417,7 @@ const CreateRoleForm = () => {
                     />
                   </td>
                 </tr>
-                <tr className="bg-white border-t border-gray-200">
+                <tr className="bg-white border-t border-gray-200 dark:bg-secondaryDark">
                   <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200 font-semibold">
                     <span>Contract Permissions</span>
                   </td>
@@ -479,7 +479,7 @@ const CreateRoleForm = () => {
                   </td>
                 </tr>
                 
-                <tr className="bg-white border-t border-gray-200">
+                <tr className="bg-white border-t border-gray-200 dark:bg-secondaryDark">
                   <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200 font-semibold">
                     <span>Emergency Managment Permissions</span>
                   </td>
@@ -541,7 +541,7 @@ const CreateRoleForm = () => {
                   </td>
                 </tr>
                 
-                <tr className="bg-white border-t border-gray-200">
+                <tr className="bg-white border-t border-gray-200 dark:bg-secondaryDark">
                   <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200 font-semibold">
                     <span>Finance Permissions</span>
                   </td>

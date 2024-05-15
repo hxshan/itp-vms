@@ -77,7 +77,7 @@ const UserReport = () => {
 
   console.log(user);
   return (
-    <div className="w-full bg-white  rounded-lg shadow-md mb-12 pb-8">
+    <div className="w-full bg-white  rounded-lg shadow-md mb-12 pb-8  ">
       <div ref={ref} className=" flex flex-col px-12 pt-12 pb-0 mt-8">
         <h1 className="text-3xl w-full text-center font-bold mb-8">
           Comprehensive {user?.personal?.role?.name == 'DRIVER'?'Driver':'User'}  Report

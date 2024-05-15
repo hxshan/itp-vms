@@ -71,7 +71,7 @@ useEffect(()=>{
   }
 
   return (
-    <div className="w-full">
+    <div className="w-full dark:text-white">
       <div className="w-full flex justify-between mb-4">
         <h2 className="font-bold text-xl underline mb-4">User List</h2>
         <div className="flex gap-4 w-fit">
