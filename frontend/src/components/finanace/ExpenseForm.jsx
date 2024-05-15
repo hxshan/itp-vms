@@ -138,6 +138,10 @@ const getData = ()=>{
     axiosInstance:axios,
     method:'GET',
     url:'/user/',
+    headers:{
+      withCredentials:true,
+      authorization:`Bearer ${user?.accessToken}`
+    }
    
   })
 }

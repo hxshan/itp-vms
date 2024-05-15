@@ -295,8 +295,7 @@ const updateDocuments = async(req,res) =>{
 const getAllUsers = async (req, res) => {
   try {
     const  user = req.user
-    if(!isAuth(user,'userPermissions.Read')) return res.status(401).json({message:"Unauthorized"})
-    
+   
     let users = await User.find().populate("role");
     if (!users) {
       return res.json([{}]);
