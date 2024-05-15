@@ -30,7 +30,7 @@ router.get('/vehicleIncome/:vehicleid',getIncomebyvehicle)
 router.get('/tripIncome/:tripid',getIncomebytrip)
 
 
-router.post('/',Auth,createIncome)
+router.post('/',createIncome)
    
 
 

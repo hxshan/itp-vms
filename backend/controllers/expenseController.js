@@ -113,14 +113,15 @@ const getdriverWageBydriverId = async (req, res) => {
 const createExpense = async (req, res) => {
     const expenseData = req.body.data;
     console.log(expenseData)
+    console.log("Came herrr")
 
     try {
         const expense = await Expense.create(expenseData);
         console.log(expense)
-        await logUserActivity(req,200,'CREATE',`created Expense`)
+        //await logUserActivity(req,200,'CREATE',`created Expense`)
         res.status(201).json(expense);
     } catch (error) {
-        await logUserActivity(req,500,'CREATE',`created Expense`)
+        //await logUserActivity(req,500,'CREATE',`created Expense`)
         res.status(400).json({ error: error.message });
         console.log({ error: error.message })
     }

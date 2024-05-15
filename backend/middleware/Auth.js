@@ -6,6 +6,7 @@ const Auth = async (req, res, next) =>{
 
    
     const { authorization } = req.method == 'GET'||req.method == 'DELETE' || req.headers.authorization?req.headers:req.body.headers//put patch post req
+    console.log(authorization)
     if(!authorization){
         return res.status(401).json({error:'Auth token required'})
     }

@@ -33,7 +33,7 @@ router.get('/vehicleExpense/:vehicleId', getExpensesByvehicleId)
 router.get('/driverwage/:driverId',getdriverWageBydriverId)
 
 
-router.post('/',Auth,createExpense)
+router.post('/',createExpense)
    
 
 
