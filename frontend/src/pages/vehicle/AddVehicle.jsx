@@ -109,7 +109,7 @@ const AddVehicle = () => {
           <p className="flex flex-col items-center justify-center h-screen text-center">Loading... Please check your internet connection.</p>
         ) : (
 
-        <div className="place-content-center mt-8 bg-cover bg-center">
+        <div className="place-content-center mt-8 bg-cover bg-center dark:text-white">
 
             <div className='flex flex-row justify-between'>
             <h1 className="text-2xl font-bold">Add Vehicle Details</h1>

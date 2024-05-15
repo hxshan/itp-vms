@@ -169,13 +169,13 @@ const VehicleSearch = () => {
     <div className='w-full flex mx-0 flex-col justify-center mt-8 bg-cover bg-center mb-10'>
 
       <div className="border-b-4 border-black w-full"></div>
-      <div className='text-2xl font-bold text-black mt-4'>Search Vehicle</div>
+      <div className='text-2xl font-bold  mt-4'>Search Vehicle</div>
 
       <ToastContainer />
 
       <div className='flex justify-end items-center'>
 
-      <div className="text-xm font-semibold text-black mr-5">Search by</div>  
+      <div className="text-xm font-semibold  mr-5">Search by</div>  
 
       <select
         value={stateFilter}
@@ -226,7 +226,7 @@ const VehicleSearch = () => {
         </thead>
         <tbody>
           {currentChunk.map(vehicle => (
-            <tr className="bg-white border-t border-gray-200" key={vehicle._id}>
+            <tr className="bg-white border-t border-gray-200 dark:bg-tablebackgroundDark" key={vehicle._id}>
               <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200 font-semibold text-center">{vehicle.category}</td>
               <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200 font-semibold text-center">{vehicle.vehicleType}</td>
               <td className="px-6 py-2 whitespace-nowrap border-r border-gray-200 font-semibold text-center">{vehicle.vehicleModel}</td>
