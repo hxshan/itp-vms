@@ -78,6 +78,16 @@ if(error){
                 <option value="failure">Failure</option>
                 
               </select>
+              <select name="action"
+              value={actionFilter}
+              onChange={(e)=>setActionFilter(e.target.value)}
+               className="shadow appearance-none border rounded w-full min-w-40 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                <option value="">Select action type</option>
+                <option value="CREATE">Create</option>
+                <option value="READ">Read</option>
+                <option value="UPDATE">Update</option>
+                <option value="DELETE">Delete</option>
+              </select>
       </div>
       </div>
     <div className="overflow-y-auto rounded-sm ">
@@ -92,7 +102,19 @@ if(error){
         </thead>
         <tbody>
           {
-          activity.length>0 && activity.slice(startIdx,endIdx)?.map((row) => {
+          activity.length>0 && (activity.filter(act=>{
+            if(statusFilter ==='' && actionFilter===''){
+              return act
+            }
+            if(statusFilter !=='' && actionFilter ===''){
+              return act.status === statusFilter
+            }
+            if(statusFilter ==='' && actionFilter !== ''){
+              return act.requestType == actionFilter
+            }
+            return act.status === statusFilter &&  act.requestType == actionFilter
+
+          })).slice(startIdx,endIdx)?.map((row) => {
             let date = new Date(row.date)
             let hours = date.getHours();
             const minutes = date.getMinutes();
