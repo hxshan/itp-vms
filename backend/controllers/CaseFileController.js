@@ -344,7 +344,7 @@ const driverCreateCaseFile = async (req, res) => {
           if (!mongoose.Types.ObjectId.isValid(id)) {
             return res.status(400).json("Invalid case file id");
           }
-          const caseFile = await CaseFile.findById(id).populate("driver") .populate("hire").populate("alert"); 
+          const caseFile = await CaseFile.findById(id).populate("driver") .populate("hire");
             console.log(caseFile)
       
           if (!caseFile) {

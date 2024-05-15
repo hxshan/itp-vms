@@ -43,6 +43,28 @@ const getAlertHire = async (req, res) => {
       res.status(500).json({ message: 'Internal server error' });
     }
   }
+  const getAlertCaseFileById = async (req, res) => {
+  const caseFileId = req.params.id; // Retrieve the caseFile ID from the URL parameters
+  console.log("CaseFile ID:", caseFileId);
+  
+  try {
+    // Search for alerts that have the specified caseFile ID
+    const alerts = await Alert.find({ caseFile: caseFileId })
+      .populate('driver')
+      .populate('vehicle')
+      .populate('hire')
+      .exec();
+
+      console.log("Fetched Alerts:", alerts);
+    // Respond with the found alerts
+    return res.status(200).json(alerts);
+  } catch (error) {
+    console.error('Error fetching Alerts:', error);
+    // Respond with an error message if something goes wrong
+    res.status(500).json({ message: 'Internal server error' });
+  }
+}
+
 
 
   const updateHireStatus = async (req, res) => {
@@ -66,4 +88,4 @@ const getAlertHire = async (req, res) => {
     }
   };
 
-module.exports = {sendAlert, getAlertHire, updateHireStatus}
+module.exports = {sendAlert, getAlertHire, updateHireStatus, getAlertCaseFileById}
