@@ -52,7 +52,7 @@ const exportToPdf = () => {
 
   const headers = ["Driver Name","description","occurenceDate","recordType"]
   var props=["user.firstName","description","occurenceDate","recordType"]
-
+  var today =new Date();
   var columnStyles = {
     0: { cellWidth: 'auto' },
     1: { cellWidth: 40 },
@@ -60,7 +60,7 @@ const exportToPdf = () => {
     3: { cellWidth: 'auto' },
 } 
   var doc = new jsPDF();
-
+  var datestr = "Created on: "+today.toLocaleDateString();
   var filteredData = filteredRecords.map((row) => {
     return headers.map((header, index) => {
       if (index === 0) {
@@ -70,7 +70,7 @@ const exportToPdf = () => {
       }
   });
   });
-
+  doc.text(datestr,20,10)
   autoTable(doc,{
       head: [headers],
       body: filteredData,

@@ -57,7 +57,7 @@ const UserReportTable = ({reload}) => {
 
     const headers = ["First Name","Email","Role","Employment Date","Status"]
     var props=["firstName","email","role","employmentDate","status"]
-  
+    var today =new Date();
     var columnStyles = {
       0: { cellWidth: 'auto' },
       1: { cellWidth: 'auto' },
@@ -66,7 +66,7 @@ const UserReportTable = ({reload}) => {
       4: { cellWidth: 'auto' },
   } 
     var doc = new jsPDF();
-  
+    var datestr = "Created on: "+today.toLocaleDateString();
     var filteredData = filteredUsers.map((row) => {
       return headers.map((header, index) => {
         if (index === 2) {
@@ -76,7 +76,7 @@ const UserReportTable = ({reload}) => {
         }
     });
     });
-
+doc.text(datestr,20,10)
     autoTable(doc,{
       head: [headers],
       body: filteredData,
