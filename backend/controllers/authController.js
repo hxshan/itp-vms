@@ -43,12 +43,14 @@ const login = async (req,res)=>{
         )
 
         const refreshToken = jwt.sign(
-            {"email":user.email},
+            {"id":user._id,
+            "email":user.email},
             process.env.REFRESH_SECRET,
             {expiresIn:'10d'}
         )
         const permissions = user.role
-        return res.status(200).json({accessToken,refreshToken,permissions,email})
+        await user.updateOne({refreshToken:refreshToken}).exec();
+        return res.status(200).json({accessToken,permissions,email})
     }catch(error){
         return res.status(401).json({message:'Unauthorized'})
     }

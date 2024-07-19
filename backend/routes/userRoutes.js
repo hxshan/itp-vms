@@ -53,7 +53,7 @@ const upload = multer({ storage });
 
 //GET
 //router.get('/',Auth,getAllUsers)
-router.get('/',Auth,getAllUsers)
+//router.get('/',Auth,getAllUsers)
 router.get('/userdashboard',getDashboardData)
 router.get('/drivers',getDrivers)
 router.get('/drivers/records',getRecords)
@@ -64,7 +64,7 @@ router.get('/:id',getUserById)
 router.get('/report/:id',getUserDetailsFull)
 
 //POST
-router.post('/',upload.fields([{name:'nicDocument',maxCount:1},{name:'licenceDoc',maxCount:1},{name:'empPhoto',maxCount:1}]),Auth,createUser)
+router.post('/',upload.fields([{name:'nicDocument',maxCount:1},{name:'licenceDoc',maxCount:1},{name:'empPhoto',maxCount:1}]),createUser)
 router.post('/record',createRecord)
 
 //PATCH

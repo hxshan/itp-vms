@@ -92,11 +92,11 @@ const createUser = async (req, res) => {
       return res.status(500).json({ message: err.message });
     }
 
-     console.log(user)
+    //  console.log(user)
     await user.save();
      console.log('saved')
 
-    await logUserActivity(req,200,'CREATE',`created new user ${user.email}`)
+    // await logUserActivity(req,200,'CREATE',`created new user ${user.email}`)
     return res.status(200).json({ message: "User created succesfully" });
   } catch (err) {
     // console.log(err);
