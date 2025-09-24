@@ -13,7 +13,19 @@ const errorHandler = (error,req,res,next) => {
         return next(error)
     }
 
-    res.status(error.code || 500).json({message: error.message || "An unknown error occured"})
+    const statusCode = Number.isInteger(error.code) ? error.code : 500
+    console.error('Error handling request', {
+        route: req.originalUrl,
+        method: req.method,
+        error: {
+            name: error.name,
+            message: error.message,
+            stack: process.env.NODE_ENV === 'production' ? undefined : error.stack
+        }
+    })
+
+    const publicMessage = statusCode >= 500 ? 'Internal server error' : (error.publicMessage || 'Request failed')
+    res.status(statusCode).json({message: publicMessage})
 }
 
 module.exports = {notFound, errorHandler}

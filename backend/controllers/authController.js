@@ -1,5 +1,6 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const crypto = require('crypto')
 const User = require("../models/userModel");
 const Client = require("../models/clientModel")
 
@@ -50,6 +51,8 @@ const login = async (req,res)=>{
         )
         const permissions = user.role
         await user.updateOne({refreshToken:refreshToken}).exec();
+        const csrfToken = crypto.randomBytes(32).toString('hex')
+        res.cookie('XSRF-TOKEN', csrfToken, { sameSite: 'Lax', secure: true })
         return res.status(200).json({accessToken,permissions,email})
     }catch(error){
         return res.status(401).json({message:'Unauthorized'})
@@ -88,6 +91,8 @@ const clientLogin = async (req,res)=>{
             {expiresIn:'10d'}
         )
         
+        const csrfToken = crypto.randomBytes(32).toString('hex')
+        res.cookie('XSRF-TOKEN', csrfToken, { sameSite: 'Lax', secure: true })
         return res.status(200).json({id:user._id,accessToken,refreshToken,email})
     }catch(error){
         return res.status(401).json({message:'Unauthorized'})
@@ -97,8 +102,13 @@ const clientLogin = async (req,res)=>{
 
 const refresh = (req,res) =>{
     const cookie = req.cookies;
-    console.log(cookie)
     if(!cookie.jwt) return res.status(401).json({message:'Unauthorized'})
+
+    const csrfHeader = req.get('X-CSRF-Token')
+    const csrfCookie = req.cookies['XSRF-TOKEN']
+    if(!csrfHeader || !csrfCookie || csrfHeader !== csrfCookie){
+        return res.status(403).json({message:'Forbidden'})
+    }
 
     const refreshToken = cookie.jwt
 
@@ -134,7 +144,7 @@ const refresh = (req,res) =>{
 const logout = (req,res) =>{
     const cookie = req.cookies
     if(!cookie.jwt) return res.sendStatus(204)
-    res.clearCookie('jwt',{httpOnly:true,sameSite:None,secure:true})
+    res.clearCookie('jwt',{httpOnly:true,sameSite:'Lax',secure:true})
     res.json({message:'cookie cleared'})
 
 }

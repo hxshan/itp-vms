@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const corsOptions = require("./config/corsOptions");
 const coookieParser = require('cookie-parser')
-
+require('dotenv').config();
 
 const app = express();
 

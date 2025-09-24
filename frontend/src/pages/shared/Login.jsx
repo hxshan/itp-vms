@@ -25,10 +25,18 @@ const Login = () => {
   useEffect(()=>{
     if(user?.accessToken){
       const decodedToken = jwtDecode(user.accessToken)
-      console.log(decodedToken)
-      const intendedPath = decodedToken?.UserInfo?.path;
-      if(intendedPath)
-        navigate(`/${intendedPath}`)
+      const rawPath = decodedToken?.UserInfo?.path;
+      const allowed = new Set([
+        'admin',
+        'vehicle',
+        'Mdashboard',
+        'hires',
+        'Contract/Dashbored',
+        'emergency',
+        'finance/financeDashboard',
+      ])
+      const safePath = allowed.has(rawPath) ? `/${rawPath}` : '/'
+      navigate(safePath)
     }   
   },[user])
 
