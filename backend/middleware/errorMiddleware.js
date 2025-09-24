@@ -1,31 +1,27 @@
 //Unsupported (404) routes
 
 const notFound = (req,res,next) => {
-    const error = new Error (`Not found - ${req.originalUrl}`)
-    res.status(404)
+    const error = new Error('Not found')
+    error.statusCode = 404
     next(error)
 }
 
 
 //Middleware to handle Error
 const errorHandler = (error,req,res,next) => {
-    if(res.headerSent){
+    if(res.headersSent){
         return next(error)
     }
 
-    const statusCode = Number.isInteger(error.code) ? error.code : 500
-    console.error('Error handling request', {
-        route: req.originalUrl,
-        method: req.method,
-        error: {
-            name: error.name,
-            message: error.message,
-            stack: process.env.NODE_ENV === 'production' ? undefined : error.stack
-        }
-    })
 
-    const publicMessage = statusCode >= 500 ? 'Internal server error' : (error.publicMessage || 'Request failed')
-    res.status(statusCode).json({message: publicMessage})
+    const status = error.statusCode || error.code || 500
+    const isProd = process.env.NODE_ENV === 'production'
+
+    const errorId = Date.now().toString()
+    console.error(`[${errorId}]`, error)
+
+    const payload = { message: status === 404 ? 'Resource not found' : 'Internal server error', errorId }
+    return res.status(status).json(isProd ? payload : payload)
 }
 
 module.exports = {notFound, errorHandler}
