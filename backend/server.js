@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const corsOptions = require("./config/corsOptions");
 const coookieParser = require('cookie-parser')
+require('dotenv').config();
 const helmet = require('helmet')
 const mongoSanitize = require('express-mongo-sanitize')
 const path = require('path')

@@ -8,8 +8,9 @@ const getAllExpenses = async (req, res) => {
         const expenses = await Expense.find({}).populate('vehicle').populate('tripId').populate('reimbursmentPerson').populate('driverName').sort({ createdAt: -1 });
         res.status(200).json(expenses);
     } catch (error) {
-        console.error(error)
-        res.status(500).json({ error: 'Internal server error' });
+        console.error('getAllExpenses failed', error)
+        res.status(500).json({ message: 'Internal server error' });
+
     }
 }
 
@@ -28,8 +29,9 @@ const getExpense = async (req, res) => {
         }
         res.status(200).json(expense);
     } catch (error) {
-        console.error(error)
-        res.status(500).json({ error: 'Internal server error' });
+        console.error('getExpense failed', error)
+        res.status(500).json({ message: 'Internal server error' });
+
     }
 }
 
@@ -48,8 +50,9 @@ const getReimbursmentByDriverId = async (req, res) => {
         }
         res.status(200).json(expense);
     } catch (error) {
-        console.error(error)
-        res.status(500).json({ error: 'Internal server error' });
+        console.error('getReimbursmentByDriverId failed', error)
+        res.status(500).json({ message: 'Internal server error' });
+
     }
 }
 
@@ -68,8 +71,9 @@ const getExpensesBytripId = async (req, res) => {
         }
         res.status(200).json(expense);
     } catch (error) {
-        console.error(error)
-        res.status(500).json({ error: 'Internal server error' });
+        console.error('getExpensesBytripId failed', error)
+        res.status(500).json({ message: 'Internal server error' });
+
     }
 }
 
@@ -90,8 +94,10 @@ const getExpensesByvehicleId = async (req, res) => {
         }
         res.status(200).json(expense);
     } catch (error) {
-        console.error(error)
-        res.status(500).json({ error: 'Internal server error' });
+
+        console.error('getExpensesByvehicleId failed', error)
+        res.status(500).json({ message: 'Internal server error' });
+
     }
 }
 
@@ -109,8 +115,10 @@ const getdriverWageBydriverId = async (req, res) => {
         }
         res.status(200).json(expense);
     } catch (error) {
-        console.error(error)
-        res.status(500).json({ error: 'Internal server error' });
+
+        console.error('getdriverWageBydriverId failed', error)
+        res.status(500).json({ message: 'Internal server error' });
+
     }
 }
 
@@ -118,18 +126,17 @@ const getdriverWageBydriverId = async (req, res) => {
 // Create a new expense
 const createExpense = async (req, res) => {
     const expenseData = req.body.data;
-    console.log(expenseData)
-    console.log("Came herrr")
 
     try {
         const expense = await Expense.create(expenseData);
-        console.log(expense)
         //await logUserActivity(req,200,'CREATE',`created Expense`)
         res.status(201).json(expense);
     } catch (error) {
         //await logUserActivity(req,500,'CREATE',`created Expense`)
-        console.error(error)
-        res.status(400).json({ error: 'Bad request' });
+
+        console.error('createExpense failed', error)
+        res.status(400).json({ message: 'Bad request' });
+
     }
 }
 
@@ -149,17 +156,19 @@ const deleteExpense = async (req, res) => {
         await logUserActivity(req,200,'DELETE',`Deleted Expense`)
         res.status(200).json(expense);
     } catch (error) {
-        console.error(error)
-        res.status(500).json({ error: 'Internal server error' });
+
+        console.error('deleteExpense failed', error)
+        res.status(500).json({ message: 'Internal server error' });
+
     }
 }
 
 // Update an expense
 const updateExpense = async (req, res) => {
-    console.log("cameon")
+    
     const { id } = req.params;
 
-    console.log(req.body )
+    
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
         return res.status(400).json({ error: 'Invalid id' });
@@ -170,7 +179,7 @@ const updateExpense = async (req, res) => {
 
             ...req.body.data
         })
-        console.log(expense)
+        
         if (!expense) {
             return res.status(404).json({ error: 'Expense not found' });
         }
@@ -178,8 +187,10 @@ const updateExpense = async (req, res) => {
         res.status(200).json(expense);
     } catch (error) {
         await logUserActivity(req,500,'UPDATE',`created new hire`)
-        console.error(error)
-        res.status(500).json({ error: 'Internal server error' });
+
+        console.error('updateExpense failed', error)
+        res.status(500).json({ message: 'Internal server error' });
+
     }
 }
 

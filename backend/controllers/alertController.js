@@ -2,8 +2,6 @@ const Alert = require('../models/alertModel')
 
 const sendAlert = async (req , res) => {
     try {
-
-      console.log("insitekfjdfgkjnfgkjdfg")
         const {
             driver,
             vehicle,
@@ -17,7 +15,7 @@ const sendAlert = async (req , res) => {
             hire,
             caseFile
         })
-        console.log(newAlert)
+        
 
         
         await newAlert.save()
@@ -45,7 +43,6 @@ const getAlertHire = async (req, res) => {
   }
   const getAlertCaseFileById = async (req, res) => {
   const caseFileId = req.params.id; // Retrieve the caseFile ID from the URL parameters
-  console.log("CaseFile ID:", caseFileId);
   
   try {
     // Search for alerts that have the specified caseFile ID
@@ -55,7 +52,7 @@ const getAlertHire = async (req, res) => {
       .populate('hire')
       .exec();
 
-      console.log("Fetched Alerts:", alerts);
+      
     // Respond with the found alerts
     return res.status(200).json(alerts);
   } catch (error) {

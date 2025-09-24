@@ -50,7 +50,6 @@ const createUser = async (req, res) => {
  
     const nicDocumentPath = "";
     const empPhotoName=req?.files?.empPhoto[0]?.filename;
-    console.log("nic passed")
     // console.log(empPhotoName)
     //match front and back names
     const user = new User({
@@ -89,17 +88,18 @@ const createUser = async (req, res) => {
       user.emergencyContacts = emergencyContactIds;
       
     } catch (err) {
-      return res.status(500).json({ message: err.message });
+      console.error('Emergency contact creation failed', err)
+      return res.status(500).json({ message: 'Internal server error' });
     }
 
-    //  console.log(user)
     await user.save();
-     console.log('saved')
+    
 
     // await logUserActivity(req,200,'CREATE',`created new user ${user.email}`)
     return res.status(200).json({ message: "User created succesfully" });
-    } catch (err) {
-    console.error(err)
+  } catch (err) {
+    console.error('createUser failed', err);
+
     return res.status(500).json({ message: 'Internal server error' });
   }
 };
@@ -129,7 +129,7 @@ const updateUserPersonal = async(req,res) =>{
     } = req.body.data;
 
     let passwordToStore=''
-    console.log(req.body.data);
+    
     if (!firstName || !lastName || !email)
       return res.status(400).json({ msg: "Not all fields have been entered." });
     
@@ -171,7 +171,8 @@ const updateUserPersonal = async(req,res) =>{
 
     //return res.status(200).json({ message: "User Updated succesfully" });
   } catch (err) {
-    console.error(err)
+    console.error('updateUserPersonal failed', err);
+
     return res.status(500).json({ message: 'Internal server error' });
   }
 
@@ -201,7 +202,8 @@ const deleteContact = async(req,res) =>{
     return res.status(200).json({ message: 'Delete Succesfull' });
     
   }catch(err){
-    console.error(err)
+    console.error('deleteContact failed', err)
+
     return res.status(500).json({ message: 'Internal server error' });
   }
 }
@@ -250,8 +252,9 @@ const updateContact = async(req,res) =>{
 
     return res.status(200).json({ message: "Update Succesfull" });
   }catch(error){
-    console.error(error)
-    return res.status(500).json({ message: "Internal server error"});
+    console.error('updateContact failed', error)
+    return res.status(500).json({ message: "Internal Server Error"});
+
   }
 }
 
@@ -292,7 +295,9 @@ const updateDocuments = async(req,res) =>{
     
     return res.status(200).json({message:'Success'})
   }catch(error){
-    console.error(error)
+
+    console.error('updateDocuments failed', error)
+
     return res.status(500).json({message:'Internal server error'})
   }
 
@@ -391,8 +396,8 @@ const getUserById = async (req,res)=>{
     if(!user) return res.status(404).json({message:'User Not Found'})
     return res.status(200).json(user)
   }catch(error){
-    // console.log(error);
-    return res.status(404).json({message:JSON.stringify(error.message)})
+    console.error('getUserById failed', error);
+    return res.status(404).json({message:'User Not Found'})
   }
     
 }
@@ -422,7 +427,8 @@ const getUserDetailsFull = async (req,res)=>{
     const userDetail={totalHire,completedHires,pendingHires,cancelled,records,personal:user}  
     return res.status(200).json(userDetail)
   }catch(error){
-    return res.status(404).json({message:JSON.stringify(error.message)})
+    console.error('getUserDetailsFull failed', error)
+    return res.status(500).json({message:'Internal Server Error'})
   }
 } 
 
@@ -438,7 +444,7 @@ const getRecords = async (req,res) =>{
     return res.status(200).json(activeRecords);
 
   }catch(error){
-    console.log(error)
+    console.error('getRecords failed', error)
     return res.status(500).json({message:'Internal Server Error'})
   }
 }
@@ -453,8 +459,9 @@ const getRecordByRecordId = async (req,res)=>{
     return res.status(200).json(record);
 
   }catch(err){
-    console.error(err)
-    return res.status(500).json({message:'Internal server error'})
+    console.error('getRecordByRecordId failed', err)
+    return res.status(500).json({message:'Internal Server Error'})
+
   }
 }
 
@@ -469,8 +476,9 @@ const deleteRecord = async(req,res)=>{
     await logUserActivity(req,200,'DELETE',`deleted performance record`)
     return res.status(200).json({ message: "Record Deleted Successfully"});
   }catch(err){
-    console.error(err)
-    return res.status(500).json({ message: "Internal server error"});
+    console.error('deleteRecord failed', err)
+    return res.status(500).json({ message: "Unexpected error occured"});
+
   }
 }
 
@@ -499,8 +507,9 @@ const resetPassword = async(req,res)=>{
     await logUserActivity(req,200,'UPDATE',`Reset their password`)  
     return res.status(200).json({message:'succesfull'})
   }catch(error){
-    console.error(error)
-    return res.status(500).json({message:'Internal server error'})
+    console.error('resetPassword failed', error)
+    return res.status(500).json({message:'internal server Error'})
+
   }
 }
 

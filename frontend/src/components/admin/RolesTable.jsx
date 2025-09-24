@@ -129,8 +129,8 @@ const RolesTable = () => {
                             <button
                               className="bg-actionBlue text-white py-1 px-6 rounded-md "
                               id={row._id}
-                              onClick={(e) => {
-                                navigate(e.target.id);
+                              onClick={() => {
+                                navigate(`/admin/roles/${row._id}`);
                               }}
                             >
                               View
@@ -141,8 +141,8 @@ const RolesTable = () => {
                               <button
                                 className="bg-actionGreen text-white py-1 px-6 rounded-md"
                                 id={row._id}
-                                onClick={(e) => {
-                                  navigate(e.target.id);
+                                onClick={() => {
+                                  navigate(`/admin/roles/${row._id}`);
                                 }}
                               >
                                 Edit
