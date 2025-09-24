@@ -24,7 +24,7 @@ const login = async (req,res)=>{
         if(!safeEmail||!password) return res.status(400).json({message:'All felds must be filled'})
         
         const user = await User.findOne({ email: safeEmail }).populate('role').exec();
-
+  
         if(!user) return res.status(401).json({message:'No such User'})
         if(user.status=='inactive') return res.status(401).json({message:`Account is ${user.status}`})
 

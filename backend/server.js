@@ -12,15 +12,6 @@ const path = require('path')
 
 const app = express();
 
-app.use(helmet());
-app.use(helmet.contentSecurityPolicy({
-  useDefaults: true,
-  directives: { defaultSrc: ["'self'"] }
-}));
-app.use(mongoSanitize()); // strips keys starting with $ or containing .
-
-mongoose.set('sanitizeFilter', true);
-
 app.use(express.json());
 // Security headers + CSP
 app.use(helmet({
