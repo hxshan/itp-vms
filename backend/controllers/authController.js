@@ -31,9 +31,14 @@ const login = async (req,res)=>{
 
     try{
         const {email,password}=req.body
-        if(!email||!password) return res.status(400).json({message:'All felds must be filled'})
-        const user =await User.findOne({email}).populate('role').exec()
-
+        if (typeof email !== 'string' || typeof password !== 'string') {
+            return res.status(400).json({ message: 'Invalid input' });
+        }
+        const safeEmail = email.trim().toLowerCase();
+        if(!safeEmail||!password) return res.status(400).json({message:'All felds must be filled'})
+        
+        const user = await User.findOne({ email: safeEmail }).populate('role').exec();
+  
         if(!user) return res.status(401).json({message:'No such User'})
         if(user.status=='inactive') return res.status(401).json({message:`Account is ${user.status}`})
 
@@ -64,7 +69,7 @@ const login = async (req,res)=>{
         )
         const permissions = user.role
         await user.updateOne({refreshToken:refreshToken}).exec();
-        return res.status(200).json({accessToken,permissions,email})
+        return res.status(200).json({accessToken,permissions,email: safeEmail})
     }catch(error){
         return res.status(401).json({message:'Unauthorized'})
     }
@@ -73,8 +78,12 @@ const login = async (req,res)=>{
 const clientLogin = async (req,res)=>{
     try{
         const {email,password}=req.body
-        if(!email||!password) return res.status(400).json({message:'All felds must be filled'})
-        const user =await Client.findOne({email}).exec()
+        if (typeof email !== 'string' || typeof password !== 'string') {
+            return res.status(400).json({ message: 'Invalid input' });
+        }
+        const safeEmail = email.trim().toLowerCase();
+        if(!safeEmail||!password) return res.status(400).json({message:'All felds must be filled'})
+        const user =await Client.findOne({email: safeEmail}).exec()
 
         if(!user) return res.status(401).json({message:'No such User'})
         if(user.status=='inactive') return res.status(401).json({message:`Account is ${user.status}`})
@@ -102,7 +111,7 @@ const clientLogin = async (req,res)=>{
             {expiresIn:'10d'}
         )
         
-        return res.status(200).json({id:user._id,accessToken,refreshToken,email})
+        return res.status(200).json({id:user._id,accessToken,refreshToken,email: safeEmail})
     }catch(error){
         return res.status(401).json({message:'Unauthorized'})
     }
