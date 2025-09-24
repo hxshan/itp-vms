@@ -98,9 +98,9 @@ const createUser = async (req, res) => {
 
     // await logUserActivity(req,200,'CREATE',`created new user ${user.email}`)
     return res.status(200).json({ message: "User created succesfully" });
-  } catch (err) {
-    // console.log(err);
-    return res.status(500).json({ message: err.message });
+    } catch (err) {
+    console.error(err)
+    return res.status(500).json({ message: 'Internal server error' });
   }
 };
 
@@ -171,8 +171,8 @@ const updateUserPersonal = async(req,res) =>{
 
     //return res.status(200).json({ message: "User Updated succesfully" });
   } catch (err) {
-     console.log(err);
-    return res.status(500).json({ message: err.message });
+    console.error(err)
+    return res.status(500).json({ message: 'Internal server error' });
   }
 
 }
@@ -201,7 +201,8 @@ const deleteContact = async(req,res) =>{
     return res.status(200).json({ message: 'Delete Succesfull' });
     
   }catch(err){
-    return res.status(500).json({ message: err.message });
+    console.error(err)
+    return res.status(500).json({ message: 'Internal server error' });
   }
 }
 
@@ -249,7 +250,8 @@ const updateContact = async(req,res) =>{
 
     return res.status(200).json({ message: "Update Succesfull" });
   }catch(error){
-    return res.status(500).json({ message: "Internal Server Error"});
+    console.error(error)
+    return res.status(500).json({ message: "Internal server error"});
   }
 }
 
@@ -290,8 +292,8 @@ const updateDocuments = async(req,res) =>{
     
     return res.status(200).json({message:'Success'})
   }catch(error){
-    // console.log(error)
-    return res.status(500).json({message:JSON.stringify(error)})
+    console.error(error)
+    return res.status(500).json({message:'Internal server error'})
   }
 
 }
@@ -355,7 +357,8 @@ const setUserAsDeleted=async (req,res)=>{
     await logUserActivity(req,200,'DELETE','deleted a user') 
     return res.status(200).json(updateduser);
   }catch(err){
-    return res.status(500).json({message:"Internal Sever Error"})
+    console.error(err)
+    return res.status(500).json({message:"Internal server error"})
   }
 }
 
@@ -450,7 +453,8 @@ const getRecordByRecordId = async (req,res)=>{
     return res.status(200).json(record);
 
   }catch(err){
-    return res.status(500).json({message:'Internal Server Error'})
+    console.error(err)
+    return res.status(500).json({message:'Internal server error'})
   }
 }
 
@@ -465,7 +469,8 @@ const deleteRecord = async(req,res)=>{
     await logUserActivity(req,200,'DELETE',`deleted performance record`)
     return res.status(200).json({ message: "Record Deleted Successfully"});
   }catch(err){
-    return res.status(500).json({ message: "Unexpected error occured"});
+    console.error(err)
+    return res.status(500).json({ message: "Internal server error"});
   }
 }
 
@@ -494,7 +499,8 @@ const resetPassword = async(req,res)=>{
     await logUserActivity(req,200,'UPDATE',`Reset their password`)  
     return res.status(200).json({message:'succesfull'})
   }catch(error){
-    return res.status(500).json({message:'internal server Error'})
+    console.error(error)
+    return res.status(500).json({message:'Internal server error'})
   }
 }
 
@@ -508,7 +514,8 @@ const getUserActivity=async(req,res)=>{
    
     res.status(200).json(activity);
   } catch (error) {
-    res.status(500).json({ message: "Error fetching activity" });
+    console.error(error)
+    res.status(500).json({ message: "Internal server error" });
   }
 }
 const getLatestUserActivity=async(req,res)=>{
@@ -519,8 +526,8 @@ const getLatestUserActivity=async(req,res)=>{
     }
     res.status(200).json(activity);
   } catch (error) {
-
-    res.status(500).json({ message: "Error fetching activity" });
+    console.error(error)
+    res.status(500).json({ message: "Internal server error" });
   }
 }
 
