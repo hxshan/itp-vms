@@ -1,16 +1,55 @@
 require("dotenv").config("");
+
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const corsOptions = require("./config/corsOptions");
 const coookieParser = require('cookie-parser')
+const helmet = require('helmet')
+const mongoSanitize = require('express-mongo-sanitize')
+const path = require('path')
 
 
 const app = express();
 
+app.use(helmet());
+app.use(helmet.contentSecurityPolicy({
+  useDefaults: true,
+  directives: { defaultSrc: ["'self'"] }
+}));
+app.use(mongoSanitize()); // strips keys starting with $ or containing .
+
+mongoose.set('sanitizeFilter', true);
 
 app.use(express.json());
-app.use(express.static('uploads'))
+// Security headers + CSP
+app.use(helmet({
+  crossOriginResourcePolicy: { policy: 'same-site' }
+}))
+app.use(helmet.contentSecurityPolicy({
+  useDefaults: true,
+  directives: {
+    defaultSrc: ["'self'"],
+    scriptSrc: ["'self'"],
+    styleSrc: ["'self'", "'unsafe-inline'"],
+    imgSrc: ["'self'", 'data:', 'blob:'],
+    connectSrc: ["'self'"],
+    objectSrc: ["'none'"],
+    baseUri: ["'self'"],
+    frameAncestors: ["'self'"],
+  }
+}))
+// NoSQL injection sanitization
+app.use(mongoSanitize())
+// Safer static serving for uploads (prevent inline SVG execution)
+app.use('/uploads', express.static('uploads', {
+  setHeaders: (res, filepath) => {
+    if (path.extname(filepath).toLowerCase() === '.svg') {
+      res.setHeader('Content-Type', 'application/octet-stream')
+      res.setHeader('Content-Disposition', 'attachment')
+    }
+  }
+}))
 app.use(cors(corsOptions));
 app.use(coookieParser())
 const PORT = process.env.PORT || 3000;
@@ -52,6 +91,8 @@ app.use(errorHandler)
 
 
 
+// Sanitize filters at mongoose layer
+mongoose.set('sanitizeFilter', true)
 mongoose.connect(process.env.MONGO_URI).then(() => {
   app.listen(PORT, () => {
     console.log("server listening on port " + PORT);
