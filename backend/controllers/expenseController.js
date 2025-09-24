@@ -8,7 +8,8 @@ const getAllExpenses = async (req, res) => {
         const expenses = await Expense.find({}).populate('vehicle').populate('tripId').populate('reimbursmentPerson').populate('driverName').sort({ createdAt: -1 });
         res.status(200).json(expenses);
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        console.error(error)
+        res.status(500).json({ error: 'Internal server error' });
     }
 }
 
@@ -27,7 +28,8 @@ const getExpense = async (req, res) => {
         }
         res.status(200).json(expense);
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        console.error(error)
+        res.status(500).json({ error: 'Internal server error' });
     }
 }
 
@@ -46,7 +48,8 @@ const getReimbursmentByDriverId = async (req, res) => {
         }
         res.status(200).json(expense);
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        console.error(error)
+        res.status(500).json({ error: 'Internal server error' });
     }
 }
 
@@ -65,7 +68,8 @@ const getExpensesBytripId = async (req, res) => {
         }
         res.status(200).json(expense);
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        console.error(error)
+        res.status(500).json({ error: 'Internal server error' });
     }
 }
 
@@ -86,7 +90,8 @@ const getExpensesByvehicleId = async (req, res) => {
         }
         res.status(200).json(expense);
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        console.error(error)
+        res.status(500).json({ error: 'Internal server error' });
     }
 }
 
@@ -104,7 +109,8 @@ const getdriverWageBydriverId = async (req, res) => {
         }
         res.status(200).json(expense);
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        console.error(error)
+        res.status(500).json({ error: 'Internal server error' });
     }
 }
 
@@ -122,8 +128,8 @@ const createExpense = async (req, res) => {
         res.status(201).json(expense);
     } catch (error) {
         //await logUserActivity(req,500,'CREATE',`created Expense`)
-        res.status(400).json({ error: error.message });
-        console.log({ error: error.message })
+        console.error(error)
+        res.status(400).json({ error: 'Bad request' });
     }
 }
 
@@ -143,7 +149,8 @@ const deleteExpense = async (req, res) => {
         await logUserActivity(req,200,'DELETE',`Deleted Expense`)
         res.status(200).json(expense);
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        console.error(error)
+        res.status(500).json({ error: 'Internal server error' });
     }
 }
 
@@ -171,7 +178,8 @@ const updateExpense = async (req, res) => {
         res.status(200).json(expense);
     } catch (error) {
         await logUserActivity(req,500,'UPDATE',`created new hire`)
-        res.status(500).json({ error: error.message });
+        console.error(error)
+        res.status(500).json({ error: 'Internal server error' });
     }
 }
 
