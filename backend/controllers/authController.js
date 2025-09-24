@@ -1,5 +1,19 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const crypto = require('crypto');
+// Support both CJS and ESM builds of openid-client
+let _openid;
+try {
+    _openid = require('openid-client');
+} catch (e) {
+    console.error('OIDC init failed: openid-client module not found. Did you run "npm i openid-client" in backend?');
+}
+let openidVersion = 'unknown';
+try {
+    openidVersion = require('openid-client/package.json').version;
+} catch {}
+const Issuer = _openid && (_openid.Issuer || (_openid.default && _openid.default.Issuer));
+const generators = _openid && (_openid.generators || (_openid.default && _openid.default.generators));
 const User = require("../models/userModel");
 const Client = require("../models/clientModel")
 
@@ -141,5 +155,136 @@ const logout = (req,res) =>{
 
 
 
+let discoveredIssuer; 
+const getGoogleClient = async () => {
+    if (!Issuer || !generators) {
+        console.error('OIDC init failed: Issuer/generators unavailable. openid-client version =', openidVersion, 'module keys =', _openid && Object.keys(_openid));
+        throw new Error('openid-client not loaded correctly');
+    }
+    if (!discoveredIssuer) {
+        discoveredIssuer = await Issuer.discover('https://accounts.google.com');
+    }
+    return new discoveredIssuer.Client({
+        client_id: process.env.GOOGLE_CLIENT_ID,
+        client_secret: process.env.GOOGLE_CLIENT_SECRET,
+        redirect_uris: [process.env.GOOGLE_REDIRECT_URI],
+        response_types: ['code']
+    });
+};
 
-module.exports = { login, refresh,logout,clientLogin    };
+const googleAuthStart = async (req, res) => {
+    try {
+        const missing = [];
+        if (!process.env.GOOGLE_CLIENT_ID) missing.push('GOOGLE_CLIENT_ID');
+        if (!process.env.GOOGLE_CLIENT_SECRET) missing.push('GOOGLE_CLIENT_SECRET');
+        if (!process.env.GOOGLE_REDIRECT_URI) missing.push('GOOGLE_REDIRECT_URI');
+        if (missing.length) {
+            console.error('OIDC init failed: missing env vars ->', missing.join(', '));
+            return res.status(500).json({ message: `OIDC init failed: missing ${missing.join(', ')}` });
+        }
+        const client = await getGoogleClient();
+        const state = generators.state();
+        const nonce = generators.nonce();
+        res.cookie('oidc_state', state, { httpOnly: true, sameSite: 'lax' });
+        res.cookie('oidc_nonce', nonce, { httpOnly: true, sameSite: 'lax' });
+        const authUrl = client.authorizationUrl({
+            scope: 'openid email profile',
+            prompt: 'consent',
+            state,
+            nonce
+        });
+        return res.redirect(authUrl);
+    } catch (err) {
+        console.error('OIDC init failed:', err && (err.stack || err.message || err));
+        return res.status(500).json({ message: 'OIDC init failed' });
+    }
+};
+
+const googleAuthCallback = async (req, res) => {
+    try {
+        const client = await getGoogleClient();
+        const params = client.callbackParams(req);
+        const stateCookie = req.cookies.oidc_state;
+        const nonceCookie = req.cookies.oidc_nonce;
+        const tokenSet = await client.callback(process.env.GOOGLE_REDIRECT_URI, params, { state: stateCookie, nonce: nonceCookie });
+        const claims = tokenSet.claims();
+        const email = claims.email;
+
+        let user = await User.findOne({ email }).populate('role').exec();
+        if (!user) {
+            const Role = require('../models/roleModel');
+            let defaultRole = await Role.findOne({ name: 'User' }).exec();
+            if (!defaultRole) defaultRole = await Role.findOne({ isSystemRole: true }).exec();
+            if (!defaultRole) defaultRole = await Role.findOne({}).exec();
+            if (!defaultRole) {
+                return res.status(500).json({ message: 'No roles defined. Create at least one role to auto-provision users.' });
+            }
+
+            const fullName = claims.name || '';
+            const [firstName = 'Google', lastName = 'User'] = fullName.split(' ').length > 1
+                ? [fullName.split(' ').slice(0, -1).join(' '), fullName.split(' ').slice(-1).join(' ')]
+                : [fullName || 'Google', 'User'];
+            const randomPassword = crypto.randomBytes(24).toString('hex');
+            const hashed = await bcrypt.hash(randomPassword, 10);
+            user = await User.create({
+                firstName,
+                lastName,
+                middleName: '',
+                gender: 'other',
+                dob: new Date('1970-01-01'),
+                phoneNumber: 'N/A',
+                nicNumber: `AUTO-${crypto.randomBytes(6).toString('hex')}`,
+                nicDocument: '',
+                emergencyContacts: [],
+                email,
+                password: hashed,
+                status: 'active',
+                role: defaultRole._id,
+                department: '',
+                jobTitle: '',
+                employmentDate: new Date(),
+                baseSalary: 0,
+                licenceNumber: '',
+                empPhoto: ''
+            });
+            user = await User.findById(user._id).populate('role').exec();
+        }
+        if (user.status === 'inactive') {
+            return res.status(401).json({ message: `Account is ${user.status}` });
+        }
+
+        const path = decideDashboard(user.role);
+        const accessToken = jwt.sign(
+            {
+                UserInfo: {
+                    id: user._id,
+                    name: user.firstName,
+                    email: user.email,
+                    role: user.role,
+                    path
+                }
+            },
+            process.env.SECRET,
+            { expiresIn: '1d' }
+        );
+        const refreshToken = jwt.sign(
+            { id: user._id, email: user.email },
+            process.env.REFRESH_SECRET,
+            { expiresIn: '10d' }
+        );
+        await user.updateOne({ refreshToken }).exec();
+
+        res.clearCookie('oidc_state');
+        res.clearCookie('oidc_nonce');
+
+       
+        const redirectBase = process.env.FRONTEND_URL || 'http://localhost:5173';
+        const redirectUrl = `${redirectBase}/login/callback?token=${encodeURIComponent(accessToken)}`;
+        return res.redirect(redirectUrl);
+    } catch (err) {
+        return res.status(401).json({ message: 'OIDC callback failed' });
+    }
+};
+
+
+module.exports = { login, refresh, logout, clientLogin, googleAuthStart, googleAuthCallback };
