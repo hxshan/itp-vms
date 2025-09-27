@@ -42,7 +42,7 @@
     "react-to-print": "^2.15.1",
     "react-toastify": "^10.0.5",
     "sweetalert2": "^11.10.7",
-    "tailwind-merge": "^2.2.1",
+    "tailwind-merge": "^2.6.0",
     "tailwindcss-animate": "^1.0.7",
     "xlsx": "^0.18.5"
   },
