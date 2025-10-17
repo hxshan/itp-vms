@@ -27,7 +27,10 @@ const addVehicle = async (req, res, next) => {
                 return next(new HttpError("Please fill all feiled under Documentary.", 400))
             }
 
-            const existingVehicleByRegister = await Vehicles.findOne({ vehicleRegister });
+            if (typeof vehicleRegister !== 'string' || /^\$/.test(vehicleRegister)) {
+                return next(new HttpError("Invalid vehicle register", 400))
+            }
+            const existingVehicleByRegister = await Vehicles.findOne({ vehicleRegister: vehicleRegister.trim() });
             const existingVehicleByModel = await Vehicles.findOne({ vehicleModel });
 
             if (existingVehicleByRegister) {
@@ -64,7 +67,10 @@ const addVehicle = async (req, res, next) => {
                 return next(new HttpError("Please fill all feiled under Documentary.", 400))
             }
 
-            const existingVehicleByRegister = await Vehicles.findOne({ vehicleRegister });
+            if (typeof vehicleRegister !== 'string' || /^\$/.test(vehicleRegister)) {
+                return next(new HttpError("Invalid vehicle register", 400))
+            }
+            const existingVehicleByRegister = await Vehicles.findOne({ vehicleRegister: vehicleRegister.trim() });
             const existingVehicleByModel = await Vehicles.findOne({ vehicleModel });
 
             if (existingVehicleByRegister) {
@@ -101,7 +107,10 @@ const addVehicle = async (req, res, next) => {
                 return next(new HttpError("Please fill all feiled under Documentary.", 400))
             }
             
-            const existingVehicleByRegister = await Vehicles.findOne({ vehicleRegister });
+            if (typeof vehicleRegister !== 'string' || /^\$/.test(vehicleRegister)) {
+                return next(new HttpError("Invalid vehicle register", 400))
+            }
+            const existingVehicleByRegister = await Vehicles.findOne({ vehicleRegister: vehicleRegister.trim() });
             const existingVehicleByModel = await Vehicles.findOne({ vehicleModel });
 
             if (existingVehicleByRegister) {
@@ -165,7 +174,10 @@ const addVehicle = async (req, res, next) => {
 
                 
 
-                  const existingVehicleByRegister = await Vehicles.findOne({ vehicleRegister });
+                  if (typeof vehicleRegister !== 'string' || /^\$/.test(vehicleRegister)) {
+                    return next(new HttpError('Invalid vehicle register', 400));
+                  }
+                  const existingVehicleByRegister = await Vehicles.findOne({ vehicleRegister: vehicleRegister.trim() });
                   const existingVehicleByModel = await Vehicles.findOne({ vehicleModel });
               
                   if (existingVehicleByRegister) {
@@ -267,9 +279,13 @@ const editVehicle = async (req,res,next) => {
 }
 
 //GET : api/vehicle/availability
+const mongoose = require('mongoose')
 const getAvailabilityByVehicleId = async (req, res) => {
 
     const vehicleId = req.params.id; 
+    if (!mongoose.isValidObjectId(vehicleId)) {
+      return res.status(400).json({ message: 'Invalid id' });
+    }
   
     try {
       // Query the database to find the vehicle by ID and populate the availability field
@@ -299,6 +315,9 @@ const getAvailabilityByVehicleId = async (req, res) => {
 const changeStatusVehicle = async (req, res, next) => {
     try {
         const vehicleId = req.params.id;
+        if (!mongoose.isValidObjectId(vehicleId)) {
+            return next(new HttpError('Invalid id', 400));
+        }
         if (!vehicleId) {
             return next(new HttpError("Vehicle ID is missing.", 400));
         }
@@ -325,6 +344,9 @@ const changeStatusVehicle = async (req, res, next) => {
 const recoverVehicle = async (req, res, next) => {
     try {
         const vehicleId = req.params.id;
+        if (!mongoose.isValidObjectId(vehicleId)) {
+            return next(new HttpError('Invalid id', 400));
+        }
         if (!vehicleId) {
             return next(new HttpError("Vehicle ID is missing.", 400));
         }
@@ -349,6 +371,9 @@ const updateMileage = async (req, res, next) => {
         
         const  vehicleId  = req.body.data._id;
         const  Mileage  = req.body.data.lastMileage;
+        if (!mongoose.isValidObjectId(vehicleId)) {
+            return next(new HttpError('Invalid id', 400));
+        }
 
 
         console.log(Mileage)
@@ -379,6 +404,9 @@ const updateMileage = async (req, res, next) => {
 const deleteVehicle = async(req,res,next) => {
     try {
         const vehicleId = req.params.id;
+        if (!mongoose.isValidObjectId(vehicleId)) {
+            return next(new HttpError('Invalid id', 400));
+        }
 
         if(!vehicleId){
             return next(new HttpError("Vehicle deleted.",400))
@@ -399,6 +427,9 @@ const deleteVehicle = async(req,res,next) => {
 const getVehicle = async (req, res, next) => {
     try {
         const vehicleId = req.params.id;
+        if (!mongoose.isValidObjectId(vehicleId)) {
+            return next(new HttpError('Invalid id', 400));
+        }
         
         // Determine the type of vehicle based on its _id
         const vehicles = await Vehicles.findById(vehicleId);

@@ -99,13 +99,16 @@ const createUser = async (req, res) => {
     return res.status(200).json({ message: "User created succesfully" });
   } catch (err) {
     console.error('createUser failed', err);
+
     return res.status(500).json({ message: 'Internal server error' });
   }
 };
 
+const mongoose = require('mongoose')
 const updateUserPersonal = async(req,res) =>{
   try {
     const {id} =req.params;
+    if (!mongoose.isValidObjectId(id)) return res.status(400).json({ message: 'Invalid id' });
     const {
       firstName,
       middleName,
@@ -169,6 +172,7 @@ const updateUserPersonal = async(req,res) =>{
     //return res.status(200).json({ message: "User Updated succesfully" });
   } catch (err) {
     console.error('updateUserPersonal failed', err);
+
     return res.status(500).json({ message: 'Internal server error' });
   }
 
@@ -177,6 +181,7 @@ const updateUserPersonal = async(req,res) =>{
 const deleteContact = async(req,res) =>{
   const {id}= req.params
   try{
+    if (!mongoose.isValidObjectId(id)) return res.status(400).json({ message: 'Invalid id' });
 
     const { ContactId } = req.body.data;
     const user = await User.findById(id)
@@ -198,6 +203,7 @@ const deleteContact = async(req,res) =>{
     
   }catch(err){
     console.error('deleteContact failed', err)
+
     return res.status(500).json({ message: 'Internal server error' });
   }
 }
@@ -205,6 +211,7 @@ const deleteContact = async(req,res) =>{
 const updateContact = async(req,res) =>{
   try{  
     const { id } = req.params
+    if (!mongoose.isValidObjectId(id)) return res.status(400).json({ message: 'Invalid id' });
     const { emergencyContacts } = req.body.data;
     
     const user= await User.findById(id)
@@ -247,12 +254,14 @@ const updateContact = async(req,res) =>{
   }catch(error){
     console.error('updateContact failed', error)
     return res.status(500).json({ message: "Internal Server Error"});
+
   }
 }
 
 const updateDocuments = async(req,res) =>{
 
   const { id } = req.params
+  if (!mongoose.isValidObjectId(id)) return res.status(400).json({ message: 'Invalid id' });
 
   try{
 
@@ -286,7 +295,9 @@ const updateDocuments = async(req,res) =>{
     
     return res.status(200).json({message:'Success'})
   }catch(error){
+
     console.error('updateDocuments failed', error)
+
     return res.status(500).json({message:'Internal server error'})
   }
 
@@ -351,7 +362,8 @@ const setUserAsDeleted=async (req,res)=>{
     await logUserActivity(req,200,'DELETE','deleted a user') 
     return res.status(200).json(updateduser);
   }catch(err){
-    return res.status(500).json({message:"Internal Sever Error"})
+    console.error(err)
+    return res.status(500).json({message:"Internal server error"})
   }
 }
 
@@ -378,6 +390,7 @@ const getUserById = async (req,res)=>{
   
   try{
     const {id} = req.params;
+    if (!mongoose.isValidObjectId(id)) return res.status(400).json({ message: 'Invalid id' });
   
     const user = await User.findById(id).populate('emergencyContacts').populate('role').exec()
     if(!user) return res.status(404).json({message:'User Not Found'})
@@ -392,6 +405,7 @@ const getUserById = async (req,res)=>{
 const getUserDetailsFull = async (req,res)=>{
   try{
     const {id} = req.params;
+    if (!mongoose.isValidObjectId(id)) return res.status(400).json({ message: 'Invalid id' });
   
     const user = await User.findById(id).populate('emergencyContacts').populate('role').exec()
     if(!user) return res.status(404).json({message:'User Not Found'})
@@ -438,6 +452,7 @@ const getRecords = async (req,res) =>{
 const getRecordByRecordId = async (req,res)=>{
   try{
     const {id}=req.params
+    if (!mongoose.isValidObjectId(id)) return res.status(400).json({ message: 'Invalid id' });
     const record = await EmpRecord.findById(id).exec()
 
     if(!record) return res.status(400).json({message:'no record found'});
@@ -446,12 +461,14 @@ const getRecordByRecordId = async (req,res)=>{
   }catch(err){
     console.error('getRecordByRecordId failed', err)
     return res.status(500).json({message:'Internal Server Error'})
+
   }
 }
 
 const deleteRecord = async(req,res)=>{
   const { id } = req.params
   try{
+    if (!mongoose.isValidObjectId(id)) return res.status(400).json({ message: 'Invalid id' });
     if (!id) {
       return res.status(500).json({ message: "Record not found" });
     }
@@ -461,6 +478,7 @@ const deleteRecord = async(req,res)=>{
   }catch(err){
     console.error('deleteRecord failed', err)
     return res.status(500).json({ message: "Unexpected error occured"});
+
   }
 }
 
@@ -468,6 +486,7 @@ const deleteRecord = async(req,res)=>{
 const resetPassword = async(req,res)=>{
   try{
     const {id} = req.params
+    if (!mongoose.isValidObjectId(id)) return res.status(400).json({ message: 'Invalid id' });
     const {currentPwd,newPwd} =req.body.data;
 
     if(!currentPwd) return res.status(401).json({message:'Enter Current Password'})
@@ -490,6 +509,7 @@ const resetPassword = async(req,res)=>{
   }catch(error){
     console.error('resetPassword failed', error)
     return res.status(500).json({message:'internal server Error'})
+
   }
 }
 
@@ -503,7 +523,8 @@ const getUserActivity=async(req,res)=>{
    
     res.status(200).json(activity);
   } catch (error) {
-    res.status(500).json({ message: "Error fetching activity" });
+    console.error(error)
+    res.status(500).json({ message: "Internal server error" });
   }
 }
 const getLatestUserActivity=async(req,res)=>{
@@ -514,8 +535,8 @@ const getLatestUserActivity=async(req,res)=>{
     }
     res.status(200).json(activity);
   } catch (error) {
-
-    res.status(500).json({ message: "Error fetching activity" });
+    console.error(error)
+    res.status(500).json({ message: "Internal server error" });
   }
 }
 
