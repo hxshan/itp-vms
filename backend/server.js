@@ -4,15 +4,18 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const corsOptions = require("./config/corsOptions");
 const coookieParser = require('cookie-parser')
+const helmet = require('helmet')
 
 
 const app = express();
 
 
+app.disable('x-powered-by')
+app.use(helmet())
 app.use(express.json());
-app.use(express.static('uploads'))
 app.use(cors(corsOptions));
 app.use(coookieParser())
+app.use(express.static('uploads'))
 const PORT = process.env.PORT || 3000;
 
 const userRoutes = require('./routes/userRoutes')
