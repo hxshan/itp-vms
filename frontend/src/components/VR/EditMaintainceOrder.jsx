@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import axios from '@/api/axios';
 import { Link } from 'react-router-dom';
 import useAxios from '@/hooks/useAxios';
 
@@ -80,7 +80,7 @@ export const EditMaintainceOrder = () => {
             vrsdate,
             vredate
         };
-        axios.put(`http://localhost:3000/api/vehiclemaintain/${id}`, data)
+        axios.put(`/vehiclemaintain/${id}`, data)
             .then(() => {
                 alert("Updated")
                 navigate('/Mdashboard');
@@ -111,7 +111,7 @@ export const EditMaintainceOrder = () => {
             vrsdate,
             vredate
         };
-        axios.post(`http://localhost:3000/api/vehiclemaintain/expense/${id}`, data)
+        axios.post(`/vehiclemaintain/expense/${id}`, data)
             .then(() => {
                 alert("Completed");
                 navigate('/Mdashboard');

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import axios from 'axios';
+import axios from '@/api/axios';
 import useAxios from '@/hooks/useAxios';
 import { Serviceview } from './Serviceview';
 
@@ -58,7 +58,7 @@ export const Servicenote = () => {
             return;
         }
 
-        axios.post(`http://localhost:3000/api/vehicleService/addservicenote`, formdata)
+        axios.post(`/vehicleService/addservicenote`, formdata)
             .then(response => {
                 console.log('Submission successful:', response);
                 setFormdata({

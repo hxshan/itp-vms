@@ -11,8 +11,11 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use((config) => {
     if (config.method !== 'get') {
-        // Get CSRF token from cookie or meta tag
-        const csrfToken = csrfToken(); 
+        // Get CSRF token from cookie
+        const csrfToken = document.cookie
+            .split('; ')
+            .find(row => row.startsWith('XSRF-TOKEN='))
+            ?.split('=')[1];
         if (csrfToken) {
             config.headers['X-CSRF-Token'] = csrfToken;
         }

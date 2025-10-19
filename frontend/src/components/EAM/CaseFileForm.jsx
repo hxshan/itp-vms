@@ -125,7 +125,7 @@ const CaseFileForm = () => {
     const confirm = window.confirm("Are you sure you want to submit this form?");
    
     if(confirm)
-    axios.post("http://localhost:3000/api/caseFiles/create", formData)
+    axios.post("/caseFiles/create", formData)
       .then(Response => {
 
 
