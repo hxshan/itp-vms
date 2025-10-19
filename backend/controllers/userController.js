@@ -104,9 +104,11 @@ const createUser = async (req, res) => {
   }
 };
 
+const mongoose = require('mongoose')
 const updateUserPersonal = async(req,res) =>{
   try {
     const {id} =req.params;
+    if (!mongoose.isValidObjectId(id)) return res.status(400).json({ message: 'Invalid id' });
     const {
       firstName,
       middleName,
@@ -178,6 +180,7 @@ const updateUserPersonal = async(req,res) =>{
 const deleteContact = async(req,res) =>{
   const {id}= req.params
   try{
+    if (!mongoose.isValidObjectId(id)) return res.status(400).json({ message: 'Invalid id' });
 
     const { ContactId } = req.body.data;
     const user = await User.findById(id)
@@ -205,6 +208,7 @@ const deleteContact = async(req,res) =>{
 const updateContact = async(req,res) =>{
   try{  
     const { id } = req.params
+    if (!mongoose.isValidObjectId(id)) return res.status(400).json({ message: 'Invalid id' });
     const { emergencyContacts } = req.body.data;
     
     const user= await User.findById(id)
@@ -252,6 +256,7 @@ const updateContact = async(req,res) =>{
 const updateDocuments = async(req,res) =>{
 
   const { id } = req.params
+  if (!mongoose.isValidObjectId(id)) return res.status(400).json({ message: 'Invalid id' });
 
   try{
 
@@ -377,6 +382,7 @@ const getUserById = async (req,res)=>{
   
   try{
     const {id} = req.params;
+    if (!mongoose.isValidObjectId(id)) return res.status(400).json({ message: 'Invalid id' });
   
     const user = await User.findById(id).populate('emergencyContacts').populate('role').exec()
     if(!user) return res.status(404).json({message:'User Not Found'})
@@ -391,6 +397,7 @@ const getUserById = async (req,res)=>{
 const getUserDetailsFull = async (req,res)=>{
   try{
     const {id} = req.params;
+    if (!mongoose.isValidObjectId(id)) return res.status(400).json({ message: 'Invalid id' });
   
     const user = await User.findById(id).populate('emergencyContacts').populate('role').exec()
     if(!user) return res.status(404).json({message:'User Not Found'})
@@ -436,6 +443,7 @@ const getRecords = async (req,res) =>{
 const getRecordByRecordId = async (req,res)=>{
   try{
     const {id}=req.params
+    if (!mongoose.isValidObjectId(id)) return res.status(400).json({ message: 'Invalid id' });
     const record = await EmpRecord.findById(id).exec()
 
     if(!record) return res.status(400).json({message:'no record found'});
@@ -449,6 +457,7 @@ const getRecordByRecordId = async (req,res)=>{
 const deleteRecord = async(req,res)=>{
   const { id } = req.params
   try{
+    if (!mongoose.isValidObjectId(id)) return res.status(400).json({ message: 'Invalid id' });
     if (!id) {
       return res.status(500).json({ message: "Record not found" });
     }
@@ -464,6 +473,7 @@ const deleteRecord = async(req,res)=>{
 const resetPassword = async(req,res)=>{
   try{
     const {id} = req.params
+    if (!mongoose.isValidObjectId(id)) return res.status(400).json({ message: 'Invalid id' });
     const {currentPwd,newPwd} =req.body.data;
 
     if(!currentPwd) return res.status(401).json({message:'Enter Current Password'})

@@ -1,17 +1,25 @@
 const vehicle_service = require('../models/vehicle_service')
 const { Vehicles } = require('../models/vehicleModel')
 const Expense =require('../models/expenseModel')
+const mongoose = require('mongoose')
 
 const addservice = async (req, res) => {
     try {
-        const vehicle = await Vehicles.findOne({ vehicleRegister: req.body.vehicleRegister });
+        const { vehicleRegister, lastmilage, servicedate, kilometerLimit, Snote, Scost } = req.body;
+        if (typeof vehicleRegister !== 'string' || typeof Snote !== 'string') {
+            return res.status(400).send({ message: 'Invalid input' });
+        }
+        if (/^\$/.test(vehicleRegister)) {
+            return res.status(400).send({ message: 'Invalid vehicleRegister' });
+        }
+        const vehicle = await Vehicles.findOne({ vehicleRegister: vehicleRegister.trim() });
 
         if (!vehicle) {
             return res.status(400).send({ message: "Invalid category or vehicle register provided." });
         }
         const existingServiceByLastMileage = await vehicle_service.findOne({
             vehicleRegister: vehicle._id,
-            lastmilage: req.body.lastmilage
+            lastmilage: lastmilage
         });
 
         if (existingServiceByLastMileage) {
@@ -31,25 +39,25 @@ const addservice = async (req, res) => {
         // Create a new service
         const newService = await vehicle_service.create({
             vehicleRegister: vehicle._id,
-            servicedate: req.body.servicedate,
-            lastmilage: req.body.lastmilage,
-            kilometerLimit: req.body.kilometerLimit,
-            Snote: req.body.Snote,
-            Scost: req.body.Scost,
+            servicedate: servicedate,
+            lastmilage: lastmilage,
+            kilometerLimit: kilometerLimit,
+            Snote: Snote,
+            Scost: Scost,
         });
 
         console.log("SErvice done")
        
         const expenseService =  await new Expense({
-            date:req.body.servicedate,
-            vehicle:vehicle._id,
+            date: servicedate,
+            vehicle: vehicle._id,
             recordedBy:"Shenal",
             category:'Maintenance and Repairs',
             status:'Pending',
-            maintenanceDescription:req.body.Snote,
+            maintenanceDescription: Snote,
             serviceProvider:"VMS-Service",
             invoiceNumber:'0',
-            maintenanceCost:req.body.Scost
+            maintenanceCost: Scost
         });
         console.log(expenseService)
         await expenseService.save(expenseService);
@@ -78,6 +86,9 @@ const getallservices = async (req, res) => {
 const getservicesbytype = async (req, res) => {
     try {
         const { id } = req.params;
+        if (!mongoose.isValidObjectId(id)) {
+            return res.status(400).json({ message: 'Invalid id' });
+        }
         const Services = await vehicle_service.find({ vehicleRegister: id }).populate("vehicleRegister");
 
         console.log(Services)
