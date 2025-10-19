@@ -36,7 +36,7 @@ const HireList = ({ hireData, searchTerm, searchType, showDropdown, setFilteredD
          /*
     const deleteHire = async (id) => {
         try {
-            await axios.delete(`http://localhost:3000/api/hire/${id}`);
+            await axios.delete(`/hire/${id}`);
             const updatedHireData = hireData.filter((hire) => hire._id !== id);
             setHireData(updatedHireData);
             setResults(updatedHireData); // Update the results with the new data

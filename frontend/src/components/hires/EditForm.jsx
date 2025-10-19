@@ -102,7 +102,7 @@ const EditForm = ({ setShowEditForm, viewHireData }) => {
       };
 
       // Send the income data to create income object
-       axios.post('http://localhost:3000/api/income', incomeData);
+       axios.post('/income', incomeData);
     }
 
   

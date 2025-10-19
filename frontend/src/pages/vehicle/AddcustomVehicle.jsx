@@ -1,7 +1,7 @@
 import { useState , useEffect } from 'react';
 import { useNavigate} from 'react-router-dom'
 import { useAuthContext } from "@/hooks/useAuthContext";
-import axios from 'axios'
+import axios from '@/api/axios'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -97,7 +97,7 @@ const AddcustomVehicle = () => {
       }
     
       try {
-        const response = await axios.post(`http://localhost:3000/api/vehicle/`, formState,
+        const response = await axios.post(`/vehicle/`, formState,
         {
           headers:{
           withCredentials:true,
